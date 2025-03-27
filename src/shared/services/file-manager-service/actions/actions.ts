@@ -26,3 +26,7 @@ export async function moveOrCopyFilesAction(targetDirectoryPath: string, files: 
 export async function renameAction(relativePath: string, newName: string): Promise<void> {
   return FileManagerService.rename(relativePath, newName);
 }
+
+export async function isDirectoryAction(relativePath: string): Promise<boolean> {
+  return FileManagerService.isDirectory(relativePath);
+}

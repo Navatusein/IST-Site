@@ -132,6 +132,17 @@ export class FileManagerService {
     fs.renameSync(resolvedOldPath, resolvedNewPath);
   }
 
+  public static isDirectory(relativePath: string): boolean {
+    const resolvedPath = this.resolvePath(relativePath);
+
+    if (!fs.existsSync(resolvedPath)) {
+      return false;
+    }
+
+    const stats = fs.statSync(resolvedPath);
+    return stats.isDirectory();
+  }
+
   private static getAvailablePath(targetPath: string): string {
     if (!fs.existsSync(targetPath)) return targetPath;
 

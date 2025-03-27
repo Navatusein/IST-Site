@@ -15,6 +15,7 @@ import {
 } from "@/widgets/file-manager";
 import style from "./file-manager.module.scss"
 import FilePreview from "../file-preview/file-preview";
+import DownloadButton from "../download-button/download-button";
 
 const FILE_TYPE_TO_ICON = {
   "directory": <FolderOutlined/>,
@@ -167,6 +168,10 @@ export default function FileManager() {
         <Button onClick={() => setUpdateFiles((prevState) => prevState + 1)}>
           Оновити
         </Button>
+        <DownloadButton
+          selectedRowKeys={selectedRowKeys}
+          setSelectedRowKeys={setSelectedRowKeys}
+        />
         <UploadFilesButton
           currentPath={currentPath}
           setUpdateFiles={setUpdateFiles}
