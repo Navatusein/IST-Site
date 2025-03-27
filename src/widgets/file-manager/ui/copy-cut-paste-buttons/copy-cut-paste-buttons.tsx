@@ -1,4 +1,4 @@
-import {Dispatch, Key, SetStateAction, useState} from "react";
+import {Dispatch, Key, SetStateAction} from "react";
 import {App, Button, Space} from "antd";
 import {moveOrCopyFilesAction} from "@/shared/services/file-manager-service/actions/actions";
 
@@ -18,7 +18,7 @@ export default function CopyCutPasteButtons(props: IProps) {
 
   const pasteFromMemory = () => {
     moveOrCopyFilesAction(props.currentPath, props.filesInMemory, props.filesInMemoryCut)
-      .then((data) => {
+      .then(() => {
         notification.success({message: "Успіх"});
         props.setFilesInMemory(() => []);
         setTimeout(() => {

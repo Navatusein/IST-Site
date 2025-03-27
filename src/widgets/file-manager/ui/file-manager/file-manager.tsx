@@ -10,8 +10,6 @@ import {CopyCutPasteButtons, CreateFolderButton, DeleteFilesButton, UploadFilesB
 import style from "./file-manager.module.scss"
 import FilePreview from "../file-preview/file-preview";
 
-interface IProps {}
-
 const FILE_TYPE_TO_ICON = {
   "directory": <FolderOutlined/>,
   "file": <FileOutlined/>,
@@ -85,7 +83,7 @@ const COLUMNS: TableColumnsType<IFile|IDirectory> = [
   }
 ];
 
-export default function FileManager(props: IProps) {
+export default function FileManager() {
   const {notification} = App.useApp();
 
   const [currentPath, setCurrentPath] = useQueryState("path", {defaultValue: "/"});
