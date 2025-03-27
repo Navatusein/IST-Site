@@ -1,6 +1,6 @@
 import Credentials from "next-auth/providers/credentials";
 import {NextAuthConfig} from "next-auth";
-import {IUser, User} from "@/entities/user";
+import {IUser, UserModel} from "@/entities/user";
 import bcrypt from "bcryptjs"
 
 export const nextAuthConfig: NextAuthConfig = {
@@ -17,7 +17,7 @@ export const nextAuthConfig: NextAuthConfig = {
         if (!credentials?.login || !credentials.password)
           return null;
 
-        const user = await User.findOne<IUser>({login: credentials.login});
+        const user = await UserModel.findOne<IUser>({login: credentials.login});
 
         if (!user)
           return null;
@@ -27,7 +27,9 @@ export const nextAuthConfig: NextAuthConfig = {
         if (!passwordMatch)
           return null;
 
-        return {...user, passwordHash: ""};
+        console.log(user)
+
+        return {...JSON.parse(JSON.stringify(user)), passwordHash: ""};
       }
     })
   ]

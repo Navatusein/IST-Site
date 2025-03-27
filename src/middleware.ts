@@ -14,7 +14,7 @@ export default auth((request) => {
 
   if (isAuthRoute) {
     if (isAuthorized)
-      return Response.redirect(new URL("/controllers", nextUrl));
+      return Response.redirect(new URL("/admin", nextUrl));
 
     return;
   }

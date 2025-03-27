@@ -40,5 +40,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-#webstorm
+# webstorm
 /.idea
+
+# storage for files
+/public/files

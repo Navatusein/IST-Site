@@ -1,14 +1,14 @@
 import mongoDbConnect from "@/shared/services/mongodb-service/mongodb-service";
-import {User} from "@/entities/user";
+import {UserModel} from "@/entities/user";
 
 export async function GET(request: Request) {
   try {
     const connection = await mongoDbConnect();
 
-    const usersCount = await User.countDocuments();
+    const usersCount = await UserModel.countDocuments();
 
     if (usersCount == 0) {
-      const newUser = new User({login: "admin", name: "admin"});
+      const newUser = new UserModel({login: "admin", name: "admin"});
 
       console.log("Added base user")
 

@@ -1,0 +1,6 @@
+import CreateFolderButton from "./ui/create-folder-button/create-folder-button";
+import DeleteFilesButton from "./ui/delete-files-button/delete-files-button";
+import FileManager from "./ui/file-manager/file-manager";
+import UploadFilesButton from "./ui/upload-files-button/upload-files-button";
+
+export {FileManager, CreateFolderButton, DeleteFilesButton, UploadFilesButton};
