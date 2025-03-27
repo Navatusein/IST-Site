@@ -2,10 +2,6 @@ import {Mongoose, connect} from "mongoose";
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
-if (!MONGODB_URI) {
-  throw new Error("Please define the MONGODB_URI environment variable");
-}
-
 declare global {
   var mongodbService: {connection?: Mongoose | null, promise: Promise<Mongoose> | null};
 }
@@ -21,6 +17,10 @@ async function mongoDbConnect() {
     return cached.connection;
 
   if (!cached.promise) {
+    if (!MONGODB_URI) {
+      throw new Error("Please define the MONGODB_URI environment variable");
+    }
+
     cached.promise = connect(MONGODB_URI!, {authSource: "admin"})
       .then(connection => {
         return connection;
