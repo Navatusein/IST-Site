@@ -1,6 +1,6 @@
 "use client"
 
-import {App, Button, Input, InputRef} from "antd";
+import {App, Button, Input, InputRef, Tooltip} from "antd";
 import {Dispatch, SetStateAction, useRef} from "react";
 import {createDirectoryAction} from "@/shared/services/file-manager-service/actions/actions";
 
@@ -51,8 +51,11 @@ export default function CreateFolderButton(props: IProps) {
   }
 
   return (
-    <Button onClick={openCreateFolderModal}>
-      Створити папку
-    </Button>
+    <Tooltip title="Стоворити нову папку">
+      <Button onClick={openCreateFolderModal}>
+        Створити папку
+      </Button>
+    </Tooltip>
+
   )
 }

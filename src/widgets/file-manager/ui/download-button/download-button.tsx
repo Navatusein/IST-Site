@@ -1,4 +1,4 @@
-import {Button} from "antd";
+import {Button, Tooltip} from "antd";
 import {Dispatch, Key, SetStateAction} from "react";
 import {isDirectoryAction} from "@/shared/services/file-manager-service/actions/actions";
 
@@ -26,8 +26,10 @@ export default function DownloadButton(props: IProps) {
   }
 
   return (
-    <Button onClick={download} disabled={props.selectedRowKeys.length == 0}>
-      Скачати
-    </Button>
+    <Tooltip title="Скачати вибрані файли">
+      <Button onClick={download} disabled={props.selectedRowKeys.length == 0}>
+        Скачати
+      </Button>
+    </Tooltip>
   )
 }

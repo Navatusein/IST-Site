@@ -1,5 +1,5 @@
 import {Dispatch, Key, SetStateAction} from "react";
-import {App, Button, Space} from "antd";
+import {App, Button, Space, Tooltip} from "antd";
 import {moveOrCopyFilesAction} from "@/shared/services/file-manager-service/actions/actions";
 
 interface IProps {
@@ -44,21 +44,29 @@ export default function CopyCutPasteButtons(props: IProps) {
 
   return (
     <Space wrap>
-      <Button onClick={() => copyOrCut(false)} disabled={props.selectedRowKeys.length == 0}>
-        Копіювати
-      </Button>
-      <Button onClick={() => copyOrCut(true)} disabled={props.selectedRowKeys.length == 0}>
-        Вирізати
-      </Button>
-      {props.filesInMemory.length != 0 &&
-        <Button onClick={clearMemory}>
-          {props.filesInMemoryCut ? "Забути вирізане" : "Забути скопійоване"}
+      <Tooltip title="Копіювати вибрані файли">
+        <Button onClick={() => copyOrCut(false)} disabled={props.selectedRowKeys.length == 0}>
+          Копіювати
         </Button>
+      </Tooltip>
+      <Tooltip title="Вирізати вибрані файли">
+        <Button onClick={() => copyOrCut(true)} disabled={props.selectedRowKeys.length == 0}>
+          Вирізати
+        </Button>
+      </Tooltip>
+      {props.filesInMemory.length != 0 &&
+        <Tooltip title={`Очистити список вирізаних/скопійованих файлів`}>
+          <Button onClick={clearMemory}>
+            {`Забути ${props.filesInMemoryCut ? "вирізане" : "скопійоване"}`}
+          </Button>
+        </Tooltip>
       }
       {props.filesInMemory.length != 0 &&
-        <Button onClick={pasteFromMemory}>
-          Вставити
-        </Button>
+        <Tooltip title={`Вставити вирізані/скопійовані файли`}>
+          <Button onClick={pasteFromMemory}>
+            Вставити
+          </Button>
+        </Tooltip>
       }
     </Space>
   )

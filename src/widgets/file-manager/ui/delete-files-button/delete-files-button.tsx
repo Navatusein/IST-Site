@@ -1,6 +1,6 @@
 "use client"
 
-import {App, Button, Popconfirm} from "antd";
+import {App, Button, Popconfirm, Tooltip} from "antd";
 import {Dispatch, Key, SetStateAction} from "react";
 import {deleteFilesAction} from "@/shared/services/file-manager-service/actions/actions";
 
@@ -35,7 +35,9 @@ export default function DeleteFilesButton(props: IProps) {
       okText="Так"
       cancelText="Ні"
     >
-      <Button danger disabled={props.selectedRowKeys.length == 0}>Видалити</Button>
+      <Tooltip title="Видалити вибрані файли">
+        <Button danger disabled={props.selectedRowKeys.length == 0}>Видалити</Button>
+      </Tooltip>
     </Popconfirm>
   )
 }

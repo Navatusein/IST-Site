@@ -1,4 +1,4 @@
-import {App, Button, Input, InputRef} from "antd";
+import {App, Button, Input, InputRef, Tooltip} from "antd";
 import {Dispatch, Key, SetStateAction, useRef} from "react";
 import {renameAction} from "@/shared/services/file-manager-service/actions/actions";
 
@@ -52,8 +52,11 @@ export default function RenameButton(props: IProps) {
   }
 
   return (
-    <Button onClick={openRenameModal} disabled={props.selectedRowKeys.length != 1}>
-      Перейменувати
-    </Button>
+    <Tooltip title="Перейменувати вибрані файли">
+      <Button onClick={openRenameModal} disabled={props.selectedRowKeys.length != 1}>
+        Перейменувати
+      </Button>
+    </Tooltip>
+
   )
 }

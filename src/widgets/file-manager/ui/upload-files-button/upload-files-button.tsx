@@ -1,6 +1,6 @@
 "use client"
 
-import {App, Button, Upload} from "antd";
+import {App, Button, Tooltip, Upload} from "antd";
 import {uploadFilesAction} from "@/shared/services/file-manager-service/actions/actions";
 import type {UploadRequestOption} from "rc-upload/lib/interface";
 import {Dispatch, SetStateAction} from "react";
@@ -29,8 +29,10 @@ export default function UploadFilesButton(props: IProps) {
   }
 
   return (
-    <Upload multiple customRequest={uploadFile} showUploadList={false}>
-      <Button>Завантажити</Button>
-    </Upload>
+    <Tooltip title="Завантажити файли">
+      <Upload multiple customRequest={uploadFile} showUploadList={false}>
+        <Button>Завантажити</Button>
+      </Upload>
+    </Tooltip>
   )
 }

@@ -6,5 +6,16 @@ import FilePreview from "./ui/file-preview/file-preview";
 import UploadFilesButton from "./ui/upload-files-button/upload-files-button";
 import RenameButton from "./ui/rename-button/rename-button"
 import DownloadButton from "./ui/download-button/download-button";
+import UpdateButton from "./ui/update-button/update-button";
 
-export {FileManager, CreateFolderButton, DeleteFilesButton, UploadFilesButton, FilePreview, CopyCutPasteButtons, RenameButton, DownloadButton};
+export {
+  FileManager,
+  CreateFolderButton,
+  DeleteFilesButton,
+  UploadFilesButton,
+  FilePreview,
+  CopyCutPasteButtons,
+  RenameButton,
+  DownloadButton,
+  UpdateButton
+};

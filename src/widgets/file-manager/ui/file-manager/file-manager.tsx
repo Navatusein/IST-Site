@@ -10,7 +10,7 @@ import {
   CopyCutPasteButtons,
   CreateFolderButton,
   DeleteFilesButton,
-  RenameButton,
+  RenameButton, UpdateButton,
   UploadFilesButton
 } from "@/widgets/file-manager";
 import style from "./file-manager.module.scss"
@@ -165,9 +165,9 @@ export default function FileManager() {
        </Space>
       }
       <Space wrap>
-        <Button onClick={() => setUpdateFiles((prevState) => prevState + 1)}>
-          Оновити
-        </Button>
+        <UpdateButton
+          setUpdateFiles={setUpdateFiles}
+        />
         <DownloadButton
           selectedRowKeys={selectedRowKeys}
           setSelectedRowKeys={setSelectedRowKeys}
