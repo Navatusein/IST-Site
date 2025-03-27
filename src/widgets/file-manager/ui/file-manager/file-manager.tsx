@@ -1,7 +1,15 @@
 "use client"
 
 import {App, Breadcrumb, Space, Table, TableColumnsType, Tag, Typography} from "antd";
-import {FileImageOutlined, FileOutlined, FilePdfOutlined, FileTextOutlined, FolderOutlined, RollbackOutlined} from "@ant-design/icons";
+import {
+  FileImageOutlined,
+  FileOutlined,
+  FilePdfOutlined,
+  FileTextOutlined, FileZipOutlined,
+  FolderOutlined,
+  RollbackOutlined,
+  VideoCameraOutlined
+} from "@ant-design/icons";
 import {Key, useEffect, useState} from "react";
 import {IDirectory, IFile} from "@/shared/services/file-manager-service/types/type";
 import {getFilesAction} from "@/shared/services/file-manager-service/actions/actions";
@@ -10,7 +18,8 @@ import {
   CopyCutPasteButtons,
   CreateFolderButton,
   DeleteFilesButton,
-  RenameButton, UpdateButton,
+  RenameButton,
+  UpdateButton,
   UploadFilesButton
 } from "@/widgets/file-manager";
 import style from "./file-manager.module.scss"
@@ -20,8 +29,8 @@ import DownloadButton from "../download-button/download-button";
 const FILE_TYPE_TO_ICON = {
   "directory": <FolderOutlined/>,
   "file": <FileOutlined/>,
-  "archive": <FileOutlined/>,
-  "video": <FileOutlined/>,
+  "archive": <FileZipOutlined/>,
+  "video": <VideoCameraOutlined/>,
   "back": <RollbackOutlined/>,
   "text": <FileTextOutlined/>,
   "image": <FileImageOutlined/>,
@@ -86,14 +95,14 @@ const COLUMNS: TableColumnsType<IFile|IDirectory> = [
     )
   },
   {
-    title: "Шлях",
-    dataIndex: "path",
-    key: "path",
-  },
-  {
     title: "Розширеня файлу",
     dataIndex: "extension",
     key: "extension",
+  },
+  {
+    title: "Шлях",
+    dataIndex: "path",
+    key: "path",
   }
 ];
 
