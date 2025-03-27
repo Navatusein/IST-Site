@@ -1,7 +1,7 @@
 import mongoDbConnect from "@/shared/services/mongodb-service/mongodb-service";
 import {UserModel} from "@/entities/user";
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
     const connection = await mongoDbConnect();
 

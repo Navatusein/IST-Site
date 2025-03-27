@@ -1,7 +1,7 @@
 "use client"
 
 import {actionSignIn} from "../../actions/actions";
-import {App, Button, Card, Form, Input, notification, Typography} from "antd";
+import {App, Button, Card, Form, Input, Typography} from "antd";
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
 import {redirect} from "next/navigation";
 

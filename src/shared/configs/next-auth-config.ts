@@ -1,7 +1,5 @@
 import Credentials from "next-auth/providers/credentials";
 import {NextAuthConfig} from "next-auth";
-import axios from "axios";
-import {IUser} from "@/entities/user";
 import {CouldNotParseError, InvalidPasswordError} from "@/shared/types/next-auth-exceptions";
 
 export const nextAuthConfig: NextAuthConfig = {

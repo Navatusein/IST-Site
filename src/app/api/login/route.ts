@@ -1,6 +1,5 @@
 import {IUser, UserModel} from "@/entities/user";
 import bcrypt from "bcryptjs";
-import {json} from "node:stream/consumers";
 
 export async function POST(request: Request) {
   try {
