@@ -1,7 +1,15 @@
 {
   "name": "ist-site",
-  "version": "0.1.0",
   "private": true,
+  "version": "0.1.0",
+  "description": "A new website for the KNU's ICT department",
+  "repository": "github:Navatusein/IST-Site",
+  "author": {
+    "name": "Bohdan Kutsulime",
+    "email": "boghdan.kutsulima@gmail.com",
+    "url": "https://github.com/Navatusein"
+  },
+  "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

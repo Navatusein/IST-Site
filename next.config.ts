@@ -1,9 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   devIndicators: {
-    buildActivityPosition: "bottom-right",
-  }
+    position: "bottom-right"
+  },
 };
 
 export default nextConfig;
