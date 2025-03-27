@@ -32,7 +32,8 @@ export class FileManagerService {
           name: entry.name,
           path: relativePath,
           type: this.detectFileType(entry.name),
-          size: stats.size
+          size: stats.size,
+          extension: path.extname(entry.name).toLowerCase()
         };
       }
     });
@@ -43,9 +44,8 @@ export class FileManagerService {
 
     const targetPath = path.join(resolvedPath, file.name);
 
-    if (fs.existsSync(targetPath)) {
+    if (fs.existsSync(targetPath))
       throw new Error(`File "${file.name}" already exists in ${currentPath}.`);
-    }
 
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
@@ -76,9 +76,8 @@ export class FileManagerService {
   public static createDirectory(currentPath: string, folderName: string): void {
     const resolvedPath = this.resolvePath(path.join(currentPath, folderName));
 
-    if (fs.existsSync(resolvedPath)) {
+    if (fs.existsSync(resolvedPath))
       throw new Error(`Directory "${folderName}" already exists in "${currentPath}"`);
-    }
 
     fs.mkdirSync(resolvedPath, { recursive: true });
   }
@@ -86,9 +85,8 @@ export class FileManagerService {
   public static moveOrCopyFiles(targetDirectoryPath: string, files: string[], cut: boolean): void {
     const resolvedTarget = this.resolvePath(targetDirectoryPath);
 
-    if (!fs.existsSync(resolvedTarget)) {
+    if (!fs.existsSync(resolvedTarget))
       throw new Error(`Target directory "${targetDirectoryPath}" does not exist.`);
-    }
 
     files.forEach((fileRelativePath) => {
       const resolvedItemPath = this.resolvePath(fileRelativePath);
@@ -105,15 +103,33 @@ export class FileManagerService {
 
       if (stats.isDirectory()) {
         this.copyDirectory(resolvedItemPath, destinationPath);
+
         if (cut)
           fs.rmSync(resolvedItemPath, { recursive: true, force: true });
       }
       else {
         fs.copyFileSync(resolvedItemPath, destinationPath);
+
         if (cut)
           fs.unlinkSync(resolvedItemPath);
       }
     });
+  }
+
+  public static rename(relativePath: string, newName: string): void {
+    const resolvedOldPath = this.resolvePath(relativePath);
+
+    if (!fs.existsSync(resolvedOldPath))
+      throw new Error(`Path "${relativePath}" does not exist.`);
+
+    const parentDir = path.dirname(resolvedOldPath);
+    const tentativeNewPath = path.join(parentDir, newName.replaceAll("\\","/"));
+    const resolvedNewPath = this.getAvailablePath(tentativeNewPath);
+
+    if (!resolvedNewPath.startsWith(this.baseDirectory))
+      throw new Error("Access outside /public/files is not allowed.");
+
+    fs.renameSync(resolvedOldPath, resolvedNewPath);
   }
 
   private static getAvailablePath(targetPath: string): string {
@@ -151,11 +167,10 @@ export class FileManagerService {
   }
 
   private static resolvePath(currentPath: string): string {
-    const resolvedPath = path.resolve(this.baseDirectory, "." + currentPath);
+    const resolvedPath = path.resolve(this.baseDirectory, "." + currentPath.replaceAll("\\","/"));
 
-    if (!resolvedPath.startsWith(this.baseDirectory)) {
+    if (!resolvedPath.startsWith(this.baseDirectory))
       throw new Error("Access outside /public/files is not allowed.");
-    }
 
     return resolvedPath;
   }
@@ -163,25 +178,20 @@ export class FileManagerService {
   private static detectFileType(fileName: string): IFileTypes {
     const extension = path.extname(fileName).toLowerCase();
 
-    if ([".jpg", ".jpeg", ".png", ".gif", ".bmp", ".svg", ".webp"].includes(extension)) {
+    if ([".jpg", ".jpeg", ".png", ".gif", ".bmp", ".svg", ".webp"].includes(extension))
       return "image";
-    }
 
-    if ([".pdf"].includes(extension)) {
+    if ([".pdf"].includes(extension))
       return "pdf";
-    }
 
-    if ([".txt", ".md", ".log"].includes(extension)) {
+    if ([".txt", ".md", ".log"].includes(extension))
       return "text";
-    }
 
-    if ([".zip", ".rar", ".7z", ".tar", ".gz"].includes(extension)) {
+    if ([".zip", ".rar", ".7z", ".tar", ".gz"].includes(extension))
       return "archive";
-    }
 
-    if ([".mp4", ".mov", ".avi", ".mkv", ".webm"].includes(extension)) {
+    if ([".mp4", ".mov", ".avi", ".mkv", ".webm"].includes(extension))
       return "video";
-    }
 
     return "file";
   }

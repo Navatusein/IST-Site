@@ -43,7 +43,7 @@ export default function CopyCutPasteButtons(props: IProps) {
   }
 
   return (
-    <Space>
+    <Space wrap>
       <Button onClick={() => copyOrCut(false)} disabled={props.selectedRowKeys.length == 0}>
         Копіювати
       </Button>

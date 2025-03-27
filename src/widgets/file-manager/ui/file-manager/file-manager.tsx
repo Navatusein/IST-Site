@@ -6,7 +6,13 @@ import {Key, useEffect, useState} from "react";
 import {IDirectory, IFile} from "@/shared/services/file-manager-service/types/type";
 import {getFilesAction} from "@/shared/services/file-manager-service/actions/actions";
 import {useQueryState} from "nuqs";
-import {CopyCutPasteButtons, CreateFolderButton, DeleteFilesButton, UploadFilesButton} from "@/widgets/file-manager";
+import {
+  CopyCutPasteButtons,
+  CreateFolderButton,
+  DeleteFilesButton,
+  RenameButton,
+  UploadFilesButton
+} from "@/widgets/file-manager";
 import style from "./file-manager.module.scss"
 import FilePreview from "../file-preview/file-preview";
 
@@ -60,6 +66,7 @@ const COLUMNS: TableColumnsType<IFile|IDirectory> = [
     title: "Тип",
     dataIndex: "type",
     key: "type",
+    ellipsis: true,
     render: (value, record) => (
       <Typography.Text>
         {FILE_TYPE_TO_UKR[record.type] || value}
@@ -70,6 +77,7 @@ const COLUMNS: TableColumnsType<IFile|IDirectory> = [
     title: "Розмір",
     dataIndex: "size",
     key: "size",
+    ellipsis: true,
     render: (value, record) => (
       <Typography.Text>
         {record.type != "directory" && record.type != "back" && bytesToSize(value)}
@@ -80,6 +88,11 @@ const COLUMNS: TableColumnsType<IFile|IDirectory> = [
     title: "Шлях",
     dataIndex: "path",
     key: "path",
+  },
+  {
+    title: "Розширеня файлу",
+    dataIndex: "extension",
+    key: "extension",
   }
 ];
 
@@ -150,7 +163,7 @@ export default function FileManager() {
          {filesInMemory.map(value => (<Tag style={{margin: 0}} color="blue" key={value}>{value.split("/").pop()}</Tag>))}
        </Space>
       }
-      <Space>
+      <Space wrap>
         <Button onClick={() => setUpdateFiles((prevState) => prevState + 1)}>
           Оновити
         </Button>
@@ -162,8 +175,12 @@ export default function FileManager() {
           currentPath={currentPath}
           setUpdateFiles={setUpdateFiles}
         />
+        <RenameButton
+          selectedRowKeys={selectedRowKeys}
+          setSelectedRowKeys={setSelectedRowKeys}
+          setUpdateFiles={setUpdateFiles}
+        />
         <DeleteFilesButton
-          currentPath={currentPath}
           selectedRowKeys={selectedRowKeys}
           setSelectedRowKeys={setSelectedRowKeys}
           setUpdateFiles={setUpdateFiles}
@@ -187,6 +204,7 @@ export default function FileManager() {
         rowHoverable={true}
         rowKey="path"
         pagination={false}
+        scroll={{x: "auto"}}
         rowSelection={{
           selectedRowKeys: selectedRowKeys,
           onChange: onRowSelect,

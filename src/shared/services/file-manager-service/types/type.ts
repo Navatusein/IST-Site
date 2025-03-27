@@ -5,6 +5,7 @@ export interface IFile {
   path: string;
   type: IFileTypes;
   size: number;
+  extension?: string;
 }
 
 export interface IDirectory extends IFile {

@@ -5,7 +5,6 @@ import {Dispatch, Key, SetStateAction} from "react";
 import {deleteFilesAction} from "@/shared/services/file-manager-service/actions/actions";
 
 interface IProps {
-  currentPath: string;
   selectedRowKeys: Key[],
   setSelectedRowKeys: Dispatch<SetStateAction<Key[]>>
   setUpdateFiles: Dispatch<SetStateAction<number>>
