@@ -19,7 +19,9 @@ export default function UploadFilesButton(props: IProps) {
     uploadFilesAction(props.currentPath, file)
       .then(() => {
         notification.success({message: "Файл завантажено успішно", description: file.name});
-        props.setUpdateFiles((prevState) => prevState + 1);
+        setTimeout(() => {
+          props.setUpdateFiles((prevState) => prevState + 1);
+        }, 500)
       })
       .catch((error) => {
         notification.error({message: "Помилка завантаження файлу", description: error.message});

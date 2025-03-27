@@ -19,7 +19,9 @@ export default function DeleteFilesButton(props: IProps) {
       .then(() => {
         notification.success({message: "Файли видалено успішно",});
         props.setSelectedRowKeys([]);
-        props.setUpdateFiles((prevState) => prevState + 1);
+        setTimeout(() => {
+          props.setUpdateFiles((prevState) => prevState + 1);
+        }, 500)
       })
       .catch((error) => {
         notification.error({message: "Помилка видаленя файлів", description: error.message});

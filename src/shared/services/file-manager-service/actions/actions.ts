@@ -15,6 +15,10 @@ export async function deleteFilesAction(paths: string[]): Promise<void> {
   return FileManagerService.deleteFiles(paths);
 }
 
-export async function createDirectory(currentPath: string, folderName: string): Promise<void> {
+export async function createDirectoryAction(currentPath: string, folderName: string): Promise<void> {
   return FileManagerService.createDirectory(currentPath, folderName);
+}
+
+export async function moveOrCopyFilesAction(targetDirectoryPath: string, files: string[], cut: boolean): Promise<void> {
+  return FileManagerService.moveOrCopyFiles(targetDirectoryPath, files, cut);
 }

@@ -1,14 +1,13 @@
 "use client"
 
-import {App, Button, Modal, Space, Table, TableColumnsType, Typography} from "antd";
+import {App, Breadcrumb, Button, Space, Table, TableColumnsType, Tag, Typography} from "antd";
 import {FileImageOutlined, FileOutlined, FilePdfOutlined, FileTextOutlined, FolderOutlined, RollbackOutlined} from "@ant-design/icons";
 import {Key, useEffect, useState} from "react";
 import {IDirectory, IFile} from "@/shared/services/file-manager-service/types/type";
 import {getFilesAction} from "@/shared/services/file-manager-service/actions/actions";
 import {useQueryState} from "nuqs";
-import {CreateFolderButton, DeleteFilesButton, UploadFilesButton} from "@/widgets/file-manager";
+import {CopyCutPasteButtons, CreateFolderButton, DeleteFilesButton, UploadFilesButton} from "@/widgets/file-manager";
 import style from "./file-manager.module.scss"
-import {DocumentViewer} from "react-documents";
 import FilePreview from "../file-preview/file-preview";
 
 interface IProps {}
@@ -42,9 +41,9 @@ const bytesToSize = (size: number): string => {
 }
 
 const getBackPath = (currentPath: string): string => {
-  const pathParts = currentPath.split("\\");
+  const pathParts = currentPath.split("/");
   pathParts.pop();
-  return pathParts.join("\\") || "\\";
+  return pathParts.join("/") || "/";
 }
 
 const COLUMNS: TableColumnsType<IFile|IDirectory> = [
@@ -80,32 +79,30 @@ const COLUMNS: TableColumnsType<IFile|IDirectory> = [
     )
   },
   {
-    title: "Дії",
-    dataIndex: "actions",
-    key: "actions",
-    render: (value, record) => (
-      <Space>
-
-      </Space>
-    )
+    title: "Шлях",
+    dataIndex: "path",
+    key: "path",
   }
 ];
 
 export default function FileManager(props: IProps) {
   const {notification} = App.useApp();
 
-  const [currentPath, setCurrentPath] = useQueryState("path", {defaultValue: "\\"});
+  const [currentPath, setCurrentPath] = useQueryState("path", {defaultValue: "/"});
 
-  const [updateFiles, setUpdateFiles] = useState<number>(0)
+  const [updateFiles, setUpdateFiles] = useState<number>(0);
   const [files, setFiles] = useState<(IFile|IDirectory)[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([]);
 
-  const [filePathToPreview, setFilePathToPreview] = useState<string>("")
+  const [filePathToPreview, setFilePathToPreview] = useState<string>("");
+
+  const [filesInMemory, setFilesInMemory] = useState<string[]>([]);
+  const [filesInMemoryCut, setFilesInMemoryCut] = useState<boolean>(false);
 
   useEffect(() => {
     getFilesAction(currentPath)
       .then((data) => {
-        if (currentPath == "\\")
+        if (currentPath == "/")
           return setFiles(data);
 
         setFiles([
@@ -115,6 +112,12 @@ export default function FileManager(props: IProps) {
       })
       .catch((error) => {
         notification.error({message: "Помилка завантаження файлів", description: error.message});
+
+        if (error.message.includes("no such file or directory"))
+          setCurrentPath("/")
+            .catch((error) => {
+              notification.error({message: "Помилка", description: error.message});
+            });
       });
   }, [currentPath, updateFiles])
 
@@ -131,13 +134,28 @@ export default function FileManager(props: IProps) {
         });
     }
     else {
-      setFilePathToPreview(() => record.path);
+      // setFilePathToPreview(() => record.path);
     }
   }
 
   return(
     <Space direction="vertical" size="middle" style={{width: "100%"}}>
+      <Space wrap size={[0, 0]}>
+        <Typography.Text>Поточний шлях:</Typography.Text>
+        <Breadcrumb items={currentPath?.split("/").map(value => ({title: value}))}/>
+      </Space>
+      {filesInMemory.length != 0 &&
+       <Space wrap>
+         <Typography.Text>
+           {filesInMemoryCut ? "Вирізані файли:" : "Скопійовані файли:"}
+         </Typography.Text>
+         {filesInMemory.map(value => (<Tag style={{margin: 0}} color="blue" key={value}>{value.split("/").pop()}</Tag>))}
+       </Space>
+      }
       <Space>
+        <Button onClick={() => setUpdateFiles((prevState) => prevState + 1)}>
+          Оновити
+        </Button>
         <UploadFilesButton
           currentPath={currentPath}
           setUpdateFiles={setUpdateFiles}
@@ -152,6 +170,16 @@ export default function FileManager(props: IProps) {
           setSelectedRowKeys={setSelectedRowKeys}
           setUpdateFiles={setUpdateFiles}
         />
+        <CopyCutPasteButtons
+          currentPath={currentPath}
+          selectedRowKeys={selectedRowKeys}
+          setSelectedRowKeys={setSelectedRowKeys}
+          filesInMemory={filesInMemory}
+          setFilesInMemory={setFilesInMemory}
+          filesInMemoryCut={filesInMemoryCut}
+          setFilesInMemoryCut={setFilesInMemoryCut}
+          setUpdateFiles={setUpdateFiles}
+        />
       </Space>
       <Table<IFile|IDirectory>
         columns={COLUMNS}
@@ -160,10 +188,17 @@ export default function FileManager(props: IProps) {
         rowClassName={style.row}
         rowHoverable={true}
         rowKey="path"
+        pagination={false}
         rowSelection={{
           selectedRowKeys: selectedRowKeys,
           onChange: onRowSelect,
-          selections: true
+          getCheckboxProps: (record) => ({disabled: record.type === "back"}),
+          renderCell: (checked, record, index, originNode) => (
+            <div>
+              <div style={{position: "absolute", top: 0, bottom: 0, left: 0, right: 0}} onClick={event => event.stopPropagation()}/>
+              {originNode}
+            </div>
+          )
         }}
         onRow={(record: IFile, rowIndex?: number) => ({
           onClick: () => onRowClick(record)

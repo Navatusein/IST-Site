@@ -2,7 +2,7 @@
 
 import {App, Button, Input, InputRef} from "antd";
 import {Dispatch, SetStateAction, useRef} from "react";
-import {createDirectory} from "@/shared/services/file-manager-service/actions/actions";
+import {createDirectoryAction} from "@/shared/services/file-manager-service/actions/actions";
 
 interface IProps {
   currentPath: string;
@@ -17,10 +17,12 @@ export default function CreateFolderButton(props: IProps) {
   const createFolder = () => {
     const directoryName = directoryNameInput.current?.input?.value.trim() ?? "";
 
-    createDirectory(props.currentPath, directoryName)
+    createDirectoryAction(props.currentPath, directoryName)
       .then(() => {
         notification.success({message: "Папку стоврено успішно",});
-        props.setUpdateFiles((prevState) => prevState + 1);
+        setTimeout(() => {
+          props.setUpdateFiles((prevState) => prevState + 1);
+        }, 500)
       })
       .catch((error) => {
         notification.error({message: "Помилка створення папки", description: error.message});

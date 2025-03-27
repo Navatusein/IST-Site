@@ -1,9 +1,9 @@
 import * as fs from "node:fs";
-import path from "node:path";
+import path from "node:path/posix";
 import {IDirectory, IFile, IFileTypes} from "@/shared/services/file-manager-service/types/type";
 
 export class FileManagerService {
-  private static baseDirectory = path.resolve(process.cwd(), "public/files");
+  private static baseDirectory = path.resolve("public/files");
 
   public static getFiles(currentPath: string): (IFile | IDirectory)[] {
     if (!fs.existsSync(this.baseDirectory))
@@ -81,6 +81,73 @@ export class FileManagerService {
     }
 
     fs.mkdirSync(resolvedPath, { recursive: true });
+  }
+
+  public static moveOrCopyFiles(targetDirectoryPath: string, files: string[], cut: boolean): void {
+    const resolvedTarget = this.resolvePath(targetDirectoryPath);
+
+    if (!fs.existsSync(resolvedTarget)) {
+      throw new Error(`Target directory "${targetDirectoryPath}" does not exist.`);
+    }
+
+    files.forEach((fileRelativePath) => {
+      const resolvedItemPath = this.resolvePath(fileRelativePath);
+
+      if (!fs.existsSync(resolvedItemPath)) {
+        console.warn(`Skipping non-existent path: ${fileRelativePath}`);
+        return;
+      }
+
+      const baseName = path.basename(resolvedItemPath);
+      let destinationPath = path.join(resolvedTarget, baseName);
+      destinationPath = this.getAvailablePath(destinationPath);
+      const stats = fs.statSync(resolvedItemPath);
+
+      if (stats.isDirectory()) {
+        this.copyDirectory(resolvedItemPath, destinationPath);
+        if (cut)
+          fs.rmSync(resolvedItemPath, { recursive: true, force: true });
+      }
+      else {
+        fs.copyFileSync(resolvedItemPath, destinationPath);
+        if (cut)
+          fs.unlinkSync(resolvedItemPath);
+      }
+    });
+  }
+
+  private static getAvailablePath(targetPath: string): string {
+    if (!fs.existsSync(targetPath)) return targetPath;
+
+    const dir = path.dirname(targetPath);
+    const ext = path.extname(targetPath);
+    const baseName = path.basename(targetPath, ext);
+
+    let counter = 1;
+    let newPath;
+
+    do {
+      newPath = path.join(dir, `${baseName} (${counter})${ext}`);
+      counter++;
+    } while (fs.existsSync(newPath));
+
+    return newPath;
+  }
+
+  private static copyDirectory(src: string, dest: string): void {
+    fs.mkdirSync(dest, { recursive: true });
+    const entries = fs.readdirSync(src, { withFileTypes: true });
+
+    for (const entry of entries) {
+      const srcPath = path.join(src, entry.name);
+      const destPath = path.join(dest, entry.name);
+
+      if (entry.isDirectory()) {
+        this.copyDirectory(srcPath, destPath);
+      } else {
+        fs.copyFileSync(srcPath, destPath);
+      }
+    }
   }
 
   private static resolvePath(currentPath: string): string {
