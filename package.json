@@ -16,7 +16,7 @@
     "bcryptjs": "^3.0.2",
     "mongodb": "^6.13.0",
     "mongoose": "^8.10.1",
-    "next": "15.1.6",
+    "next": "15.2.3",
     "next-auth": "^5.0.0-beta.25",
     "nuqs": "^2.4.1",
     "react": "^19.0.0",
