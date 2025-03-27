@@ -16,7 +16,5 @@ export async function deleteFilesAction(paths: string[]): Promise<void> {
 }
 
 export async function createDirectory(currentPath: string, folderName: string): Promise<void> {
-  console.log(folderName);
-
   return FileManagerService.createDirectory(currentPath, folderName);
 }

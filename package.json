@@ -11,7 +11,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -24,7 +24,7 @@
     "bcryptjs": "^3.0.2",
     "mongodb": "^6.13.0",
     "mongoose": "^8.10.1",
-    "next": "15.2.3",
+    "next": "15.2.4",
     "next-auth": "^5.0.0-beta.25",
     "nuqs": "^2.4.1",
     "react": "^19.0.0",

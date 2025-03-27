@@ -1,11 +1,28 @@
 import Credentials from "next-auth/providers/credentials";
 import {NextAuthConfig} from "next-auth";
-import {IUser, UserModel} from "@/entities/user";
-import bcrypt from "bcryptjs"
+import axios from "axios";
+import {IUser} from "@/entities/user";
+import {CouldNotParseError, InvalidPasswordError} from "@/shared/types/next-auth-exceptions";
 
 export const nextAuthConfig: NextAuthConfig = {
+  debug: false,
   session: {
     strategy: "jwt"
+  },
+  logger: {
+    error(error: Error) {
+      if ((error as any).type === "CredentialsSignin") {
+        return;
+      }
+
+      console.error(error);
+    },
+    warn(message: string) {
+      console.warn(message);
+    },
+    debug(message: string) {
+      console.debug(message);
+    },
   },
   providers: [
     Credentials({
@@ -15,21 +32,14 @@ export const nextAuthConfig: NextAuthConfig = {
       },
       async authorize(credentials) {
         if (!credentials?.login || !credentials.password)
-          return null;
+          throw new CouldNotParseError();
 
-        const user = await UserModel.findOne<IUser>({login: credentials.login});
+        const response = await fetch("http://localhost:3000/api/login", {method: "POST", body: JSON.stringify(credentials)});
 
-        if (!user)
-          return null;
+        if (response.status !== 200)
+          throw new InvalidPasswordError();
 
-        const passwordMatch = await bcrypt.compare(credentials.password as string, user.passwordHash);
-
-        if (!passwordMatch)
-          return null;
-
-        console.log(user)
-
-        return {...JSON.parse(JSON.stringify(user)), passwordHash: ""};
+        return await response.json()
       }
     })
   ]

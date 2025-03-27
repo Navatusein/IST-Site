@@ -2,6 +2,7 @@ import "@/shared/styles/global.scss";
 import "@ant-design/v5-patch-for-react-19";
 import {ReactNode} from "react";
 import {BaseLayout} from "@/app/layouts/base-layout";
+import ThemeProvider from "@/app/provider/theme-provider/theme-provider";
 import {Metadata} from "next";
 
 interface IProps {

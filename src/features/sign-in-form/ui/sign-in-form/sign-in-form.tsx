@@ -1,8 +1,9 @@
 "use client"
 
 import {actionSignIn} from "../../actions/actions";
-import {Button, Card, Form, Input, notification, Typography} from "antd";
+import {App, Button, Card, Form, Input, notification, Typography} from "antd";
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
+import {redirect} from "next/navigation";
 
 interface IFormData {
   login: string;
@@ -10,16 +11,41 @@ interface IFormData {
 }
 
 export default function SignInForm() {
-  const [api, contextHolder] = notification.useNotification();
+  const {notification} = App.useApp();
 
   const onFormSubmit = async (data: IFormData) => {
-    await actionSignIn(data.login, data.password)
-  }
+    let redirectPath: string | null = null
 
+    actionSignIn(data.login, data.password)
+      .then((data) => {
+
+        if (data?.startsWith("http")){
+          redirectPath = data
+          return;
+        }
+
+        switch (data) {
+          case "CouldNotParseError":
+          case "InvalidPasswordError":
+            notification.error({message: "Помилка авторизації", description: "Неправильний логін чи пароль"});
+            break
+          default:
+            notification.error({message: "Помилка авторизації", description: "Невідома помилка"});
+            break;
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        notification.error({message: "Помилка авторизації", description: "Невідома помилка"});
+      })
+      .finally(() => {
+        if (redirectPath)
+          redirect(redirectPath);
+      })
+  }
 
   return (
     <Card style={{width: 320, margin: "0 10px"}}>
-      {contextHolder}
       <Typography.Title level={3} style={{textAlign: "center"}}>
         Авторизація
       </Typography.Title>
