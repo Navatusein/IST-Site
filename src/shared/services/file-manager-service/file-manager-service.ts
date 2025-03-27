@@ -6,6 +6,9 @@ export class FileManagerService {
   private static baseDirectory = path.resolve(process.cwd(), "public/files");
 
   public static getFiles(currentPath: string): (IFile | IDirectory)[] {
+    if (!fs.existsSync(this.baseDirectory))
+      fs.mkdirSync(this.baseDirectory, { recursive: true });
+
     const resolvedPath = this.resolvePath(currentPath);
 
     const entries = fs.readdirSync(resolvedPath, {withFileTypes: true});

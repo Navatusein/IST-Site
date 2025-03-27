@@ -1,12 +1,15 @@
 "use client"
 
-import {App, Space, Table, TableColumnsType, Typography} from "antd";
+import {App, Button, Modal, Space, Table, TableColumnsType, Typography} from "antd";
 import {FileImageOutlined, FileOutlined, FilePdfOutlined, FileTextOutlined, FolderOutlined, RollbackOutlined} from "@ant-design/icons";
 import {Key, useEffect, useState} from "react";
 import {IDirectory, IFile} from "@/shared/services/file-manager-service/types/type";
 import {getFilesAction} from "@/shared/services/file-manager-service/actions/actions";
 import {useQueryState} from "nuqs";
 import {CreateFolderButton, DeleteFilesButton, UploadFilesButton} from "@/widgets/file-manager";
+import style from "./file-manager.module.scss"
+import {DocumentViewer} from "react-documents";
+import FilePreview from "../file-preview/file-preview";
 
 interface IProps {}
 
@@ -50,7 +53,7 @@ const COLUMNS: TableColumnsType<IFile|IDirectory> = [
     dataIndex: "name",
     key: "name",
     render: (value, record) => (
-      <Space>
+      <Space style={{cursor: "pointer"}}>
         {FILE_TYPE_TO_ICON[record.type] || <FileOutlined/>}
         {value}
       </Space>
@@ -64,7 +67,7 @@ const COLUMNS: TableColumnsType<IFile|IDirectory> = [
       <Typography.Text>
         {FILE_TYPE_TO_UKR[record.type] || value}
       </Typography.Text>
-    )
+    ),
   },
   {
     title: "Розмір",
@@ -97,6 +100,8 @@ export default function FileManager(props: IProps) {
   const [files, setFiles] = useState<(IFile|IDirectory)[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([]);
 
+  const [filePathToPreview, setFilePathToPreview] = useState<string>("")
+
   useEffect(() => {
     getFilesAction(currentPath)
       .then((data) => {
@@ -119,10 +124,14 @@ export default function FileManager(props: IProps) {
 
   const onRowClick = (record: IFile) => {
     if (record.type == "directory" || record.type == "back") {
+      setSelectedRowKeys(() => []);
       setCurrentPath((record as IDirectory).pathTo ?? "/")
         .catch((error) => {
           notification.error({message: "Помилка", description: error.message});
         });
+    }
+    else {
+      setFilePathToPreview(() => record.path);
     }
   }
 
@@ -144,20 +153,23 @@ export default function FileManager(props: IProps) {
           setUpdateFiles={setUpdateFiles}
         />
       </Space>
-      <Table
+      <Table<IFile|IDirectory>
         columns={COLUMNS}
         dataSource={files}
         size="small"
+        rowClassName={style.row}
+        rowHoverable={true}
         rowKey="path"
         rowSelection={{
           selectedRowKeys: selectedRowKeys,
-          onChange: onRowSelect
+          onChange: onRowSelect,
+          selections: true
         }}
         onRow={(record: IFile, rowIndex?: number) => ({
           onClick: () => onRowClick(record)
         })}
       />
+      <FilePreview filePathToPreview={filePathToPreview} setFilePathToPreview={setFilePathToPreview}/>
     </Space>
-
   )
 }

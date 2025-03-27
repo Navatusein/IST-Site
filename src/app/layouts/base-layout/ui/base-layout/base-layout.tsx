@@ -1,4 +1,6 @@
-"use server"
+"use client"
+
+import "@ant-design/v5-patch-for-react-19";
 
 import {AntdRegistry} from "@ant-design/nextjs-registry";
 import {ReactNode} from "react";
@@ -11,7 +13,7 @@ interface IProps {
   children: ReactNode;
 }
 
-export default async function BaseLayout(props: IProps) {
+export default function BaseLayout(props: IProps) {
   return (
     <AntdRegistry>
       <SessionProvider>
