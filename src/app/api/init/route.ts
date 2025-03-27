@@ -16,9 +16,13 @@ export async function GET(request: Request) {
       await newUser.save();
     }
 
-    return new Response(`Version: ${connection.version} Count: ${usersCount}`, {status: 200});
+    return new Response(JSON.stringify({
+      mongoDbVersion: connection.version
+    }), {status: 200});
   }
   catch (error) {
-    return new Response(`Error: ${(error as Error).message}`, {status: 500});
+    return new Response(JSON.stringify({
+      message: `Error: ${(error as Error).message}`
+    }), {status: 500});
   }
 }
