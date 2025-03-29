@@ -1,12 +1,12 @@
 import {model, models, Schema} from "mongoose";
 import {basePageComponentSchema} from "@/entities/base-page-component";
-import {ICustomPage} from "./type";
+import {IDynamicPage} from "./type";
 
-const customPageSchema = new Schema<ICustomPage>({
+const dynamicPageSchema = new Schema<IDynamicPage>({
   path: {type: String, required: true, unique: true},
   title: {type: String, required: true},
   components: [{type: basePageComponentSchema, required: true}],
 }, {timestamps: true});
 
-export {customPageSchema};
-export default models?.CustomPage || model<ICustomPage>("CustomPage", customPageSchema, "custom-pages");
+export {dynamicPageSchema};
+export default models?.DynamicPage || model<IDynamicPage>("DynamicPage", dynamicPageSchema, "dynamic-pages");

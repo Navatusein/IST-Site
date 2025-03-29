@@ -1,8 +1,8 @@
-import {ICustomPage} from "@/entities/custom-page";
+import {IDynamicPage} from "../../../../entities/dynamic-page";
 import {PageComponentRenderer} from "@/widgets/page-component-renderer";
 
 interface IProps {
-  page: ICustomPage
+  page: IDynamicPage
 }
 
 export default function DynamicPageView(props: IProps) {
