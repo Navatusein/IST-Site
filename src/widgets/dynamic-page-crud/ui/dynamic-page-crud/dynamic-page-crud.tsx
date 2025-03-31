@@ -33,7 +33,7 @@ export default function DynamicPageCrud(props: IProps) {
   const [selectedRows, setSelectedRows] = useState<IDynamicPage[]>([]);
 
   const create = async (data: IDynamicPage) => {
-    await addDynamicPageAction(data);
+    await addDynamicPageAction({...data, _id: null} as IDynamicPage);
   }
 
   const update = async (data: IDynamicPage) => {
@@ -46,6 +46,15 @@ export default function DynamicPageCrud(props: IProps) {
 
   const refresh = () => {
     router.refresh();
+  }
+
+  const validPath = (value: string) => {
+    return new Promise((resolve, reject) => {
+      if (props.pages.find(x => x.path == value) != null)
+        reject("unique path");
+
+      resolve("");
+    });
   }
 
   return (
@@ -62,7 +71,7 @@ export default function DynamicPageCrud(props: IProps) {
         refresh={refresh}
       >
         <Form.Item hidden name="_id">
-          <Input type="hidden" />
+          <Input type="hidden"/>
         </Form.Item>
         <Form.Item<IDynamicPage>
           label="Назва"
@@ -86,7 +95,20 @@ export default function DynamicPageCrud(props: IProps) {
           label="Шлях"
           name="path"
           style={{marginBottom: 0}}
-          rules={[{required: true, message: "Введіть шлях сторінки!"}]}
+          rules={[
+            {
+              required: true,
+              message: "Введіть шлях сторінки!"
+            },
+            {
+              pattern: /^([a-z0-9-]+\/)*[a-z0-9-]+$/,
+              message: "Шлях повинен містити лише a-z, 0-9, '-', та '/' між частинами (не на початку або в кінці)"
+            },
+            {
+              validator: (_, value) => validPath(value),
+              message: "Шлях має бути унікальним"
+            }
+          ]}
           extra="Шлях сторінки"
         >
           <Input/>

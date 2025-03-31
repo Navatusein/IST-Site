@@ -1,4 +1,4 @@
-import {Button, Form, Flex, Space} from "antd";
+import {Button, Form, Flex} from "antd";
 import {Dispatch, ReactNode, SetStateAction, useEffect} from "react";
 
 interface IProps<T> {
@@ -22,7 +22,7 @@ export default function CrudForm<T>(props: IProps<T>) {
       layout="vertical"
       onFinish={props.onFormSubmit}
     >
-      <Space style={{width: "100%"}} direction="vertical" size="middle">
+      <Flex vertical gap="middle">
         {props.children}
         <Form.Item style={{marginBottom: 0}}>
           <Flex style={{width: "100%"}} gap="small">
@@ -34,7 +34,7 @@ export default function CrudForm<T>(props: IProps<T>) {
             </Button>
           </Flex>
         </Form.Item>
-      </Space>
+      </Flex>
     </Form>
   )
 }
