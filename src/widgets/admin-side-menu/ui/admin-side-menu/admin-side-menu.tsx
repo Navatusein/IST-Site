@@ -19,7 +19,7 @@ import UserCard from "../user-card/user-card";
 
 const MENU_ITEMS: MenuProps["items"] = [
   {key: "news-control", icon: <ReadOutlined/>, label: <Link href={"/admin"}>Керування новинами</Link>},
-  {key: "page-control", icon: <FileTextOutlined/>, label: <Link href={"/admin"}>Керування сторінками</Link>},
+  {key: "page-control", icon: <FileTextOutlined/>, label: <Link href={"/admin/page-control"}>Керування сторінками</Link>},
   {key: "files-manager", icon: <FolderOpenOutlined/>, label: <Link href={"/admin/file-manager"}>Файловий менеджер</Link>},
   {key: "user-control", icon: <UserOutlined/>, label: <Link href={"/admin"}>Керування користувачами</Link>},
 ]

@@ -56,6 +56,5 @@ export default function CreateFolderButton(props: IProps) {
         Створити папку
       </Button>
     </Tooltip>
-
   )
 }

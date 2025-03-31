@@ -231,7 +231,7 @@ export default function FileManager() {
           )
         }}
         onRow={(record: IFile, rowIndex?: number) => ({
-          onClick: () => onRowClick(record)
+          onClick: () => onRowClick(record),
         })}
       />
       <FilePreview filePathToPreview={filePathToPreview} setFilePathToPreview={setFilePathToPreview}/>

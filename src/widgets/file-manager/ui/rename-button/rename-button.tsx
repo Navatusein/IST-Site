@@ -57,6 +57,5 @@ export default function RenameButton(props: IProps) {
         Перейменувати
       </Button>
     </Tooltip>
-
   )
 }

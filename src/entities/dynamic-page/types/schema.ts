@@ -3,8 +3,9 @@ import {basePageComponentSchema} from "@/entities/base-page-component";
 import {IDynamicPage} from "./type";
 
 const dynamicPageSchema = new Schema<IDynamicPage>({
-  path: {type: String, required: true, unique: true},
+  name: {type: String, required: true},
   title: {type: String, required: true},
+  path: {type: String, required: true, unique: true},
   components: [{type: basePageComponentSchema, required: true}],
 }, {timestamps: true});
 
