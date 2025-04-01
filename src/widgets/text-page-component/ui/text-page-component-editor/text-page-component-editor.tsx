@@ -1,16 +1,14 @@
-import Markdown from "react-markdown";
 import {IBasePageComponent} from "@/entities/base-page-component";
 import {useMemo} from "react";
 import {PageComponentError} from "@/shared/ui-kit";
-import TextPageComponentEditor from "../text-page-component-editor/text-page-component-editor";
 import {ITextPageComponent} from "../../types/type";
-
+import Markdown from "react-markdown";
 
 interface IProps {
   propsClass: IBasePageComponent;
 }
 
-export default function TextPageComponent(props: IProps) {
+export default function TextPageComponentEditor(props: IProps) {
   const propsClass = useMemo(() => {
     if (props.propsClass.type !== "text")
       return null;
@@ -26,5 +24,3 @@ export default function TextPageComponent(props: IProps) {
     </PageComponentError>
   )
 }
-
-TextPageComponent.Editor = TextPageComponentEditor;

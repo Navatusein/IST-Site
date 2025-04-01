@@ -5,7 +5,8 @@ import {useContext} from "react";
 import {AdminSideMenuContext} from "@/shared/context/admin-side-menu-context/admin-side-menu-context";
 import {MenuFoldOutlined, MenuUnfoldOutlined, MoonOutlined, SunOutlined} from "@ant-design/icons";
 import {ThemeConfigContext} from "@/shared/context/theme-config-context/theme-config-context";
-import {actionSignOut} from "@/widgets/admin-header";
+import { actionSignOut } from "../../actions/actions";
+
 
 export default function AdminHeader() {
   const {darkMode, setDarkMode} = useContext(ThemeConfigContext);

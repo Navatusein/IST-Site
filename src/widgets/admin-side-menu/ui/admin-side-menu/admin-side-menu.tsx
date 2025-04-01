@@ -5,14 +5,7 @@ import {useClickOutside} from "@/shared/hooks/use-click-outside";
 import React, {useContext, useRef} from "react";
 import {AdminSideMenuContext} from "@/shared/context/admin-side-menu-context/admin-side-menu-context";
 import {Divider, Flex, Menu, MenuProps} from "antd";
-import {
-  ControlOutlined,
-  FileTextOutlined,
-  FolderOpenOutlined,
-  ReadOutlined,
-  SettingOutlined,
-  UserOutlined
-} from "@ant-design/icons";
+import {FileTextOutlined, FolderOpenOutlined, ReadOutlined, UserOutlined} from "@ant-design/icons";
 import Link from "next/link";
 import {Icon} from "@/shared/ui-kit";
 import UserCard from "../user-card/user-card";

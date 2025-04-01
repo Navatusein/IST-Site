@@ -14,17 +14,15 @@ import {Key, useEffect, useState} from "react";
 import {IDirectory, IFile} from "@/shared/services/file-manager-service/types/type";
 import {getFilesAction} from "@/shared/services/file-manager-service/actions/actions";
 import {useQueryState} from "nuqs";
-import {
-  CopyCutPasteButtons,
-  CreateFolderButton,
-  DeleteFilesButton,
-  RenameButton,
-  UpdateButton,
-  UploadFilesButton
-} from "@/widgets/file-manager";
 import style from "./file-manager.module.scss"
 import FilePreview from "../file-preview/file-preview";
 import DownloadButton from "../download-button/download-button";
+import UpdateButton from "../update-button/update-button";
+import UploadFilesButton from "../upload-files-button/upload-files-button";
+import CreateFolderButton from "../create-folder-button/create-folder-button";
+import RenameButton from "../rename-button/rename-button";
+import DeleteFilesButton from "../delete-files-button/delete-files-button";
+import CopyCutPasteButtons from "../copy-cut-paste-buttons/copy-cut-paste-buttons";
 
 const FILE_TYPE_TO_ICON = {
   "directory": <FolderOutlined/>,

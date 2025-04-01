@@ -1,6 +1,8 @@
 import {App, Space, TableColumnsType} from "antd";
 import {Dispatch, ReactNode, SetStateAction, useState} from "react";
-import {CrudModal, CrudTable, CrudToolbar} from "@/widgets/crud-component";
+import CrudToolbar from "../crud-toolbar/crud-toolbar";
+import CrudTable from "../crud-table/crud-table";
+import CrudModal from "../crud-modal/crud-modal";
 
 interface IProps<T> {
   columns: TableColumnsType<T>;
