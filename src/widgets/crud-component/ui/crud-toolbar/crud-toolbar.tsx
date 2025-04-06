@@ -1,4 +1,11 @@
 import {Button, Popconfirm, Space, Tooltip} from "antd";
+import {
+  CopyOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  PlusOutlined,
+  ReloadOutlined
+} from "@ant-design/icons";
 
 interface IProps<T> {
   selectedRows: T[]
@@ -13,22 +20,22 @@ export default function CrudToolbar<T>(props: IProps<T>) {
   return (
     <Space wrap>
       <Tooltip title="Оновити данні">
-        <Button onClick={props.onRefresh}>
+        <Button icon={<ReloadOutlined/>} onClick={props.onRefresh}>
           Оновити
         </Button>
       </Tooltip>
       <Tooltip title="Створити новий рядок">
-        <Button onClick={props.onAdd}>
+        <Button icon={<PlusOutlined/>} onClick={props.onAdd}>
           Створити
         </Button>
       </Tooltip>
       <Tooltip title="Створити копію рядку">
-        <Button onClick={props.onCopy} disabled={props.selectedRows.length != 1}>
+        <Button icon={<CopyOutlined/>} onClick={props.onCopy} disabled={props.selectedRows.length != 1}>
           Копіювати
         </Button>
       </Tooltip>
       <Tooltip title="Редагувати вибраний рядок">
-        <Button onClick={props.onEdit} disabled={props.selectedRows.length != 1}>
+        <Button icon={<EditOutlined/>} onClick={props.onEdit} disabled={props.selectedRows.length != 1}>
           Редагувати
         </Button>
       </Tooltip>
@@ -40,7 +47,7 @@ export default function CrudToolbar<T>(props: IProps<T>) {
         cancelText="Ні"
       >
         <Tooltip title="Видалити вибрані рядки">
-          <Button danger disabled={props.selectedRows.length == 0}>
+          <Button icon={<DeleteOutlined/>} danger disabled={props.selectedRows.length == 0}>
             Видалити
           </Button>
         </Tooltip>

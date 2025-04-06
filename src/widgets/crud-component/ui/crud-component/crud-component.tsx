@@ -1,8 +1,9 @@
 import {App, Space, TableColumnsType} from "antd";
-import {Dispatch, ReactNode, SetStateAction, useState} from "react";
+import {Dispatch, ReactNode, SetStateAction, useMemo, useState} from "react";
 import CrudToolbar from "../crud-toolbar/crud-toolbar";
 import CrudTable from "../crud-table/crud-table";
 import CrudModal from "../crud-modal/crud-modal";
+import CrudActionsDropdown from "../crud-actions-dropdown/crud-actions-dropdown";
 
 interface IProps<T> {
   columns: TableColumnsType<T>;
@@ -24,6 +25,28 @@ export default function CrudComponent<T>(props: IProps<T>) {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
 
+  const columns = useMemo<TableColumnsType<T>>(() => (
+    [
+      ...props.columns,
+      {
+        title: "Дії",
+        dataIndex: "actions",
+        key: "actions",
+        ellipsis: true,
+        width: "40px",
+        render: (_, record, __) => (
+          <CrudActionsDropdown<T>
+            value={record}
+            setSelectedRows={props.setSelectedRows}
+            onEdit={onEdit}
+            onCopy={onCopy}
+            onRemove={onRemove}
+          />
+        )
+      }
+    ]
+  ), [props.columns]);
+
   const onFormSubmit = (formData: T) => {
     const action = isEdit ? props.update : props.create;
 
@@ -32,17 +55,17 @@ export default function CrudComponent<T>(props: IProps<T>) {
     action(formData)
       .then(() => {
         props.setSelectedRows(() => []);
-        props.refresh()
+        props.refresh();
 
         notification.success({
           message: isEdit ? "Успішно збережено" : "Успішно створено"
-        })
+        });
       })
       .catch((error) => {
         notification.error({
           message: isEdit ? "Помилка збереженя" : "Помилка створеня",
           description: error.message
-        })
+        });
       });
   }
 
@@ -67,8 +90,8 @@ export default function CrudComponent<T>(props: IProps<T>) {
     setIsModalOpen(() => true);
   }
 
-  const onRemove = () => {
-    props.remove(props.selectedRows)
+  const onRemove = (rows?: T[]) => {
+    props.remove(rows ?? props.selectedRows)
       .then(() => {
         props.setSelectedRows(() => []);
         props.refresh()
@@ -96,7 +119,7 @@ export default function CrudComponent<T>(props: IProps<T>) {
         onRefresh={onRefresh}
       />
       <CrudTable<T>
-        columns={props.columns}
+        columns={columns}
         data={props.data}
         isLoading={props.isLoading}
         selectedRows={props.selectedRows}

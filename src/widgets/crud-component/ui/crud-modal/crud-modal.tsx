@@ -2,7 +2,7 @@
 
 import {Modal} from "antd";
 import {Dispatch, ReactNode, SetStateAction} from "react";
-import {CrudForm} from "@/widgets/crud-component";
+import CrudForm from "../crud-form/crud-form";
 
 interface IProps<T> {
   isOpen: boolean;
@@ -14,7 +14,6 @@ interface IProps<T> {
 }
 
 export default function CrudModal<T>(props: IProps<T>) {
-
   return (
     <Modal
       closable
