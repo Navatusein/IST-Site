@@ -1,9 +1,12 @@
-import {App, Space, TableColumnsType} from "antd";
+"use client"
+
+import {App, Button, Space, TableColumnsType, Tooltip} from "antd";
 import {Dispatch, ReactNode, SetStateAction, useMemo, useState} from "react";
 import CrudToolbar from "../crud-toolbar/crud-toolbar";
 import CrudTable from "../crud-table/crud-table";
 import CrudModal from "../crud-modal/crud-modal";
 import CrudActionsDropdown from "../crud-actions-dropdown/crud-actions-dropdown";
+import {IAdditionalMenuItem, IAdditionalToolbarButtons} from "../../types/type";
 
 interface IProps<T> {
   columns: TableColumnsType<T>;
@@ -17,10 +20,12 @@ interface IProps<T> {
   create: (data: T) => Promise<void>;
   update: (data: T) => Promise<void>;
   remove: (data: T[]) => Promise<void>;
+  additionalToolbarButtons?: IAdditionalToolbarButtons[];
+  additionalDropdownMenuItems?: IAdditionalMenuItem<T>[];
 }
 
 export default function CrudComponent<T>(props: IProps<T>) {
-  const {notification} = App.useApp();
+  const {notification, modal} = App.useApp();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
@@ -41,6 +46,7 @@ export default function CrudComponent<T>(props: IProps<T>) {
             onEdit={onEdit}
             onCopy={onCopy}
             onRemove={onRemove}
+            additionalMenuItems={props.additionalDropdownMenuItems}
           />
         )
       }
@@ -91,21 +97,29 @@ export default function CrudComponent<T>(props: IProps<T>) {
   }
 
   const onRemove = (rows?: T[]) => {
-    props.remove(rows ?? props.selectedRows)
-      .then(() => {
-        props.setSelectedRows(() => []);
-        props.refresh()
+    modal.confirm({
+      title: "Видалити",
+      content: "Ви впевнені що хочите видалити вибрані рядки ?",
+      okText: "Так",
+      cancelText: "Ні",
+      onOk: () => {
+        props.remove(rows ?? props.selectedRows)
+          .then(() => {
+            props.setSelectedRows(() => []);
+            props.refresh()
 
-        notification.success({
-          message: "Успішно видалено"
-        })
-      })
-      .catch((error) => {
-        notification.error({
-          message: "Помилка видалення",
-          description: error.message
-        })
-      });
+            notification.success({
+              message: "Успішно видалено"
+            })
+          })
+          .catch((error) => {
+            notification.error({
+              message: "Помилка видалення",
+              description: error.message
+            })
+          });
+      }
+    })
   }
 
   return (
@@ -118,6 +132,13 @@ export default function CrudComponent<T>(props: IProps<T>) {
         onRemove={onRemove}
         onRefresh={onRefresh}
       />
+      {props.additionalToolbarButtons != null && props.additionalToolbarButtons.map((additionalButton, index) => (
+        <Tooltip title={additionalButton.tooltip}>
+          <Button icon={additionalButton.icon} onClick={additionalButton.onClick} disabled={additionalButton.disabled}>
+            {additionalButton.label}
+          </Button>
+        </Tooltip>
+      ))}
       <CrudTable<T>
         columns={columns}
         data={props.data}

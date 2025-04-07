@@ -26,6 +26,12 @@ export default function CrudTable<T>(props: IProps<T>) {
       rowSelection={{
         selectedRowKeys: selectedRowKeys,
         onChange: (selectedRowKeys: Key[], selectedRows: T[]) => props.setSelectedRows(() => selectedRows),
+        renderCell: (checked, record, index, originNode) => (
+          <div>
+            <div style={{position: "absolute", top: 0, bottom: 0, left: 0, right: 0}} onClick={event => event.stopPropagation()}/>
+            {originNode}
+          </div>
+        )
       }}
     />
   )
