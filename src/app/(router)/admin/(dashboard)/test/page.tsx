@@ -1,5 +1,4 @@
 import {DynamicPageModel, IDynamicPage} from "@/entities/dynamic-page";
-import { TextPageComponentModel } from "@/widgets/text-page-component";
 
 interface IProps {
 
