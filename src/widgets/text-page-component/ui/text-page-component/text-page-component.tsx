@@ -5,7 +5,6 @@ import {PageComponentError} from "@/shared/ui-kit";
 import TextPageComponentEditor from "../text-page-component-editor/text-page-component-editor";
 import {ITextPageComponent} from "../../types/type";
 
-
 interface IProps {
   propsClass: IBasePageComponent;
 }

@@ -1,5 +1,11 @@
-import {IBasePageComponent} from "@/entities/base-page-component";
 import {Document} from "mongoose";
+
+export type PageComponentType = "text"
+
+export interface IBasePageComponent {
+  id: string;
+  type: PageComponentType;
+}
 
 export interface IDynamicPage extends Document {
   name: string;

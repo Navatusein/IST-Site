@@ -6,7 +6,7 @@ const dynamicPageSchema = new Schema<IDynamicPage>({
   name: {type: String, required: true},
   title: {type: String, required: true},
   path: {type: String, required: true, unique: true},
-  components: [{type: basePageComponentSchema, required: true}],
+  components: [{type: Schema.Types.Mixed, required: true}],
 }, {timestamps: true});
 
 export {dynamicPageSchema};

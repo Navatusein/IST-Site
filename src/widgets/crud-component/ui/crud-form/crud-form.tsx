@@ -17,11 +17,7 @@ export default function CrudForm<T>(props: IProps<T>) {
   }, [props.selectedRows]);
 
   return (
-    <Form<T>
-      form={form}
-      layout="vertical"
-      onFinish={props.onFormSubmit}
-    >
+    <Form<T> form={form} layout="vertical" onFinish={props.onFormSubmit}>
       <Flex vertical gap="middle">
         {props.children}
         <Form.Item style={{marginBottom: 0}}>

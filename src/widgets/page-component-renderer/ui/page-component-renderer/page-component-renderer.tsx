@@ -1,22 +1,20 @@
+// "use client"
+
 import {TextPageComponent} from "@/widgets/text-page-component";
-import {IBasePageComponent} from "@/entities/base-page-component";
-import {JSX} from "react";
+import {ComponentDescriptorType} from "../../types/type";
+import {IBasePageComponent} from "@/entities/dynamic-page";
 
-
-interface IComponent {
-  [key: string]: {
-    render: (propsClass: IBasePageComponent) => JSX.Element;
-  }
-}
-
-let COMPONENT_TYPES: IComponent = {
+export const COMPONENT_TYPES: ComponentDescriptorType = {
   "text": {
-    "render": (propsClass: IBasePageComponent) => <TextPageComponent propsClass={propsClass}/>
+    "renderComponent": (propsClass) => <TextPageComponent propsClass={propsClass}/>,
+    "renderEditor": (propsClass, onChange) => <TextPageComponent.Editor propsClass={propsClass} onChange={onChange}/>
   }
 }
 
 interface IProps {
-  propsClass: IBasePageComponent
+  editMode?: boolean;
+  propsClass: IBasePageComponent;
+  onChange?: (value: IBasePageComponent) => void;
 }
 
 export default function PageComponentRenderer(props: IProps) {
@@ -25,5 +23,8 @@ export default function PageComponentRenderer(props: IProps) {
   if (component == null)
     return <>Not found</>
 
-  return component.render(props.propsClass);
+  if (props.editMode == true)
+    return component.renderEditor(props.propsClass, props.onChange!)
+
+  return component.renderComponent(props.propsClass);
 }

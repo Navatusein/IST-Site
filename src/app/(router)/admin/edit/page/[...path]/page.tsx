@@ -1,6 +1,6 @@
 import {getDynamicPageByPathAction} from "@/entities/dynamic-page/actions/actions";
 import {notFound} from "next/navigation";
-import {DynamicPageView} from "@/views/dynamic-page";
+import {EditDynamicPageView} from "@/views/edit-dynamic-page";
 
 interface IProps {
 
@@ -21,6 +21,6 @@ export default async function Page(props: IProps) {
     notFound();
 
   return (
-    <DynamicPageView page={page}/>
+    <EditDynamicPageView page={page}/>
   );
 }

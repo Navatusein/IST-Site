@@ -1,4 +1,4 @@
-import {IBasePageComponent} from "@/entities/base-page-component";
+import {IBasePageComponent} from "@/entities/dynamic-page";
 
 export interface ITextPageComponent extends IBasePageComponent {
   content: string;

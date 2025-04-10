@@ -119,7 +119,7 @@ export default function CrudComponent<T>(props: IProps<T>) {
             })
           });
       }
-    })
+    });
   }
 
   return (

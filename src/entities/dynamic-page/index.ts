@@ -1,6 +1,6 @@
 import DynamicPageModel, {dynamicPageSchema} from "./types/schema";
-import {IDynamicPage} from "./types/type";
+import {IBasePageComponent, IDynamicPage, PageComponentType} from "./types/type";
 
 
-export type {IDynamicPage};
+export type {IDynamicPage, IBasePageComponent, PageComponentType};
 export {DynamicPageModel, dynamicPageSchema};

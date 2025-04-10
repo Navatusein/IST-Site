@@ -3,15 +3,14 @@
 import {Button, Flex, Layout, Space, theme} from "antd";
 import {useContext} from "react";
 import {AdminSideMenuContext} from "@/shared/context/admin-side-menu-context/admin-side-menu-context";
-import {MenuFoldOutlined, MenuUnfoldOutlined, MoonOutlined, SunOutlined} from "@ant-design/icons";
-import {ThemeConfigContext} from "@/shared/context/theme-config-context/theme-config-context";
-import { actionSignOut } from "../../actions/actions";
-
+import {MenuFoldOutlined, MenuUnfoldOutlined} from "@ant-design/icons";
+import {actionSignOut} from "../../actions/actions";
+import {ThemeSwitcher} from "@/features/theme-switcher";
 
 export default function AdminHeader() {
-  const {darkMode, setDarkMode} = useContext(ThemeConfigContext);
   const {token: {colorBgContainer}} = theme.useToken();
   const {isMenuClosed, setIsMenuClosed} = useContext(AdminSideMenuContext);
+
 
   return (
     <Layout.Header style={{padding: `0 8px`, background: colorBgContainer}}>
@@ -23,10 +22,7 @@ export default function AdminHeader() {
           style={{width: "48px", height: "48px"}}
         />
         <Space>
-          <Button
-            onClick={() => setDarkMode(!darkMode)}
-            icon={darkMode ? <MoonOutlined/> : <SunOutlined/>}
-          />
+          <ThemeSwitcher/>
           <Button onClick={() => actionSignOut()}>
             Вихід
           </Button>
