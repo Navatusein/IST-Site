@@ -8,3 +8,7 @@ export interface IUser extends Document {
   name: string,
   permissions: UserPermissionType[];
 }
+
+export interface IUserMethods {
+  setPassword(password: string): Promise<void>;
+}

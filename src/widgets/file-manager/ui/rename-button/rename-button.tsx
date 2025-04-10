@@ -19,10 +19,10 @@ export default function RenameButton(props: IProps) {
     renameAction(props.selectedRowKeys[0] as string, newName)
       .then(() => {
         notification.success({message: "Успішне перейменування"});
-        props.setSelectedRowKeys(() => [])
+        props.setSelectedRowKeys(() => []);
         setTimeout(() => {
           props.setUpdateFiles((prevState) => prevState + 1);
-        }, 500)
+        }, 500);
       })
       .catch((error) => {
         notification.error({message: "Помилка перейменування", description: error.message});

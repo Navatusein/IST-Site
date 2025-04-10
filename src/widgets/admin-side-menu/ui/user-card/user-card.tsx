@@ -1,6 +1,8 @@
+"use client"
+
 import {Avatar, Flex, Typography} from "antd";
 import {useSession} from "next-auth/react";
-import {signOut} from "@/auth";
+import {useMemo} from "react";
 
 interface IProps {
   isMenuClosed: boolean;
@@ -8,6 +10,10 @@ interface IProps {
 
 export default function UserCard(props: IProps) {
   const session = useSession()
+
+  const userName = useMemo(() => {
+    return session.data?.user?.name
+  }, [session])
 
   return (
     <Flex
@@ -22,7 +28,7 @@ export default function UserCard(props: IProps) {
 
       {!props.isMenuClosed &&
         <Typography.Text style={{textWrap: "nowrap"}}>
-          {session.data?.user?.name}
+          {userName}
         </Typography.Text>
       }
     </Flex>

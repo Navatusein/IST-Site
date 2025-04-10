@@ -4,6 +4,7 @@ import {actionSignIn} from "../../actions/actions";
 import {App, Button, Card, Form, Input, Typography} from "antd";
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
 import {redirect} from "next/navigation";
+import {useSession} from "next-auth/react";
 
 interface IFormData {
   login: string;
@@ -13,11 +14,14 @@ interface IFormData {
 export default function SignInForm() {
   const {notification} = App.useApp();
 
+  const {update} = useSession();
+
   const onFormSubmit = async (data: IFormData) => {
     let redirectPath: string | null = null
 
     actionSignIn(data.login, data.password)
       .then((data) => {
+        update();
 
         if (data?.startsWith("http")){
           redirectPath = data

@@ -1,31 +1,33 @@
 "use server"
 
-import {DynamicPageModel, IDynamicPage} from "@/entities/dynamic-page";
+import {IDynamicPage} from "../types/type";
+import DynamicPageModel from "../types/schema";
 import toPlainObject from "@/shared/utilities/to-plain-object";
 
+
 export async function getDynamicPagesAction(): Promise<IDynamicPage[]> {
-  return DynamicPageModel.find<IDynamicPage>({});
+  return toPlainObject<IDynamicPage[]>(await DynamicPageModel.find<IDynamicPage>({}));
 }
 
 export async function getDynamicPageByPathAction(path: string): Promise<IDynamicPage|null> {
-  const page = await DynamicPageModel.findOne<IDynamicPage>({path: path});
+  const data = await DynamicPageModel.findOne<IDynamicPage>({path: path});
 
-  if (!page)
+  if (!data)
     return null
 
-  return toPlainObject<IDynamicPage>(page);
+  return toPlainObject<IDynamicPage>(data);
 }
 
-export async function addDynamicPageAction(page: IDynamicPage): Promise<void> {
-  await DynamicPageModel.create<IDynamicPage>(page);
+export async function addDynamicPageAction(data: IDynamicPage): Promise<void> {
+  await DynamicPageModel.create<IDynamicPage>(data);
 }
 
-export async function updateDynamicPageAction(page: IDynamicPage): Promise<void> {
-  const {_id, ...updateData} = page;
+export async function updateDynamicPageAction(data: IDynamicPage): Promise<void> {
+  const {_id, ...updateData} = data;
 
   await DynamicPageModel.findByIdAndUpdate(_id, {$set: updateData});
 }
 
-export async function deleteDynamicPageAction(pages: IDynamicPage[]): Promise<void> {
-  await DynamicPageModel.deleteMany({_id: {$in: pages.map((page) => page._id)}});
+export async function deleteDynamicPagesAction(data: IDynamicPage[]): Promise<void> {
+  await DynamicPageModel.deleteMany({_id: {$in: data.map((value) => value._id)}});
 }

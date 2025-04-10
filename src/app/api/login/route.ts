@@ -8,12 +8,15 @@ export async function POST(request: Request) {
     const user = await UserModel.findOne<IUser>({login: login as string}).lean();
 
     if (!user)
-      return new Response(`Invalid login or password`, {status: 401});
+      return new Response("Invalid login or password", {status: 401});
+
+    if (!user.passwordHash)
+      return new Response("No permissions to login", {status: 401});
 
     const passwordMatch = await bcrypt.compare(password as string, user.passwordHash);
 
     if (!passwordMatch)
-      return new Response(`Invalid login or password`, {status: 401});
+      return new Response("Invalid login or password", {status: 401});
 
     return new Response(JSON.stringify({...user, passwordHash: ""}) , {status: 200});
   }

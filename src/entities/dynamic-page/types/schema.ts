@@ -1,5 +1,4 @@
 import {model, models, Schema} from "mongoose";
-import {basePageComponentSchema} from "@/entities/base-page-component";
 import {IDynamicPage} from "./type";
 
 const dynamicPageSchema = new Schema<IDynamicPage>({

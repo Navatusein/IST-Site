@@ -1,8 +1,8 @@
 import Credentials from "next-auth/providers/credentials";
-import {DefaultSession, NextAuthConfig} from "next-auth";
+import {NextAuthConfig} from "next-auth";
 import {CouldNotParseError, InvalidPasswordError} from "@/shared/types/next-auth-exceptions";
 import {JWT} from "next-auth/jwt"
-import {IUser, UserModel, UserPermissionType} from "@/entities/user";
+import {IUser} from "@/entities/user";
 
 declare module "next-auth" {
   interface Session {
@@ -13,7 +13,6 @@ declare module "next-auth" {
 declare module "next-auth/jwt" {
   interface JWT {
     id: string;
-    permissions: UserPermissionType[]
   }
 }
 
@@ -53,26 +52,22 @@ export const nextAuthConfig: NextAuthConfig = {
         if (response.status !== 200)
           throw new InvalidPasswordError();
 
-        const data = await response.json();
-
-        // console.log("authorize", data)
-        return data
+        return await response.json();
       },
 
     })
   ],
   callbacks: {
     jwt({token, user}) {
-      if (user) {
-        token.permissions = (user as IUser).permissions
-      }
-
-      // console.log("jwt", token, user);
+      if (user)
+        token.id = (user as IUser)._id as string
 
       return token;
     },
-    session({session, token }) {
-      session.user.permissions = token.permissions;
+    async session({session, token }) {
+      session.user.id = token.id
+
+      console.log("session", session.user)
 
       return session;
     }
