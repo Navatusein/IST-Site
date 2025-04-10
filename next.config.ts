@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["mongoose"],
   output: "standalone",
   devIndicators: {
-    position: "bottom-right"
+    position: "top-right"
   }
 };
 
