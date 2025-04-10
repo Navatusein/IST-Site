@@ -59,7 +59,7 @@ export default function SignInForm() {
             type="login"
             prefix={<UserOutlined/>}
             placeholder="Логін"
-            autoComplete="login"
+            autoComplete="login username email"
           />
         </Form.Item>
         <Form.Item
@@ -70,7 +70,7 @@ export default function SignInForm() {
             name="password"
             prefix={<LockOutlined/>}
             placeholder="Пароль"
-            autoComplete="current-password"
+            autoComplete="password"
           />
         </Form.Item>
         <Form.Item style={{marginBottom: 0}}>

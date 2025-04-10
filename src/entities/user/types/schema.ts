@@ -5,7 +5,8 @@ import bcrypt from "bcryptjs";
 const userScheme = new Schema<IUser>({
   login: {type: String, required: true, unique: true},
   passwordHash: {type: String, required: true},
-  name: {type: String, required: true}
+  name: {type: String, required: true},
+  permissions: {type: [String], enum: ["edit-news", "edit-pages", "edit-users", "edit-files"]}
 }, {timestamps: true});
 
 userScheme.methods.setPassword = async function (password: string) {

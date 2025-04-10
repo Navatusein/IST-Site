@@ -1,32 +1,26 @@
 import {auth} from "./auth";
-import {authRoutes, publicRoutes} from "@/shared/configs/router-config";
+import {permissions} from "@/shared/configs/permissions-config"
+import resolveRequirementPermission from "@/shared/utilities/resolve-requirement-permission";
+import {UserPermissionType} from "@/entities/user";
 
 export default auth((request) => {
-  const {nextUrl} = request;
+  const {nextUrl, auth} = request;
 
-  const isAuthorized = !!request.auth;
-  const isApiAuthRoute = nextUrl.pathname.startsWith("/api");
-  const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
-  const isAuthRoute = authRoutes.includes(nextUrl.pathname);
-
-  if (isApiAuthRoute)
-    return;
-
-  if (isAuthRoute) {
-    if (isAuthorized)
-      return Response.redirect(new URL("/admin", nextUrl));
-
-    return;
-  }
-
-  if (!isAuthorized && !isPublicRoute)
+  if (auth == null)
     return Response.redirect(new URL("/sign-in", nextUrl));
+
+  const requiredPermission = resolveRequirementPermission(permissions, nextUrl.pathname);
+  const userPermissions = auth.user.permissions;
+
+  if (requiredPermission && !userPermissions.includes(requiredPermission as UserPermissionType))
+    return Response.redirect(new URL("/requiredPermission", nextUrl));
 
   return;
 })
 
+
 export const config = {
   matcher: [
-    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    "/admin/:path*"
   ],
 }
