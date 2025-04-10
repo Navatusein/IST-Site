@@ -1,4 +1,4 @@
-import {App, Button, Card, Flex, Tooltip, Typography} from "antd";
+import {App, Button, Card, Flex, Tooltip} from "antd";
 import {PageComponentRenderer} from "@/widgets/page-component-renderer";
 import {DeleteOutlined, HolderOutlined} from "@ant-design/icons";
 import {IBasePageComponent} from "@/entities/dynamic-page";

@@ -1,7 +1,7 @@
 import {PermissionType} from "@/shared/types/permissions";
 
 export default function resolveRequirementPermission(permissions: PermissionType, currentPath: string) {
-  return Object.entries(permissions).find(([key, permission]) => {
+  return Object.entries(permissions).find(([_, permission]) => {
     return permission.paths.find((path) => {
       // Экранируем слеши
       let regexPattern = path.replace(/\//g, "\\/");

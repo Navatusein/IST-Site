@@ -1,8 +1,6 @@
 import {CSSProperties, ReactNode, RefObject, useEffect, useRef, useState} from "react";
 import {draggable, dropTargetForElements, ElementDropTargetEventBasePayload} from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import {combine} from "@atlaskit/pragmatic-drag-and-drop/combine";
-import {setCustomNativeDragPreview} from "@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview";
-import {pointerOutsideOfPreview} from "@atlaskit/pragmatic-drag-and-drop/element/pointer-outside-of-preview";
 import {attachClosestEdge, extractClosestEdge} from "@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge";
 import invariant from "tiny-invariant";
 import {DraggableStates} from "../../types/type";

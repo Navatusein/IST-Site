@@ -132,7 +132,7 @@ export default function CrudComponent<T>(props: IProps<T>) {
         onRemove={onRemove}
         onRefresh={onRefresh}
       />
-      {props.additionalToolbarButtons != null && props.additionalToolbarButtons.map((additionalButton, index) => (
+      {props.additionalToolbarButtons != null && props.additionalToolbarButtons.map((additionalButton) => (
         <Tooltip title={additionalButton.tooltip}>
           <Button icon={additionalButton.icon} onClick={additionalButton.onClick} disabled={additionalButton.disabled}>
             {additionalButton.label}

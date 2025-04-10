@@ -14,7 +14,7 @@ interface IProps<T> {
 export default function DraggableList<T extends {id: string|number}>(props: IProps<T>) {
   useEffect(() => {
     return monitorForElements({
-      canMonitor: ({ source }) => {
+      canMonitor: () => {
         return true;
       },
       onDrop: ({ location, source }) => {

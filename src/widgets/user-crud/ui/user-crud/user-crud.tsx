@@ -1,5 +1,5 @@
 import {IUser} from "@/entities/user";
-import {App, Input, TableColumnsType, Tag} from "antd";
+import {App, TableColumnsType, Tag} from "antd";
 import {useRouter} from "next/navigation";
 import {useState} from "react";
 import {CrudComponent} from "@/widgets/crud-component";
@@ -67,7 +67,7 @@ const COLUMNS: TableColumnsType<IUser> = [
 ];
 
 export default function UserCrud(props: IProps) {
-  const {notification, modal} = App.useApp();
+  const {notification} = App.useApp();
 
   const router = useRouter()
 
@@ -136,7 +136,7 @@ export default function UserCrud(props: IProps) {
             key: "edit-password",
             label: "Змінити пароль",
             icon: <FormOutlined/>,
-            onClick: (data) => openPasswordModal()
+            onClick: () => openPasswordModal()
           },
         ]}
       >
