@@ -1,31 +1,33 @@
-"use client"
-
-import "@ant-design/v5-patch-for-react-19";
+"use server"
 
 import {AntdRegistry} from "@ant-design/nextjs-registry";
 import {ReactNode} from "react";
 import {App, Layout} from "antd";
+import {ThemeProvider as NextThemeProvider} from "next-themes";
 import ThemeProvider from "@/app/provider/theme-provider/theme-provider";
 import SessionProvider from "@/app/provider/session-provider/session-provider";
 import {NuqsAdapter} from "nuqs/adapters/next/app";
 
 interface IProps {
   children: ReactNode;
+  defaultTheme: "light" | "dark";
 }
 
-export default function BaseLayout(props: IProps) {
+export default async function BaseLayout(props: IProps) {
   return (
     <AntdRegistry>
       <SessionProvider>
-        <ThemeProvider>
-          <App>
-            <NuqsAdapter>
-              <Layout style={{minHeight: "100vh"}}>
-                {props.children}
-              </Layout>
-            </NuqsAdapter>
-          </App>
-        </ThemeProvider>
+       <NextThemeProvider>
+         <ThemeProvider defaultTheme={props.defaultTheme}>
+           <App>
+             <NuqsAdapter>
+               <Layout style={{minHeight: "100vh"}}>
+                 {props.children}
+               </Layout>
+             </NuqsAdapter>
+           </App>
+         </ThemeProvider>
+       </NextThemeProvider>
       </SessionProvider>
     </AntdRegistry>
   );
