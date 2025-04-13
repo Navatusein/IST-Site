@@ -195,7 +195,7 @@ export class FileManagerService {
     if ([".pdf"].includes(extension))
       return "pdf";
 
-    if ([".txt", ".md", ".log"].includes(extension))
+    if ([".txt", ".md", ".log", ".doc", ".docx"].includes(extension))
       return "text";
 
     if ([".zip", ".rar", ".7z", ".tar", ".gz"].includes(extension))

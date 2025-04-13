@@ -1,4 +1,4 @@
-import {Form, Input} from "antd";
+import {Form, FormInstance, Input} from "antd";
 import {IDynamicPage} from "@/entities/dynamic-page";
 
 interface IProps {
@@ -6,12 +6,12 @@ interface IProps {
 }
 
 export default function DynamicPageCrudForm(props: IProps) {
-  const validPath = (value: string) => {
+  const validPath = (value: string, form: FormInstance<IDynamicPage>) => {
     return new Promise((resolve, reject) => {
       if (value.startsWith("admin"))
         reject("Шлях не може починатись з \"admin\"");
 
-      if (props.pages.find(x => x.path == value) != null)
+      if (props.pages.find(x => (x._id != form.getFieldValue("_id") && x.path == value)) != null)
         reject("Шлях має бути унікальним");
 
       resolve("");
@@ -20,10 +20,10 @@ export default function DynamicPageCrudForm(props: IProps) {
 
   return (
     <>
-      <Form.Item hidden name="_id">
+      <Form.Item<IDynamicPage> hidden name="_id">
         <Input type="hidden"/>
       </Form.Item>
-      <Form.Item hidden name="components">
+      <Form.Item<IDynamicPage> hidden name="components">
         <Input type="hidden"/>
       </Form.Item>
       <Form.Item<IDynamicPage>
@@ -57,9 +57,9 @@ export default function DynamicPageCrudForm(props: IProps) {
             pattern: /^([a-z0-9-]+\/)*[a-z0-9-]+$/,
             message: "Шлях повинен містити лише a-z, 0-9, '-', та '/' між частинами (не на початку або в кінці)"
           },
-          {
-            validator: (_, value) => validPath(value),
-          }
+          (form) => ({
+            validator: (_, value) => validPath(value, form as FormInstance<IDynamicPage>),
+          })
         ]}
         extra="Шлях сторінки"
       >

@@ -10,14 +10,14 @@ export const permissions: PermissionType = {
   "edit-news": {
     name: "Edit News",
     paths: [
-      "/admin/edit-news"
+      "/admin/admin-edit-news"
     ],
   },
   "edit-pages": {
     name: "Edit Pages",
     paths: [
       "/admin/edit-pages",
-      "/admin/edit/page/[...path]"
+      "/admin/edit/page/[path]"
     ],
   },
   "edit-users": {

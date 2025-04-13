@@ -18,8 +18,6 @@ export default async function Page(props: IProps) {
   if (!page)
     notFound();
 
-  console.log(page)
-
   return (
     <DynamicPageView page={page}/>
   );

@@ -22,7 +22,7 @@ export default function AdminSideMenu() {
     const items: MenuProps["items"]  = []
 
     if (userPermissions.includes("edit-news"))
-      items.push({key: "news-control", icon: <ReadOutlined/>, label: <Link href={"/admin"}>Керування новинами</Link>});
+      items.push({key: "news-control", icon: <ReadOutlined/>, label: <Link href={"/admin/edit-news"}>Керування новинами</Link>});
 
     if (userPermissions.includes("edit-pages"))
       items.push({key: "edit-pages", icon: <FileTextOutlined/>, label: <Link href={"/admin/edit-pages"}>Керування сторінками</Link>});

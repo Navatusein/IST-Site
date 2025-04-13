@@ -1,26 +1,34 @@
-import {IDynamicPage} from "@/entities/dynamic-page";
-import {Space, TableColumnsType} from "antd";
-import {CrudComponent} from "@/widgets/crud-component";
-import {useState} from "react";
-import {addDynamicPageAction, deleteDynamicPagesAction, updateDynamicPageAction} from "@/entities/dynamic-page/actions/actions";
+import {INews} from "@/entities/news";
+import {Space, TableColumnsType, Tag} from "antd";
 import {useRouter} from "next/navigation";
-import DynamicPageCrudForm from "../dynamic-page-crud-form/dynamic-page-crud-form";
+import {useState} from "react";
+import {CrudComponent} from "@/widgets/crud-component";
 import {FormOutlined} from "@ant-design/icons";
+import {addNewsAction, deleteNewsAction, updateNewsAction} from "@/entities/news/actions/actions";
+import NewsCrudForm from "../news-crud-form/news-crud-form";
 
 interface IProps {
-  pages: IDynamicPage[]
+  news: INews[];
 }
 
-const COLUMNS: TableColumnsType<IDynamicPage> = [
-  {
-    title: "Назва",
-    dataIndex: "name",
-    key: "name"
-  },
+const COLUMNS: TableColumnsType<INews> = [
   {
     title: "Заголовок",
     dataIndex: "title",
     key: "title"
+  },
+  {
+    title: "Опис",
+    dataIndex: "description",
+    key: "description"
+  },
+  {
+    title: "Шлях до малюнка",
+    dataIndex: "image",
+    key: "image",
+    render: (imagePath: string | null) => (
+      imagePath ?? <Tag color="red">Шляї не вказан</Tag>
+    )
   },
   {
     title: "Шлях",
@@ -45,39 +53,39 @@ const COLUMNS: TableColumnsType<IDynamicPage> = [
   }
 ];
 
-export default function DynamicPageCrud(props: IProps) {
+export default function NewsCrud(props: IProps) {
   const router = useRouter()
 
-  const [selectedRows, setSelectedRows] = useState<IDynamicPage[]>([]);
+  const [selectedRows, setSelectedRows] = useState<INews[]>([]);
 
-  const create = async (data: IDynamicPage) => {
-    await addDynamicPageAction({...data, _id: null} as IDynamicPage);
+  const create = async (data: INews) => {
+    await addNewsAction({...data, _id: null} as INews);
   }
 
-  const update = async (data: IDynamicPage) => {
-    await updateDynamicPageAction(data);
+  const update = async (data: INews) => {
+    await updateNewsAction(data);
   }
 
-  const remove = async (data: IDynamicPage[]) => {
-    await deleteDynamicPagesAction(data);
+  const remove = async (data: INews[]) => {
+    await deleteNewsAction(data);
   }
 
   const refresh = () => {
     router.refresh();
   }
 
-  const redirectToEditPage = (data?: IDynamicPage[]) => {
+  const redirectToEditPage = (data?: INews[]) => {
     if (selectedRows[0] == null && data?.[0] == null)
       return;
 
-    router.push(`/admin/edit/page/${data?.[0].path ?? selectedRows[0].path}`);
+    router.push(`/admin/edit/news/${data?.[0].path ?? selectedRows[0].path}`);
   }
 
   return (
     <Space direction="vertical" size="middle" style={{width: "100%"}}>
-      <CrudComponent<IDynamicPage>
+      <CrudComponent<INews>
         columns={COLUMNS}
-        data={props.pages}
+        data={props.news}
         isLoading={false}
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
@@ -103,7 +111,7 @@ export default function DynamicPageCrud(props: IProps) {
           },
         ]}
       >
-        <DynamicPageCrudForm pages={props.pages}/>
+        <NewsCrudForm news={props.news}/>
       </CrudComponent>
     </Space>
   )

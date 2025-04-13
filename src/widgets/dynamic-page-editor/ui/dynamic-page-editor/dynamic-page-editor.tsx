@@ -2,9 +2,8 @@
 
 import {useRouter} from "next/navigation";
 import {App, Flex} from "antd";
-import {useEffect, useState} from "react";
-import {IBasePageComponent, IDynamicPage} from "@/entities/dynamic-page";
-import {updateDynamicPageAction} from "@/entities/dynamic-page/actions/actions";
+import {useState} from "react";
+import {IBasePageComponent} from "@/entities/dynamic-page";
 import AddPageComponentButton from "../add-page-component-button/add-page-component-button";
 import PageComponentsList from "../page-components-list/page-components-list";
 import FloatButtonGroup from "../float-button-group/float-button-group";
@@ -12,7 +11,9 @@ import PageComponentsModal from "../page-components-modal/page-components-modal"
 import DynamicPageEditorDrawer from "../dynamic-page-editor-drawer/dynamic-page-editor-drawer";
 
 interface IProps {
-  page: IDynamicPage
+  components: IBasePageComponent[];
+  setComponents: (value:IBasePageComponent[]) => void;
+  saveComponents: () => Promise<void>;
 }
 
 export default function DynamicPageEditor(props: IProps) {
@@ -20,46 +21,29 @@ export default function DynamicPageEditor(props: IProps) {
 
   const {notification} = App.useApp();
 
-  const [page, setPage] = useState<IDynamicPage>(props.page);
   const [editMode, setEditMode] = useState<boolean>(true);
 
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  useEffect(() => {
-    setPage(props.page)
-  }, [props.page]);
-
   const updateComponents = (components: IBasePageComponent[]) => {
-    setPage((prevState) => ({
-      ...prevState,
-      components: components
-    } as IDynamicPage));
+    props.setComponents(components);
   }
 
   const updateComponent = (component: IBasePageComponent, index: number) => {
-    setPage((prevState) => ({
-      ...prevState,
-      components: [...prevState.components.slice(0, index), component, ...prevState.components.slice(index + 1)]
-    } as IDynamicPage));
+    props.setComponents([...props.components.slice(0, index), component, ...props.components.slice(index + 1)]);
   }
 
   const addComponent = (component: IBasePageComponent) => {
-    setPage((prevState) => ({
-      ...prevState,
-      components: [...prevState.components, {...component, id: crypto.randomUUID()}]
-    } as IDynamicPage));
+    props.setComponents([...props.components, {...component, id: crypto.randomUUID()}]);
   }
 
   const removeComponent = (index: number) => {
-    setPage((prevState) => ({
-      ...prevState,
-      components: [...prevState.components.slice(0, index), ...prevState.components.slice(index + 1)]
-    } as IDynamicPage));
+    props.setComponents([...props.components.slice(0, index), ...props.components.slice(index + 1)]);
   }
 
   const savePage = () => {
-    updateDynamicPageAction(page)
+    props.saveComponents()
       .then(() => {
         notification.success({
           message: "Успішно збережено"
@@ -71,7 +55,7 @@ export default function DynamicPageEditor(props: IProps) {
       })
       .catch((error) => {
         notification.error({
-          message: "Помилка",
+          message: "Помилка збереження",
           description: error.message
         });
       });
@@ -81,7 +65,7 @@ export default function DynamicPageEditor(props: IProps) {
     <>
       <Flex gap={editMode ? "small" : "unset"} vertical>
         <PageComponentsList
-          components={page.components}
+          components={props.components}
           editMode={editMode}
           updateComponents={updateComponents}
           updateComponent={updateComponent}

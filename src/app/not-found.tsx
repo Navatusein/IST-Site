@@ -1,6 +1,6 @@
 "use client"
 
-import {Button, Result} from "antd";
+import {Result} from "antd";
 
 export default function NotFound() {
   return (

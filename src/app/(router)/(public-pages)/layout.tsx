@@ -1,5 +1,5 @@
 import {ReactNode} from "react";
-import {PageLayout} from "@/app/layouts/page-layout";
+import {PublicPageLayout} from "@/app/layouts/public-page-layout";
 
 interface IProps {
   children: ReactNode;
@@ -7,8 +7,8 @@ interface IProps {
 
 export default async function Layout(props: IProps) {
   return (
-    <PageLayout>
+    <PublicPageLayout>
       {props.children}
-    </PageLayout>
+    </PublicPageLayout>
   );
 }

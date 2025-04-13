@@ -67,8 +67,6 @@ export const nextAuthConfig: NextAuthConfig = {
     async session({session, token }) {
       session.user.id = token.id
 
-      console.log("session", session.user)
-
       return session;
     }
   }

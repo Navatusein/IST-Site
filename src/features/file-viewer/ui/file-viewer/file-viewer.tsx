@@ -1,7 +1,7 @@
-import {IDirectory, IFile} from "@/shared/services/file-manager-service/types/type";
+import {IDirectory, IFile, IFileTypes} from "@/shared/services/file-manager-service/types/type";
 import style from "./file-viewer.module.scss";
 import {App, Space, Table, TableColumnsType, Typography} from "antd";
-import {Dispatch, Key, SetStateAction, useEffect} from "react";
+import {Dispatch, Key, SetStateAction, useEffect, useState} from "react";
 import {getFilesAction} from "@/shared/services/file-manager-service/actions/actions";
 import {
   FileImageOutlined,
@@ -14,6 +14,8 @@ import {
 } from "@ant-design/icons";
 
 interface IProps {
+  selectorType?: "radio" | "checkbox";
+  filter?: IFileTypes[];
   currentPath: string;
   setCurrentPath: (value: string) => Promise<any>;
   selectedRowKeys: Key[];
@@ -100,27 +102,38 @@ const getBackPath = (currentPath: string): string => {
 export default function FileViewer(props: IProps) {
   const {notification} = App.useApp();
 
+  const [loading, setLoading] = useState<boolean>(false);
+
   useEffect(() => {
+    setLoading(() => true);
+
     getFilesAction(props.currentPath)
       .then((data) => {
+        const filteredData = data.filter(x => {
+          return props.filter != null ? ["directory", ...props.filter].includes(x.type) : true;
+        });
+
         if (props.currentPath == "/")
-          return props.setFiles(data);
+          return props.setFiles(filteredData);
 
         props.setFiles([
           {name: "Назад", type: "back", size: 0, pathTo: getBackPath(props.currentPath), path: props.currentPath},
-          ...data
+          ...filteredData
         ]);
       })
       .catch((error) => {
         notification.error({message: "Помилка завантаження файлів", description: error.message});
 
-        if (error.message.includes("no such file or directory"))
-          props.setCurrentPath("/")
-            .catch((error) => {
-              notification.error({message: "Помилка шляху", description: error.message});
-            });
-      });
-  }, [props.currentPath, props.updateFiles])
+        if (error.message.includes("no such file or directory")) {
+          props.setCurrentPath("/").catch((error) => {
+            notification.error({message: "Помилка шляху", description: error.message});
+          });
+        }
+      })
+      .finally(() => {
+        setLoading(() => false);
+      })
+  }, [props.currentPath, props.updateFiles, props.filter])
 
   const onRowSelect = (rowSelection: Key[]) => {
     props.setSelectedRowKeys(() => [...rowSelection]);
@@ -146,13 +159,18 @@ export default function FileViewer(props: IProps) {
       rowKey="path"
       pagination={false}
       scroll={{x: "auto"}}
+      loading={loading}
       rowSelection={{
+        type: props.selectorType ?? "checkbox",
         selectedRowKeys: props.selectedRowKeys,
         onChange: onRowSelect,
         getCheckboxProps: (record) => ({disabled: record.type === "back"}),
         renderCell: (checked, record, index, originNode) => (
           <div>
-            <div style={{position: "absolute", top: 0, bottom: 0, left: 0, right: 0}} onClick={event => event.stopPropagation()}/>
+            <div
+              style={{position: "absolute", top: 0, bottom: 0, left: 0, right: 0}}
+              onClick={event => event.stopPropagation()}
+            />
             {originNode}
           </div>
         )

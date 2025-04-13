@@ -1,18 +1,24 @@
-import {Image, Space, Typography} from "antd";
+import {Flex, Image, Typography} from "antd";
+import {CSSProperties} from "react";
 
 interface IProps {
   showText: boolean;
+  style?: CSSProperties;
 }
 
 export default function Icon(props: IProps) {
   return (
-    <Space align="center" direction="horizontal" style={{padding: "8px", height: "64px", overflow: "hidden"}}>
-      <Image src={"/icon.png"} width={48} preview={false}/>
+    <Flex
+      align="center"
+      gap="small"
+      style={{padding: "8px", height: "64px", overflow: "hidden", ...props.style}}
+    >
+      <Image src="/icon.png" preview={false} style={{width: "48px", height: "48px"}}/>
       {props.showText &&
-        <Typography.Text strong style={{margin: 0}}>
+        <Typography.Paragraph strong style={{margin: 0, textWrap: "wrap"}} ellipsis={{rows: 2}}>
           КАФЕДРА ІНФОРМАЦІЙНИХ СИСТЕМ ТА ТЕХНОЛОГІЙ
-        </Typography.Text>
+        </Typography.Paragraph>
       }
-    </Space>
+    </Flex>
   )
 }
