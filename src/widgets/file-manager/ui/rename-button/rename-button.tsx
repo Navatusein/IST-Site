@@ -1,6 +1,7 @@
 import {App, Button, Input, InputRef, Tooltip} from "antd";
 import {Dispatch, Key, SetStateAction, useRef} from "react";
 import {renameAction} from "@/shared/services/file-manager-service/actions/actions";
+import {FormOutlined} from "@ant-design/icons";
 
 interface IProps {
   selectedRowKeys: Key[],
@@ -53,7 +54,7 @@ export default function RenameButton(props: IProps) {
 
   return (
     <Tooltip title="Перейменувати вибрані файли">
-      <Button onClick={openRenameModal} disabled={props.selectedRowKeys.length != 1}>
+      <Button icon={<FormOutlined/>} onClick={openRenameModal} disabled={props.selectedRowKeys.length != 1}>
         Перейменувати
       </Button>
     </Tooltip>

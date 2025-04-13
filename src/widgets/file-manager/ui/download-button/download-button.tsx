@@ -1,6 +1,7 @@
 import {Button, Tooltip} from "antd";
 import {Dispatch, Key, SetStateAction} from "react";
 import {isDirectoryAction} from "@/shared/services/file-manager-service/actions/actions";
+import {CloudDownloadOutlined, DownloadOutlined} from "@ant-design/icons";
 
 interface IProps {
   selectedRowKeys: Key[],
@@ -27,7 +28,7 @@ export default function DownloadButton(props: IProps) {
 
   return (
     <Tooltip title="Скачати вибрані файли">
-      <Button onClick={download} disabled={props.selectedRowKeys.length == 0}>
+      <Button icon={<CloudDownloadOutlined/>} onClick={download} disabled={props.selectedRowKeys.length == 0}>
         Скачати
       </Button>
     </Tooltip>

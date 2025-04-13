@@ -1,16 +1,17 @@
 import {Dispatch, Key, SetStateAction} from "react";
 import {App, Button, Space, Tooltip} from "antd";
 import {moveOrCopyFilesAction} from "@/shared/services/file-manager-service/actions/actions";
+import {CloseSquareOutlined, CopyOutlined, ImportOutlined, ScissorOutlined} from "@ant-design/icons";
 
 interface IProps {
   currentPath: string;
-  selectedRowKeys: Key[],
-  setSelectedRowKeys: Dispatch<SetStateAction<Key[]>>
-  filesInMemory: string[],
-  setFilesInMemory: Dispatch<SetStateAction<string[]>>
-  filesInMemoryCut: boolean,
-  setFilesInMemoryCut: Dispatch<SetStateAction<boolean>>
-  setUpdateFiles: Dispatch<SetStateAction<number>>
+  selectedRowKeys: Key[];
+  setSelectedRowKeys: Dispatch<SetStateAction<Key[]>>;
+  filesInMemory: string[];
+  setFilesInMemory: Dispatch<SetStateAction<string[]>>;
+  filesInMemoryCut: boolean;
+  setFilesInMemoryCut: Dispatch<SetStateAction<boolean>>;
+  setUpdateFiles: Dispatch<SetStateAction<number>>;
 }
 
 export default function CopyCutPasteButtons(props: IProps) {
@@ -45,25 +46,39 @@ export default function CopyCutPasteButtons(props: IProps) {
   return (
     <Space wrap>
       <Tooltip title="Копіювати вибрані файли">
-        <Button onClick={() => copyOrCut(false)} disabled={props.selectedRowKeys.length == 0}>
+        <Button
+          icon={<CopyOutlined/>}
+          onClick={() => copyOrCut(false)}
+          disabled={props.selectedRowKeys.length == 0}
+        >
           Копіювати
         </Button>
       </Tooltip>
       <Tooltip title="Вирізати вибрані файли">
-        <Button onClick={() => copyOrCut(true)} disabled={props.selectedRowKeys.length == 0}>
+        <Button
+          icon={<ScissorOutlined/>}
+          onClick={() => copyOrCut(true)}
+          disabled={props.selectedRowKeys.length == 0}
+        >
           Вирізати
         </Button>
       </Tooltip>
       {props.filesInMemory.length != 0 &&
         <Tooltip title={`Очистити список вирізаних/скопійованих файлів`}>
-          <Button onClick={clearMemory}>
+          <Button
+            icon={<CloseSquareOutlined/>}
+            onClick={clearMemory}
+          >
             {`Забути ${props.filesInMemoryCut ? "вирізане" : "скопійоване"}`}
           </Button>
         </Tooltip>
       }
       {props.filesInMemory.length != 0 &&
         <Tooltip title={`Вставити вирізані/скопійовані файли`}>
-          <Button onClick={pasteFromMemory}>
+          <Button
+            icon={<ImportOutlined/>}
+            onClick={pasteFromMemory}
+          >
             Вставити
           </Button>
         </Tooltip>

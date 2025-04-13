@@ -3,6 +3,7 @@
 import {App, Button, Input, InputRef, Tooltip} from "antd";
 import {Dispatch, SetStateAction, useRef} from "react";
 import {createDirectoryAction} from "@/shared/services/file-manager-service/actions/actions";
+import {FolderAddOutlined} from "@ant-design/icons";
 
 interface IProps {
   currentPath: string;
@@ -52,7 +53,7 @@ export default function CreateFolderButton(props: IProps) {
 
   return (
     <Tooltip title="Стоворити нову папку">
-      <Button onClick={openCreateFolderModal}>
+      <Button icon={<FolderAddOutlined/>} onClick={openCreateFolderModal}>
         Створити папку
       </Button>
     </Tooltip>

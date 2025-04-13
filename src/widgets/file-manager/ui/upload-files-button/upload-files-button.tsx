@@ -4,6 +4,7 @@ import {App, Button, Tooltip, Upload} from "antd";
 import {uploadFilesAction} from "@/shared/services/file-manager-service/actions/actions";
 import type {UploadRequestOption} from "rc-upload/lib/interface";
 import {Dispatch, SetStateAction} from "react";
+import {CloudUploadOutlined, UploadOutlined} from "@ant-design/icons";
 
 interface IProps {
   currentPath: string;
@@ -31,7 +32,7 @@ export default function UploadFilesButton(props: IProps) {
   return (
     <Tooltip title="Завантажити файли">
       <Upload multiple customRequest={uploadFile} showUploadList={false}>
-        <Button>Завантажити</Button>
+        <Button icon={<CloudUploadOutlined/>}>Завантажити</Button>
       </Upload>
     </Tooltip>
   )

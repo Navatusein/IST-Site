@@ -3,6 +3,7 @@
 import {App, Button, Popconfirm, Tooltip} from "antd";
 import {Dispatch, Key, SetStateAction} from "react";
 import {deleteFilesAction} from "@/shared/services/file-manager-service/actions/actions";
+import {DeleteOutlined} from "@ant-design/icons";
 
 interface IProps {
   selectedRowKeys: Key[],
@@ -11,33 +12,40 @@ interface IProps {
 }
 
 export default function DeleteFilesButton(props: IProps) {
-  const {notification} = App.useApp();
+  const {modal, notification} = App.useApp();
 
   const deleteFiles = () => {
-    deleteFilesAction(props.selectedRowKeys as string[])
-      .then(() => {
-        notification.success({message: "Файли видалено успішно",});
-        props.setSelectedRowKeys([]);
-        setTimeout(() => {
-          props.setUpdateFiles((prevState) => prevState + 1);
-        }, 500)
-      })
-      .catch((error) => {
-        notification.error({message: "Помилка видаленя файлів", description: error.message});
-      });
+    modal.confirm({
+      title: "Видалити файли",
+      content: "Ви впевнені що хочете видалити ці файли?",
+      okText: "Так",
+      cancelText: "Ні",
+      onOk: () => {
+        deleteFilesAction(props.selectedRowKeys as string[])
+          .then(() => {
+            notification.success({message: "Файли видалено успішно",});
+            props.setSelectedRowKeys([]);
+            setTimeout(() => {
+              props.setUpdateFiles((prevState) => prevState + 1);
+            }, 500)
+          })
+          .catch((error) => {
+            notification.error({message: "Помилка видаленя файлів", description: error.message});
+          });
+      }
+    });
   }
 
   return (
-    <Popconfirm
-      title="Видалити файли"
-      description="Ви впевнені що хочете видалити ці файли?"
-      onConfirm={deleteFiles}
-      okText="Так"
-      cancelText="Ні"
-    >
-      <Tooltip title="Видалити вибрані файли">
-        <Button danger disabled={props.selectedRowKeys.length == 0}>Видалити</Button>
-      </Tooltip>
-    </Popconfirm>
+    <Tooltip title="Видалити вибрані файли">
+      <Button
+        icon={<DeleteOutlined/>}
+        danger
+        onClick={deleteFiles}
+        disabled={props.selectedRowKeys.length == 0}
+      >
+        Видалити
+      </Button>
+    </Tooltip>
   )
 }

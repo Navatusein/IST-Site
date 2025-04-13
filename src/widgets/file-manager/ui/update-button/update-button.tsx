@@ -1,5 +1,6 @@
 import {Button, Tooltip} from "antd";
 import {Dispatch, SetStateAction} from "react";
+import {ReloadOutlined} from "@ant-design/icons";
 
 interface IProps {
   setUpdateFiles: Dispatch<SetStateAction<number>>
@@ -12,7 +13,7 @@ export default function UpdateButton(props: IProps) {
 
   return (
     <Tooltip title="Оновити список файлів">
-      <Button onClick={update}>
+      <Button icon={<ReloadOutlined/>} onClick={update}>
         Оновити
       </Button>
     </Tooltip>
