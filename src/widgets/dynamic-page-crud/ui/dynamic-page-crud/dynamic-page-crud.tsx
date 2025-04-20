@@ -2,7 +2,7 @@ import {IDynamicPage} from "@/entities/dynamic-page";
 import {Space, TableColumnsType} from "antd";
 import {CrudComponent} from "@/widgets/crud-component";
 import {useState} from "react";
-import {addDynamicPageAction, deleteDynamicPagesAction, updateDynamicPageAction} from "@/entities/dynamic-page/actions/actions";
+import {addDynamicPageAction, removeDynamicPagesAction, updateDynamicPageAction} from "@/entities/dynamic-page/actions/actions";
 import {useRouter} from "next/navigation";
 import DynamicPageCrudForm from "../dynamic-page-crud-form/dynamic-page-crud-form";
 import {FormOutlined} from "@ant-design/icons";
@@ -59,7 +59,7 @@ export default function DynamicPageCrud(props: IProps) {
   }
 
   const remove = async (data: IDynamicPage[]) => {
-    await deleteDynamicPagesAction(data);
+    await removeDynamicPagesAction(data);
   }
 
   const refresh = () => {

@@ -3,15 +3,17 @@
 import {Layout} from "antd";
 import {ReactNode} from "react";
 import {PublicHeader} from "@/widgets/public-header";
+import {IPublicMenuItem} from "@/entities/public-menu-item";
 
 interface IProps {
   children: ReactNode;
+  menuItems: IPublicMenuItem[]
 }
 
 export default function PublicPageLayout(props: IProps) {
   return (
     <Layout>
-      <PublicHeader/>
+      <PublicHeader menuItems={props.menuItems}/>
       <Layout.Content style={{padding: "8px", overflow: "hidden"}}>
         {props.children}
       </Layout.Content>

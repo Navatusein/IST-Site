@@ -4,7 +4,7 @@ import {useRouter} from "next/navigation";
 import {useState} from "react";
 import {CrudComponent} from "@/widgets/crud-component";
 import {FormOutlined} from "@ant-design/icons";
-import {addNewsAction, deleteNewsAction, updateNewsAction} from "@/entities/news/actions/actions";
+import {addNewsAction, removeNewsAction, updateNewsAction} from "@/entities/news/actions/actions";
 import NewsCrudForm from "../news-crud-form/news-crud-form";
 
 interface IProps {
@@ -67,7 +67,7 @@ export default function NewsCrud(props: IProps) {
   }
 
   const remove = async (data: INews[]) => {
-    await deleteNewsAction(data);
+    await removeNewsAction(data);
   }
 
   const refresh = () => {

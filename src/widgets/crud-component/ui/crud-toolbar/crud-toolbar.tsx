@@ -1,11 +1,5 @@
-import {Button, Popconfirm, Space, Tooltip} from "antd";
-import {
-  CopyOutlined,
-  DeleteOutlined,
-  EditOutlined,
-  PlusOutlined,
-  ReloadOutlined
-} from "@ant-design/icons";
+import {Button, Space, Tooltip} from "antd";
+import {CopyOutlined, DeleteOutlined, EditOutlined, PlusOutlined, ReloadOutlined} from "@ant-design/icons";
 
 interface IProps<T> {
   selectedRows: T[]
@@ -22,7 +16,7 @@ export default function CrudToolbar<T>(props: IProps<T>) {
       <Tooltip title="Оновити данні">
         <Button
           icon={<ReloadOutlined/>}
-          onClick={() => props.onRefresh}
+          onClick={() => props.onRefresh()}
         >
           Оновити
         </Button>

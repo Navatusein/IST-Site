@@ -27,7 +27,7 @@ export async function updateUserAction(data: IUser): Promise<void> {
   await UserModel.findByIdAndUpdate(_id, {$set: updateData});
 }
 
-export async function deleteUsersAction(data: IUser[]): Promise<void> {
+export async function removeUsersAction(data: IUser[]): Promise<void> {
   await UserModel.deleteMany({_id: {$in: data.map((value) => value._id)}});
 }
 

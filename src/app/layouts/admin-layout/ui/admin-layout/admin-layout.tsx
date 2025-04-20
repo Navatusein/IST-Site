@@ -14,7 +14,7 @@ interface IProps {
 export default function AdminLayout(props: IProps) {
   return (
     <AdminMenuSideContextProvider>
-      <Flex style={{minHeight: "100svh", minWidth: "100svw"}}>
+      <Flex style={{maxHeight: "100svh", minWidth: "100svw"}}>
         <AdminSideMenu/>
         <Flex vertical style={{width: "100%", overflowX: "hidden"}}>
           <AdminHeader/>

@@ -6,7 +6,7 @@ import {CrudComponent} from "@/widgets/crud-component";
 import UserCrudForm from "../user-crud-form/user-crud-form";
 import {
   addUserAction,
-  deleteUsersAction,
+  removeUsersAction,
   updateUserAction,
   updateUserPasswordAction
 } from "@/entities/user/actions/actions";
@@ -83,7 +83,7 @@ export default function UserCrud(props: IProps) {
   }
 
   const remove = async (data: IUser[]) => {
-    await deleteUsersAction(data);
+    await removeUsersAction(data);
   }
 
   const refresh = () => {

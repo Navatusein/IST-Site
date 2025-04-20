@@ -28,6 +28,6 @@ export async function updateDynamicPageAction(data: IDynamicPage): Promise<void>
   await DynamicPageModel.findByIdAndUpdate(_id, {$set: updateData});
 }
 
-export async function deleteDynamicPagesAction(data: IDynamicPage[]): Promise<void> {
+export async function removeDynamicPagesAction(data: IDynamicPage[]): Promise<void> {
   await DynamicPageModel.deleteMany({_id: {$in: data.map((value) => value._id)}});
 }

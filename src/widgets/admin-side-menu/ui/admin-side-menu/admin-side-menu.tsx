@@ -2,10 +2,10 @@
 
 import Sider from "antd/es/layout/Sider";
 import {useClickOutside} from "@/shared/hooks/use-click-outside";
-import React, {useContext, useMemo, useRef} from "react";
+import React, {useContext, useEffect, useMemo, useRef} from "react";
 import {AdminSideMenuContext} from "@/shared/context/admin-side-menu-context/admin-side-menu-context";
 import {Divider, Flex, Menu, MenuProps} from "antd";
-import {FileTextOutlined, FolderOpenOutlined, ReadOutlined, UserOutlined} from "@ant-design/icons";
+import {FileTextOutlined, FolderOpenOutlined, ProfileOutlined, ReadOutlined, UserOutlined} from "@ant-design/icons";
 import Link from "next/link";
 import {Icon} from "@/shared/ui-kit";
 import UserCard from "../user-card/user-card";
@@ -27,6 +27,9 @@ export default function AdminSideMenu() {
     if (userPermissions.includes("edit-pages"))
       items.push({key: "edit-pages", icon: <FileTextOutlined/>, label: <Link href={"/admin/edit-pages"}>Керування сторінками</Link>});
 
+    if (userPermissions.includes("edit-pages"))
+      items.push({key: "edit-menu", icon: <ProfileOutlined/>, label: <Link href={"/admin/edit-menu"}>Керування меню</Link>});
+
     if (userPermissions.includes("edit-files"))
       items.push({key: "files-manager", icon: <FolderOpenOutlined/>, label: <Link href={"/admin/file-manager"}>Файловий менеджер</Link>});
 
@@ -42,6 +45,8 @@ export default function AdminSideMenu() {
 
     setIsMenuClosed(true);
   });
+
+  // useEffect(() => {}, [isMobileWidth]);
 
   return (
     <Sider

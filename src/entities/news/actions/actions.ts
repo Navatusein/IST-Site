@@ -28,6 +28,6 @@ export async function updateNewsAction(data: INews): Promise<void> {
   await NewsModel.findByIdAndUpdate(_id, {$set: updateData});
 }
 
-export async function deleteNewsAction(data: INews[]): Promise<void> {
+export async function removeNewsAction(data: INews[]): Promise<void> {
   await NewsModel.deleteMany({_id: {$in: data.map((value) => value._id)}});
 }
