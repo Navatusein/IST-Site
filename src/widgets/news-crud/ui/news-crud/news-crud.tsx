@@ -6,6 +6,7 @@ import {CrudComponent} from "@/widgets/crud-component";
 import {FormOutlined} from "@ant-design/icons";
 import {addNewsAction, removeNewsAction, updateNewsAction} from "@/entities/news/actions/actions";
 import NewsCrudForm from "../news-crud-form/news-crud-form";
+import dayjs from "dayjs";
 
 interface IProps {
   news: INews[];
@@ -24,8 +25,8 @@ const COLUMNS: TableColumnsType<INews> = [
   },
   {
     title: "Шлях до малюнка",
-    dataIndex: "image",
-    key: "image",
+    dataIndex: "imagePath",
+    key: "imagePath",
     render: (imagePath: string | null) => (
       imagePath ?? <Tag color="red">Шляї не вказан</Tag>
     )
@@ -34,6 +35,14 @@ const COLUMNS: TableColumnsType<INews> = [
     title: "Шлях",
     dataIndex: "path",
     key: "path",
+  },
+  {
+    title: "Дата",
+    dataIndex: "date",
+    key: "date",
+    render: (date: string) => (
+      new Date(date).toLocaleDateString()
+    )
   },
   {
     title: "Створено",
@@ -59,11 +68,11 @@ export default function NewsCrud(props: IProps) {
   const [selectedRows, setSelectedRows] = useState<INews[]>([]);
 
   const create = async (data: INews) => {
-    await addNewsAction({...data, _id: null} as INews);
+    await addNewsAction({...data, _id: null, date: dayjs(data.date).toString()} as INews);
   }
 
   const update = async (data: INews) => {
-    await updateNewsAction(data);
+    await updateNewsAction({...data, date: dayjs(data.date).toString()} as INews);
   }
 
   const remove = async (data: INews[]) => {

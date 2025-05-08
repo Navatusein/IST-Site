@@ -1,6 +1,7 @@
 import {INews} from "@/entities/news";
-import {Form, FormInstance, Image, Input} from "antd";
+import {DatePicker, Form, FormInstance, Image, Input} from "antd";
 import {SelectFileButton} from "@/features/select-file-button";
+import dayjs from "dayjs";
 
 interface IProps {
   news: INews[];
@@ -64,8 +65,24 @@ export default function NewsCrudForm(props: IProps) {
         <Input/>
       </Form.Item>
       <Form.Item<INews>
+        label="Дата"
+        name="date"
+        extra="Дата новини"
+        style={{marginBottom: 0}}
+        rules={[{required: true, message: "Введіть дату новини!"}]} // ({ value: new Date(value).toDateString() })
+        getValueProps={(value) => {
+          return {value: value == undefined ? undefined : dayjs(value)}
+        }}
+
+      >
+        <DatePicker
+          format='DD.MM.YYYY'
+          placeholder='DD.MM.YYYY'
+        />
+      </Form.Item>
+      <Form.Item<INews>
         label="Малюнок"
-        name="image"
+        name="imagePath"
         extra="Малюнок новини"
         style={{marginBottom: 0}}
       >

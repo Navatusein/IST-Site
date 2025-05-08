@@ -4,7 +4,8 @@ import {IBasePageComponent} from "@/entities/dynamic-page";
 export interface INews extends Document {
   title: string;
   description: string;
-  image: string;
+  imagePath: string;
   path: string;
   components: IBasePageComponent[];
+  date: string;
 }
