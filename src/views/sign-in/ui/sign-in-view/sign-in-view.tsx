@@ -12,7 +12,7 @@ export default function SignInView(props: IProps) {
   return (
     <Row style={{height: "100svh"}}>
       <Col span={16} className={style.imageContainer}>
-        <Image src="/red-corps.png" height="100%" preview={false} className={style.image}/>
+        <Image src="/red-corps.webp" height="100%" preview={false} className={style.image}/>
       </Col>
       <Col span={8}>
         <Flex style={{height: "100%", width: "100%"}} justify="center" align="center">
