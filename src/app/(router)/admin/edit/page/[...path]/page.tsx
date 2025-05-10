@@ -1,10 +1,6 @@
 import {getDynamicPageByPathAction} from "@/entities/dynamic-page/actions/actions";
 import {notFound} from "next/navigation";
-import {AdminEditDynamicPageView} from "../../../../../../views/admin-edit-dynamic-page";
-
-interface IProps {
-
-}
+import {AdminEditDynamicPageView} from "@/views/admin-edit-dynamic-page";
 
 interface IProps {
   params: Promise<{
