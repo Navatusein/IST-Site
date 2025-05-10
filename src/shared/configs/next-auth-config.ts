@@ -3,6 +3,7 @@ import {NextAuthConfig} from "next-auth";
 import {CouldNotParseError, InvalidPasswordError} from "@/shared/types/next-auth-exceptions";
 import {JWT} from "next-auth/jwt"
 import {IUser} from "@/entities/user";
+import normalizeUrl from "normalize-url";
 
 declare module "next-auth" {
   interface Session {
@@ -18,6 +19,9 @@ declare module "next-auth/jwt" {
 
 export const nextAuthConfig: NextAuthConfig = {
   debug: false,
+  secret: process.env.SECRET,
+  redirectProxyUrl: normalizeUrl(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth`),
+  trustHost: true,
   session: {
     strategy: "jwt"
   },
@@ -46,15 +50,16 @@ export const nextAuthConfig: NextAuthConfig = {
         if (!credentials?.login || !credentials.password)
           throw new CouldNotParseError();
 
-        //TODO get path from configs
-        const response = await fetch("http://localhost:3000/api/login", {method: "POST", body: JSON.stringify(credentials)});
+        const response = await fetch(
+          normalizeUrl(`${process.env.NEXT_PUBLIC_BASE_URL}/api/login`),
+          {method: "POST", body: JSON.stringify(credentials)}
+        );
 
         if (response.status !== 200)
           throw new InvalidPasswordError();
 
         return await response.json();
       },
-
     })
   ],
   callbacks: {

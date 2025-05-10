@@ -1,0 +1,57 @@
+.image {
+
+}
+
+.flexContainerMiddle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: -10px;
+  z-index: 100;
+
+  @include respond-below(md) {
+    flex-direction: column !important;
+  }
+}
+
+.flexContainerInfo {
+  flex: 1;
+  height: 100%;
+  margin-bottom: 10px !important;
+}
+
+.flexContainerInfoContent {
+  width: 60%;
+
+  @include respond-below(md) {
+    width: 80%;
+  }
+
+  @include respond-below(sm) {
+    width: 96%;
+  }
+}
+
+.flexContainerFastLinks {
+  width: 30%;
+  flex-direction: column !important;
+
+  @include respond-below(md) {
+    width: 100%;
+    flex-direction: row !important;
+  }
+
+  @include respond-below(sm) {
+    width: 100%;
+    flex-direction: column !important;
+  }
+
+  .card {
+    padding: 40px 24px;
+
+    @include respond-below(sm) {
+      padding: 16px 8px;
+    }
+  }
+}

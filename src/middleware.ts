@@ -2,6 +2,7 @@ import {auth} from "./auth";
 import {permissions} from "@/shared/configs/permissions-config"
 import resolveRequirementPermission from "@/shared/utilities/resolve-requirement-permission";
 import {UserPermissionType} from "@/entities/user";
+import normalizeUrl from "normalize-url";
 
 export default auth(async (request) => {
   const {nextUrl, auth} = request;
@@ -10,8 +11,10 @@ export default auth(async (request) => {
     return Response.redirect(new URL("/sign-in", nextUrl));
 
   const requiredPermission = resolveRequirementPermission(permissions, nextUrl.pathname);
-  //TODO get path from configs
-  const response = await fetch("http://localhost:3000/api/user-permissions", {method: "POST", body: JSON.stringify({id: auth.user.id})});
+  const response = await fetch(
+    normalizeUrl(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user-permissions`),
+    {method: "POST", body: JSON.stringify({id: auth.user.id})}
+  );
 
   if (response.status !== 200)
     return Response.redirect(new URL("/requiredPermission", nextUrl));
