@@ -2,6 +2,7 @@ import {Button, Tooltip} from "antd";
 import {Dispatch, Key, SetStateAction} from "react";
 import {isDirectoryAction} from "@/shared/services/file-manager-service/actions/actions";
 import {CloudDownloadOutlined, DownloadOutlined} from "@ant-design/icons";
+import normalizeUrl from "normalize-url";
 
 interface IProps {
   selectedRowKeys: Key[],
@@ -19,7 +20,7 @@ export default function DownloadButton(props: IProps) {
       const link = document.createElement("a");
 
       link.download = "";
-      link.href = `http://localhost:3000/files/${path}`;
+      link.href = normalizeUrl(`${process.env.NEXT_PUBLIC_BASE_URL}/files/${path}`);
       link.click();
     });
 
