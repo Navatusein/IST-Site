@@ -75,10 +75,7 @@ export default function NewsCrudForm(props: IProps) {
         }}
 
       >
-        <DatePicker
-          format='DD.MM.YYYY'
-          placeholder='DD.MM.YYYY'
-        />
+        <DatePicker format='DD.MM.YYYY' placeholder='DD.MM.YYYY' style={{width: "100%"}}/>
       </Form.Item>
       <Form.Item<INews>
         label="Малюнок"
