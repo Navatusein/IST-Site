@@ -1,6 +1,6 @@
 import {Document} from "mongoose";
 
-export type PageComponentType = "text"
+export type PageComponentType = "text"|"hero-section"|"news-list"|"title";
 
 export interface IBasePageComponent {
   id: string;
@@ -12,4 +12,9 @@ export interface IDynamicPage extends Document {
   title: string;
   path: string;
   components: IBasePageComponent[];
+}
+
+export interface IPageComponentExample {
+  name: string;
+  component: IBasePageComponent;
 }
