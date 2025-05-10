@@ -6,7 +6,16 @@ import toPlainObject from "@/shared/utilities/to-plain-object";
 
 
 export async function getNewsAction(): Promise<INews[]> {
-  return toPlainObject<INews[]>(await NewsModel.find<INews>({}));
+  return toPlainObject<INews[]>(await NewsModel.find<INews>({}).sort({date: 'desc'}));
+}
+
+export async function getNewsPaginationAction(offset: number, limit: number): Promise<INews[]> {
+  return toPlainObject<INews[]>(await NewsModel
+    .find<INews>({})
+    .sort({date: 'desc'})
+    .skip(offset)
+    .limit(limit)
+  );
 }
 
 export async function getNewsByPathAction(path: string): Promise<INews|null> {
