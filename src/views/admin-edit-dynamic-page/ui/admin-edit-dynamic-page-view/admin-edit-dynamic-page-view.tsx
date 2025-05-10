@@ -2,8 +2,7 @@
 
 import {IBasePageComponent, IDynamicPage} from "@/entities/dynamic-page";
 import {DynamicPageEditor} from "@/widgets/dynamic-page-editor";
-import {useEffect, useMemo, useState} from "react";
-import {c} from "@codemirror/legacy-modes/mode/clike";
+import {useEffect, useState} from "react";
 import {updateDynamicPageAction} from "@/entities/dynamic-page/actions/actions";
 
 interface IProps {

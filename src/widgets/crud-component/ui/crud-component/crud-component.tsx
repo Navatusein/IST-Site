@@ -69,7 +69,7 @@ export default function CrudComponent<T>(props: IProps<T>) {
       })
       .catch((error) => {
         notification.error({
-          message: isEdit ? "Помилка збереженя" : "Помилка створеня",
+          message: isEdit ? "Помилка збереження" : "Помилка створення",
           description: error.message
         });
       });

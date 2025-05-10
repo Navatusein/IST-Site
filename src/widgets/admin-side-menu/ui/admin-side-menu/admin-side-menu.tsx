@@ -57,7 +57,7 @@ export default function AdminSideMenu() {
       collapsible
       collapsed={isMenuClosed}
       collapsedWidth={isMobileWidth ? "0px" : "64px"}
-      width={270}
+      width={300}
       trigger={null}
       style={{position: isMobileWidth ? "absolute" : undefined, zIndex: 100, top: 0, bottom: 0, left: 0}}
     >
