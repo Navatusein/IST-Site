@@ -63,7 +63,7 @@ export default function DynamicPageEditor(props: IProps) {
 
   return (
     <>
-      <Flex gap={editMode ? "small" : "unset"} vertical>
+      <Flex vertical>
         <PageComponentsList
           components={props.components}
           editMode={editMode}
@@ -75,22 +75,22 @@ export default function DynamicPageEditor(props: IProps) {
           editMode={editMode}
           setIsModalOpen={setIsModalOpen}
         />
-        <FloatButtonGroup
-          setIsDrawerOpen={setIsDrawerOpen}
-        />
-        <PageComponentsModal
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
-          addComponent={addComponent}
-        />
-        <DynamicPageEditorDrawer
-          isDrawerOpen={isDrawerOpen}
-          setIsDrawerOpen={setIsDrawerOpen}
-          editMode={editMode}
-          setEditMode={setEditMode}
-          savePage={savePage}
-        />
       </Flex>
+      <FloatButtonGroup
+        setIsDrawerOpen={setIsDrawerOpen}
+      />
+      <PageComponentsModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        addComponent={addComponent}
+      />
+      <DynamicPageEditorDrawer
+        isDrawerOpen={isDrawerOpen}
+        setIsDrawerOpen={setIsDrawerOpen}
+        editMode={editMode}
+        setEditMode={setEditMode}
+        savePage={savePage}
+      />
     </>
   )
 }

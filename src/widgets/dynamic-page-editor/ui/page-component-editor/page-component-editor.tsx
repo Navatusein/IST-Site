@@ -1,9 +1,11 @@
-import {App, Button, Card, Flex, Tooltip} from "antd";
+import {App, Button, Card, Flex, Modal, Segmented, theme, Tooltip} from "antd";
 import {PageComponentRenderer} from "@/widgets/page-component-renderer";
-import {DeleteOutlined, HolderOutlined} from "@ant-design/icons";
+import {ArrowsAltOutlined, DeleteOutlined, EditOutlined, HolderOutlined, ShrinkOutlined,} from "@ant-design/icons";
 import {IBasePageComponent} from "@/entities/dynamic-page";
-import {useRef} from "react";
+import {useRef, useState} from "react";
 import {DraggableList} from "@/features/draggable-list";
+import PageComponentEditorModal
+  from "@/widgets/dynamic-page-editor/ui/page-component-editor-modal/page-component-editor-modal";
 
 interface IProps {
   component: IBasePageComponent;
@@ -14,8 +16,11 @@ interface IProps {
 }
 
 export default function PageComponentEditor(props: IProps) {
+  const {token: {paddingXS}} = theme.useToken();
   const {modal} = App.useApp();
   const dragHandleRef = useRef<HTMLButtonElement>(null);
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
 
   const onRemove = () => {
     modal.confirm({
@@ -38,15 +43,29 @@ export default function PageComponentEditor(props: IProps) {
         <DragPreview component={component}/>
       )}
     >
-      <Flex vertical gap={props.editMode ? "small" : "unset"}>
+      <Flex vertical style={{marginBottom: paddingXS}}>
         <PageComponentRenderer
           propsClass={props.component}
-          editMode={props.editMode}
-          onChange={(value) => props.updateComponent(value, props.index)}
+          editMode={false}
         />
-        <Card variant="borderless" size="small" style={{width: "fit-content"}}>
+        <Card variant="borderless" size="small" style={{width: "fit-content", marginTop: paddingXS, alignSelf: "center"}}>
           <Flex gap="small">
             <Button ref={dragHandleRef} type="text" icon={<HolderOutlined/>}/>
+            <Tooltip title="Редагувати блок">
+              <Button icon={<EditOutlined/>} onClick={() => setIsEditModalOpen(true)}>
+                Редагувати
+              </Button>
+            </Tooltip>
+            <Tooltip title="Змінити розмір блоку">
+              <Segmented
+                options={[
+                  {value: "large", icon: <ArrowsAltOutlined/>, label: "Великий"},
+                  {value: "medium", icon: <ShrinkOutlined/>, label: "Середній"}
+                ]}
+                value={props.component.width}
+                onChange={(value) => props.updateComponent({...props.component, width: value as never}, props.index)}
+              />
+            </Tooltip>
             <Tooltip title="Видалити блок">
               <Button danger icon={<DeleteOutlined/>} onClick={onRemove}>
                 Видалити
@@ -55,6 +74,12 @@ export default function PageComponentEditor(props: IProps) {
           </Flex>
         </Card>
       </Flex>
+      <PageComponentEditorModal
+        isModalOpen={isEditModalOpen}
+        setIsModalOpen={setIsEditModalOpen}
+        component={props.component}
+        updateComponent={(value) => props.updateComponent(value, props.index)}
+      />
     </DraggableList.Item>
   )
 }

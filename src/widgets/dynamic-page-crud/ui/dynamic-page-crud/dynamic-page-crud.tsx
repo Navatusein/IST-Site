@@ -3,7 +3,7 @@ import {Space, TableColumnsType} from "antd";
 import {CrudComponent} from "@/widgets/crud-component";
 import {useState} from "react";
 import {addDynamicPageAction, removeDynamicPagesAction, updateDynamicPageAction} from "@/entities/dynamic-page/actions/actions";
-import {useRouter} from "next/navigation";
+import {redirect, useRouter} from "next/navigation";
 import DynamicPageCrudForm from "../dynamic-page-crud-form/dynamic-page-crud-form";
 import {FormOutlined} from "@ant-design/icons";
 
@@ -12,37 +12,15 @@ interface IProps {
 }
 
 const COLUMNS: TableColumnsType<IDynamicPage> = [
-  {
-    title: "Назва",
-    dataIndex: "name",
-    key: "name"
-  },
-  {
-    title: "Заголовок",
-    dataIndex: "title",
-    key: "title"
-  },
-  {
-    title: "Шлях",
-    dataIndex: "path",
-    key: "path",
-  },
-  {
-    title: "Створено",
-    dataIndex: "createdAt",
-    key: "createdAt",
-    render: (date: string) => (
-      new Date(date).toLocaleString()
-    )
-  },
-  {
-    title: "Оновлено",
-    dataIndex: "updatedAt",
-    key: "updatedAt",
-    render: (date: string) => (
-      new Date(date).toLocaleString()
-    )
-  }
+  {title: "Назва", dataIndex: "name", key: "name"},
+  {title: "Заголовок", dataIndex: "title", key: "title"},
+  {title: "Шлях", dataIndex: "path", key: "path",},
+  {title: "Створено", dataIndex: "createdAt", key: "createdAt", render: (date: string) => (
+    new Date(date).toLocaleString()
+  )},
+  {title: "Оновлено", dataIndex: "updatedAt", key: "updatedAt", render: (date: string) => (
+    new Date(date).toLocaleString()
+  )}
 ];
 
 export default function DynamicPageCrud(props: IProps) {
@@ -70,7 +48,7 @@ export default function DynamicPageCrud(props: IProps) {
     if (selectedRows[0] == null && data?.[0] == null)
       return;
 
-    router.push(`/admin/edit/page/${data?.[0].path ?? selectedRows[0].path}`);
+    redirect(`/admin/edit/page/${data?.[0].path ?? selectedRows[0].path}`);
   }
 
   return (

@@ -3,7 +3,7 @@ export const themeTokens = {
   "colorInfo": "#106a83",
   "borderRadius": 4,
   "wireframe": false,
-  "fontSize": 16,
+  "fontSize": 15,
   "colorSuccess": "#2f623e",
   "colorError": "#f5222d",
 }

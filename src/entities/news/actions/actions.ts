@@ -12,10 +12,14 @@ export async function getNewsAction(): Promise<INews[]> {
 export async function getNewsPaginationAction(offset: number, limit: number): Promise<INews[]> {
   return toPlainObject<INews[]>(await NewsModel
     .find<INews>({})
-    .sort({date: 'desc'})
+    .sort({date: 'desc', createdAt: 'desc'})
     .skip(offset)
     .limit(limit)
   );
+}
+
+export async function getNewsCountAction(): Promise<number> {
+  return toPlainObject<number>(await NewsModel.find<INews>({}).countDocuments());
 }
 
 export async function getNewsByPathAction(path: string): Promise<INews|null> {
