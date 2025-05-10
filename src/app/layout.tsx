@@ -22,12 +22,12 @@ export default async function Layout(props: IProps) {
 
   return (
     <html lang="en" suppressHydrationWarning={true}>
-    <body>
-    <link rel="shortcut icon" href="/icon.png"/>
-    <BaseLayout defaultTheme={defaultTheme as "light" | "dark"}>
-      {props.children}
-    </BaseLayout>
-    </body>
+      <body>
+        <link rel="shortcut icon" href="/icon.webp"/>
+        <BaseLayout defaultTheme={defaultTheme as "light" | "dark"}>
+          {props.children}
+        </BaseLayout>
+      </body>
     </html>
   );
 }
