@@ -13,7 +13,7 @@ export default function Icon(props: IProps) {
       gap="small"
       style={{padding: "8px", height: "64px", overflow: "hidden", ...props.style}}
     >
-      <Image src="/icon.png" preview={false} style={{width: "48px", height: "48px"}}/>
+      <Image src="/icon.webp" preview={false} style={{width: "48px", height: "48px"}}/>
       {props.showText &&
         <Typography.Paragraph strong style={{margin: 0, textWrap: "wrap"}} ellipsis={{rows: 2}}>
           КАФЕДРА ІНФОРМАЦІЙНИХ СИСТЕМ ТА ТЕХНОЛОГІЙ

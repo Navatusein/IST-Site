@@ -21,7 +21,7 @@ export default async function BaseLayout(props: IProps) {
          <ThemeProvider defaultTheme={props.defaultTheme}>
            <App>
              <NuqsAdapter>
-               <Layout style={{minHeight: "100vh"}}>
+               <Layout style={{minHeight: "100dvh"}}>
                  {props.children}
                </Layout>
              </NuqsAdapter>

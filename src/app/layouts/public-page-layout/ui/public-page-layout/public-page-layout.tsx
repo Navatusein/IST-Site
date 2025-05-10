@@ -14,7 +14,7 @@ export default function PublicPageLayout(props: IProps) {
   return (
     <Layout>
       <PublicHeader menuItems={props.menuItems}/>
-      <Layout.Content style={{padding: "8px", overflow: "hidden"}}>
+      <Layout.Content style={{overflow: "hidden"}}>
         {props.children}
       </Layout.Content>
     </Layout>
