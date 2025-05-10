@@ -1,8 +1,7 @@
-"use client"
-
+import {IBasePageComponent} from "@/entities/dynamic-page";
+import {Layout, theme} from "antd";
 import {useMemo} from "react";
 import {PageComponentError} from "@/shared/ui-kit";
-import {ITextPageComponent} from "../../types/type";
 import {
   headingsPlugin,
   linkPlugin,
@@ -11,30 +10,29 @@ import {
   MDXEditor,
   quotePlugin
 } from "@mdxeditor/editor";
-import {IBasePageComponent} from "@/entities/dynamic-page";
-import {Layout, theme} from "antd";
+import {ITextPageComponent} from "../../types/type";
 
 interface IProps {
-  propsClass: IBasePageComponent;
+  componentProps: IBasePageComponent;
   onChange: (value: IBasePageComponent) => void;
 }
 
-export default function TextPageComponentEditor(props: IProps) {
+export default function PageComponentTextEditor(props: IProps) {
   const {token: {colorBgContainer}} = theme.useToken();
 
-  const propsClass = useMemo(() => {
-    if (props.propsClass.type !== "text")
+  const typedComponentProps = useMemo(() => {
+    if (props.componentProps.type !== "text")
       return null;
 
-    return props.propsClass as ITextPageComponent;
+    return props.componentProps as ITextPageComponent;
   }, [props])
 
   return (
-    <PageComponentError message={propsClass == null ? "Fail" : ""}>
+    <PageComponentError message={typedComponentProps == null ? "Fail" : ""}>
       <Layout.Content style={{background: colorBgContainer}}>
         <MDXEditor
-          markdown={propsClass?.content ?? ""}
-          onChange={(value) => {props.onChange({...propsClass!, content: value} as ITextPageComponent)}}
+          markdown={typedComponentProps?.content ?? ""}
+          onChange={(value) => {props.onChange({...typedComponentProps!, content: value} as ITextPageComponent)}}
           plugins={[headingsPlugin(), listsPlugin(), linkPlugin(), quotePlugin(), markdownShortcutPlugin()]}
         />
       </Layout.Content>
