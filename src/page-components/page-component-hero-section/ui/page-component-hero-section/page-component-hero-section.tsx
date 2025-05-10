@@ -6,7 +6,6 @@ import {DynamicIcon, PageComponentError} from "@/shared/ui-kit";
 import NextImage from "next/image";
 import style from "./page-component-hero-section.module.scss"
 import Link from "next/link";
-import {BookOutlined} from "@ant-design/icons";
 import CountUp from "react-countup";
 import PageComponentHeroSectionEditor from "../page-component-hero-section-editor/page-component-hero-section-editor";
 

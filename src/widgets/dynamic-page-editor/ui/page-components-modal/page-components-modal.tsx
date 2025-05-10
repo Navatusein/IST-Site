@@ -1,5 +1,4 @@
 import {Button, Flex, Modal, theme, Typography} from "antd";
-import {PageComponentRenderer} from "@/widgets/page-component-renderer";
 import {IBasePageComponent} from "@/entities/dynamic-page";
 import {Dispatch, SetStateAction} from "react";
 import { pageComponentExamples } from "../../types/type";

@@ -1,4 +1,4 @@
-import {Button, Card, Flex, Form, FormListFieldData, FormListOperation, Input, Typography} from "antd";
+import {Button, Card, Flex, Form, FormListFieldData, FormListOperation, Input} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 
 interface IProps {

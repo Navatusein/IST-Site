@@ -1,4 +1,4 @@
-import {Button, Card, Flex, Form, FormListFieldData, FormListOperation, Input, InputNumber, Typography} from "antd";
+import {Button, Card, Flex, Form, FormListFieldData, FormListOperation, Input, InputNumber} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import IconSelect from "../../../../features/icon-select/ui/icon-select/icon-select";
 

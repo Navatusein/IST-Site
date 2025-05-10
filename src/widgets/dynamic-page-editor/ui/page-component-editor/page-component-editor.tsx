@@ -1,4 +1,4 @@
-import {App, Button, Card, Flex, Modal, Segmented, theme, Tooltip} from "antd";
+import {App, Button, Card, Flex, Segmented, theme, Tooltip} from "antd";
 import {PageComponentRenderer} from "@/widgets/page-component-renderer";
 import {ArrowsAltOutlined, DeleteOutlined, EditOutlined, HolderOutlined, ShrinkOutlined,} from "@ant-design/icons";
 import {IBasePageComponent} from "@/entities/dynamic-page";

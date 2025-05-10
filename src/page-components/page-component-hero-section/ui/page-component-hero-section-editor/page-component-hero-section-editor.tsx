@@ -2,29 +2,11 @@ import {IBasePageComponent} from "@/entities/dynamic-page";
 import {useMemo} from "react";
 import {IHeroSectionPageComponent} from "../../types/type";
 import {PageComponentError} from "@/shared/ui-kit";
-import {
-  Button,
-  Card,
-  Col, Collapse,
-  Flex,
-  Form,
-  Image,
-  Input,
-  InputNumber,
-  Layout,
-  Row,
-  Space,
-  Statistic, Tabs, TabsProps,
-  theme,
-  Typography
-} from "antd";
-import {INews} from "@/entities/news";
+import {Flex, Form, Input, InputNumber, Tabs, TabsProps,} from "antd";
 import {SelectFileButton} from "@/features/select-file-button";
-import {MinusCircleOutlined, PlusOutlined} from "@ant-design/icons";
-import FormComponentFastLinks
-  from "@/page-components/page-component-hero-section/ui/form-component-fast-links/form-component-fast-links";
-import FormComponentStatistics
-  from "@/page-components/page-component-hero-section/ui/form-component-statistics/form-component-statistics";
+import FormComponentFastLinks from "../form-component-fast-links/form-component-fast-links";
+import FormComponentStatistics from "../form-component-statistics/form-component-statistics";
+
 
 interface IProps {
   componentProps: IBasePageComponent;

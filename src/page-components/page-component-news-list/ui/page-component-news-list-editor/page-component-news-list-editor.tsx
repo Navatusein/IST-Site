@@ -1,8 +1,8 @@
-import {useEffect, useMemo} from "react";
+import {useMemo} from "react";
 import {IBasePageComponent} from "@/entities/dynamic-page";
 import {PageComponentError} from "@/shared/ui-kit";
 import {INewsListPageComponent} from "../../types/type";
-import {Card, Col, Flex, Form, InputNumber, Row, Switch, Typography} from "antd";
+import {Flex, Form, InputNumber, Switch} from "antd";
 
 interface IProps {
   componentProps: IBasePageComponent;
