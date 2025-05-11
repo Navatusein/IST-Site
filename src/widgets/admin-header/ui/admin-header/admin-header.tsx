@@ -6,6 +6,7 @@ import {AdminSideMenuContext} from "@/shared/context/admin-side-menu-context/adm
 import {MenuFoldOutlined, MenuUnfoldOutlined} from "@ant-design/icons";
 import {actionSignOut} from "../../actions/actions";
 import {ThemeSwitcher} from "@/features/theme-switcher";
+import Link from "next/link";
 
 export default function AdminHeader() {
   const {token: {colorBgContainer}} = theme.useToken();
@@ -22,6 +23,11 @@ export default function AdminHeader() {
           style={{width: "48px", height: "48px"}}
         />
         <Space>
+          <Link style={{height: 32, display: "flex"}} href={"/home"}>
+            <Button>
+              Публічні сторінки
+            </Button>
+          </Link>
           <ThemeSwitcher/>
           <Button onClick={() => actionSignOut()}>
             Вихід

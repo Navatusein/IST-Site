@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import {redirect} from "next/navigation";
 import {INews} from "@/entities/news";
 import styles from "./news-card.module.scss";
+import Link from "next/link";
 
 interface IProps {
   news: INews;
@@ -24,12 +25,14 @@ export default function NewsCard(props: IProps) {
           <Typography.Text style={{flex: 1}}>
             {props.news.description}
           </Typography.Text>
-          <Button type="primary" onClick={() => redirect(`/news/${props.news.path}`)}>
-            Читати далі
-          </Button>
+          <Link href={`/news/${props.news.path}`}>
+            <Button type="primary" block>
+              Читати далі
+            </Button>
+          </Link>
         </Flex>
         <Flex className={styles.imageContainer}>
-          <Image src={`/files/${props.news.imagePath}`} width={500} style={{objectFit: "cover"}}/>
+          <Image src={`/files/${props.news.imagePath}`} style={{objectFit: "cover"}}/>
         </Flex>
       </Flex>
     </Card>

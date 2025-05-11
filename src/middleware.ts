@@ -3,12 +3,13 @@ import {permissions} from "@/shared/configs/permissions-config"
 import resolveRequirementPermission from "@/shared/utilities/resolve-requirement-permission";
 import {UserPermissionType} from "@/entities/user";
 import normalizeUrl from "normalize-url";
+import {notFound} from "next/navigation";
 
 export default auth(async (request) => {
   const {nextUrl, auth} = request;
 
   if (auth == null)
-    return Response.redirect(new URL("/sign-in", nextUrl));
+    return Response.redirect(new URL("/not-found", nextUrl));
 
   const requiredPermission = resolveRequirementPermission(permissions, nextUrl.pathname);
   const response = await fetch(

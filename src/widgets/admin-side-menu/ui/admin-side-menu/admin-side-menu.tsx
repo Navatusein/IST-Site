@@ -16,7 +16,7 @@ export default function AdminSideMenu() {
 
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const userPermissions = useUserPermissions();
+  const {userPermissions} = useUserPermissions();
 
   const menuItems = useMemo(() => {
     const items: MenuProps["items"]  = []
@@ -46,14 +46,20 @@ export default function AdminSideMenu() {
     setIsMenuClosed(true);
   });
 
-  // useEffect(() => {}, [isMobileWidth]);
+  const checkWindowSize = () => {
+    setIsMobileWidth(window.innerWidth < 599);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", checkWindowSize);
+    checkWindowSize();
+    return () => window.removeEventListener("resize", checkWindowSize);
+  }, []);
 
   return (
     <Sider
       ref={menuRef}
-      breakpoint="md"
       theme="light"
-      onBreakpoint={(broken) => {setIsMobileWidth(broken)}}
       collapsible
       collapsed={isMenuClosed}
       collapsedWidth={isMobileWidth ? "0px" : "64px"}

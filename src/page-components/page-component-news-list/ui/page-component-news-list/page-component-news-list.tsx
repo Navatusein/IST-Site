@@ -9,6 +9,7 @@ import {INews} from "@/entities/news";
 import {getNewsCountAction, getNewsPaginationAction} from "@/entities/news/actions/actions";
 import {NewsList} from "@/widgets/news-list";
 import {Button, Flex, Pagination} from "antd";
+import Link from "next/link";
 
 interface IProps {
   componentProps: IBasePageComponent;
@@ -50,7 +51,11 @@ export default function PageComponentNewsList(props: IProps) {
         <NewsList newsList={news}/>
         {typedComponentProps!.pagination ?
           <Pagination defaultCurrent={1} total={total} pageSize={typedComponentProps!.countDisplayed} onChange={changePage}/> :
-          <Button type="primary">Переглянути всі новини</Button>
+          <Link href={"/news"}>
+            <Button type="primary" block>
+              Переглянути всі новини
+            </Button>
+          </Link>
         }
       </Flex>
     </PageComponentError>

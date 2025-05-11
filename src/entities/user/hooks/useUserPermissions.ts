@@ -5,25 +5,27 @@ import {getUserByIdAction} from "@/entities/user/actions/actions";
 export const useUserPermissions = () => {
   const session = useSession();
 
-  const [permissions, setPermissions] = useState<string[]>([]);
+  const [userPermissions, setUserPermissions] = useState<string[]>([]);
+  const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log("useUserPermissions update");
-
     if (session.status === "loading" || session.status === "unauthenticated") {
-      setPermissions(() => []);
+      setUserPermissions(() => []);
+      setIsAuthorized(() => false);
       return;
     }
 
     if (session.data?.user == null) {
-      setPermissions(() => []);
+      setUserPermissions(() => []);
+      setIsAuthorized(() => false);
       return;
     }
     
     getUserByIdAction(session.data.user.id).then((user) => {
-      setPermissions(() => user?.permissions ?? []);
+      setUserPermissions(() => user?.permissions ?? []);
+      setIsAuthorized(() => true);
     })
   }, [session.status, session.data]);
 
-  return permissions;
+  return {isAuthorized, userPermissions};
 }

@@ -23,12 +23,13 @@ export default function PublicNavMenu(props: IProps) {
         children: menuItem.children ? mapToTreeData(menuItem.children) : undefined
       } as ItemType<MenuItemType>));
   }
+  const navMenuItems = useMemo(() => {
+    return mapToTreeData(props.menuItems);;
+  }, [props.menuItems]);
 
   const checkWindowSize = () => {
     setIsMobileWidth(() => window.innerWidth < 599);
   };
-
-  const navMenuItems = useMemo(() => mapToTreeData(props.menuItems), [props.menuItems]);
 
   useEffect(() => {
     window.addEventListener("resize", checkWindowSize);

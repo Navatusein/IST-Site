@@ -36,7 +36,7 @@ export default function PageComponentHeroSection(props: IProps) {
           src={`/files/${typedComponentProps!.imagePath}`}
           alt={typedComponentProps!.title}
           height={typedComponentProps!.imageHeight}
-          style={{objectFit: "cover", width: "100%", objectPosition: "50% 30%"}}
+          style={{objectFit: "cover", width: "100%", objectPosition: "50% bottom"}}
           sizes="100vw"
           width={0}
         />

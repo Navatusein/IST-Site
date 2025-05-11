@@ -1,10 +1,11 @@
 "use client"
 
 import {actionSignIn} from "../../actions/actions";
-import {App, Button, Card, Form, Input, Typography} from "antd";
+import {App, Button, Card, Flex, Form, Input, Typography} from "antd";
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
 import {redirect} from "next/navigation";
 import {useSession} from "next-auth/react";
+import { Icon } from "@/shared/ui-kit";
 
 interface IFormData {
   login: string;
@@ -49,40 +50,40 @@ export default function SignInForm() {
   }
 
   return (
-    <Card style={{width: 320, margin: "0 10px"}}>
-      <Typography.Title level={3} style={{textAlign: "center"}}>
-        Авторизація
-      </Typography.Title>
-      <Form name="sign-in" onFinish={onFormSubmit}>
-        <Form.Item
-          name="login"
-          rules={[{required: true, message: "Enter login"}]}
-        >
-          <Input
+    <Card style={{margin: "0 10px", maxWidth: 362}}>
+      <Flex vertical gap="large">
+        <Icon showText iconSize={64} rows={3}/>
+        <Form name="sign-in" onFinish={onFormSubmit}>
+          <Form.Item
             name="login"
-            type="login"
-            prefix={<UserOutlined/>}
-            placeholder="Логін"
-            autoComplete="login username email"
-          />
-        </Form.Item>
-        <Form.Item
-          name="password"
-          rules={[{required: true, message: "Enter password"}]}
-        >
-          <Input.Password
+            rules={[{required: true, message: "Введіть логін"}]}
+          >
+            <Input
+              name="login"
+              type="login"
+              prefix={<UserOutlined/>}
+              placeholder="Логін"
+              autoComplete="login username email"
+            />
+          </Form.Item>
+          <Form.Item
             name="password"
-            prefix={<LockOutlined/>}
-            placeholder="Пароль"
-            autoComplete="password"
-          />
-        </Form.Item>
-        <Form.Item style={{marginBottom: 0}}>
-          <Button block type="primary" htmlType="submit">
-            Увійти
-          </Button>
-        </Form.Item>
-      </Form>
+            rules={[{required: true, message: "Введіть пароль"}]}
+          >
+            <Input.Password
+              name="password"
+              prefix={<LockOutlined/>}
+              placeholder="Пароль"
+              autoComplete="password"
+            />
+          </Form.Item>
+          <Form.Item style={{marginBottom: 0}}>
+            <Button block type="primary" htmlType="submit">
+              Увійти
+            </Button>
+          </Form.Item>
+        </Form>
+      </Flex>
     </Card>
   );
 }

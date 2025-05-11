@@ -2,7 +2,11 @@ import {Flex, Image, Typography} from "antd";
 import {CSSProperties} from "react";
 
 interface IProps {
-  showText: boolean;
+  showText?: boolean;
+  iconSize?: number;
+  level?: 1|2|3|4|5;
+  rows?: number;
+  vertical?: boolean;
   style?: CSSProperties;
 }
 
@@ -11,13 +15,26 @@ export default function Icon(props: IProps) {
     <Flex
       align="center"
       gap="small"
-      style={{padding: "8px", height: "64px", overflow: "hidden", ...props.style}}
+      vertical={props.vertical}
+      style={{padding: "8px", overflow: "hidden", ...props.style}}
     >
-      <Image src="/icon.webp" preview={false} style={{width: "48px", height: "48px"}}/>
+      <Image src="/icon.webp" preview={false} style={{width: props.iconSize ?? "48px", height: props.iconSize ?? "48px"}}/>
       {props.showText &&
-        <Typography.Paragraph strong style={{margin: 0, textWrap: "wrap"}} ellipsis={{rows: 2}}>
-          КАФЕДРА ІНФОРМАЦІЙНИХ СИСТЕМ ТА ТЕХНОЛОГІЙ
-        </Typography.Paragraph>
+        props.level ?
+          <Typography.Title
+            level={props.level}
+            style={{margin: 0, textWrap: "wrap", textAlign: props.vertical ? "center" : "unset"}}
+            ellipsis={{rows: props.rows ?? 2}}
+          >
+            КАФЕДРА ІНФОРМАЦІЙНИХ СИСТЕМ ТА ТЕХНОЛОГІЙ
+          </Typography.Title> :
+          <Typography.Paragraph
+            strong
+            style={{margin: 0, textWrap: "wrap", textAlign: props.vertical ? "center" : "unset"}}
+            ellipsis={{rows: props.rows ?? 2}}
+          >
+            КАФЕДРА ІНФОРМАЦІЙНИХ СИСТЕМ ТА ТЕХНОЛОГІЙ
+          </Typography.Paragraph>
       }
     </Flex>
   )
