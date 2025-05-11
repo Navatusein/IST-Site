@@ -3,6 +3,30 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   serverExternalPackages: ["mongoose"],
   output: "standalone",
+  // modularizeImports: {
+  //   antd: {
+  //     transform: "antd/es/{{member}}",
+  //     preventFullImport: true,
+  //   },
+  //   "@ant-design/icons": {
+  //     transform: "@ant-design/icons/es/icons/{{member}}",
+  //     preventFullImport: true,
+  //   },
+  // },
+  // transpilePackages: [
+  //   "@ant-design/icons",
+  //   "antd",
+  // ],
+  // experimental: {
+  //   optimizePackageImports: [
+  //     "@ant-design/icons",
+  //     "antd",
+  //   ],
+  // },
+  compiler: {
+    reactRemoveProperties: true,
+    removeConsole: { exclude: ["error", "warn"] },
+  },
   devIndicators: {
     position: "top-left"
   },

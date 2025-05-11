@@ -1,6 +1,5 @@
 "use server"
 
-import {AntdRegistry} from "@ant-design/nextjs-registry";
 import {ReactNode} from "react";
 import {App, Layout} from "antd";
 import {ThemeProvider as NextThemeProvider} from "next-themes";
@@ -15,20 +14,18 @@ interface IProps {
 
 export default async function BaseLayout(props: IProps) {
   return (
-    <AntdRegistry>
-      <SessionProvider>
-       <NextThemeProvider>
-         <ThemeProvider defaultTheme={props.defaultTheme}>
-           <App>
-             <NuqsAdapter>
-               <Layout style={{minHeight: "100dvh"}}>
-                 {props.children}
-               </Layout>
-             </NuqsAdapter>
-           </App>
-         </ThemeProvider>
-       </NextThemeProvider>
-      </SessionProvider>
-    </AntdRegistry>
+    <SessionProvider>
+      <NextThemeProvider>
+        <ThemeProvider defaultTheme={props.defaultTheme}>
+          <App>
+            <NuqsAdapter>
+              <Layout style={{minHeight: "100dvh"}}>
+                {props.children}
+              </Layout>
+            </NuqsAdapter>
+          </App>
+        </ThemeProvider>
+      </NextThemeProvider>
+    </SessionProvider>
   );
 }

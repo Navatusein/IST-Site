@@ -6,6 +6,7 @@ import {ReactNode} from "react";
 import {BaseLayout} from "@/app/layouts/base-layout";
 import {Metadata} from "next";
 import {cookies} from "next/headers";
+import {AntdRegistry} from "@ant-design/nextjs-registry";
 
 interface IProps {
   children: ReactNode;
@@ -24,9 +25,11 @@ export default async function Layout(props: IProps) {
     <html lang="en" suppressHydrationWarning={true}>
       <body>
         <link rel="shortcut icon" href="/icon.webp"/>
-        <BaseLayout defaultTheme={defaultTheme as "light" | "dark"}>
-          {props.children}
-        </BaseLayout>
+        <AntdRegistry>
+          <BaseLayout defaultTheme={defaultTheme as "light" | "dark"}>
+            {props.children}
+          </BaseLayout>
+        </AntdRegistry>
       </body>
     </html>
   );

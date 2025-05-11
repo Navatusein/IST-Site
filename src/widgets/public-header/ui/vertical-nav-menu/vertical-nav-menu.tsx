@@ -1,3 +1,5 @@
+"use client"
+
 import {Button, Drawer, Menu, theme} from "antd";
 import {useState} from "react";
 import {ItemType, MenuItemType} from "antd/lib/menu/interface";

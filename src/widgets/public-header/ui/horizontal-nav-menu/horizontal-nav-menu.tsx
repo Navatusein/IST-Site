@@ -1,3 +1,5 @@
+"use client"
+
 import {Button, Flex, Menu} from "antd";
 import {ItemType, MenuItemType} from "antd/lib/menu/interface";
 import {ThemeSwitcher} from "@/features/theme-switcher";

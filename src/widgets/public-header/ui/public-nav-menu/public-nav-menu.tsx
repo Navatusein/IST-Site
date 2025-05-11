@@ -1,3 +1,5 @@
+"use client"
+
 import React, {useEffect, useMemo, useState} from "react";
 import {IPublicMenuItem} from "@/entities/public-menu-item";
 import {ItemType, MenuItemType} from "antd/lib/menu/interface";

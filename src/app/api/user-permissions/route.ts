@@ -3,7 +3,6 @@ import {getUserByIdAction} from "@/entities/user/actions/actions";
 export async function POST(request: Request) {
   try {
     const {id} = await request.json();
-
     const user = await getUserByIdAction(id);
 
     if (!user)

@@ -1,3 +1,5 @@
+"use client"
+
 import {Card, Col, Flex, Row, Statistic, StatisticProps, theme, Typography} from "antd";
 import {useMemo} from "react";
 import {IBasePageComponent} from "@/entities/dynamic-page";

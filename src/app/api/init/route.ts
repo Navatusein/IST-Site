@@ -4,7 +4,6 @@ import {IUser, UserModel} from "@/entities/user";
 export async function GET() {
   try {
     const connection = await mongoDbConnect();
-
     const usersCount = await UserModel.countDocuments();
 
     if (usersCount == 0) {

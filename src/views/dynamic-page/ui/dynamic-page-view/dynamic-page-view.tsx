@@ -1,21 +1,20 @@
 "use client"
 
-import {PageComponentRenderer} from "@/widgets/page-component-renderer";
 import {IDynamicPage} from "@/entities/dynamic-page";
-import {Flex, theme} from "antd";
+import dynamic from "next/dynamic";
+import {Loader} from "@/shared/ui-kit";
 
 interface IProps {
   page: IDynamicPage
 }
 
-export default function DynamicPageView(props: IProps) {
-  const {token: {padding}} = theme.useToken();
+const DynamicPageRenderer = dynamic(() => import("@/views/dynamic-page/ui/dynamic-page-dynamic-view/dynamic-page-renderer"), {
+  ssr: false,
+  loading: () => <Loader/>
+});
 
+export default function DynamicPageView(props: IProps) {
   return (
-    <Flex vertical gap="middle" style={{marginBottom: padding}}>
-      {props.page.components.map((component, index) => (
-        <PageComponentRenderer propsClass={component} key={`component-${index}`}/>
-      ))}
-    </Flex>
+    <DynamicPageRenderer page={props.page}/>
   )
 }

@@ -1,3 +1,5 @@
+"use client"
+
 import {useEffect, useMemo, useState} from "react";
 import {IBasePageComponent} from "@/entities/dynamic-page";
 import {PageComponentError} from "@/shared/ui-kit";

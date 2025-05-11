@@ -2,13 +2,17 @@
 
 import {Layout} from "antd";
 import {ReactNode} from "react";
-import {PublicHeader} from "@/widgets/public-header";
 import {IPublicMenuItem} from "@/entities/public-menu-item";
+import dynamic from "next/dynamic";
 
 interface IProps {
   children: ReactNode;
   menuItems: IPublicMenuItem[]
 }
+
+const PublicHeader = dynamic(() => import("@/widgets/public-header/ui/public-header/public-header"), {
+  ssr: false
+});
 
 export default function PublicPageLayout(props: IProps) {
   return (
