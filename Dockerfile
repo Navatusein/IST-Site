@@ -21,6 +21,9 @@ RUN npm run build
 FROM base AS runner
 WORKDIR /app
 
+RUN apk add --no-cache bash su-exec
+RUN apk add --update tini
+
 ENV NODE_ENV=production
 
 ENV PORT=80
@@ -46,8 +49,6 @@ COPY --from=builder --chown=${USER}:${GROUP} /app/.next/standalone ./
 COPY --from=builder --chown=${USER}:${GROUP} /app/.next/static ./.next/static
 
 COPY entrypoint.sh /entrypoint.sh
-
-USER nextjs
 
 EXPOSE ${PORT}
 

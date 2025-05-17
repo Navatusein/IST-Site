@@ -1,4 +1,4 @@
 #!/bin/sh
 
 chown -R $UID:$GID /app/public/files
-exec node server.js
+exec su-exec $UID:$GID node server.js
