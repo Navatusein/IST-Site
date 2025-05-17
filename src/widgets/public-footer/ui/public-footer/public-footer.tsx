@@ -1,5 +1,6 @@
 import {Card, Col, Flex, Layout, Row, Typography, theme, Button, Divider} from "antd";
 import {FacebookFilled, InstagramFilled, LinkedinFilled} from "@ant-design/icons";
+import Link from "next/link";
 
 interface IProps {
 
@@ -48,7 +49,7 @@ export default function PublicFooter(props: IProps) {
                     <Typography.Text strong style={{textAlign: "center"}}>
                       Телефон:
                     </Typography.Text>
-                    <Typography.Link href={"tel: +38 044 521 33 56"}>
+                    <Typography.Link href={"tel:+380445213356"}>
                       +38 044 521 33 56
                     </Typography.Link>
                   </Flex>
@@ -56,15 +57,18 @@ export default function PublicFooter(props: IProps) {
                     <Typography.Text strong style={{textAlign: "center"}}>
                       Email:
                     </Typography.Text>
-                    <Typography.Link href={"email: ist@fit.knu.ua"}>
+                    <Typography.Link href={"mailto:ist@fit.knu.ua"}>
                       ist@fit.knu.ua
                     </Typography.Link>
                   </Flex>
                 </Flex>
                 <Flex gap="small">
-                  <Button icon={<FacebookFilled/>}/>
-                  <Button icon={<InstagramFilled/>}/>
-                  <Button icon={<LinkedinFilled/>}/>
+                  <Link href={"https://www.facebook.com/ist.knu.ua"}>
+                    <Button icon={<FacebookFilled/>}/>
+                  </Link>
+                  <Link href={"https://www.instagram.com/ist.fit.knu/"}>
+                    <Button icon={<InstagramFilled/>}/>
+                  </Link>
                 </Flex>
               </Flex>
             </Card>
