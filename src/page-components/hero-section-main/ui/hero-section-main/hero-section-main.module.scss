@@ -1,0 +1,48 @@
+.titleBaseContainer {
+  position: relative;
+}
+
+.image {
+  object-fit: cover;
+  object-position: 50% 40%;
+  filter: brightness(0.7);
+}
+
+.titleFlexContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+}
+
+.titleTypography {
+  text-align: center;
+  color: var(--ant-color-text-light-solid) !important;
+  margin: 0 !important;
+}
+
+.textFlexContainer {
+  padding: var(--ant-padding-lg) 0 !important;
+  height: 100%;
+
+  @include respond-below(lg) {
+    padding: 0 !important;
+  }
+}
+
+.textCardContainer {
+  @include respond-below(lg) {
+    border-radius: 0;
+  }
+}
+
+.fastLinkFlexContainer {
+  gap: var(--ant-padding-xs);
+  padding: calc(var(--ant-padding-lg) * 2) 0 !important;
+
+  @include respond-below(lg) {
+    gap: 2px;
+    padding: unset !important;
+  }
+}

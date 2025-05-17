@@ -1,11 +1,13 @@
-"use server"
+"use client"
 
-import {Card} from "antd";
+import {Typography} from "antd";
 
-export default async function Page() {
+export default function Page() {
   return (
-    <Card variant="borderless">
-      Admin
-    </Card>
+    <>
+      <Typography.Title level={3}>
+        Ласкаво просимо в адмінпанель, оберіть модуль, яких хочете скористатися.
+      </Typography.Title>
+    </>
   );
 }

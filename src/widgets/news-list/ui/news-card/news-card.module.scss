@@ -7,8 +7,20 @@
   }
 }
 
-.textContentFlex {
+.textFlexContainer {
   flex: 1;
+
+  .titleFlexContainer{
+    order: -1;
+
+    .titleTypography {
+      margin: 0 !important;
+    }
+  }
+
+  .textTypography {
+    flex: 1;
+  }
 
   @include respond-below(sm) {
     display: contents !important;
@@ -17,6 +29,10 @@
 
 .imageContainer {
   width: 300px;
+
+  .image {
+    object-fit: cover;
+  }
 
   @include respond-below(sm) {
     width: 100%;

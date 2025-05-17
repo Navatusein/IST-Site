@@ -32,7 +32,7 @@ export default function NewsCrudForm(props: IProps) {
         style={{marginBottom: 0}}
         rules={[{required: true, message: "Введіть заголовок новини!"}]}
       >
-        <Input/>
+        <Input.TextArea rows={2}/>
       </Form.Item>
       <Form.Item<INews>
         label="Опис"
@@ -41,7 +41,7 @@ export default function NewsCrudForm(props: IProps) {
         style={{marginBottom: 0}}
         rules={[{required: true, message: "Введіть опис новини!"}]}
       >
-        <Input/>
+        <Input.TextArea rows={5}/>
       </Form.Item>
       <Form.Item<INews>
         label="Шлях"

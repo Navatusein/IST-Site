@@ -6,14 +6,13 @@ import {ItemType, MenuItemType} from "antd/lib/menu/interface";
 import Link from "next/link";
 import VerticalNavMenu from "../vertical-nav-menu/vertical-nav-menu";
 import HorizontalNavMenu from "../horizontal-nav-menu/horizontal-nav-menu";
+import {useMediaQuery} from "react-responsive";
 
 interface IProps {
   menuItems: IPublicMenuItem[]
 }
 
 export default function PublicNavMenu(props: IProps) {
-  const [isMobileWidth, setIsMobileWidth] = useState<boolean>(false);
-
   const mapToTreeData = (menuItems: IPublicMenuItem[]): ItemType<MenuItemType>[] => {
     return menuItems
       .sort((a, b) => (a.index - b.index))
@@ -24,18 +23,10 @@ export default function PublicNavMenu(props: IProps) {
       } as ItemType<MenuItemType>));
   }
   const navMenuItems = useMemo(() => {
-    return mapToTreeData(props.menuItems);;
+    return mapToTreeData(props.menuItems);
   }, [props.menuItems]);
 
-  const checkWindowSize = () => {
-    setIsMobileWidth(() => window.innerWidth < 599);
-  };
-
-  useEffect(() => {
-    window.addEventListener("resize", checkWindowSize);
-    checkWindowSize();
-    return () => window.removeEventListener("resize", checkWindowSize);
-  }, []);
+  const isMobileWidth = useMediaQuery({maxWidth: 992})
 
   return (
     <>

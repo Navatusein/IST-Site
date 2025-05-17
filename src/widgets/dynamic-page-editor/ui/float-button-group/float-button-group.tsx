@@ -12,7 +12,7 @@ export default function FloatButtonGroup(props: IProps) {
   }
 
   const scrollToBottom = () => {
-    window.scrollTo({top: window.innerHeight, behavior: "smooth"})
+    window.scrollTo({top: 9999999, behavior: "smooth"})
   }
 
   const openDrawer = () => {

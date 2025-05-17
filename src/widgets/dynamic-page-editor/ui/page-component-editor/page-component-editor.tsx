@@ -59,8 +59,8 @@ export default function PageComponentEditor(props: IProps) {
             <Tooltip title="Змінити розмір блоку">
               <Segmented
                 options={[
-                  {value: "large", icon: <ArrowsAltOutlined/>, label: "Великий"},
-                  {value: "medium", icon: <ShrinkOutlined/>, label: "Середній"}
+                  {value: "large", icon: <ArrowsAltOutlined/>, label: "Великий", disabled: props.component.allowedWidth == "medium"},
+                  {value: "medium", icon: <ShrinkOutlined/>, label: "Середній", disabled: props.component.allowedWidth == "large"}
                 ]}
                 value={props.component.width}
                 onChange={(value) => props.updateComponent({...props.component, width: value as never}, props.index)}

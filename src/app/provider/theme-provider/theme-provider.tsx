@@ -4,7 +4,7 @@ import {ReactNode, useEffect, useMemo} from "react";
 import {ConfigProvider, theme as antTheme} from "antd";
 import {ThemeConfig} from "antd/lib";
 import {useTheme} from "next-themes";
-import {themeTokens} from "@/shared/configs/theme-tokens";
+import {themeGlobalTokens, themeLightTokens, themeDarkTokens} from "@/shared/configs/theme-tokens";
 import "dayjs/locale/uk";
 import dayjs from "dayjs";
 
@@ -27,7 +27,7 @@ export default function ThemeProvider(props: IProps) {
       algorithm: (theme ?? props.defaultTheme) == "light" ? defaultAlgorithm : darkAlgorithm,
       cssVar: true,
       hashed: true,
-      token: themeTokens
+      token: {...themeGlobalTokens, ...((theme ?? props.defaultTheme) == "light" ? themeLightTokens : themeDarkTokens)}
     }
   }, [props.defaultTheme, theme]);
 

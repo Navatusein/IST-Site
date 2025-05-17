@@ -1,0 +1,18 @@
+.container {
+  justify-content: flex-start !important;
+  padding: calc(var(--ant-padding-lg) * 2);
+  border-radius: var(--ant-border-radius-lg) 0 0 var(--ant-border-radius-lg);
+  background-color: var(--ant-color-primary);
+  height: 100%;
+
+  @include respond-below(lg) {
+    padding: var(--ant-padding-lg);
+    border-radius: 0;
+  }
+}
+
+.typography {
+  text-align: left !important;
+  margin: 0 !important;
+  color: var(--ant-color-text-light-solid) !important;
+}

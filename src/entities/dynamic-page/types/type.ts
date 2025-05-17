@@ -1,6 +1,6 @@
 import {Document} from "mongoose";
 
-export type PageComponentType = "text"|"hero-section"|"news-list"|"title";
+export type PageComponentType = "title"|"markdown-text"|"hero-section-main"|"news-list";
 
 export type PageComponentWidth = "large"|"medium";
 
@@ -8,6 +8,7 @@ export interface IBasePageComponent {
   id: string;
   type: PageComponentType;
   width: PageComponentWidth;
+  allowedWidth?: PageComponentWidth;
 }
 
 export interface IDynamicPage extends Document {

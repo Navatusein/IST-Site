@@ -1,8 +1,14 @@
-"use server"
+"use client"
 
-import Component from "@/app/(router)/(public-pages)/test/component/component";
+import dynamic from "next/dynamic";
+import Component from "./component/component";
 
-export default async function Page() {
+
+// const Component = dynamic(() => import("@/app/(router)/(public-pages)/test/component/component"), {
+//   ssr: false
+// });
+
+export default function Page() {
   return (
     <Component/>
   )
