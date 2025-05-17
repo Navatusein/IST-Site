@@ -43,7 +43,6 @@ COPY --from=builder /app/public ./public
 RUN mkdir -p /app/public/files && \
     chown ${USER}:${GROUP} /app/public/files
 
-VOLUME /app/public/files
 
 COPY --from=builder --chown=${USER}:${GROUP} /app/.next/standalone ./
 COPY --from=builder --chown=${USER}:${GROUP} /app/.next/static ./.next/static
