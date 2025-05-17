@@ -11,7 +11,7 @@ export const getPublicMenuItemsAction = createServerAction<IPublicMenuItem[]>(as
 });
 
 export const getPublicMenuItemsTreeAction = createServerAction<IPublicMenuItem[]>(async () => {
-  const items = await PublicMenuItemModel.find<IPublicMenuItem>({})
+  const items = toPlainObject<IPublicMenuItem[]>(await PublicMenuItemModel.find<IPublicMenuItem>({}));
 
   const lookup = new Map(items.map(item => [item._id, item]));
 
