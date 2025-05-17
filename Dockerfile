@@ -36,6 +36,8 @@ VOLUME /app/public/files
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+COPY entrypoint.sh /entrypoint.sh
+
 USER nextjs
 
 EXPOSE 80
