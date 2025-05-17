@@ -4,6 +4,7 @@ import {Layout} from "antd";
 import {ReactNode} from "react";
 import {IPublicMenuItem} from "@/entities/public-menu-item";
 import dynamic from "next/dynamic";
+import {PublicFooter} from "@/widgets/public-footer";
 
 interface IProps {
   children: ReactNode;
@@ -21,6 +22,7 @@ export default function PublicPageLayout(props: IProps) {
       <Layout.Content style={{overflow: "hidden"}}>
         {props.children}
       </Layout.Content>
+      <PublicFooter/>
     </Layout>
   )
 }
