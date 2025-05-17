@@ -23,26 +23,32 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+ENV PORT=80
+ENV HOSTNAME="0.0.0.0"
+
+ENV USER=nextjs
+ENV GROUP=nodejs
+
+ENV GID=1001
+ENV UID=1001
+
+RUN addgroup --system --gid ${GID} nodejs
+RUN adduser --system --uid ${UID} nextjs
 
 COPY --from=builder /app/public ./public
 
 RUN mkdir -p /app/public/files && \
-    chown nextjs:nodejs /app/public/files
+    chown ${USER}:${GROUP} /app/public/files
 
 VOLUME /app/public/files
 
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=${USER}:${GROUP} /app/.next/standalone ./
+COPY --from=builder --chown=${USER}:${GROUP} /app/.next/static ./.next/static
 
 COPY entrypoint.sh /entrypoint.sh
 
 USER nextjs
 
-EXPOSE 80
-
-ENV PORT=80
-ENV HOSTNAME="0.0.0.0"
+EXPOSE ${PORT}
 
 ENTRYPOINT ["/bin/sh", "/entrypoint.sh"]
