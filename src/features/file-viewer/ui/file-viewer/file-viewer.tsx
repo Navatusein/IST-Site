@@ -12,6 +12,7 @@ import {
   RollbackOutlined,
   VideoCameraOutlined
 } from "@ant-design/icons";
+import {useServerAction} from "@/shared/hooks/use-server-action";
 
 interface IProps {
   selectorType?: "radio" | "checkbox";
@@ -107,7 +108,7 @@ export default function FileViewer(props: IProps) {
   useEffect(() => {
     setLoading(() => true);
 
-    getFilesAction(props.currentPath)
+    useServerAction(getFilesAction(props.currentPath))
       .then((data) => {
         const filteredData = data.filter(x => {
           return props.filter != null ? ["directory", ...props.filter].includes(x.type) : true;

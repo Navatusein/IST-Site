@@ -4,6 +4,7 @@ import {App, Button, Input, InputRef, Tooltip} from "antd";
 import {Dispatch, SetStateAction, useRef} from "react";
 import {createDirectoryAction} from "@/shared/services/file-manager-service/actions/actions";
 import {FolderAddOutlined} from "@ant-design/icons";
+import {useServerAction} from "@/shared/hooks/use-server-action";
 
 interface IProps {
   currentPath: string;
@@ -18,7 +19,7 @@ export default function CreateFolderButton(props: IProps) {
   const createFolder = () => {
     const directoryName = directoryNameInput.current?.input?.value.trim() ?? "";
 
-    createDirectoryAction(props.currentPath, directoryName)
+    useServerAction(createDirectoryAction(props.currentPath, directoryName))
       .then(() => {
         notification.success({message: "Папку стоврено успішно",});
         setTimeout(() => {

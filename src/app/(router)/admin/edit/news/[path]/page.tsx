@@ -4,6 +4,7 @@ import {notFound} from "next/navigation";
 import {getNewsByPathAction} from "@/entities/news/actions/actions";
 import {NewsView} from "@/views/news";
 import {AdminEditNewsView} from "@/views/admin-edit-news";
+import {useServerAction} from "@/shared/hooks/use-server-action";
 
 
 interface IProps {
@@ -15,7 +16,7 @@ interface IProps {
 export default async function Page(props: IProps) {
   const {path} = await props.params;
 
-  const news = await getNewsByPathAction(path);
+  const news = await useServerAction(getNewsByPathAction(path));
 
   if (!news)
     notFound();

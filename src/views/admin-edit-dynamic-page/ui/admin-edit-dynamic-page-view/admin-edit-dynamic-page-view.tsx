@@ -4,6 +4,7 @@ import {IBasePageComponent, IDynamicPage} from "@/entities/dynamic-page";
 import {DynamicPageEditor} from "@/widgets/dynamic-page-editor";
 import {useEffect, useState} from "react";
 import {updateDynamicPageAction} from "@/entities/dynamic-page/actions/actions";
+import {useServerAction} from "@/shared/hooks/use-server-action";
 
 interface IProps {
   page: IDynamicPage
@@ -23,7 +24,7 @@ export default function AdminEditDynamicPageView(props: IProps) {
   }
 
   const saveComponents = async () => {
-    await updateDynamicPageAction(page);
+    await useServerAction(updateDynamicPageAction(page));
   }
 
   return (

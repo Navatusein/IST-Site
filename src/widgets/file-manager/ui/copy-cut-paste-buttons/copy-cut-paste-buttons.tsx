@@ -2,6 +2,7 @@ import {Dispatch, Key, SetStateAction} from "react";
 import {App, Button, Space, Tooltip} from "antd";
 import {moveOrCopyFilesAction} from "@/shared/services/file-manager-service/actions/actions";
 import {CloseSquareOutlined, CopyOutlined, ImportOutlined, ScissorOutlined} from "@ant-design/icons";
+import {useServerAction} from "@/shared/hooks/use-server-action";
 
 interface IProps {
   currentPath: string;
@@ -18,7 +19,7 @@ export default function CopyCutPasteButtons(props: IProps) {
   const {notification} = App.useApp();
 
   const pasteFromMemory = () => {
-    moveOrCopyFilesAction(props.currentPath, props.filesInMemory, props.filesInMemoryCut)
+    useServerAction(moveOrCopyFilesAction(props.currentPath, props.filesInMemory, props.filesInMemoryCut))
       .then(() => {
         notification.success({message: "Успішно файли вставлено"});
         props.setFilesInMemory(() => []);

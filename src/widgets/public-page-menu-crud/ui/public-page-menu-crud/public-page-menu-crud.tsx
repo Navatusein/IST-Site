@@ -5,6 +5,7 @@ import {useState} from "react";
 import {CrudComponent} from "@/widgets/crud-component";
 import PublicPageMenuCrudForm from "../public-page-menu-crud-form/public-page-menu-crud-form";
 import {addPublicMenuItemAction, removePublicMenuItemsAction, updatePublicMenuItemAction} from "@/entities/public-menu-item/actions/actions";
+import {useServerAction} from "@/shared/hooks/use-server-action";
 
 interface IProps {
   menuItems: IPublicMenuItem[]
@@ -53,15 +54,15 @@ export default function PublicPageMenuCrud(props: IProps) {
   const [selectedRows, setSelectedRows] = useState<IPublicMenuItem[]>([]);
 
   const create = async (data: IPublicMenuItem) => {
-    await addPublicMenuItemAction({...data, _id: null} as IPublicMenuItem);
+    await useServerAction(addPublicMenuItemAction({...data, _id: null} as IPublicMenuItem));
   }
 
   const update = async (data: IPublicMenuItem) => {
-    await updatePublicMenuItemAction(data);
+    await useServerAction(updatePublicMenuItemAction(data));
   }
 
   const remove = async (data: IPublicMenuItem[]) => {
-    await removePublicMenuItemsAction(data);
+    await useServerAction(removePublicMenuItemsAction(data));
   }
 
   const refresh = () => {

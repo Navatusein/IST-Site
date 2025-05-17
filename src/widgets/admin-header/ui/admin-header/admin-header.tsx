@@ -7,6 +7,7 @@ import {MenuFoldOutlined, MenuUnfoldOutlined} from "@ant-design/icons";
 import {actionSignOut} from "../../actions/actions";
 import {ThemeSwitcher} from "@/features/theme-switcher";
 import Link from "next/link";
+import {useServerAction} from "@/shared/hooks/use-server-action";
 
 export default function AdminHeader() {
   const {token: {colorBgContainer}} = theme.useToken();
@@ -29,7 +30,7 @@ export default function AdminHeader() {
             </Button>
           </Link>
           <ThemeSwitcher/>
-          <Button onClick={() => actionSignOut()}>
+          <Button onClick={() => useServerAction(actionSignOut())}>
             Вихід
           </Button>
         </Space>

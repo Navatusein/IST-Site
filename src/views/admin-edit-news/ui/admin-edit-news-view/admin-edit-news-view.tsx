@@ -5,6 +5,7 @@ import {IBasePageComponent} from "@/entities/dynamic-page";
 import {INews} from "@/entities/news";
 import {DynamicPageEditor} from "@/widgets/dynamic-page-editor";
 import {updateNewsAction} from "@/entities/news/actions/actions";
+import {useServerAction} from "@/shared/hooks/use-server-action";
 
 interface IProps {
   news: INews;
@@ -24,7 +25,7 @@ export default function AdminEditNewsView(props: IProps) {
   }
 
   const saveComponents = async () => {
-    await updateNewsAction(news);
+    await useServerAction(updateNewsAction(news));
   }
 
   return (

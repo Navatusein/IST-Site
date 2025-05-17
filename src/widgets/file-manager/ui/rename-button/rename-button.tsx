@@ -2,6 +2,7 @@ import {App, Button, Input, InputRef, Tooltip} from "antd";
 import {Dispatch, Key, SetStateAction, useRef} from "react";
 import {renameAction} from "@/shared/services/file-manager-service/actions/actions";
 import {FormOutlined} from "@ant-design/icons";
+import {useServerAction} from "@/shared/hooks/use-server-action";
 
 interface IProps {
   selectedRowKeys: Key[],
@@ -17,7 +18,7 @@ export default function RenameButton(props: IProps) {
   const createFolder = () => {
     const newName = newNameInput.current?.input?.value.trim() ?? "";
 
-    renameAction(props.selectedRowKeys[0] as string, newName)
+    useServerAction(renameAction(props.selectedRowKeys[0] as string, newName))
       .then(() => {
         notification.success({message: "Успішне перейменування"});
         props.setSelectedRowKeys(() => []);

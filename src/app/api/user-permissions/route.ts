@@ -1,9 +1,10 @@
 import {getUserByIdAction} from "@/entities/user/actions/actions";
+import {useServerAction} from "@/shared/hooks/use-server-action";
 
 export async function POST(request: Request) {
   try {
     const {id} = await request.json();
-    const user = await getUserByIdAction(id);
+    const user = await useServerAction(getUserByIdAction(id));
 
     if (!user)
       return new Response("No such user", {status: 404});

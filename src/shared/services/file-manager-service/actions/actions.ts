@@ -2,31 +2,32 @@
 
 import {IDirectory, IFile} from "@/shared/services/file-manager-service/types/type";
 import {FileManagerService} from "@/shared/services/file-manager-service/file-manager-service";
+import {createServerAction} from "@/shared/utilities/create-server-action";
 
-export async function getFilesAction(currentPath: string): Promise<(IFile | IDirectory)[]> {
+export const getFilesAction = createServerAction<(IFile | IDirectory)[]>(async (currentPath: string) => {
   return FileManagerService.getFiles(currentPath);
-}
+});
 
-export async function uploadFilesAction(currentPath: string, file: File): Promise<void> {
+export const uploadFilesAction = createServerAction<void>(async (currentPath: string, file: File) => {
   return FileManagerService.uploadFileAsync(currentPath, file);
-}
+});
 
-export async function deleteFilesAction(paths: string[]): Promise<void> {
+export const deleteFilesAction = createServerAction<void>(async (paths: string[]) => {
   return FileManagerService.deleteFiles(paths);
-}
+});
 
-export async function createDirectoryAction(currentPath: string, folderName: string): Promise<void> {
+export const createDirectoryAction = createServerAction<void>(async (currentPath: string, folderName: string) => {
   return FileManagerService.createDirectory(currentPath, folderName);
-}
+});
 
-export async function moveOrCopyFilesAction(targetDirectoryPath: string, files: string[], cut: boolean): Promise<void> {
+export const moveOrCopyFilesAction = createServerAction<void>(async (targetDirectoryPath: string, files: string[], cut: boolean) => {
   return FileManagerService.moveOrCopyFiles(targetDirectoryPath, files, cut);
-}
+});
 
-export async function renameAction(relativePath: string, newName: string): Promise<void> {
+export const renameAction = createServerAction<void>(async (relativePath: string, newName: string) => {
   return FileManagerService.rename(relativePath, newName);
-}
+});
 
-export async function isDirectoryAction(relativePath: string): Promise<boolean> {
+export const isDirectoryAction = createServerAction<boolean>(async (relativePath: string) => {
   return FileManagerService.isDirectory(relativePath);
-}
+});

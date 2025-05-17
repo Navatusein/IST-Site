@@ -1,6 +1,7 @@
 import {useSession} from "next-auth/react";
 import {useEffect, useState} from "react";
 import {getUserByIdAction} from "@/entities/user/actions/actions";
+import {useServerAction} from "@/shared/hooks/use-server-action";
 
 export const useUserPermissions = () => {
   const session = useSession();
@@ -20,11 +21,12 @@ export const useUserPermissions = () => {
       setIsAuthorized(() => false);
       return;
     }
-    
-    getUserByIdAction(session.data.user.id).then((user) => {
-      setUserPermissions(() => user?.permissions ?? []);
-      setIsAuthorized(() => true);
-    })
+
+    useServerAction(getUserByIdAction(session.data.user.id))
+      .then((user) => {
+        setUserPermissions(() => user?.permissions ?? []);
+        setIsAuthorized(() => true);
+      })
   }, [session.status, session.data]);
 
   return {isAuthorized, userPermissions};

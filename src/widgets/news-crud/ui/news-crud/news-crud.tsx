@@ -7,6 +7,7 @@ import {FormOutlined} from "@ant-design/icons";
 import {addNewsAction, removeNewsAction, updateNewsAction} from "@/entities/news/actions/actions";
 import NewsCrudForm from "../news-crud-form/news-crud-form";
 import dayjs from "dayjs";
+import {useServerAction} from "@/shared/hooks/use-server-action";
 
 interface IProps {
   news: INews[];
@@ -68,15 +69,15 @@ export default function NewsCrud(props: IProps) {
   const [selectedRows, setSelectedRows] = useState<INews[]>([]);
 
   const create = async (data: INews) => {
-    await addNewsAction({...data, _id: null, date: dayjs(data.date).toISOString()} as INews);
+    await useServerAction(addNewsAction({...data, _id: null, date: dayjs(data.date).toISOString()} as INews));
   }
 
   const update = async (data: INews) => {
-    await updateNewsAction({...data, date: dayjs(data.date).toISOString()} as INews);
+    await useServerAction(updateNewsAction({...data, date: dayjs(data.date).toISOString()} as INews));
   }
 
   const remove = async (data: INews[]) => {
-    await removeNewsAction(data);
+    await useServerAction(removeNewsAction(data));
   }
 
   const refresh = () => {

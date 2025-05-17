@@ -12,6 +12,7 @@ import {
 } from "@/entities/user/actions/actions";
 import PasswordModal from "@/widgets/user-crud/ui/password-modal/password-modal";
 import {FormOutlined} from "@ant-design/icons";
+import {useServerAction} from "@/shared/hooks/use-server-action";
 
 interface IProps {
   users: IUser[];
@@ -75,15 +76,15 @@ export default function UserCrud(props: IProps) {
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState<boolean>(false);
 
   const create = async (data: IUser) => {
-    await addUserAction({...data, _id: null} as IUser);
+    await useServerAction(addUserAction({...data, _id: null} as IUser));
   }
 
   const update = async (data: IUser) => {
-    await updateUserAction(data);
+    await useServerAction(updateUserAction(data));
   }
 
   const remove = async (data: IUser[]) => {
-    await removeUsersAction(data);
+    await useServerAction(removeUsersAction(data));
   }
 
   const refresh = () => {

@@ -1,11 +1,12 @@
 "use client"
 
 import {actionSignIn} from "../../actions/actions";
-import {App, Button, Card, Flex, Form, Input, Typography} from "antd";
+import {App, Button, Card, Flex, Form, Input} from "antd";
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
 import {redirect} from "next/navigation";
 import {useSession} from "next-auth/react";
-import { Icon } from "@/shared/ui-kit";
+import {Icon} from "@/shared/ui-kit";
+import {useServerAction} from "@/shared/hooks/use-server-action";
 
 interface IFormData {
   login: string;
@@ -20,7 +21,7 @@ export default function SignInForm() {
   const onFormSubmit = async (data: IFormData) => {
     let redirectPath: string | null = null
 
-    actionSignIn(data.login, data.password)
+    useServerAction(actionSignIn(data.login, data.password))
       .then((data) => {
         update();
 

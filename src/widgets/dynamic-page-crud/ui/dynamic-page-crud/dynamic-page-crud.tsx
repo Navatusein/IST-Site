@@ -10,6 +10,7 @@ import {
 import {redirect, RedirectType, useRouter} from "next/navigation";
 import DynamicPageCrudForm from "../dynamic-page-crud-form/dynamic-page-crud-form";
 import {FormOutlined} from "@ant-design/icons";
+import {useServerAction} from "@/shared/hooks/use-server-action";
 
 interface IProps {
   pages: IDynamicPage[]
@@ -55,15 +56,15 @@ export default function DynamicPageCrud(props: IProps) {
   const [selectedRows, setSelectedRows] = useState<IDynamicPage[]>([]);
 
   const create = async (data: IDynamicPage) => {
-    await addDynamicPageAction({...data, _id: null} as IDynamicPage);
+    await useServerAction(addDynamicPageAction({...data, _id: null} as IDynamicPage));
   }
 
   const update = async (data: IDynamicPage) => {
-    await updateDynamicPageAction(data);
+    await useServerAction(updateDynamicPageAction(data));
   }
 
   const remove = async (data: IDynamicPage[]) => {
-    await removeDynamicPagesAction(data);
+    await useServerAction(removeDynamicPagesAction(data));
   }
 
   const refresh = () => {

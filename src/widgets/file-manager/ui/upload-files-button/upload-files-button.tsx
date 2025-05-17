@@ -5,6 +5,7 @@ import {uploadFilesAction} from "@/shared/services/file-manager-service/actions/
 import type {UploadRequestOption} from "rc-upload/lib/interface";
 import {Dispatch, SetStateAction} from "react";
 import {CloudUploadOutlined, UploadOutlined} from "@ant-design/icons";
+import {useServerAction} from "@/shared/hooks/use-server-action";
 
 interface IProps {
   currentPath: string;
@@ -17,7 +18,7 @@ export default function UploadFilesButton(props: IProps) {
   const uploadFile = (options: UploadRequestOption<any>) => {
     const file = options.file as File;
 
-    uploadFilesAction(props.currentPath, file)
+    useServerAction(uploadFilesAction(props.currentPath, file))
       .then(() => {
         notification.success({message: "Файл завантажено успішно", description: file.name});
         setTimeout(() => {

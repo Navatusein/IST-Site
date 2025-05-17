@@ -4,6 +4,7 @@ import {App, Button, Popconfirm, Tooltip} from "antd";
 import {Dispatch, Key, SetStateAction} from "react";
 import {deleteFilesAction} from "@/shared/services/file-manager-service/actions/actions";
 import {DeleteOutlined} from "@ant-design/icons";
+import {useServerAction} from "@/shared/hooks/use-server-action";
 
 interface IProps {
   selectedRowKeys: Key[],
@@ -21,7 +22,7 @@ export default function DeleteFilesButton(props: IProps) {
       okText: "Так",
       cancelText: "Ні",
       onOk: () => {
-        deleteFilesAction(props.selectedRowKeys as string[])
+        useServerAction(deleteFilesAction(props.selectedRowKeys as string[]))
           .then(() => {
             notification.success({message: "Файли видалено успішно",});
             props.setSelectedRowKeys([]);

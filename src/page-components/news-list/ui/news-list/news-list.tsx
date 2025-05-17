@@ -8,6 +8,7 @@ import {getNewsCountAction, getNewsPaginationAction} from "@/entities/news/actio
 import {Button, Flex, Pagination} from "antd";
 import Link from "next/link";
 import {NewsList as NewsListElement} from "@/widgets/news-list";
+import {useServerAction} from "@/shared/hooks/use-server-action";
 
 interface IProps {
   componentProps: IBasePageComponent;
@@ -29,13 +30,15 @@ export default function NewsList(props: IProps) {
     if (typedComponentProps != null) {
       const offset = (page - 1) * typedComponentProps.countDisplayed;
 
-      getNewsPaginationAction(offset, typedComponentProps.countDisplayed).then((data) => {
-        setNews(() => data);
-      });
+      useServerAction(getNewsPaginationAction(offset, typedComponentProps.countDisplayed))
+        .then((data) => {
+          setNews(() => data);
+        });
 
-      getNewsCountAction().then((total) => {
-        setTotal(() => total);
-      });
+      useServerAction(getNewsCountAction())
+        .then((total) => {
+          setTotal(() => total);
+        });
     }
   }, [typedComponentProps?.countDisplayed, page]);
 
