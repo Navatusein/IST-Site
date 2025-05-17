@@ -17,7 +17,7 @@
 }
 
 .titleTypography {
-  text-align: center;
+  text-align: center !important;
   color: var(--ant-color-text-light-solid) !important;
   margin: 0 !important;
 }
@@ -33,7 +33,7 @@
 
 .textCardContainer {
   @include respond-below(lg) {
-    border-radius: 0;
+    border-radius: 0 !important;
   }
 }
 

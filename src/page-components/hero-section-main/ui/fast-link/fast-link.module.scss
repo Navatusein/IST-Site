@@ -1,13 +1,13 @@
 .container {
   justify-content: flex-start !important;
-  padding: calc(var(--ant-padding-lg) * 2);
-  border-radius: var(--ant-border-radius-lg) 0 0 var(--ant-border-radius-lg);
-  background-color: var(--ant-color-primary);
-  height: 100%;
+  padding: calc(var(--ant-padding-lg) * 2) !important;
+  border-radius: var(--ant-border-radius-lg) 0 0 var(--ant-border-radius-lg) !important;
+  background-color: var(--ant-color-primary) !important;
+  height: 100% !important;
 
   @include respond-below(lg) {
-    padding: var(--ant-padding-lg);
-    border-radius: 0;
+    padding: var(--ant-padding-lg) !important;
+    border-radius: 0 !important;
   }
 }
 

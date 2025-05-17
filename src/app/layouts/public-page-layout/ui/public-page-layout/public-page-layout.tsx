@@ -4,7 +4,6 @@ import {Layout} from "antd";
 import {ReactNode} from "react";
 import {IPublicMenuItem} from "@/entities/public-menu-item";
 import dynamic from "next/dynamic";
-import {PublicFooter} from "@/widgets/public-footer";
 
 interface IProps {
   children: ReactNode;
@@ -12,6 +11,10 @@ interface IProps {
 }
 
 const PublicHeader = dynamic(() => import("@/widgets/public-header/ui/public-header/public-header"), {
+  ssr: false
+});
+
+const PublicFooter = dynamic(() => import("@/widgets/public-footer/ui/public-footer/public-footer"), {
   ssr: false
 });
 
