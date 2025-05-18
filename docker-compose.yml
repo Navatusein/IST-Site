@@ -7,18 +7,25 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - /appdata/ist-site/mongodb:/data/db
+      - mongodb-data:/data/db
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGODB_USER}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD}
     restart: unless-stopped
 
   ist-site:
-    image: ghcr.io/navatusein/ist-site:latest
+    image: ghcr.io/navatusein/ist-site:dev-latest
     container_name: ist-site
     ports:
-      - 3000:3000
+      - 80:80
+    volumes:
+      - ist-public-files:/app/public/files
     environment:
       - MONGODB_URI=mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@mongodb/ist
       - NEXT_PUBLIC_BASE_URL=${PUBLIC_URL}
       - SECRET=${SECRET}
+    restart: unless-stopped
+
+volumes:
+  mongodb-data:
+  ist-public-files:
