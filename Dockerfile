@@ -38,14 +38,14 @@ ENV UID=1001
 RUN addgroup --system --gid ${GID} nodejs
 RUN adduser --system --uid ${UID} nextjs
 
-COPY --from=builder /app/public ./public
+COPY --from=builder --chown=${USER}:${GROUP} /app/public ./public
+COPY --from=builder --chown=${USER}:${GROUP} /app/.next/standalone ./
+COPY --from=builder --chown=${USER}:${GROUP} /app/.next/static ./.next/static
 
 RUN mkdir -p /app/public/files && \
     chown ${USER}:${GROUP} /app/public/files
 
-
-COPY --from=builder --chown=${USER}:${GROUP} /app/.next/standalone ./
-COPY --from=builder --chown=${USER}:${GROUP} /app/.next/static ./.next/static
+VOLUME /app/public/files
 
 COPY entrypoint.sh /entrypoint.sh
 
