@@ -31,7 +31,12 @@ export default function NewsCard(props: IProps) {
           </Link>
         </Flex>
         <Flex className={styles.imageContainer}>
-          <Image src={`/files/${props.news.imagePath}`} width={"100%"} className={styles.image}/>
+          <Image
+            src={`/api/assets${props.news.imagePath}`}
+            width={"100%"}
+            className={styles.image}
+            loading="lazy"
+          />
         </Flex>
       </Flex>
     </Card>

@@ -65,9 +65,6 @@ export default function MarkdownRenderer(props: IProps) {
         },
         a: (props) => {
           const {children, className, style, href, ...rest} = props;
-
-          console.log(props)
-
           return (
             <Link href={href ?? "#"} className={className} style={{...style, margin: 0}}>
               {children}

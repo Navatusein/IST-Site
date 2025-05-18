@@ -1,6 +1,7 @@
 import * as fs from "node:fs";
 import path from "node:path/posix";
 import {IDirectory, IFile, IFileTypes} from "@/shared/services/file-manager-service/types/type";
+import mime from "mime";
 
 export class FileManagerService {
   private static baseDirectory = path.resolve("public/files");
@@ -141,6 +142,21 @@ export class FileManagerService {
 
     const stats = fs.statSync(resolvedPath);
     return stats.isDirectory();
+  }
+
+  public static getFileBufferAndMimeType(relativePath: string): {buffer: Buffer, mimeType: string} {
+    const resolvedPath = this.resolvePath(relativePath);
+
+    console.log(resolvedPath);
+
+    if (!fs.existsSync(resolvedPath) || fs.statSync(resolvedPath).isDirectory()) {
+      throw new Error(`File "${relativePath}" does not exist or is a directory.`);
+    }
+
+    const buffer = fs.readFileSync(resolvedPath);
+    const mimeType = mime.getType(resolvedPath) || "application/octet-stream";
+
+    return {buffer, mimeType};
   }
 
   private static getAvailablePath(targetPath: string): string {

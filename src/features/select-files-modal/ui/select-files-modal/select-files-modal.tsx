@@ -19,6 +19,7 @@ export default function SelectFilesModal(props: IProps) {
   const [updateFiles, setUpdateFiles] = useState<number>(0);
 
   const closeModal = () => {
+    props.setSelectFilePaths(() => []);
     props.setIsOpen(() => false);
   }
 

@@ -18,7 +18,12 @@ export default function Icon(props: IProps) {
       vertical={props.vertical}
       style={{padding: "8px", overflow: "hidden", ...props.style}}
     >
-      <Image src="/icon.webp" preview={false} style={{width: props.iconSize ?? "48px", height: props.iconSize ?? "48px"}}/>
+      <Image
+        src="/icon.webp"
+        preview={false}
+        style={{width: props.iconSize ?? "48px", height: props.iconSize ?? "48px"}}
+        loading={"lazy"}
+      />
       {props.showText &&
         props.level ?
           <Typography.Title

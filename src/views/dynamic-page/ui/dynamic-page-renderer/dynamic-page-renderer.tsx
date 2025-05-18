@@ -1,3 +1,5 @@
+"use client"
+
 import {Flex, theme} from "antd";
 import {IDynamicPage} from "@/entities/dynamic-page";
 import {PageComponentRenderer} from "@/widgets/page-component-renderer";

@@ -30,7 +30,7 @@ export default function TitleEditor(props: IProps) {
         layout="vertical"
         initialValues={typedComponentProps as never}
         style={{width: "100%"}}
-        onChange={onChange}
+        onFieldsChange={onChange}
       >
         <Flex vertical gap="small">
           <Form.Item<ITitlePageComponent>

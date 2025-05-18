@@ -13,12 +13,7 @@ interface IProps {
 
 export default async function Page(props: IProps) {
   const {path} = await props.params;
-
-  console.log("start");
-
   const page = await useServerAction(getDynamicPageByPathAction(path.join("/")));
-
-  console.log(page);
 
   if (!page)
     notFound();

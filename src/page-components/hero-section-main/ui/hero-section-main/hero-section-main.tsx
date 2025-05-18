@@ -26,11 +26,12 @@ export default function HeroSectionMain(props: IProps) {
       <Flex vertical>
         <Flex vertical className={styles.titleBaseContainer}>
           <Image
-            src={typedComponentProps!.imagePath}
+            src={`/api/assets${typedComponentProps!.imagePath}`}
             preview={false}
             height={typedComponentProps!.imageHeight}
             width={"100%"}
             className={styles.image}
+            loading={"lazy"}
           />
           <Flex vertical gap="small" className={styles.titleFlexContainer}>
             <Typography.Title className={styles.titleTypography}>

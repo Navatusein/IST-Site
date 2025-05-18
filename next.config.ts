@@ -23,10 +23,10 @@ const nextConfig: NextConfig = {
   //     "antd",
   //   ],
   // },
-  compiler: {
-    reactRemoveProperties: true,
-    removeConsole: { exclude: ["error", "warn"] },
-  },
+  // compiler: {
+  //   reactRemoveProperties: true,
+  //   removeConsole: { exclude: ["error", "warn"] },
+  // },
   devIndicators: {
     position: "top-left"
   },
