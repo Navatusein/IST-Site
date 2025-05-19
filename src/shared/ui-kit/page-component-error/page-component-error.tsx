@@ -5,7 +5,7 @@ import {Alert} from "antd";
 
 interface IProps {
   message: string;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 

@@ -37,12 +37,9 @@ export default function PublicFooter(props: IProps) {
                   <Typography.Text style={{textAlign: "center"}}>
                     Субота & Неділя: Вихідний
                   </Typography.Text>
-                  <Typography.Text style={{textAlign: "center"}}>
-                    вул. Богдана Гаврилишина, 24
-                  </Typography.Text>
-                  <Typography.Text style={{textAlign: "center"}}>
-                    Київ, Україна
-                  </Typography.Text>
+                  <Typography.Link style={{textAlign: "center"}} href={"https://maps.app.goo.gl/wEdHhfHdVc15HExb9"}>
+                    вул. Богдана Гаврилишина, 24,<br/>Київ, Україна
+                  </Typography.Link>
                 </Flex>
                 <Flex vertical align="center">
                   <Flex gap="small">
@@ -50,7 +47,7 @@ export default function PublicFooter(props: IProps) {
                       Телефон:
                     </Typography.Text>
                     <Typography.Link href={"tel:+380445213356"}>
-                      +38 044 521 33 56
+                      044 521 33 56
                     </Typography.Link>
                   </Flex>
                   <Flex gap="small">

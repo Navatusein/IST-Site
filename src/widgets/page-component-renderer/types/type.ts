@@ -1,5 +1,6 @@
 import {JSX} from "react";
-import {IBasePageComponent, PageComponentType} from "@/entities/dynamic-page";
+import {IBasePageComponent} from "@/entities/dynamic-page";
+import {PageComponentType} from "@/page-components";
 
 export type ComponentDescriptorType = {
   [key in PageComponentType]: {

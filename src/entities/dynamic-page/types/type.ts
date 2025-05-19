@@ -1,6 +1,5 @@
 import {Document} from "mongoose";
-
-export type PageComponentType = "title"|"markdown-text"|"hero-section-main"|"news-list";
+import {PageComponentType} from "@/page-components";
 
 export type PageComponentWidth = "large"|"medium";
 

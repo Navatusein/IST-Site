@@ -4,6 +4,13 @@ import {NewsList, NewsListComponentExample} from "./news-list";
 import {HeroSectionMain, HeroSectionMainComponentExample} from "./hero-section-main";
 import {MarkdownText, MarkdownTextComponentExample} from "./markdown-text";
 import {Title, TitleComponentExample} from "./title";
+import {ContactUs, ContactUsComponentExample} from "./contact-us";
+
+export type PageComponentType = "title"|
+  "markdown-text"|
+  "hero-section-main"|
+  "news-list"|
+  "contact-us";
 
 export const componentTypes: ComponentDescriptorType = {
   "title": {
@@ -22,6 +29,10 @@ export const componentTypes: ComponentDescriptorType = {
     "renderComponent": (props) => <NewsList componentProps={props}/>,
     "renderEditor": (props, onChange) => <NewsList.Editor componentProps={props} onChange={onChange}/>
   },
+  "contact-us": {
+    "renderComponent": (props) => <ContactUs componentProps={props}/>,
+    "renderEditor": (props, onChange) => <ContactUs.Editor componentProps={props} onChange={onChange}/>
+  },
 }
 
 export const pageComponentExamples: IPageComponentExample[] = [
@@ -29,4 +40,5 @@ export const pageComponentExamples: IPageComponentExample[] = [
   MarkdownTextComponentExample,
   HeroSectionMainComponentExample,
   NewsListComponentExample,
+  ContactUsComponentExample,
 ]
