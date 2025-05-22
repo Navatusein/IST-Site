@@ -43,7 +43,7 @@ export const HeroSectionMainComponentExample = {
 - ОНП "Інформаційні системи та технології",\n
   [ОС "Доктор філософії"]()
     `,
-    imagePath: "/files/flag.jpg",
+    imagePath: "/flag.jpg",
     imageHeight: 600,
     fastLinks: [
       {path: "#", title: "ПРО КАФЕДРУ"},
