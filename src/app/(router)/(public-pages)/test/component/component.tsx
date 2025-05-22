@@ -19,101 +19,16 @@ export default function Component(props: IProps) {
   const config = useMemo(() => {
     switch (typedComponentProps.width) {
       case "medium":
-        return {
-          sm: {span: 24, offset: 0},
-          md: {span: 12, offset: 0},
-        }
+        return {}
       case "large":
       default:
-        return {
-          sm: {span: 24, offset: 0},
-          md: {span: 12, offset: 0},
-        }
+        return {}
     }
   }, [typedComponentProps.width])
 
   return (
     <>
-      <Row gutter={[padding, padding]}>
-        <Col sm={{span: 24}} md={{span: 12}}>
-          <Row gutter={[padding, padding]}>
-            <Col span={24}>
-              <Card variant="borderless">
-                <Flex vertical align="center" gap="small">
-                  <EnvironmentOutlined style={{fontSize: 32}}/>
-                  <Typography.Title level={4} style={{margin: 0}}>
-                    Наш адрес
-                  </Typography.Title>
-                  <Typography.Link style={{textAlign: "center"}} href={"https://maps.app.goo.gl/wEdHhfHdVc15HExb9"}>
-                    вул. Богдана Гаврилишина, 24, Київ
-                  </Typography.Link>
-                </Flex>
-              </Card>
-            </Col>
-            <Col span={12}>
-              <Card variant="borderless">
-                <Flex vertical align="center" gap="small">
-                  <MailOutlined style={{fontSize: 32}}/>
-                  <Typography.Title level={4} style={{margin: 0}}>
-                    Email
-                  </Typography.Title>
-                  <Typography.Link style={{textAlign: "center"}} href={"mailto:ist@fit.knu.ua"}>
-                    ist@fit.knu.ua
-                  </Typography.Link>
-                </Flex>
-              </Card>
-            </Col>
-            <Col span={12}>
-              <Card variant="borderless">
-                <Flex vertical align="center" gap="small">
-                  <PhoneOutlined style={{fontSize: 32}}/>
-                  <Typography.Title level={4} style={{margin: 0}}>
-                    Телефон
-                  </Typography.Title>
-                  <Typography.Link style={{textAlign: "center"}} href={"tel:+380445213356"}>
-                    044 521 33 56
-                  </Typography.Link>
-                </Flex>
-              </Card>
-            </Col>
-          </Row>
-        </Col>
-        <Col sm={{span: 24}} md={{span: 12}}>
-          <Card variant="borderless" style={{height: "100%"}} styles={{body: {height: "100%"}}}>
-            <Form layout="vertical" style={{height: "100%"}}>
-              <Row gutter={[paddingXS, paddingXS]}>
-                <Col xs={{span: 24}} sm={{span: 12}}>
-                  <Form.Item style={{margin: 0}}>
-                    <Input placeholder="Ваше ім'я"/>
-                  </Form.Item>
-                </Col>
-                <Col xs={{span: 24}} sm={{span: 12}}>
-                  <Form.Item style={{margin: 0}}>
-                    <Input placeholder="Ваш Email"/>
-                  </Form.Item>
-                </Col>
-                <Col span={24}>
-                  <Form.Item style={{margin: 0}}>
-                    <Input placeholder="Тема"/>
-                  </Form.Item>
-                </Col>
-                <Col span={24}>
-                  <Form.Item style={{margin: 0}}>
-                    <Input.TextArea placeholder="Повідомлення" style={{minHeight: 150}}/>
-                  </Form.Item>
-                </Col>
-                <Col span={24} style={{justifyItems: "center"}}>
-                  <Form.Item style={{margin: 0}}>
-                    <Button type="primary" htmlType="submit">
-                      Відправити
-                    </Button>
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Form>
-          </Card>
-        </Col>
-      </Row>
+      
     </>
   )
 }

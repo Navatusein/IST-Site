@@ -7,7 +7,11 @@ export async function GET() {
     const usersCount = await UserModel.countDocuments();
 
     if (usersCount == 0) {
-      const newUser = new UserModel({login: "admin", name: "admin", permissions: ["edit-news", "edit-users", "edit-pages", "edit-files"]} as IUser);
+      const newUser = new UserModel({
+        login: "admin",
+        name: "admin",
+        permissions: ["edit-news", "edit-users", "edit-pages", "edit-files"]
+      } as IUser);
 
       console.log("Added base user")
 

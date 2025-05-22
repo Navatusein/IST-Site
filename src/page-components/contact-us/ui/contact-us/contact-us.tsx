@@ -100,7 +100,7 @@ export default function ContactUs(props: IProps) {
         </Col>
         <Col sm={{span: 24}} md={{span: 12}}>
           <Card variant="borderless" style={{height: "100%"}} styles={{body: {height: "100%"}}}>
-            <Form layout="vertical" style={{height: "100%"}} onFinish={formSubmit} initialValues={{name: "Богдан", email: "boghdan.kutsulima@gmail.com", subject: "Вступ", content: "Як вступити до вас?"}}>
+            <Form layout="vertical" style={{height: "100%"}} onFinish={formSubmit}>
               <Row gutter={[paddingXS, paddingXS]}>
                 <Col xs={{span: 24}} sm={{span: 12}}>
                   <Form.Item<IFormData>
