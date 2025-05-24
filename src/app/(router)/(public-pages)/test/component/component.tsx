@@ -1,10 +1,8 @@
 "use client"
 
-import {Button, Card, Col, Flex, Form, Input, Row, theme, Typography} from "antd";
-import {EnvironmentOutlined, MailOutlined, PhoneOutlined} from "@ant-design/icons";
+import {Card, theme} from "antd";
 import {useMemo} from "react";
-import {RichTextEditor} from "../../../../../features/rich-text-editor";
-import {MDXEditor} from "@mdxeditor/editor";
+import {RichTextEditor} from "@/features/rich-text-editor";
 
 interface IProps {
   width: "medium" | "large";
