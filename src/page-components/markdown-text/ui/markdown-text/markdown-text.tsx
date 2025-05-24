@@ -3,7 +3,7 @@ import {IBasePageComponent} from "@/entities/dynamic-page";
 import {PageComponentError} from "@/shared/ui-kit";
 import MarkdownTextEditor from "../markdown-text-editor/markdown-text-editor";
 import {IMarkdownTextPageComponent} from "../../types/type";
-import {MarkdownRenderer} from "@/features/markdown-renderer";
+import {RichTextRenderer} from "../../../../features/rich-text-renderer";
 
 interface IProps {
   componentProps: IBasePageComponent;
@@ -19,7 +19,7 @@ export default function MarkdownText(props: IProps) {
 
   return (
     <PageComponentError message={typedComponentProps == null ? "Fail" : ""}>
-      <MarkdownRenderer content={typedComponentProps!.text}/>
+      <RichTextRenderer content={typedComponentProps!.text}/>
     </PageComponentError>
   )
 }

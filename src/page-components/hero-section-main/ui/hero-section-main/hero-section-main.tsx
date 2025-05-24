@@ -6,7 +6,7 @@ import FastLink from "../fast-link/fast-link";
 import Statistic from "../statistic/statistic";
 import {IHeroSectionMainPageComponent} from "../../types/type";
 import {Card, Col, Flex, Image, Row, Typography} from "antd";
-import {MarkdownRenderer} from "@/features/markdown-renderer";
+import {RichTextRenderer} from "../../../../features/rich-text-renderer";
 import styles from "./hero-section-main.module.scss";
 
 interface IProps {
@@ -54,7 +54,7 @@ export default function HeroSectionMain(props: IProps) {
           >
             <Flex vertical align="center" justify="center" className={styles.textFlexContainer}>
               <Card variant="borderless" className={styles.textCardContainer}>
-                <MarkdownRenderer content={typedComponentProps!.text}/>
+                <RichTextRenderer content={typedComponentProps!.text}/>
               </Card>
             </Flex>
           </Col>

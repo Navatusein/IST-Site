@@ -25,8 +25,8 @@ export default function ThemeProvider(props: IProps) {
   const themeConfig = useMemo((): ThemeConfig => {
     return {
       algorithm: (theme ?? props.defaultTheme) == "light" ? defaultAlgorithm : darkAlgorithm,
-      cssVar: true,
-      hashed: true,
+      cssVar: {prefix: "ant", key: "ist-theme"},
+      hashed: false,
       token: {...themeGlobalTokens, ...((theme ?? props.defaultTheme) == "light" ? themeLightTokens : themeDarkTokens)}
     }
   }, [props.defaultTheme, theme]);

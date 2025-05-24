@@ -6,7 +6,7 @@ import {Flex, Form, Input, InputNumber, Tabs, TabsProps} from "antd";
 import {SelectFileButton} from "@/features/select-file-button";
 import FormComponentFastLinks from "../form-component-fast-links/form-component-fast-links";
 import FormComponentStatistics from "../form-component-statistics/form-component-statistics";
-import MarkdownEditor from "../../../../features/markdown-editor/ui/markdown-editor/markdown-editor";
+import RichTextEditor from "@/features/rich-text-editor/ui/rich-text-editor/rich-text-editor";
 
 interface IProps {
   componentProps: IBasePageComponent;
@@ -63,7 +63,7 @@ export default function HeroSectionMainEditor(props: IProps) {
             style={{marginBottom: 0}}
             extra="Текст компоненту"
           >
-            <MarkdownEditor/>
+            <RichTextEditor/>
           </Form.Item>
           <Form.Item<IHeroSectionMainPageComponent>
             label="Малюнок"

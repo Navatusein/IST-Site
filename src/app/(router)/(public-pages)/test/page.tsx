@@ -1,15 +1,15 @@
 "use client"
 
 import dynamic from "next/dynamic";
-import Component from "./component/component";
+// import Component from "./component/component";
 import {useState} from "react";
-import {Button, Card, Checkbox, Col, Flex, Segmented, theme, Tooltip} from "antd";
-import {ArrowsAltOutlined, DeleteOutlined, EditOutlined, HolderOutlined, ShrinkOutlined} from "@ant-design/icons";
+import {Card, Checkbox, Col, Flex, Segmented, theme, Tooltip} from "antd";
+import {ArrowsAltOutlined, ShrinkOutlined} from "@ant-design/icons";
 
 
-// const Component = dynamic(() => import("@/app/(router)/(public-pages)/test/component/component"), {
-//   ssr: false
-// });
+const Component = dynamic(() => import("@/app/(router)/(public-pages)/test/component/component"), {
+  ssr: false
+});
 
 const config = {
   "medium": {

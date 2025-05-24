@@ -2,7 +2,7 @@ import {useMemo} from "react";
 import {IBasePageComponent} from "@/entities/dynamic-page";
 import {PageComponentError} from "@/shared/ui-kit";
 import {IMarkdownTextPageComponent} from "../../types/type";
-import {MarkdownEditor} from "@/features/markdown-editor";
+import {RichTextEditor} from "../../../../features/rich-text-editor";
 
 interface IProps {
   componentProps: IBasePageComponent;
@@ -23,7 +23,7 @@ export default function MarkdownTextEditor(props: IProps) {
 
   return (
     <PageComponentError message={typedComponentProps == null ? "Fail" : ""}>
-      <MarkdownEditor value={typedComponentProps!.text} onChange={onChange}/>
+      <RichTextEditor value={typedComponentProps!.text} onChange={onChange}/>
     </PageComponentError>
   )
 }
