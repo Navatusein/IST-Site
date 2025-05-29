@@ -11,6 +11,8 @@ import {redirect, RedirectType, useRouter} from "next/navigation";
 import DynamicPageCrudForm from "../dynamic-page-crud-form/dynamic-page-crud-form";
 import {FormOutlined} from "@ant-design/icons";
 import {useServerAction} from "@/shared/hooks/use-server-action";
+import dayjs from "dayjs";
+import {dateStringSorter, stringSorter} from "@/shared/utilities/sorters";
 
 interface IProps {
   pages: IDynamicPage[]
@@ -20,17 +22,29 @@ const COLUMNS: TableColumnsType<IDynamicPage> = [
   {
     title: "Назва",
     dataIndex: "name",
-    key: "name"
+    key: "name",
+    sorter: (a, b) => stringSorter(a.name, b.name),
+    showSorterTooltip: {
+      title: "Сортування за назвою"
+    }
   },
   {
     title: "Заголовок",
     dataIndex: "title",
-    key: "title"
+    key: "title",
+    sorter: (a, b) => stringSorter(a.title, b.title),
+    showSorterTooltip: {
+      title: "Сортування за заголовком"
+    }
   },
   {
     title: "Шлях",
     dataIndex: "path",
     key: "path",
+    sorter: (a, b) => stringSorter(a.path, b.path),
+    showSorterTooltip: {
+      title: "Сортування за шляхом"
+    }
   },
   {
     title: "Створено",
@@ -38,7 +52,11 @@ const COLUMNS: TableColumnsType<IDynamicPage> = [
     key: "createdAt",
     render: (date: string) => (
       new Date(date).toLocaleString()
-    )
+    ),
+    sorter: (a, b) => dateStringSorter((a as any).createdAt, (b as any).createdAt),
+    showSorterTooltip: {
+      title: "Сортування за датою створення"
+    }
   },
   {
     title: "Оновлено",
@@ -46,7 +64,11 @@ const COLUMNS: TableColumnsType<IDynamicPage> = [
     key: "updatedAt",
     render: (date: string) => (
       new Date(date).toLocaleString()
-    )
+    ),
+    sorter: (a, b) => dateStringSorter((a as any).updatedAt, (b as any).updatedAt),
+    showSorterTooltip: {
+      title: "Сортування за датою редагування"
+    }
   }
 ];
 
@@ -71,6 +93,10 @@ export default function DynamicPageCrud(props: IProps) {
     router.refresh();
   }
 
+  const search = (data: IDynamicPage[], query: string): IDynamicPage[] => {
+    return data.filter((x) => x.name.toLowerCase().includes(query) || x.title.toLowerCase().includes(query));
+  }
+
   const redirectToEditPage = (data?: IDynamicPage[]) => {
     if (selectedRows[0] == null && data?.[0] == null)
       return;
@@ -90,6 +116,7 @@ export default function DynamicPageCrud(props: IProps) {
         update={update}
         remove={remove}
         refresh={refresh}
+        search={search}
         additionalToolbarButtons={[
           {
             label: "Редагувати контент",

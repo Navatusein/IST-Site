@@ -13,6 +13,7 @@ import {
 import PasswordModal from "@/widgets/user-crud/ui/password-modal/password-modal";
 import {FormOutlined} from "@ant-design/icons";
 import {useServerAction} from "@/shared/hooks/use-server-action";
+import {dateStringSorter, stringSorter} from "@/shared/utilities/sorters";
 
 interface IProps {
   users: IUser[];
@@ -22,12 +23,20 @@ const COLUMNS: TableColumnsType<IUser> = [
   {
     title: "Логін",
     dataIndex: "login",
-    key: "login"
+    key: "login",
+    sorter: (a, b) => stringSorter(a.login, b.login),
+    showSorterTooltip: {
+      title: "Сортування за логіном"
+    }
   },
   {
     title: "Імя",
     dataIndex: "name",
-    key: "name"
+    key: "name",
+    sorter: (a, b) => stringSorter(a.name, b.name),
+    showSorterTooltip: {
+      title: "Сортування за іменем"
+    }
   },
   {
     title: "Дозволи",
@@ -55,7 +64,11 @@ const COLUMNS: TableColumnsType<IUser> = [
     key: "createdAt",
     render: (date: string) => (
       new Date(date).toLocaleString()
-    )
+    ),
+    sorter: (a, b) => dateStringSorter((a as any).createdAt, (b as any).createdAt),
+    showSorterTooltip: {
+      title: "Сортування за датою створення"
+    }
   },
   {
     title: "Оновлено",
@@ -63,7 +76,11 @@ const COLUMNS: TableColumnsType<IUser> = [
     key: "updatedAt",
     render: (date: string) => (
       new Date(date).toLocaleString()
-    )
+    ),
+    sorter: (a, b) => dateStringSorter((a as any).updatedAt, (b as any).updatedAt),
+    showSorterTooltip: {
+      title: "Сортування за датою редагування"
+    }
   }
 ];
 
@@ -89,6 +106,13 @@ export default function UserCrud(props: IProps) {
 
   const refresh = () => {
     router.refresh();
+  }
+
+  const search = (data: IUser[], query: string): IUser[] => {
+    return data.filter((x) =>
+      x.login.toLowerCase().includes(query) ||
+      x.name.toLowerCase().includes(query)
+    );
   }
 
   const setPassword = async (password: string) => {
@@ -123,6 +147,7 @@ export default function UserCrud(props: IProps) {
         update={update}
         remove={remove}
         refresh={refresh}
+        search={search}
         additionalToolbarButtons={[
           {
             label: "Змінити пароль",

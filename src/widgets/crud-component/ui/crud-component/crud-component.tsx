@@ -20,6 +20,7 @@ interface IProps<T> {
   create: (data: T) => Promise<void>;
   update: (data: T) => Promise<void>;
   remove: (data: T[]) => Promise<void>;
+  search?: (data: T[], query: string) => T[];
   additionalToolbarButtons?: IAdditionalToolbarButtons[];
   additionalDropdownMenuItems?: IAdditionalMenuItem<T>[];
 }
@@ -29,6 +30,18 @@ export default function CrudComponent<T>(props: IProps<T>) {
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
+
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  const filteredData = useMemo(() => {
+    if (props.search == undefined)
+      return props.data;
+
+    if (searchQuery.trim().length == 0)
+      return props.data;
+
+    return props.search(props.data ?? [], searchQuery.trim().toLowerCase());
+  }, [searchQuery, props.search]);
 
   const columns = useMemo<TableColumnsType<T>>(() => (
     [
@@ -131,6 +144,9 @@ export default function CrudComponent<T>(props: IProps<T>) {
         onEdit={onEdit}
         onRemove={onRemove}
         onRefresh={onRefresh}
+        showSearch={props.search != undefined}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
       />
       {props.additionalToolbarButtons != null && props.additionalToolbarButtons.map((additionalButton) => (
         <Tooltip title={additionalButton.tooltip}>
@@ -141,7 +157,7 @@ export default function CrudComponent<T>(props: IProps<T>) {
       ))}
       <CrudTable<T>
         columns={columns}
-        data={props.data}
+        data={filteredData}
         isLoading={props.isLoading}
         selectedRows={props.selectedRows}
         setSelectedRows={props.setSelectedRows}

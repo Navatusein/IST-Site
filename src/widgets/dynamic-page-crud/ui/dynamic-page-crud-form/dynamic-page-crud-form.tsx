@@ -11,6 +11,9 @@ export default function DynamicPageCrudForm(props: IProps) {
       if (value.startsWith("admin"))
         reject("Шлях не може починатись з \"admin\"");
 
+      if (value.startsWith("api"))
+        reject("Шлях не може починатись з \"api\"");
+
       if (props.pages.find(x => (x._id != form.getFieldValue("_id") && x.path == value)) != null)
         reject("Шлях має бути унікальним");
 

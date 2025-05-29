@@ -8,6 +8,7 @@ import {addNewsAction, removeNewsAction, updateNewsAction} from "@/entities/news
 import NewsCrudForm from "../news-crud-form/news-crud-form";
 import dayjs from "dayjs";
 import {useServerAction} from "@/shared/hooks/use-server-action";
+import {dateStringSorter, stringSorter} from "@/shared/utilities/sorters";
 
 interface IProps {
   news: INews[];
@@ -17,17 +18,26 @@ const COLUMNS: TableColumnsType<INews> = [
   {
     title: "Заголовок",
     dataIndex: "title",
-    key: "title"
+    key: "title",
+    sorter: (a, b) => stringSorter(a.title, b.title),
+    showSorterTooltip: {
+      title: "Сортування за заголовком"
+    }
   },
   {
     title: "Опис",
     dataIndex: "description",
-    key: "description"
+    key: "description",
+    sorter: (a, b) => stringSorter(a.description, b.description),
+    showSorterTooltip: {
+      title: "Сортування за описом"
+    }
   },
   {
     title: "Шлях до малюнка",
     dataIndex: "imagePath",
     key: "imagePath",
+    ellipsis: true,
     render: (imagePath: string | null) => (
       imagePath ?? <Tag color="red">Шляї не вказан</Tag>
     )
@@ -36,6 +46,11 @@ const COLUMNS: TableColumnsType<INews> = [
     title: "Шлях",
     dataIndex: "path",
     key: "path",
+    ellipsis: true,
+    sorter: (a, b) => stringSorter(a.path, b.path),
+    showSorterTooltip: {
+      title: "Сортування за шляхом"
+    }
   },
   {
     title: "Дата",
@@ -43,7 +58,11 @@ const COLUMNS: TableColumnsType<INews> = [
     key: "date",
     render: (date: string) => (
       new Date(date).toLocaleDateString()
-    )
+    ),
+    sorter: (a, b) => dateStringSorter(a.date, b.date),
+    showSorterTooltip: {
+      title: "Сортування за датою"
+    }
   },
   {
     title: "Створено",
@@ -51,7 +70,11 @@ const COLUMNS: TableColumnsType<INews> = [
     key: "createdAt",
     render: (date: string) => (
       new Date(date).toLocaleString()
-    )
+    ),
+    sorter: (a, b) => dateStringSorter((a as any).createdAt, (b as any).createdAt),
+    showSorterTooltip: {
+      title: "Сортування за датою створення"
+    }
   },
   {
     title: "Оновлено",
@@ -59,7 +82,11 @@ const COLUMNS: TableColumnsType<INews> = [
     key: "updatedAt",
     render: (date: string) => (
       new Date(date).toLocaleString()
-    )
+    ),
+    sorter: (a, b) => dateStringSorter((a as any).updatedAt, (b as any).updatedAt),
+    showSorterTooltip: {
+      title: "Сортування за датою редагування"
+    }
   }
 ];
 
@@ -84,6 +111,14 @@ export default function NewsCrud(props: IProps) {
     router.refresh();
   }
 
+  const search = (data: INews[], query: string): INews[] => {
+    return data.filter((x) =>
+      x.title.toLowerCase().includes(query) ||
+      x.description.toLowerCase().includes(query) ||
+      x.path.toLowerCase().includes(query)
+    );
+  }
+
   const redirectToEditPage = (data?: INews[]) => {
     if (selectedRows[0] == null && data?.[0] == null)
       return;
@@ -103,6 +138,7 @@ export default function NewsCrud(props: IProps) {
         update={update}
         remove={remove}
         refresh={refresh}
+        search={search}
         additionalToolbarButtons={[
           {
             label: "Редагувати контент",
