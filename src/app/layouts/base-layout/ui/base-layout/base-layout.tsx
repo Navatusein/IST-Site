@@ -9,14 +9,15 @@ import {NuqsAdapter} from "nuqs/adapters/next/app";
 
 interface IProps {
   children: ReactNode;
-  defaultTheme: "light" | "dark";
+  defaultTheme: string;
+  systemTheme: string;
 }
 
 export default async function BaseLayout(props: IProps) {
   return (
     <SessionProvider>
       <NextThemeProvider>
-        <ThemeProvider defaultTheme={props.defaultTheme}>
+        <ThemeProvider defaultTheme={props.defaultTheme} systemTheme={props.systemTheme}>
           <App>
             <NuqsAdapter>
               <Layout style={{minHeight: "100dvh"}}>

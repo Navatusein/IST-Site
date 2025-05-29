@@ -19,14 +19,15 @@ export const metadata: Metadata = {
 
 export default async function Layout(props: IProps) {
   const cookieStore = await cookies()
-  const defaultTheme = cookieStore.get("theme")?.value || "dark"
+  const defaultTheme = cookieStore.get("theme")?.value || "light"
+  const systemTheme = cookieStore.get("systemTheme")?.value || "light"
 
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body>
         <link rel="shortcut icon" href="/icon.webp"/>
         <AntdRegistry>
-          <BaseLayout defaultTheme={defaultTheme as "light" | "dark"}>
+          <BaseLayout defaultTheme={defaultTheme} systemTheme={systemTheme}>
             {props.children}
           </BaseLayout>
         </AntdRegistry>

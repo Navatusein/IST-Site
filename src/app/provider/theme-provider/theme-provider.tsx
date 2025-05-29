@@ -12,27 +12,28 @@ const {defaultAlgorithm, darkAlgorithm} = antTheme;
 
 interface IProps {
   children: ReactNode;
-  defaultTheme: "light" | "dark";
+  defaultTheme: string;
+  systemTheme: string;
 }
 
 export default function ThemeProvider(props: IProps) {
-  const {theme, systemTheme} = useTheme();
+  const {theme, setTheme, systemTheme} = useTheme();
 
   useEffect(() => {
     dayjs.locale('uk');
   }, []);
 
   const themeConfig = useMemo((): ThemeConfig => {
-    let currentTheme = theme ?? props.defaultTheme ?? "system";
+    const currentTheme = theme ?? props.defaultTheme;
 
-    if (currentTheme == "system")
-      currentTheme = systemTheme ?? "light"
+    if (theme == "system")
+      setTheme(props.defaultTheme);
 
     return {
-      algorithm: currentTheme == "light" ? defaultAlgorithm : darkAlgorithm,
+      algorithm: currentTheme == "dark" ? darkAlgorithm : defaultAlgorithm,
       cssVar: {prefix: "ant", key: "ist-theme"},
       hashed: false,
-      token: {...themeGlobalTokens, ...(currentTheme == "light" ? themeLightTokens : themeDarkTokens)}
+      token: {...themeGlobalTokens, ...(currentTheme == "dark" ?  themeDarkTokens : themeLightTokens)}
     }
   }, [systemTheme, theme]);
 

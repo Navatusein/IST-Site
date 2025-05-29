@@ -21,12 +21,7 @@ export default function ThemeSwitcher() {
       key: "light",
       label: "Світла тема",
       icon: <SunOutlined/>
-    },
-    {
-      key: "system",
-      label: "Як у системі",
-      icon: systemTheme == "dark" ? <MoonOutlined/> : <SunOutlined/>
-    },
+    }
   ] as MenuProps["items"]), [systemTheme]);
 
   useEffect(() => {
@@ -49,7 +44,7 @@ export default function ThemeSwitcher() {
       onClick: (e) => onThemeSelect(e.key)
     }}>
       <Button
-        icon={theme == "dark" || (theme == "system" && systemTheme == "dark")  ? <MoonOutlined/> : <SunOutlined/>}
+        icon={theme == "dark" ? <MoonOutlined/> : <SunOutlined/>}
       />
     </Dropdown>
   )
