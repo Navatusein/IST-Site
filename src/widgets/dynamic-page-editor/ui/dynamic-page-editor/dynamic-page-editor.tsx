@@ -5,9 +5,9 @@ import {App, Flex} from "antd";
 import {useState} from "react";
 import {IBasePageComponent} from "@/entities/dynamic-page";
 import AddPageComponentButton from "../add-page-component-button/add-page-component-button";
-import PageComponentsList from "../page-components-list/page-components-list";
+import PageComponentList from "@/widgets/dynamic-page-editor/ui/page-component-list/page-component-list";
 import FloatButtonGroup from "../float-button-group/float-button-group";
-import PageComponentsModal from "../page-components-modal/page-components-modal";
+import AddPageComponentDrawer from "@/widgets/dynamic-page-editor/ui/add-page-component-drawer/add-page-component-drawer";
 import DynamicPageEditorDrawer from "../dynamic-page-editor-drawer/dynamic-page-editor-drawer";
 
 interface IProps {
@@ -24,7 +24,7 @@ export default function DynamicPageEditor(props: IProps) {
   const [editMode, setEditMode] = useState<boolean>(true);
 
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isAddPageComponentDrawerOpen, setIsAddPageComponentDrawerOpen] = useState<boolean>(false);
 
   const updateComponents = (components: IBasePageComponent[]) => {
     props.setComponents(components);
@@ -64,7 +64,7 @@ export default function DynamicPageEditor(props: IProps) {
   return (
     <>
       <Flex vertical>
-        <PageComponentsList
+        <PageComponentList
           components={props.components}
           editMode={editMode}
           updateComponents={updateComponents}
@@ -73,15 +73,15 @@ export default function DynamicPageEditor(props: IProps) {
         />
         <AddPageComponentButton
           editMode={editMode}
-          setIsModalOpen={setIsModalOpen}
+          setIsModalOpen={setIsAddPageComponentDrawerOpen}
         />
       </Flex>
       <FloatButtonGroup
         setIsDrawerOpen={setIsDrawerOpen}
       />
-      <PageComponentsModal
-        isModalOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
+      <AddPageComponentDrawer
+        isOpen={isAddPageComponentDrawerOpen}
+        setIsOpen={setIsAddPageComponentDrawerOpen}
         addComponent={addComponent}
       />
       <DynamicPageEditorDrawer

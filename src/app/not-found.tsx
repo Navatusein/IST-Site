@@ -1,13 +1,7 @@
 "use client"
 
-import {Result} from "antd";
+import {redirect} from "next/navigation";
 
 export default function NotFound() {
-  return (
-    <Result
-      status="404"
-      title="404"
-      subTitle="Такої сторінки не існує"
-    />
-  );
+  return redirect("/not-found");
 }

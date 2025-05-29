@@ -10,7 +10,7 @@ interface IProps {
   removeComponent: (index: number) => void;
 }
 
-export default function PageComponentsList(props: IProps) {
+export default function PageComponentList(props: IProps) {
   return (
     <DraggableList items={props.components} setItems={props.updateComponents}>
       {props.components.map((component, index) => (

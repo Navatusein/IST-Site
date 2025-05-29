@@ -1,4 +1,4 @@
-import {Button, Form, Flex} from "antd";
+import {Form, Flex, FormInstance} from "antd";
 import {Dispatch, ReactNode, SetStateAction, useEffect} from "react";
 
 interface IProps<T> {
@@ -6,30 +6,19 @@ interface IProps<T> {
   onFormSubmit: (formData: T) => void;
   selectedRows: T[];
   children: ReactNode;
+  form: FormInstance<T>;
 }
 
 export default function CrudForm<T>(props: IProps<T>) {
-  const [form] = Form.useForm<T>();
-
   useEffect(() => {
-    form.resetFields();
-    form.setFieldsValue(props.selectedRows[0] ?? {})
+    props.form.resetFields();
+    props.form.setFieldsValue(props.selectedRows[0] ?? {})
   }, [props.selectedRows]);
 
   return (
-    <Form<T> form={form} layout="vertical" onFinish={props.onFormSubmit}>
+    <Form<T> form={props.form} layout="vertical" onFinish={props.onFormSubmit}>
       <Flex vertical gap="middle">
         {props.children}
-        <Form.Item style={{marginBottom: 0}}>
-          <Flex style={{width: "100%"}} gap="small">
-            <Button style={{width: "50%"}} onClick={() => props.setIsOpen(() => false)}>
-              Відмінити
-            </Button>
-            <Button htmlType="submit" type="primary" style={{width: "50%"}}>
-              Зберегти
-            </Button>
-          </Flex>
-        </Form.Item>
       </Flex>
     </Form>
   )

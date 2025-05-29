@@ -20,9 +20,9 @@ const PublicFooter = dynamic(() => import("@/widgets/public-footer/ui/public-foo
 
 export default function PublicPageLayout(props: IProps) {
   return (
-    <Layout>
+    <Layout style={{}}>
       <PublicHeader menuItems={props.menuItems}/>
-      <Layout.Content style={{overflow: "hidden"}}>
+      <Layout.Content style={{overflow: "hidden", minHeight: "calc(100svh - 60px)"}}>
         {props.children}
       </Layout.Content>
       <PublicFooter/>

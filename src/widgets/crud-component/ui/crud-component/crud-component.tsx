@@ -4,7 +4,7 @@ import {App, Button, Space, TableColumnsType, Tooltip} from "antd";
 import {Dispatch, ReactNode, SetStateAction, useMemo, useState} from "react";
 import CrudToolbar from "../crud-toolbar/crud-toolbar";
 import CrudTable from "../crud-table/crud-table";
-import CrudModal from "../crud-modal/crud-modal";
+import CrudDrawer from "@/widgets/crud-component/ui/crud-drawer/crud-drawer";
 import CrudActionsDropdown from "../crud-actions-dropdown/crud-actions-dropdown";
 import {IAdditionalMenuItem, IAdditionalToolbarButtons} from "../../types/type";
 
@@ -146,7 +146,7 @@ export default function CrudComponent<T>(props: IProps<T>) {
         selectedRows={props.selectedRows}
         setSelectedRows={props.setSelectedRows}
       />
-      <CrudModal<T>
+      <CrudDrawer<T>
         isOpen={isModalOpen}
         setIsOpen={setIsModalOpen}
         children={props.children}

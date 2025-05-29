@@ -1,16 +1,17 @@
-import {Modal} from "antd";
+import {Button, Drawer, Flex, theme} from "antd";
 import {PageComponentRenderer} from "@/widgets/page-component-renderer";
 import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {IBasePageComponent} from "@/entities/dynamic-page";
 
 interface IProps {
-  isModalOpen: boolean;
-  setIsModalOpen: Dispatch<SetStateAction<boolean>>;
+  isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
   component: IBasePageComponent;
   updateComponent: (value: IBasePageComponent) => void;
 }
 
-export default function PageComponentEditorModal(props: IProps) {
+export default function PageComponentEditorDrawer(props: IProps) {
+  const {token: {padding}} = theme.useToken();
   const [localComponentState, setLocalComponentState] = useState<IBasePageComponent>(props.component)
 
   useEffect(() => {
@@ -19,30 +20,37 @@ export default function PageComponentEditorModal(props: IProps) {
 
   const onOk = () => {
     props.updateComponent(localComponentState);
-    props.setIsModalOpen(() => false);
+    props.setIsOpen(() => false);
   }
 
   const onCancel = () => {
     setLocalComponentState(() => props.component);
-    props.setIsModalOpen(() => false);
+    props.setIsOpen(() => false);
   }
 
   return (
-    <Modal
+    <Drawer
       title="Редагувати компонент"
-      open={props.isModalOpen}
-      onCancel={onCancel}
+      open={props.isOpen}
       width={800}
-      onOk={onOk}
-      okText="Зберегти"
-      cancelText="Відмінити"
       destroyOnClose
+      onClose={onCancel}
+      footer={
+        <Flex gap={padding}>
+          <Button onClick={onCancel} block>
+            Відмінити
+          </Button>
+          <Button type="primary" onClick={onOk} block>
+            Зберегти
+          </Button>
+        </Flex>
+      }
     >
       <PageComponentRenderer
         propsClass={localComponentState}
         editMode
         onChange={setLocalComponentState}
       />
-    </Modal>
+    </Drawer>
   )
 }

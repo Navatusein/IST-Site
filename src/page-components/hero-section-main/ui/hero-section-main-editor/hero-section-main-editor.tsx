@@ -118,7 +118,7 @@ export default function HeroSectionMainEditor(props: IProps) {
         form={form}
         layout="vertical"
         initialValues={typedComponentProps as never}
-        style={{width: "100%"}}
+        style={{width: "100%", marginTop: "-24px"}}
         onFieldsChange={onChange}
       >
         <Tabs defaultActiveKey="1" items={items}/>

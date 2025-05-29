@@ -4,8 +4,8 @@ import {ArrowsAltOutlined, DeleteOutlined, EditOutlined, HolderOutlined, ShrinkO
 import {IBasePageComponent} from "@/entities/dynamic-page";
 import {useRef, useState} from "react";
 import {DraggableList} from "@/features/draggable-list";
-import PageComponentEditorModal
-  from "@/widgets/dynamic-page-editor/ui/page-component-editor-modal/page-component-editor-modal";
+import PageComponentEditorDrawer
+  from "@/widgets/dynamic-page-editor/ui/page-component-editor-drawer/page-component-editor-drawer";
 
 interface IProps {
   component: IBasePageComponent;
@@ -20,7 +20,7 @@ export default function PageComponentEditor(props: IProps) {
   const {modal} = App.useApp();
   const dragHandleRef = useRef<HTMLButtonElement>(null);
 
-  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+  const [isEditDrawerOpen, setIsEditDrawerOpen] = useState<boolean>(false);
 
   const onRemove = () => {
     modal.confirm({
@@ -52,7 +52,7 @@ export default function PageComponentEditor(props: IProps) {
           <Flex gap="small">
             <Button ref={dragHandleRef} type="text" icon={<HolderOutlined/>}/>
             <Tooltip title="Редагувати блок">
-              <Button icon={<EditOutlined/>} onClick={() => setIsEditModalOpen(true)}>
+              <Button icon={<EditOutlined/>} onClick={() => setIsEditDrawerOpen(true)}>
                 Редагувати
               </Button>
             </Tooltip>
@@ -74,9 +74,9 @@ export default function PageComponentEditor(props: IProps) {
           </Flex>
         </Card>
       </Flex>
-      <PageComponentEditorModal
-        isModalOpen={isEditModalOpen}
-        setIsModalOpen={setIsEditModalOpen}
+      <PageComponentEditorDrawer
+        isOpen={isEditDrawerOpen}
+        setIsOpen={setIsEditDrawerOpen}
         component={props.component}
         updateComponent={(value) => props.updateComponent(value, props.index)}
       />

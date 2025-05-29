@@ -1,6 +1,5 @@
 import {Button, Card, Flex, Form, FormListFieldData, FormListOperation, Input, InputNumber} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
-import IconSelect from "../../../../features/icon-select/ui/icon-select/icon-select";
 
 interface IProps {
   fields: FormListFieldData[],
@@ -21,15 +20,6 @@ export default function FormComponentStatistics(props: IProps) {
               extra="Заголовок картки статистики"
             >
               <Input/>
-            </Form.Item>
-            <Form.Item
-              {...restField}
-              name={[name, "icon"]}
-              label="Іконка"
-              style={{marginBottom: 0}}
-              extra="Іконка картки статистики"
-            >
-              <IconSelect/>
             </Form.Item>
             <Form.Item
               {...restField}

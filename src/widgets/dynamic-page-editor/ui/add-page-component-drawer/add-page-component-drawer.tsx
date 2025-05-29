@@ -1,32 +1,30 @@
-import {Button, Flex, Modal, theme, Typography} from "antd";
+import {Button, Drawer, Flex, Typography} from "antd";
 import {IBasePageComponent} from "@/entities/dynamic-page";
 import {Dispatch, SetStateAction} from "react";
 import {pageComponentExamples} from "@/page-components";
 
 interface IProps {
-  isModalOpen: boolean;
-  setIsModalOpen: Dispatch<SetStateAction<boolean>>;
+  isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
   addComponent: (value: IBasePageComponent) => void;
 }
 
-export default function PageComponentsModal(props: IProps) {
-  const {token: {colorBgLayout}} = theme.useToken();
-
+export default function AddPageComponentDrawer(props: IProps) {
   const closeModal = () => {
-    props.setIsModalOpen(() => false);
+    props.setIsOpen(() => false);
   }
 
   const addComponent = (component: IBasePageComponent) => {
     props.addComponent(component);
-    props.setIsModalOpen(() => false);
+    props.setIsOpen(() => false);
   }
 
   return (
-    <Modal
-      open={props.isModalOpen}
-      onCancel={closeModal}
+    <Drawer
+      open={props.isOpen}
+      onClose={closeModal}
+      width={800}
       title="Додати новий блок"
-      footer={null}
     >
       <Flex gap="middle" vertical>
         {pageComponentExamples.map((component, index) => (
@@ -43,6 +41,6 @@ export default function PageComponentsModal(props: IProps) {
           </Button>
         ))}
       </Flex>
-    </Modal>
+    </Drawer>
   )
 }
