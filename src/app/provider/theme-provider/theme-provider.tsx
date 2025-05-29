@@ -16,20 +16,25 @@ interface IProps {
 }
 
 export default function ThemeProvider(props: IProps) {
-  const {theme} = useTheme();
+  const {theme, systemTheme} = useTheme();
 
   useEffect(() => {
     dayjs.locale('uk');
   }, []);
 
   const themeConfig = useMemo((): ThemeConfig => {
+    let currentTheme = theme ?? props.defaultTheme ?? "system";
+
+    if (currentTheme == "system")
+      currentTheme = systemTheme ?? "light"
+
     return {
-      algorithm: (theme ?? props.defaultTheme) == "light" ? defaultAlgorithm : darkAlgorithm,
+      algorithm: currentTheme == "light" ? defaultAlgorithm : darkAlgorithm,
       cssVar: {prefix: "ant", key: "ist-theme"},
       hashed: false,
-      token: {...themeGlobalTokens, ...((theme ?? props.defaultTheme) == "light" ? themeLightTokens : themeDarkTokens)}
+      token: {...themeGlobalTokens, ...(currentTheme == "light" ? themeLightTokens : themeDarkTokens)}
     }
-  }, [props.defaultTheme, theme]);
+  }, [systemTheme, theme]);
 
   return (
     <ConfigProvider theme={themeConfig} wave={{disabled: true}}>

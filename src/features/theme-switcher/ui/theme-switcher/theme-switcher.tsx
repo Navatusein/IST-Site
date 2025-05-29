@@ -1,18 +1,33 @@
 "use client"
 
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {setCookie} from "cookies-next";
 import {useTheme} from "next-themes";
 import {MoonOutlined, SunOutlined} from "@ant-design/icons";
-import {Button} from "antd";
+import {Button, Dropdown, MenuProps} from "antd";
 
-interface IProps {
 
-}
-
-export default function ThemeSwitcher(props: IProps) {
+export default function ThemeSwitcher() {
   const [mounted, setMounted] = useState(false);
-  const {theme, setTheme} = useTheme()
+  const {theme, setTheme, systemTheme} = useTheme()
+
+  const colorThemesItems = useMemo(() => ([
+    {
+      key: "dark",
+      label: "Темна тема",
+      icon: <MoonOutlined/>
+    },
+    {
+      key: "light",
+      label: "Світла тема",
+      icon: <SunOutlined/>
+    },
+    {
+      key: "system",
+      label: "Як у системі",
+      icon: systemTheme == "dark" ? <MoonOutlined/> : <SunOutlined/>
+    },
+  ] as MenuProps["items"]), [systemTheme]);
 
   useEffect(() => {
     setMounted(true)
@@ -22,18 +37,21 @@ export default function ThemeSwitcher(props: IProps) {
     return null
   }
 
-  const switchTheme = () => {
-    const nextTheme = theme == "dark" ? "light" : "dark";
-
-    setTheme(nextTheme);
-    setCookie("theme", nextTheme);
+  const onThemeSelect = (value: string) => {
+    setTheme(value);
+    setCookie("theme", value);
   }
 
   return (
-    <Button
-      onClick={() => switchTheme()}
-      icon={theme == "dark" ? <MoonOutlined/> : <SunOutlined/>}
-    />
+    <Dropdown menu={{
+      items: colorThemesItems,
+      selectedKeys: [theme ?? "system"],
+      onClick: (e) => onThemeSelect(e.key)
+    }}>
+      <Button
+        icon={theme == "dark" || (theme == "system" && systemTheme == "dark")  ? <MoonOutlined/> : <SunOutlined/>}
+      />
+    </Dropdown>
   )
 }
 

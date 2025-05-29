@@ -13,7 +13,9 @@ export const themeLightTokens = {
 }
 
 export const themeDarkTokens = {
-  "colorBgBase": "#1c1c1c",
-  "colorBgContainer": "#222222",
-  "colorTextBase": "#ffffff"
+  "colorBgBase": "#181818",
+  "colorBgContainer": "#1e1e1e",
+  "colorTextBase": "#ffffff",
+  "colorBgElevated": "#242424",
+  "colorBorder": "#3c3c3c"
 }
