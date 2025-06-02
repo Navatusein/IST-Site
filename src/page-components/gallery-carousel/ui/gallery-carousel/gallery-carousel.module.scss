@@ -1,10 +1,11 @@
 .carousel {
-  margin: 0 calc(var(--ant-padding-xxs) * -1);
+  margin: 0 calc(var(--ant-padding-xs) * -1);
 
   .container {
-    padding: var(--ant-padding-xxs);
+    padding: 0 var(--ant-padding-xs);
 
     .image {
+      user-select: none;
       height: 450px !important;
       object-fit: cover;
 
