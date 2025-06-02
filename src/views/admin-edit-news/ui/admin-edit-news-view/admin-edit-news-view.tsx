@@ -3,13 +3,19 @@
 import {useEffect, useState} from "react";
 import {IBasePageComponent} from "@/entities/dynamic-page";
 import {INews} from "@/entities/news";
-import {DynamicPageEditor} from "@/widgets/dynamic-page-editor";
 import {updateNewsAction} from "@/entities/news/actions/actions";
 import {useServerAction} from "@/shared/hooks/use-server-action";
+import dynamic from "next/dynamic";
+import {Loader} from "@/shared/ui-kit";
 
 interface IProps {
   news: INews;
 }
+
+const DynamicPageEditor = dynamic(() => import("@/widgets/dynamic-page-editor/ui/dynamic-page-editor/dynamic-page-editor"), {
+  ssr: false,
+  loading: () => <Loader/>
+});
 
 export default function AdminEditNewsView(props: IProps) {
   const [news, setNews] = useState<INews>(props.news);

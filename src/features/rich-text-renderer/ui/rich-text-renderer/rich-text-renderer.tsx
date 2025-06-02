@@ -1,3 +1,5 @@
+"use client"
+
 import Extensions from "@/shared/rich-text-extensions"
 import {EditorContent, useEditor} from "@tiptap/react";
 
@@ -11,9 +13,10 @@ export default function RichTextRenderer(props: IProps) {
     extensions: Extensions,
     content: JSON.parse(props.content ?? ""),
     immediatelyRender: false,
+    shouldRerenderOnTransaction: false,
   }, [props.content])
 
   return (
-    <EditorContent editor={editor} readOnly/>
+    <EditorContent editor={editor}/>
   )
 }

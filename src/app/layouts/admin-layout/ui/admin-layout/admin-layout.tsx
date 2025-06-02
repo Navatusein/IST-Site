@@ -1,10 +1,9 @@
 "use client"
 
 import AdminMenuSideContextProvider from "@/app/provider/admin-menu-side-context-provider/admin-menu-side-context-provider";
-import {Flex} from "antd";
+import {Flex, Layout, theme} from "antd";
 import {AdminHeader} from "@/widgets/admin-header";
 import {ReactNode} from "react";
-import Content from "../content/content";
 import dynamic from "next/dynamic";
 
 interface IProps {
@@ -16,15 +15,19 @@ const AdminSideMenu = dynamic(() => import("@/widgets/admin-side-menu/ui/admin-s
 });
 
 export default function AdminLayout(props: IProps) {
+  const {token: {padding}} = theme.useToken();
+
   return (
     <AdminMenuSideContextProvider>
       <Flex style={{maxHeight: "100dvh", width: "100dvw"}}>
         <AdminSideMenu/>
         <Flex vertical style={{width: "100%", overflowX: "hidden"}}>
           <AdminHeader/>
-          <Content>
-            {props.children}
-          </Content>
+          <Layout style={{overflow: "hidden auto"}}>
+            <Layout.Content style={{padding: `${padding}px`, minHeight: "fit-content"}}>
+              {props.children}
+            </Layout.Content>
+          </Layout>
         </Flex>
       </Flex>
     </AdminMenuSideContextProvider>

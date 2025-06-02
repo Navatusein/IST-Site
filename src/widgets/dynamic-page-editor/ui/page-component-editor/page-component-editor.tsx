@@ -10,7 +10,6 @@ import PageComponentEditorDrawer
 interface IProps {
   component: IBasePageComponent;
   index: number;
-  editMode: boolean;
   updateComponent: (value: IBasePageComponent, index: number) => void;
   removeComponent: (index: number) => void;
 }

@@ -14,7 +14,7 @@ export default function PublicHeader(props: IProps) {
   const {token: {colorBgContainer}} = theme.useToken();
 
   return (
-  <Layout.Header style={{padding: `0 8px 0 0`, background: colorBgContainer, position: "sticky", top: 0, zIndex: "1000"}}>
+    <Layout.Header style={{padding: `0 8px 0 0`, background: colorBgContainer, position: "sticky", top: 0, zIndex: "1000"}}>
       <Flex justify="space-between" align="center" style={{height: "100%"}}>
         <Icon showText={true} style={{width: 300}}/>
         <PublicNavMenu menuItems={props.menuItems}/>

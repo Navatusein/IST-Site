@@ -2,7 +2,6 @@
 
 import {notFound} from "next/navigation";
 import {getNewsByPathAction} from "@/entities/news/actions/actions";
-import {NewsView} from "@/views/news";
 import {AdminEditNewsView} from "@/views/admin-edit-news";
 import {useServerAction} from "@/shared/hooks/use-server-action";
 

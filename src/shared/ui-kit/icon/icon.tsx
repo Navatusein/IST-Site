@@ -1,5 +1,6 @@
 import {Flex, Image, Typography} from "antd";
 import {CSSProperties} from "react";
+import Link from "next/link";
 
 interface IProps {
   showText?: boolean;
@@ -12,19 +13,20 @@ interface IProps {
 
 export default function Icon(props: IProps) {
   return (
-    <Flex
-      align="center"
-      gap="small"
-      vertical={props.vertical}
-      style={{padding: "8px", overflow: "hidden", ...props.style}}
-    >
-      <Image
-        src="/icon.webp"
-        preview={false}
-        style={{width: props.iconSize ?? "48px", height: props.iconSize ?? "48px"}}
-        loading={"lazy"}
-      />
-      {props.showText &&
+    <Link href={"#"}>
+      <Flex
+        align="center"
+        gap="small"
+        vertical={props.vertical}
+        style={{padding: "8px", overflow: "hidden", ...props.style}}
+      >
+        <Image
+          src="/icon.webp"
+          preview={false}
+          style={{width: props.iconSize ?? "48px", height: props.iconSize ?? "48px"}}
+          loading={"lazy"}
+        />
+        {props.showText &&
         props.level ?
           <Typography.Title
             level={props.level}
@@ -40,7 +42,8 @@ export default function Icon(props: IProps) {
           >
             КАФЕДРА ІНФОРМАЦІЙНИХ СИСТЕМ ТА ТЕХНОЛОГІЙ
           </Typography.Paragraph>
-      }
-    </Flex>
+        }
+      </Flex>
+    </Link>
   )
 }

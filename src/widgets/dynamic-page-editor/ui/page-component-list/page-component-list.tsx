@@ -4,7 +4,6 @@ import {DraggableList} from "@/features/draggable-list";
 
 interface IProps {
   components: IBasePageComponent[];
-  editMode: boolean;
   updateComponents: (value: IBasePageComponent[]) => void;
   updateComponent: (value: IBasePageComponent, index: number) => void;
   removeComponent: (index: number) => void;
@@ -18,7 +17,6 @@ export default function PageComponentList(props: IProps) {
           key={component.id}
           component={component}
           index={index}
-          editMode={props.editMode}
           updateComponent={props.updateComponent}
           removeComponent={props.removeComponent}
         />
