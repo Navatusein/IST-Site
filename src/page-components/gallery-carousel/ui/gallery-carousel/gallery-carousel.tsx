@@ -3,7 +3,7 @@ import {IBasePageComponent} from "@/entities/dynamic-page";
 import {PageComponentError} from "@/shared/ui-kit";
 import GalleryCarouselEditor from "../gallery-carousel-editor/gallery-carousel-editor";
 import {IGalleryCarouselPageComponent} from "../../types/type";
-import {Card, Carousel, Col, Image, theme, Typography} from "antd";
+import {Card, Carousel, Col, Image} from "antd";
 import styles from "./gallery-carousel.module.scss";
 
 interface IProps {
@@ -11,8 +11,6 @@ interface IProps {
 }
 
 export default function GalleryCarousel(props: IProps) {
-  const {token: {colorBgContainer}} = theme.useToken();
-
   const typedComponentProps = useMemo(() => {
     if (props.componentProps.type !== "gallery-carousel")
       return null;

@@ -12,7 +12,7 @@ interface IProps {
 
 export default function RichTextEditor(props: IProps) {
   const typedComponentProps = useMemo(() => {
-    if (props.componentProps.type !== "markdown-text")
+    if (props.componentProps.type !== "rich-text")
       return null;
 
     return props.componentProps as IRichTextPageComponent;
