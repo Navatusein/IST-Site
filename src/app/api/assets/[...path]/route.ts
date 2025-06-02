@@ -14,10 +14,6 @@ export async function GET(request: NextRequest, {params}: {params: Promise<{path
     });
   }
   catch (error: any) {
-    console.log(error)
-
-    return new NextResponse("Not found", {
-      status: 404,
-    });
+    return new NextResponse( null, {status: 404});
   }
 }

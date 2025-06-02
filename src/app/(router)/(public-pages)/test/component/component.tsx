@@ -1,19 +1,25 @@
 "use client"
 
-import {Card, theme} from "antd";
+import {Card, Carousel, Image, theme} from "antd";
 import {useMemo} from "react";
-import {RichTextEditor} from "@/features/rich-text-editor";
+import {useMediaQuery} from "react-responsive";
+import styles from "./component.module.scss";
 
 interface IProps {
   width: "medium" | "large";
 }
 
-const content =  "{\"type\":\"doc\",\"content\":[{\"type\":\"heading\",\"attrs\":{\"level\":2},\"content\":[{\"type\":\"text\",\"text\":\"Запрошуємо до нас на навчання \"}]},{\"type\":\"heading\",\"attrs\":{\"level\":4},\"content\":[{\"type\":\"text\",\"text\":\"Кафедра інформаційних систем та технологій забезпечує навчання здобувачів за спец. F6 - \\\"Інформаційні системи та технології\\\" за такими освітніми програмами: \"}]},{\"type\":\"bulletList\",\"content\":[{\"type\":\"listItem\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"ОПП \\\"Програмні технології інтернет речей\\\",\"}]}]},{\"type\":\"listItem\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"ОПП \\\"Технології веброзробки та вебдизайн\\\",\"}]},{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"ОС \\\"Бакалавр\\\";\"}]}]},{\"type\":\"listItem\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"ОНП \\\"Програмні технології інтернет речей\\\",\"}]},{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"ОС \\\"Магістр\\\";\"}]}]},{\"type\":\"listItem\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"ОНП \\\"Інформаційні системи та технології\\\",\"}]},{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"ОС \\\"Доктор філософії\\\"\"}]}]}]}]}";
-
 export default function Component(props: IProps) {
   const typedComponentProps = {
     type: "contact-us",
-    width: props.width
+    width: props.width,
+    imagePaths: [
+      "/news-images/news-1.webp",
+      "/news-images/news-2.webp",
+      "/news-images/news-3.webp",
+      "/news-images/news-4.webp",
+      "/news-images/news-5.webp",
+    ]
   }
 
   const {token: {padding, paddingXS}} = theme.useToken();
@@ -28,13 +34,41 @@ export default function Component(props: IProps) {
     }
   }, [typedComponentProps.width])
 
+  const fullImagePaths = useMemo(() => (
+    typedComponentProps.imagePaths.map(imagePath => `/api/assets${imagePath}`
+  )), [typedComponentProps.imagePaths]);
 
+  const isXl = useMediaQuery({minWidth: 1200})
+  const isLg = useMediaQuery({minWidth: 992})
 
   return (
     <>
-      <Card>
-        <RichTextEditor value={content}/>
-      </Card>
+      <Carousel
+        responsive={[
+          {breakpoint: 1200, settings: {slidesToShow: 3}},
+          {breakpoint: 992, settings: {slidesToShow: 2}},
+          // {breakpoint: 1200, settings: {slidesToShow: 3}}
+        ]}
+        autoplay
+        arrows
+        centerPadding={"12px"}
+      >
+        {fullImagePaths.map((imagePath, index) => (
+          <Card>
+            <Image.PreviewGroup
+              items={fullImagePaths}
+            >
+              <Image
+                key={`image-${imagePath}`}
+                className={styles.image}
+                width={"100%"}
+                src={imagePath}
+                fallback="/missing-image.webp"
+              />
+            </Image.PreviewGroup>
+          </Card>
+        ))}
+      </Carousel>
     </>
   )
 }

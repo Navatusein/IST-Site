@@ -2,12 +2,14 @@ import {ComponentDescriptorType} from "@/widgets/page-component-renderer/types/t
 import {IPageComponentExample} from "@/entities/dynamic-page";
 import {NewsList, NewsListComponentExample} from "./news-list";
 import {HeroSectionMain, HeroSectionMainComponentExample} from "./hero-section-main";
-import {MarkdownText, MarkdownTextComponentExample} from "./markdown-text";
+import {RichText, RichTextComponentExample} from "./rich-text";
 import {Title, TitleComponentExample} from "./title";
 import {ContactUs, ContactUsComponentExample} from "./contact-us";
+import {GalleryCarousel, GalleryCarouselComponentExample} from "./gallery-carousel";
 
 export type PageComponentType = "title"|
-  "markdown-text"|
+  "rich-text"|
+  "gallery-carousel"|
   "hero-section-main"|
   "news-list"|
   "contact-us";
@@ -17,9 +19,13 @@ export const componentTypes: ComponentDescriptorType = {
     "renderComponent": (props) => <Title componentProps={props}/>,
     "renderEditor": (props, onChange) => <Title.Editor componentProps={props} onChange={onChange}/>
   },
-  "markdown-text": {
-    "renderComponent": (props) => <MarkdownText componentProps={props}/>,
-    "renderEditor": (props, onChange) => <MarkdownText.Editor componentProps={props} onChange={onChange}/>
+  "rich-text": {
+    "renderComponent": (props) => <RichText componentProps={props}/>,
+    "renderEditor": (props, onChange) => <RichText.Editor componentProps={props} onChange={onChange}/>
+  },
+  "gallery-carousel": {
+    "renderComponent": (props) => <GalleryCarousel componentProps={props}/>,
+    "renderEditor": (props, onChange) => <GalleryCarousel.Editor componentProps={props} onChange={onChange}/>
   },
   "hero-section-main": {
     "renderComponent": (props) => <HeroSectionMain componentProps={props}/>,
@@ -37,7 +43,8 @@ export const componentTypes: ComponentDescriptorType = {
 
 export const pageComponentExamples: IPageComponentExample[] = [
   TitleComponentExample,
-  MarkdownTextComponentExample,
+  RichTextComponentExample,
+  GalleryCarouselComponentExample,
   HeroSectionMainComponentExample,
   NewsListComponentExample,
   ContactUsComponentExample,

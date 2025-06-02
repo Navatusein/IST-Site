@@ -1,0 +1,17 @@
+.carousel {
+  margin: 0 calc(var(--ant-padding-xxs) * -1);
+
+  .container {
+    padding: var(--ant-padding-xxs);
+
+    .image {
+      height: 450px !important;
+      object-fit: cover;
+
+      @include respond-below(sm) {
+        height: 300px !important;
+      }
+    }
+  }
+}
+

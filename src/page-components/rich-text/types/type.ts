@@ -1,14 +1,14 @@
 import {IBasePageComponent} from "@/entities/dynamic-page";
 
-export interface IMarkdownTextPageComponent extends IBasePageComponent {
+export interface IRichTextPageComponent extends IBasePageComponent {
   text: string;
 }
 
-export const MarkdownTextComponentExample = {
+export const RichTextComponentExample = {
   name: "Текст",
   component: {
     type: "markdown-text",
     width: "medium",
     text: "Some text"
-  } as IMarkdownTextPageComponent
+  } as IRichTextPageComponent
 }

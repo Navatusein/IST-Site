@@ -27,6 +27,7 @@ export default function HeroSectionMain(props: IProps) {
         <Flex vertical className={styles.titleBaseContainer}>
           <Image
             src={`/api/assets${typedComponentProps!.imagePath}`}
+            fallback="/missing-image.webp"
             preview={false}
             height={typedComponentProps!.imageHeight}
             width={"100%"}

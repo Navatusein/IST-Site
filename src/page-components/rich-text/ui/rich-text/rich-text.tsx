@@ -1,20 +1,20 @@
 import {useMemo} from "react";
 import {IBasePageComponent} from "@/entities/dynamic-page";
 import {PageComponentError} from "@/shared/ui-kit";
-import MarkdownTextEditor from "../markdown-text-editor/markdown-text-editor";
-import {IMarkdownTextPageComponent} from "../../types/type";
+import RichTextEditor from "@/page-components/rich-text/ui/rich-text-editor/rich-text-editor";
+import {IRichTextPageComponent} from "../../types/type";
 import {RichTextRenderer} from "../../../../features/rich-text-renderer";
 
 interface IProps {
   componentProps: IBasePageComponent;
 }
 
-export default function MarkdownText(props: IProps) {
+export default function RichText(props: IProps) {
   const typedComponentProps = useMemo(() => {
-    if (props.componentProps.type !== "markdown-text")
+    if (props.componentProps.type !== "rich-text")
       return null;
 
-    return props.componentProps as IMarkdownTextPageComponent;
+    return props.componentProps as IRichTextPageComponent;
   }, [props]);
 
   return (
@@ -24,4 +24,4 @@ export default function MarkdownText(props: IProps) {
   )
 }
 
-MarkdownText.Editor = MarkdownTextEditor
+RichText.Editor = RichTextEditor

@@ -205,7 +205,7 @@ export class FileManagerService {
   private static detectFileType(fileName: string): IFileTypes {
     const extension = path.extname(fileName).toLowerCase();
 
-    if ([".jpg", ".jpeg", ".png", ".gif", ".bmp", ".svg", ".webp"].includes(extension))
+    if ([".jpg", ".jpeg", ".png", ".gif", ".bmp", ".svg", ".webp", ".avif"].includes(extension))
       return "image";
 
     if ([".pdf"].includes(extension))

@@ -1,0 +1,8 @@
+.image {
+  height: 450px !important;
+  object-fit: cover;
+
+  @include respond-below(sm) {
+    height: 300px !important;
+  }
+}
