@@ -6,10 +6,12 @@ import {RichText, RichTextComponentExample} from "./rich-text";
 import {Title, TitleComponentExample} from "./title";
 import {ContactUs, ContactUsComponentExample} from "./contact-us";
 import {GalleryCarousel, GalleryCarouselComponentExample} from "./gallery-carousel";
+import {HeroSection, HeroSectionComponentExample} from "./hero-section";
 
 export type PageComponentType = "title"|
   "rich-text"|
   "gallery-carousel"|
+  "hero-section"|
   "hero-section-main"|
   "news-list"|
   "contact-us";
@@ -26,6 +28,10 @@ export const componentTypes: ComponentDescriptorType = {
   "gallery-carousel": {
     "renderComponent": (props) => <GalleryCarousel componentProps={props}/>,
     "renderEditor": (props, onChange) => <GalleryCarousel.Editor componentProps={props} onChange={onChange}/>
+  },
+  "hero-section": {
+    "renderComponent": (props) => <HeroSection componentProps={props}/>,
+    "renderEditor": (props, onChange) => <HeroSection.Editor componentProps={props} onChange={onChange}/>
   },
   "hero-section-main": {
     "renderComponent": (props) => <HeroSectionMain componentProps={props}/>,
@@ -45,6 +51,7 @@ export const pageComponentExamples: IPageComponentExample[] = [
   TitleComponentExample,
   RichTextComponentExample,
   GalleryCarouselComponentExample,
+  HeroSectionComponentExample,
   HeroSectionMainComponentExample,
   NewsListComponentExample,
   ContactUsComponentExample,

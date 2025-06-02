@@ -5,7 +5,7 @@ export interface IGalleryCarouselPageComponent extends IBasePageComponent {
 }
 
 export const GalleryCarouselComponentExample = {
-  name: "",
+  name: "Галерея",
   component: {
     type: "gallery-carousel",
     allowedWidth: "large",
