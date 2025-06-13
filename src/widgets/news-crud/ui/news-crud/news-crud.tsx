@@ -28,6 +28,9 @@ const COLUMNS: TableColumnsType<INews> = [
     title: "Опис",
     dataIndex: "description",
     key: "description",
+    render: (text: string) => (
+      text.length > 100 ? `${text.slice(0, 50)}...`: text
+    ),
     sorter: (a, b) => stringSorter(a.description, b.description),
     showSorterTooltip: {
       title: "Сортування за описом"

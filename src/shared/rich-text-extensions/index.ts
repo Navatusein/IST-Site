@@ -15,7 +15,7 @@ import Heading from "./ant-heading/ant-heading";
 import Blockquote from "./ant-blockquote/ant-blockquote";
 import HorizontalRule from "./ant-horizontal-rule/ant-horizontal-rule";
 
-export default [
+export const ExtensionsForRender = [
   Document,
   Paragraph,
   Heading,
@@ -31,4 +31,24 @@ export default [
   Blockquote,
   HorizontalRule,
   Link,
+]
+
+export const ExtensionsForEditor= [
+  Document,
+  Paragraph,
+  Heading,
+  Text,
+  ListItem,
+  BulletList,
+  OrderedList,
+  Bold,
+  Italic,
+  Strike,
+  HardBreak,
+  History,
+  Blockquote,
+  HorizontalRule,
+  Link.configure({
+    openOnClick: false
+  }),
 ]

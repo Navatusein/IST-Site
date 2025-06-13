@@ -23,11 +23,15 @@ export default function DynamicPageEditor(props: IProps) {
   const [initialComponentsState, setInitialComponentsState] = useState<IBasePageComponent[]>(props.components)
 
   const isChanged = useMemo(() => {
+    if (props.components.length != initialComponentsState.length)
+      return true;
+
     for (let i = 0; i < props.components.length; i++) {
       if (JSON.stringify(initialComponentsState[i]) != JSON.stringify(props.components[i]))
-        return true
+        return true;
     }
-    return false
+
+    return false;
   }, [props.components]);
 
   const [isAddPageComponentDrawerOpen, setIsAddPageComponentDrawerOpen] = useState<boolean>(false);
