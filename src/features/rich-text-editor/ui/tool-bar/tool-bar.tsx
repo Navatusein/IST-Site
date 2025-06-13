@@ -1,13 +1,13 @@
 import {Editor} from "@tiptap/react";
 import {Button, Flex, Input, Select, Space, Tooltip} from "antd";
 import {
-  BoldOutlined, ClearOutlined, CloseCircleOutlined, CommentOutlined, EnterOutlined,
+  BoldOutlined, ClearOutlined, CloseCircleOutlined, CommentOutlined, DisconnectOutlined, EnterOutlined,
   ItalicOutlined, LineOutlined, LinkOutlined,
   OrderedListOutlined, RedoOutlined,
   StrikethroughOutlined, UndoOutlined,
   UnorderedListOutlined
 } from "@ant-design/icons";
-import {useMemo} from "react";
+import {useCallback, useMemo} from "react";
 
 interface IProps {
   editor: Editor|null;
@@ -62,6 +62,21 @@ export default function ToolBar(props: IProps) {
     if (type == "header")
       props.editor!.chain().focus().toggleHeading({level: parseInt(attribute) as never}).run()
   }
+
+  const setLink = useCallback(() => {
+    const previousUrl = props.editor!.getAttributes('link').href
+    const url = window.prompt('URL', previousUrl)
+
+    if (url === null)
+      return
+
+    if (url === '') {
+      props.editor!.chain().focus().extendMarkRange('link').unsetLink().run()
+      return
+    }
+
+    props.editor!.chain().focus().extendMarkRange('link').setLink({href: url}).run()
+  }, [props.editor])
 
   return (
     <Flex gap="small" wrap>
@@ -139,13 +154,35 @@ export default function ToolBar(props: IProps) {
         />
       </Tooltip>
 
-      <Tooltip title="Вставити посилання">
-        <Button
-          onClick={() => props.editor!.chain().focus().toggleLink({href: prompt("title") ?? "#"}).run()}
-          type={props.editor.isActive("link") ? "primary" : "default"}
-          icon={<LinkOutlined/>}
-        />
-      </Tooltip>
+      <Space.Compact>
+        {props.editor.isActive("link") ?
+          <>
+            <Tooltip title="Змінити посилання">
+              <Button
+                onClick={setLink}
+                type="primary"
+                icon={<LinkOutlined/>}
+              />
+            </Tooltip>
+            <Tooltip title="Видалити посилання">
+              <Button
+                onClick={() => props.editor!.chain().focus().unsetLink().run()}
+                type="default"
+                icon={<DisconnectOutlined/>}
+              />
+            </Tooltip>
+          </> :
+          <>
+            <Tooltip title="Вставити посилання">
+              <Button
+                onClick={setLink}
+                type="default"
+                icon={<LinkOutlined/>}
+              />
+            </Tooltip>
+          </>
+        }
+      </Space.Compact>
 
       <Tooltip title="Горизонтальна лінія">
         <Button
