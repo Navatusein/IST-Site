@@ -1,7 +1,7 @@
 import {Document} from "mongoose";
 import {IBasePageComponent} from "@/entities/dynamic-page";
 
-export interface ITeacher extends Document {
+export interface IDepartmentStaff extends Document {
   firstName: string;
   lastName: string;
   middleName: string;

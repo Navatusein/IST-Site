@@ -1,18 +1,18 @@
 "use client"
 
-import {ITeacher} from "@/entities/teacher";
+import {IDepartmentStaff} from "@/entities/department-staff";
 import {useEffect, useState} from "react";
 import {IBasePageComponent} from "@/entities/dynamic-page";
 import {useServerAction} from "@/shared/hooks/use-server-action";
-import {updateTeacherAction} from "@/entities/teacher/actions/actions";
+import {updateDepartmentStaffAction} from "@/entities/department-staff/actions/actions";
 import {DynamicPageEditor} from "@/widgets/dynamic-page-editor";
 
 interface IProps {
-  teacher: ITeacher
+  teacher: IDepartmentStaff
 }
 
-export default function AdminEditTeacherView(props: IProps) {
-  const [teacher, setTeacher] = useState<ITeacher>(props.teacher);
+export default function AdminEditDepartmentStaffView(props: IProps) {
+  const [teacher, setTeacher] = useState<IDepartmentStaff>(props.teacher);
 
   useEffect(() => {
     setTeacher(() => props.teacher);
@@ -20,12 +20,12 @@ export default function AdminEditTeacherView(props: IProps) {
 
   const setComponents = (components: IBasePageComponent[]) => {
     setTeacher((prevState) => (
-      {...prevState, components: components} as ITeacher
+      {...prevState, components: components} as IDepartmentStaff
     ));
   }
 
   const saveComponents = async () => {
-    await useServerAction(updateTeacherAction(teacher));
+    await useServerAction(updateDepartmentStaffAction(teacher));
   }
 
   return (

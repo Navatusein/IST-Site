@@ -5,15 +5,15 @@ import {Space, TableColumnsType, Tag} from "antd";
 import {CrudComponent} from "@/widgets/crud-component";
 import {FormOutlined} from "@ant-design/icons";
 import {dateStringSorter, stringSorter} from "@/shared/utilities/sorters";
-import {ITeacher} from "@/entities/teacher";
-import {addTeacherAction, removeTeacherAction, updateTeacherAction} from "@/entities/teacher/actions/actions";
-import TeacherCrudForm from "../teacher-crud-form/teacher-crud-form";
+import {IDepartmentStaff} from "@/entities/department-staff";
+import {addDepartmentStaffAction, removeDepartmentStaffAction, updateDepartmentStaffAction} from "@/entities/department-staff/actions/actions";
+import DepartmentStaffCrudForm from "@/widgets/department-staff-crud/ui/department-staff-crud-form/department-staff-crud-form";
 
 interface IProps {
-  teachers: ITeacher[]
+  teachers: IDepartmentStaff[]
 }
 
-const COLUMNS: TableColumnsType<ITeacher> = [
+const COLUMNS: TableColumnsType<IDepartmentStaff> = [
   {
     title: "Фамілія",
     dataIndex: "lastName",
@@ -36,8 +36,8 @@ const COLUMNS: TableColumnsType<ITeacher> = [
   },
   {
     title: "Ім'я по батькові",
-    dataIndex: "firstName",
-    key: "firstName",
+    dataIndex: "middleName",
+    key: "middleName",
     width: 150,
     sorter: (a, b) => stringSorter(a.middleName, b.middleName),
     showSorterTooltip: {
@@ -111,30 +111,30 @@ const COLUMNS: TableColumnsType<ITeacher> = [
   }
 ];
 
-export default function TeacherCrud(props: IProps) {
+export default function DepartmentStaffCrud(props: IProps) {
   const router = useRouter()
 
-  const [selectedRows, setSelectedRows] = useState<ITeacher[]>([]);
+  const [selectedRows, setSelectedRows] = useState<IDepartmentStaff[]>([]);
 
-  const create = async (data: ITeacher) => {
+  const create = async (data: IDepartmentStaff) => {
     console.log(data)
 
-    await useServerAction(addTeacherAction({...data, _id: null} as ITeacher));
+    await useServerAction(addDepartmentStaffAction({...data, _id: null} as IDepartmentStaff));
   }
 
-  const update = async (data: ITeacher) => {
-    await useServerAction(updateTeacherAction({...data} as ITeacher));
+  const update = async (data: IDepartmentStaff) => {
+    await useServerAction(updateDepartmentStaffAction({...data} as IDepartmentStaff));
   }
 
-  const remove = async (data: ITeacher[]) => {
-    await useServerAction(removeTeacherAction(data));
+  const remove = async (data: IDepartmentStaff[]) => {
+    await useServerAction(removeDepartmentStaffAction(data));
   }
 
   const refresh = () => {
     router.refresh();
   }
 
-  const search = (data: ITeacher[], query: string): ITeacher[] => {
+  const search = (data: IDepartmentStaff[], query: string): IDepartmentStaff[] => {
     return data.filter((x) =>
       x.firstName.toLowerCase().includes(query) ||
       x.lastName.toLowerCase().includes(query) ||
@@ -145,16 +145,16 @@ export default function TeacherCrud(props: IProps) {
     );
   }
 
-  const redirectToEditPage = (data?: ITeacher[]) => {
+  const redirectToEditPage = (data?: IDepartmentStaff[]) => {
     if (selectedRows[0] == null && data?.[0] == null)
       return;
 
-    router.push(`/admin/edit/teacher/${data?.[0].path ?? selectedRows[0].path}`);
+    router.push(`/admin/edit/department-staff/${data?.[0].path ?? selectedRows[0].path}`);
   }
 
   return (
     <Space direction="vertical" size="middle" style={{width: "100%"}}>
-      <CrudComponent<ITeacher>
+      <CrudComponent<IDepartmentStaff>
         columns={COLUMNS}
         data={props.teachers}
         isLoading={false}
@@ -183,7 +183,7 @@ export default function TeacherCrud(props: IProps) {
           },
         ]}
       >
-        <TeacherCrudForm teachers={props.teachers}/>
+        <DepartmentStaffCrudForm teachers={props.teachers}/>
       </CrudComponent>
     </Space>
   )

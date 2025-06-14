@@ -1,7 +1,7 @@
 import {model, models, Schema} from "mongoose";
-import {ITeacher} from "./type";
+import {IDepartmentStaff} from "./type";
 
-const teacherScheme = new Schema<ITeacher>({
+const departmentStaffScheme = new Schema<IDepartmentStaff>({
   firstName: {type: String, required: true},
   lastName: {type: String, required: true},
   middleName: {type: String, required: true},
@@ -12,5 +12,5 @@ const teacherScheme = new Schema<ITeacher>({
   components: [{type: Schema.Types.Mixed, required: true}],
 }, {timestamps: true});
 
-export {teacherScheme};
-export default models?.Teacher || model<ITeacher>("Teacher", teacherScheme, "teachers");
+export {departmentStaffScheme};
+export default models?.DepartmentStaff || model<IDepartmentStaff>("DepartmentStaff", departmentStaffScheme, "department-staff");
