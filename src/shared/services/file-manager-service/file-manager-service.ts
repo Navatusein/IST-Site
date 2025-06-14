@@ -147,8 +147,6 @@ export class FileManagerService {
   public static getFileBufferAndMimeType(relativePath: string): {buffer: Buffer, mimeType: string} {
     const resolvedPath = this.resolvePath(relativePath);
 
-    console.log(resolvedPath);
-
     if (!fs.existsSync(resolvedPath) || fs.statSync(resolvedPath).isDirectory()) {
       throw new Error(`File "${relativePath}" does not exist or is a directory.`);
     }
