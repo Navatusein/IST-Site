@@ -10,7 +10,7 @@ const COL_CONFIG = {
   "medium": {
     sm: {span: 24, offset: 0},
     md: {span: 20, offset: 2},
-    lg: {span: 18, offset: 4},
+    lg: {span: 18, offset: 3},
     xl: {span: 14, offset: 5},
     xxl: {span: 12, offset: 6},
   },

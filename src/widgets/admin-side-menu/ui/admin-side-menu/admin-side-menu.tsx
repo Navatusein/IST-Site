@@ -29,22 +29,22 @@ export default function AdminSideMenu() {
     const items: MenuProps["items"]  = []
 
     if (userPermissions.includes("edit-news"))
-      items.push({key: "news-control", icon: <ReadOutlined/>, label: <Link href={"/admin/edit-news"}>Керування новинами</Link>});
+      items.push({key: "news-control", icon: <ReadOutlined/>, label: <Link href={"/admin/news"}>Керування новинами</Link>});
 
     if (userPermissions.includes("edit-pages"))
-      items.push({key: "edit-pages", icon: <FileTextOutlined/>, label: <Link href={"/admin/edit-pages"}>Керування сторінками</Link>});
+      items.push({key: "edit-pages", icon: <FileTextOutlined/>, label: <Link href={"/admin/dynamic-pages"}>Керування сторінками</Link>});
 
     if (userPermissions.includes("edit-menu"))
-      items.push({key: "edit-menu", icon: <ProfileOutlined/>, label: <Link href={"/admin/edit-menu"}>Керування меню</Link>});
+      items.push({key: "edit-menu", icon: <ProfileOutlined/>, label: <Link href={"/admin/public-menu"}>Керування меню</Link>});
 
-    if (userPermissions.includes("edit-teachers"))
-      items.push({key: "edit-teachers", icon: <TeamOutlined/>, label: <Link href={"/admin/edit-teachers"}>Керування викладачами</Link>});
+    if (userPermissions.includes("edit-department-staff"))
+      items.push({key: "edit-department-staff", icon: <TeamOutlined/>, label: <Link href={"/admin/department-staff"}>Керування співробітниками</Link>});
 
     if (userPermissions.includes("edit-files"))
       items.push({key: "files-manager", icon: <FolderOpenOutlined/>, label: <Link href={"/admin/file-manager"}>Файловий менеджер</Link>});
 
     if (userPermissions.includes("edit-users"))
-      items.push({key: "user-control", icon: <UserOutlined/>, label: <Link href={"/admin/edit-users"}>Керування користувачами</Link>});
+      items.push({key: "user-control", icon: <UserOutlined/>, label: <Link href={"/admin/users"}>Керування користувачами</Link>});
 
     return items;
   }, [userPermissions])

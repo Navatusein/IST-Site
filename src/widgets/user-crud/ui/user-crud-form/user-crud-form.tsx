@@ -11,7 +11,7 @@ const PERMISSIONS_OPTIONS: SelectProps["options"] = [
   {label: "Редагувати новини", value: "edit-news"},
   {label: "Редагувати сторіник", value: "edit-pages"},
   {label: "Редагувати меню", value: "edit-menu"},
-  {label: "Редагувати викладачів", value: "edit-teachers"},
+  {label: "Редагувати співробітників", value: "edit-department-staff"},
   {label: "Редагувати файли", value: "edit-files"},
   {label: "Редагувати користувачів", value: "edit-users"},
 

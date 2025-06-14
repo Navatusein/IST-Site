@@ -1,29 +1,43 @@
 import {PermissionType} from "@/shared/types/permissions";
 
 export const permissions: PermissionType = {
+  "edit-news": {
+    name: "Edit News",
+    paths: [
+      "/admin/news",
+      "/admin/news/[path]"
+    ],
+  },
+  "edit-dynamic-pages": {
+    name: "Edit Dynamic Pages",
+    paths: [
+      "/admin/dynamic-pages",
+      "/admin/dynamic-pages/[...path]"
+    ],
+  },
+  "edit-public-menu": {
+    name: "Edit Public Pages",
+    paths: [
+      "/admin/public-manu"
+    ],
+  },
+  "edit-users": {
+    name: "Edit Users",
+    paths: [
+      "/admin/users"
+    ],
+  },
   "edit-files": {
     name: "Edit Files",
     paths: [
       "/admin/file-manager"
     ],
   },
-  "edit-news": {
-    name: "Edit News",
+  "edit-department-staff": {
+    name: "Edit Department Staff",
     paths: [
-      "/admin/admin-edit-news"
+      "/admin/department-staff",
+      "/admin/department-staff/[path]"
     ],
   },
-  "edit-pages": {
-    name: "Edit Pages",
-    paths: [
-      "/admin/edit-pages",
-      "/admin/edit/page/[path]"
-    ],
-  },
-  "edit-users": {
-    name: "Edit Users",
-    paths: [
-      "/admin/edit-users"
-    ],
-  }
 };

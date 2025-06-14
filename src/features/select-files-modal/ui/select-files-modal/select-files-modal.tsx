@@ -1,6 +1,6 @@
-import {Button, Flex, Modal} from "antd";
+import {Button, Card, Flex, Modal} from "antd";
 import {FileViewer} from "@/features/file-viewer";
-import {Dispatch, Key, SetStateAction, useState} from "react";
+import {Dispatch, Key, SetStateAction, useEffect, useState} from "react";
 import {IDirectory, IFile, IFileTypes} from "@/shared/services/file-manager-service/types/type";
 
 interface IProps {
@@ -17,6 +17,11 @@ export default function SelectFilesModal(props: IProps) {
   const [files, setFiles] = useState<(IFile|IDirectory)[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>(props.selectFilePaths);
   const [updateFiles, setUpdateFiles] = useState<number>(0);
+
+  useEffect(() => {
+    if (props.selectFilePaths.length == 0)
+      setSelectedRowKeys(() => []);
+  }, [props.selectFilePaths]);
 
   const closeModal = () => {
     props.setSelectFilePaths(() => []);

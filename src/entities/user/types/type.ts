@@ -1,6 +1,12 @@
 import {Document} from "mongoose";
 
-export type UserPermissionType = "edit-news" | "edit-pages" | "edit-menu" | "edit-users" | "edit-files" | "edit-teachers";
+export type UserPermissionType =
+  "edit-news" |
+  "edit-dynamic-pages" |
+  "edit-public-menu" |
+  "edit-users" |
+  "edit-files" |
+  "edit-department-staff";
 
 export interface IUser extends Document {
   login: string,

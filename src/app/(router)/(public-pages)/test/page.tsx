@@ -5,24 +5,12 @@ import dynamic from "next/dynamic";
 import {useState} from "react";
 import {Card, Checkbox, Col, Flex, Segmented, theme, Tooltip} from "antd";
 import {ArrowsAltOutlined, ShrinkOutlined} from "@ant-design/icons";
+import {ComponentCol} from "@/shared/ui-kit";
 
 
 const Component = dynamic(() => import("@/app/(router)/(public-pages)/test/component/component"), {
   ssr: false
 });
-
-const config = {
-  "medium": {
-    sm: {span: 24, offset: 0},
-    md: {span: 20, offset: 2},
-    lg: {span: 18, offset: 4},
-    xl: {span: 14, offset: 5},
-    xxl: {span: 12, offset: 6},
-  },
-  "large": {
-    span: 24
-  }
-}
 
 export default function Page() {
   const {token: {padding}} = theme.useToken();
@@ -32,11 +20,9 @@ export default function Page() {
 
   return (
     <Flex vertical gap="middle" style={{marginBottom: padding, marginTop: marginTop}}>
-      <Col {...config[componentWidth]}>
-        <div style={{margin: componentWidth != "large" ? `0 ${padding}px` : "unset"}}>
-          <Component width={componentWidth}/>
-        </div>
-      </Col>
+      <ComponentCol width={componentWidth}>
+        <Component width={componentWidth}/>
+      </ComponentCol>
       <Card variant="borderless" size="small" style={{width: "fit-content", alignSelf: "center"}}>
        <Flex gap="small" align="center">
          <Tooltip title="Змінити розмір блоку">
