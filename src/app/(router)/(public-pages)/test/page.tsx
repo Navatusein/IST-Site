@@ -1,9 +1,8 @@
 "use client"
 
 import dynamic from "next/dynamic";
-// import Component from "./component/component";
 import {useState} from "react";
-import {Card, Checkbox, Col, Flex, Segmented, theme, Tooltip} from "antd";
+import {Card, Checkbox, Flex, Segmented, theme, Tooltip} from "antd";
 import {ArrowsAltOutlined, ShrinkOutlined} from "@ant-design/icons";
 import {ComponentCol} from "@/shared/ui-kit";
 

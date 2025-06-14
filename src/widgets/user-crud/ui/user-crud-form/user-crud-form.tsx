@@ -3,10 +3,6 @@ import {IDynamicPage} from "@/entities/dynamic-page";
 import {IUser} from "@/entities/user";
 import type {SelectProps} from "antd";
 
-interface IProps {
-
-}
-
 const PERMISSIONS_OPTIONS: SelectProps["options"] = [
   {label: "Редагувати новини", value: "edit-news"},
   {label: "Редагувати сторіник", value: "edit-pages"},
@@ -17,7 +13,7 @@ const PERMISSIONS_OPTIONS: SelectProps["options"] = [
 
 ]
 
-export default function UserCrudForm(props: IProps) {
+export default function UserCrudForm() {
   return (
     <>
       <Form.Item hidden name="_id">

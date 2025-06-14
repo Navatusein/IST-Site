@@ -1,4 +1,4 @@
-import {Button, Card, Flex, Modal} from "antd";
+import {Button, Flex, Modal} from "antd";
 import {FileViewer} from "@/features/file-viewer";
 import {Dispatch, Key, SetStateAction, useEffect, useState} from "react";
 import {IDirectory, IFile, IFileTypes} from "@/shared/services/file-manager-service/types/type";
