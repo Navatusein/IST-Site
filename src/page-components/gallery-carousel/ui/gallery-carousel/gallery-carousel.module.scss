@@ -5,6 +5,10 @@
     padding: 0 var(--ant-padding-xs);
     height: 450px !important;
 
+    @include respond-below(sm) {
+      height: 300px !important;
+    }
+
     .image {
       user-select: none;
       height: 450px !important;
