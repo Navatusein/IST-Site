@@ -51,6 +51,7 @@ export default function VerticalNavMenu(props: IProps) {
         <Menu
           mode="inline"
           items={props.navMenuItems}
+          onSelect={() => setIsOpen(() => false)}
         />
         <Flex vertical style={{padding: `${padding}px ${paddingLG}px`}}>
           {isAuthorized ?
