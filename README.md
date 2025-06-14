@@ -1,1 +1,1 @@
-## A new website for the KNU's ICT department
+## A new website for the KNU's IST department
