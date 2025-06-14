@@ -5,14 +5,14 @@ export const permissions: PermissionType = {
     name: "Edit News",
     paths: [
       "/admin/news",
-      "/admin/news/[path]"
+      "/admin/edit-page/news/[path]"
     ],
   },
   "edit-dynamic-pages": {
     name: "Edit Dynamic Pages",
     paths: [
       "/admin/dynamic-pages",
-      "/admin/dynamic-pages/[...path]"
+      "/admin/edit-page/dynamic-pages/[...path]"
     ],
   },
   "edit-public-menu": {
@@ -37,7 +37,7 @@ export const permissions: PermissionType = {
     name: "Edit Department Staff",
     paths: [
       "/admin/department-staff",
-      "/admin/department-staff/[path]"
+      "/admin/edit-page/department-staff/[path]"
     ],
   },
 };

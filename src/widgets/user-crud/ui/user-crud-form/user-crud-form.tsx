@@ -1,12 +1,11 @@
 import {Form, Input, Select} from "antd";
 import {IDynamicPage} from "@/entities/dynamic-page";
-import {IUser} from "@/entities/user";
-import type {SelectProps} from "antd";
+import {IUser, UserPermissionType} from "@/entities/user";
 
-const PERMISSIONS_OPTIONS: SelectProps["options"] = [
+const PERMISSIONS_OPTIONS: {label: string, value: UserPermissionType}[] = [
   {label: "Редагувати новини", value: "edit-news"},
-  {label: "Редагувати сторіник", value: "edit-pages"},
-  {label: "Редагувати меню", value: "edit-menu"},
+  {label: "Редагувати сторіник", value: "edit-dynamic-pages"},
+  {label: "Редагувати меню", value: "edit-public-menu"},
   {label: "Редагувати співробітників", value: "edit-department-staff"},
   {label: "Редагувати файли", value: "edit-files"},
   {label: "Редагувати користувачів", value: "edit-users"},
@@ -45,7 +44,7 @@ export default function UserCrudForm() {
       >
         <Select
           mode="multiple"
-          options={PERMISSIONS_OPTIONS}
+          options={PERMISSIONS_OPTIONS as never}
           filterSort={(a, b) => (
             (a.value as string).localeCompare((b.value as string))
           )}

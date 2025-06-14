@@ -100,7 +100,7 @@ export default function DynamicPageCrud(props: IProps) {
     if (selectedRows[0] == null && data?.[0] == null)
       return;
 
-    redirect(`/admin/dynamic-page/${data?.[0].path ?? selectedRows[0].path}`, RedirectType.push);
+    redirect(`/admin/edit-page/dynamic-page/${data?.[0].path ?? selectedRows[0].path}`, RedirectType.push);
   }
 
   return (
