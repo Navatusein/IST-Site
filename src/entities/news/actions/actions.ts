@@ -37,7 +37,6 @@ export const addNewsAction = createServerAction<void>(async (data: INews) => {
 
 export const updateNewsAction = createServerAction<void>(async (data: INews) => {
   const {_id, ...updateData} = data;
-
   await NewsModel.findByIdAndUpdate(_id, {$set: updateData});
 });
 

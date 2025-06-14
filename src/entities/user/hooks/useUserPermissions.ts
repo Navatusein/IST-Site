@@ -2,11 +2,12 @@ import {useSession} from "next-auth/react";
 import {useEffect, useState} from "react";
 import {getUserByIdAction} from "@/entities/user/actions/actions";
 import {useServerAction} from "@/shared/hooks/use-server-action";
+import {UserPermissionType} from "@/entities/user";
 
 export const useUserPermissions = () => {
   const session = useSession();
 
-  const [userPermissions, setUserPermissions] = useState<string[]>([]);
+  const [userPermissions, setUserPermissions] = useState<UserPermissionType[]>([]);
   const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
 
   useEffect(() => {

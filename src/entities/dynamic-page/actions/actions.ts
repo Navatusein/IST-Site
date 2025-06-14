@@ -24,7 +24,6 @@ export const addDynamicPageAction = createServerAction<void>(async (data: IDynam
 
 export const updateDynamicPageAction = createServerAction<void>(async (data: IDynamicPage) => {
   const {_id, ...updateData} = data;
-
   await DynamicPageModel.findByIdAndUpdate(_id, {$set: updateData});
 });
 

@@ -41,7 +41,6 @@ export const addPublicMenuItemAction = createServerAction<void>(async (data: IPu
 
 export const updatePublicMenuItemAction = createServerAction<void>(async (data: IPublicMenuItem) => {
   const {_id, ...updateData} = data;
-
   await PublicMenuItemModel.findByIdAndUpdate(_id, {$set: updateData});
 });
 

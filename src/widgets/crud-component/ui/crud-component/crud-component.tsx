@@ -50,8 +50,8 @@ export default function CrudComponent<T>(props: IProps<T>) {
         title: "Дії",
         dataIndex: "actions",
         key: "actions",
-        ellipsis: true,
-        width: "40px",
+        fixed:"right",
+        width: 48,
         render: (_, record, __) => (
           <CrudActionsDropdown<T>
             value={record}

@@ -8,10 +8,13 @@ interface IProps {
 }
 
 const PERMISSIONS_OPTIONS: SelectProps["options"] = [
-  {label: "Edit news", value: "edit-news"},
-  {label: "Edit pages", value: "edit-pages"},
-  {label: "Edit files", value: "edit-files"},
-  {label: "Edit users", value: "edit-users"},
+  {label: "Редагувати новини", value: "edit-news"},
+  {label: "Редагувати сторіник", value: "edit-pages"},
+  {label: "Редагувати меню", value: "edit-menu"},
+  {label: "Редагувати викладачів", value: "edit-teachers"},
+  {label: "Редагувати файли", value: "edit-files"},
+  {label: "Редагувати користувачів", value: "edit-users"},
+
 ]
 
 export default function UserCrudForm(props: IProps) {

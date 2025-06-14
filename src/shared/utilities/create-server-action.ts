@@ -8,9 +8,11 @@ export function createServerAction<T>(callback: (...args: any[]) => Promise<T>):
     }
     catch (error) {
       if (error instanceof ServerActionError) {
+        console.log(error)
         return {success: false, error: error.message, data: undefined as never};
       }
       else {
+        console.log(error)
         return {success: false, error: "Unhandled error type", data: undefined as never};
       }
     }

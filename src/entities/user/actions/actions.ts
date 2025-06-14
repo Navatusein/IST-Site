@@ -24,7 +24,6 @@ export const addUserAction = createServerAction<void>(async (data: IUser) => {
 
 export const updateUserAction = createServerAction<void>(async (data: IUser) => {
   const { _id, ...updateData } = data;
-
   await UserModel.findByIdAndUpdate(_id, { $set: updateData });
 });
 

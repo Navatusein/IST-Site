@@ -21,7 +21,7 @@ export default function CrudTable<T>(props: IProps<T>) {
       dataSource={props.data}
       loading={props.isLoading}
       size="small"
-      scroll={{x: "auto"}}
+      scroll={{x: 1}}
       rowKey={props.keyField ?? "_id"}
       rowSelection={{
         selectedRowKeys: selectedRowKeys,
