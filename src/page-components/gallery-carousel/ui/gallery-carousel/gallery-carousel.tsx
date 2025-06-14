@@ -27,7 +27,7 @@ export default function GalleryCarousel(props: IProps) {
       <Card variant="borderless" style={{borderRadius: 0}}>
         <Carousel
           slidesToShow={3}
-          autoplay={false}
+          autoplay={true}
           infinite={true}
           arrows={true}
           className={styles.carousel}
