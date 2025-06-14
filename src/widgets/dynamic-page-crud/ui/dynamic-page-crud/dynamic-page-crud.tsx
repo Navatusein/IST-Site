@@ -11,7 +11,6 @@ import {redirect, RedirectType, useRouter} from "next/navigation";
 import DynamicPageCrudForm from "../dynamic-page-crud-form/dynamic-page-crud-form";
 import {FormOutlined} from "@ant-design/icons";
 import {useServerAction} from "@/shared/hooks/use-server-action";
-import dayjs from "dayjs";
 import {dateStringSorter, stringSorter} from "@/shared/utilities/sorters";
 
 interface IProps {
@@ -101,7 +100,7 @@ export default function DynamicPageCrud(props: IProps) {
     if (selectedRows[0] == null && data?.[0] == null)
       return;
 
-    redirect(`/admin/edit/page/${data?.[0].path ?? selectedRows[0].path}`, RedirectType.push);
+    redirect(`/admin/dynamic-page/${data?.[0].path ?? selectedRows[0].path}`, RedirectType.push);
   }
 
   return (

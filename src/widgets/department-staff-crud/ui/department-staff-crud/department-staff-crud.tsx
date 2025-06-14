@@ -149,7 +149,7 @@ export default function DepartmentStaffCrud(props: IProps) {
     if (selectedRows[0] == null && data?.[0] == null)
       return;
 
-    router.push(`/admin/edit/department-staff/${data?.[0].path ?? selectedRows[0].path}`);
+    router.push(`/admin/department-staff/${data?.[0].path ?? selectedRows[0].path}`);
   }
 
   return (

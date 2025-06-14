@@ -126,7 +126,7 @@ export default function NewsCrud(props: IProps) {
     if (selectedRows[0] == null && data?.[0] == null)
       return;
 
-    router.push(`/admin/edit/news/${data?.[0].path ?? selectedRows[0].path}`);
+    router.push(`/admin/news/${data?.[0].path ?? selectedRows[0].path}`);
   }
 
   return (

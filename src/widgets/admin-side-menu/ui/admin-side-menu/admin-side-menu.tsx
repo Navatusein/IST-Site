@@ -31,10 +31,10 @@ export default function AdminSideMenu() {
     if (userPermissions.includes("edit-news"))
       items.push({key: "news-control", icon: <ReadOutlined/>, label: <Link href={"/admin/news"}>Керування новинами</Link>});
 
-    if (userPermissions.includes("edit-pages"))
+    if (userPermissions.includes("edit-dynamic-pages"))
       items.push({key: "edit-pages", icon: <FileTextOutlined/>, label: <Link href={"/admin/dynamic-pages"}>Керування сторінками</Link>});
 
-    if (userPermissions.includes("edit-menu"))
+    if (userPermissions.includes("edit-public-menu"))
       items.push({key: "edit-menu", icon: <ProfileOutlined/>, label: <Link href={"/admin/public-menu"}>Керування меню</Link>});
 
     if (userPermissions.includes("edit-department-staff"))
