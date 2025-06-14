@@ -1,13 +1,12 @@
 "use client"
 
-import styles from "./component.module.scss";
-import {Button, Card, Col, Flex, Image, Row, Space, theme, Typography} from "antd";
+// import styles from "./component.module.scss";
+import {Button, Card, Col, Flex, Image, Row, theme, Typography} from "antd";
 import {useEffect, useMemo, useState} from "react";
 import Link from "next/link";
 import {useServerAction} from "@/shared/hooks/use-server-action";
 import {IDepartmentStaff} from "@/entities/department-staff";
 import {getDepartmentStaffAction} from "@/entities/department-staff/actions/actions";
-import {MailOutlined} from "@ant-design/icons";
 
 interface IProps {
   width: "medium" | "large";

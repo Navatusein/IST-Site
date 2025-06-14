@@ -16,7 +16,7 @@ export default function SelectFilesModal(props: IProps) {
   const [currentPath, setCurrentPath] = useState<string>("/");
   const [files, setFiles] = useState<(IFile|IDirectory)[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>(props.selectFilePaths);
-  const [updateFiles, setUpdateFiles] = useState<number>(0);
+  // const [updateFiles, setUpdateFiles] = useState<number>(0);
 
   useEffect(() => {
     if (props.selectFilePaths.length == 0)
@@ -52,7 +52,7 @@ export default function SelectFilesModal(props: IProps) {
           setSelectedRowKeys={setSelectedRowKeys}
           files={files}
           setFiles={setFiles}
-          updateFiles={updateFiles}
+          updateFiles={0}
         />
         <Flex style={{width: "100%"}} gap="small">
           <Button style={{width: "50%"}} onClick={closeModal}>
