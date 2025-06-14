@@ -1,25 +1,28 @@
-"use client"
-
-// import styles from "./component.module.scss";
-import {Button, Card, Col, Flex, Image, Row, theme, Typography} from "antd";
 import {useEffect, useMemo, useState} from "react";
+import {IBasePageComponent} from "@/entities/dynamic-page";
+import {PageComponentError} from "@/shared/ui-kit";
+import DepartmentStaffListEditor from "../department-staff-list-editor/department-staff-list-editor";
+import {IDepartmentStaffListPageComponent} from "../../types/type";
+import {Button, Card, Col, Flex, Image, Row, theme, Typography} from "antd";
 import Link from "next/link";
-import {useServerAction} from "@/shared/hooks/use-server-action";
 import {IDepartmentStaff} from "@/entities/department-staff";
+import {useServerAction} from "@/shared/hooks/use-server-action";
 import {getDepartmentStaffAction} from "@/entities/department-staff/actions/actions";
 
 interface IProps {
-  width: "medium" | "large";
+  componentProps: IBasePageComponent;
 }
 
-export default function Component(props: IProps) {
-  const typedComponentProps = {
-    type: "contact-us",
-    width: props.width,
-  }
+export default function DepartmentStaffList(props: IProps) {
+  const typedComponentProps = useMemo(() => {
+    if (props.componentProps.type !== "department-staff-list")
+      return null;
+
+    return props.componentProps as IDepartmentStaffListPageComponent;
+  }, [props]);
 
   const colConfigs = useMemo(() => {
-    if (typedComponentProps.width == "large"){
+    if (typedComponentProps?.width == "large"){
       return {
         container: {
           xs: {span: 24, offset: 0},
@@ -47,7 +50,7 @@ export default function Component(props: IProps) {
         }
       }
     }
-  }, [typedComponentProps.width]);
+  }, [typedComponentProps?.width]);
 
   const [teachers, setTeachers] = useState<IDepartmentStaff[]>([]);
 
@@ -63,12 +66,12 @@ export default function Component(props: IProps) {
   const {token: {padding, paddingXL}} = theme.useToken();
 
   return (
-    <>
+    <PageComponentError message={typedComponentProps == null ? "Fail" : ""}>
       <Col
-        style={typedComponentProps.width == "large" ? {padding: `0 ${paddingXL}px`}: {}}
+        style={typedComponentProps?.width == "large" ? {padding: `0 ${paddingXL}px`}: {}}
         {...colConfigs.container}
       >
-        <Row gutter={[padding, paddingXL]}>
+        <Row gutter={[padding, paddingXL]} justify="center">
           {teachers.map((teacher) => (
             <Col key={teacher.path} {...colConfigs.card}>
               <Card
@@ -107,7 +110,8 @@ export default function Component(props: IProps) {
           ))}
         </Row>
       </Col>
-    </>
+    </PageComponentError>
   )
 }
 
+DepartmentStaffList.Editor = DepartmentStaffListEditor
