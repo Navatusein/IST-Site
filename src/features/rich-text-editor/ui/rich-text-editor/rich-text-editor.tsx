@@ -24,7 +24,7 @@ export default function RichTextEditor(props: IProps) {
   })
 
   return (
-    <Flex vertical gap="small">
+    <Flex vertical gap="small" style={{position: "relative"}}>
       <ToolBar editor={editor}/>
       <EditorContent
         editor={editor}

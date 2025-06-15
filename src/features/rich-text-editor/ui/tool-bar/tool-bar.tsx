@@ -1,5 +1,5 @@
 import {Editor} from "@tiptap/react";
-import {Button, Flex, Input, Select, Space, Tooltip} from "antd";
+import {Button, Card, Flex, Input, Select, Space, theme, Tooltip} from "antd";
 import {
   BoldOutlined, ClearOutlined, CloseCircleOutlined, CommentOutlined, DisconnectOutlined, EnterOutlined,
   ItalicOutlined, LineOutlined, LinkOutlined,
@@ -23,7 +23,6 @@ const TEXT_TYPES_OPTIONS = [
 ]
 
 export default function ToolBar(props: IProps) {
-
   if (props.editor == undefined) {
     return null;
   }
@@ -79,142 +78,144 @@ export default function ToolBar(props: IProps) {
   }, [props.editor])
 
   return (
-    <Flex gap="small" wrap>
-      <Space.Compact>
-        <Tooltip title="Жирний">
-          <Button
-            onClick={() => props.editor!.chain().focus().toggleBold().run()}
-            type={props.editor.isActive("bold") ? "primary" : "default"}
-            disabled={!props.editor.can().chain().focus().toggleBold().run()}
-            icon={<BoldOutlined/>}
-          />
-        </Tooltip>
-        <Tooltip title="Курсив">
-          <Button
-            onClick={() => props.editor!.chain().focus().toggleItalic().run()}
-            type={props.editor.isActive("italic") ? "primary" : "default"}
-            disabled={!props.editor.can().chain().focus().toggleItalic().run()}
-            icon={<ItalicOutlined />}
-          />
-        </Tooltip>
-        <Tooltip title="Закреслений">
-          <Button
-            onClick={() => props.editor!.chain().focus().toggleStrike().run()}
-            type={props.editor.isActive("strike") ? "primary" : "default"}
-            disabled={!props.editor.can().chain().focus().toggleStrike().run()}
-            icon={<StrikethroughOutlined />}
-          />
-        </Tooltip>
-      </Space.Compact>
+    <Card size="small" style={{position: "sticky", top: 0, zIndex: 1000}}>
+      <Flex gap="small" wrap>
+        <Space.Compact>
+          <Tooltip title="Жирний">
+            <Button
+              onClick={() => props.editor!.chain().focus().toggleBold().run()}
+              type={props.editor.isActive("bold") ? "primary" : "default"}
+              disabled={!props.editor.can().chain().focus().toggleBold().run()}
+              icon={<BoldOutlined/>}
+            />
+          </Tooltip>
+          <Tooltip title="Курсив">
+            <Button
+              onClick={() => props.editor!.chain().focus().toggleItalic().run()}
+              type={props.editor.isActive("italic") ? "primary" : "default"}
+              disabled={!props.editor.can().chain().focus().toggleItalic().run()}
+              icon={<ItalicOutlined />}
+            />
+          </Tooltip>
+          <Tooltip title="Закреслений">
+            <Button
+              onClick={() => props.editor!.chain().focus().toggleStrike().run()}
+              type={props.editor.isActive("strike") ? "primary" : "default"}
+              disabled={!props.editor.can().chain().focus().toggleStrike().run()}
+              icon={<StrikethroughOutlined />}
+            />
+          </Tooltip>
+        </Space.Compact>
 
-      <Select
-        options={TEXT_TYPES_OPTIONS}
-        onChange={textTypeOptionOnChange}
-        value={textTypeOptionValue}
-        style={{width: 150}}
-      />
-
-      <Space.Compact>
-        <Tooltip title="Маркований список">
-          <Button
-            onClick={() => props.editor!.chain().focus().toggleBulletList().run()}
-            type={props.editor.isActive("bulletList") ? "primary" : "default"}
-            icon={<UnorderedListOutlined />}
-          />
-        </Tooltip>
-        <Tooltip title="Нумерований список">
-          <Button
-            onClick={() => props.editor!.chain().focus().toggleOrderedList().run()}
-            type={props.editor.isActive("orderedList") ? "primary" : "default"}
-            icon={<OrderedListOutlined />}
-          />
-        </Tooltip>
-      </Space.Compact>
-
-      <Space.Compact>
-        <Tooltip title="Очистити стилі">
-          <Button
-            onClick={() => props.editor!.chain().focus().unsetAllMarks().run()}
-            icon={<ClearOutlined />}
-          />
-        </Tooltip>
-        <Tooltip title="Очистити блоки">
-          <Button
-            onClick={() => props.editor!.chain().focus().clearNodes().run()}
-            icon={<CloseCircleOutlined />}
-          />
-        </Tooltip>
-      </Space.Compact>
-
-      <Tooltip title="Цитата">
-        <Button
-          onClick={() => props.editor!.chain().focus().toggleBlockquote().run()}
-          type={props.editor.isActive("blockquote") ? "primary" : "default"}
-          icon={<CommentOutlined/>}
+        <Select
+          options={TEXT_TYPES_OPTIONS}
+          onChange={textTypeOptionOnChange}
+          value={textTypeOptionValue}
+          style={{width: 150}}
         />
-      </Tooltip>
 
-      <Space.Compact>
-        {props.editor.isActive("link") ?
-          <>
-            <Tooltip title="Змінити посилання">
-              <Button
-                onClick={setLink}
-                type="primary"
-                icon={<LinkOutlined/>}
-              />
-            </Tooltip>
-            <Tooltip title="Видалити посилання">
-              <Button
-                onClick={() => props.editor!.chain().focus().unsetLink().run()}
-                type="default"
-                icon={<DisconnectOutlined/>}
-              />
-            </Tooltip>
-          </> :
-          <>
-            <Tooltip title="Вставити посилання">
-              <Button
-                onClick={setLink}
-                type="default"
-                icon={<LinkOutlined/>}
-              />
-            </Tooltip>
-          </>
-        }
-      </Space.Compact>
+        <Space.Compact>
+          <Tooltip title="Маркований список">
+            <Button
+              onClick={() => props.editor!.chain().focus().toggleBulletList().run()}
+              type={props.editor.isActive("bulletList") ? "primary" : "default"}
+              icon={<UnorderedListOutlined />}
+            />
+          </Tooltip>
+          <Tooltip title="Нумерований список">
+            <Button
+              onClick={() => props.editor!.chain().focus().toggleOrderedList().run()}
+              type={props.editor.isActive("orderedList") ? "primary" : "default"}
+              icon={<OrderedListOutlined />}
+            />
+          </Tooltip>
+        </Space.Compact>
 
-      <Tooltip title="Горизонтальна лінія">
-        <Button
-          onClick={() => props.editor!.chain().focus().setHorizontalRule().run()}
-          icon={<LineOutlined />}
-        />
-      </Tooltip>
+        <Space.Compact>
+          <Tooltip title="Очистити стилі">
+            <Button
+              onClick={() => props.editor!.chain().focus().unsetAllMarks().run()}
+              icon={<ClearOutlined />}
+            />
+          </Tooltip>
+          <Tooltip title="Очистити блоки">
+            <Button
+              onClick={() => props.editor!.chain().focus().clearNodes().run()}
+              icon={<CloseCircleOutlined />}
+            />
+          </Tooltip>
+        </Space.Compact>
 
-      <Tooltip title="Розрив рядка">
-        <Button
-          onClick={() => props.editor!.chain().focus().setHardBreak().run()}
-          icon={<EnterOutlined />}
-        />
-      </Tooltip>
-
-      <Space.Compact>
-        <Tooltip title="Скасувати">
+        <Tooltip title="Цитата">
           <Button
-            onClick={() => props.editor!.chain().focus().undo().run()}
-            disabled={!props.editor.can().chain().focus().undo().run()}
-            icon={<UndoOutlined />}
+            onClick={() => props.editor!.chain().focus().toggleBlockquote().run()}
+            type={props.editor.isActive("blockquote") ? "primary" : "default"}
+            icon={<CommentOutlined/>}
           />
         </Tooltip>
 
-        <Tooltip title="Повторити">
+        <Space.Compact>
+          {props.editor.isActive("link") ?
+            <>
+              <Tooltip title="Змінити посилання">
+                <Button
+                  onClick={setLink}
+                  type="primary"
+                  icon={<LinkOutlined/>}
+                />
+              </Tooltip>
+              <Tooltip title="Видалити посилання">
+                <Button
+                  onClick={() => props.editor!.chain().focus().unsetLink().run()}
+                  type="default"
+                  icon={<DisconnectOutlined/>}
+                />
+              </Tooltip>
+            </> :
+            <>
+              <Tooltip title="Вставити посилання">
+                <Button
+                  onClick={setLink}
+                  type="default"
+                  icon={<LinkOutlined/>}
+                />
+              </Tooltip>
+            </>
+          }
+        </Space.Compact>
+
+        <Tooltip title="Горизонтальна лінія">
           <Button
-            onClick={() => props.editor!.chain().focus().redo().run()}
-            disabled={!props.editor.can().chain().focus().redo().run()}
-            icon={<RedoOutlined />}
+            onClick={() => props.editor!.chain().focus().setHorizontalRule().run()}
+            icon={<LineOutlined />}
           />
         </Tooltip>
-      </Space.Compact>
-    </Flex>
+
+        <Tooltip title="Розрив рядка">
+          <Button
+            onClick={() => props.editor!.chain().focus().setHardBreak().run()}
+            icon={<EnterOutlined />}
+          />
+        </Tooltip>
+
+        <Space.Compact>
+          <Tooltip title="Скасувати">
+            <Button
+              onClick={() => props.editor!.chain().focus().undo().run()}
+              disabled={!props.editor.can().chain().focus().undo().run()}
+              icon={<UndoOutlined />}
+            />
+          </Tooltip>
+
+          <Tooltip title="Повторити">
+            <Button
+              onClick={() => props.editor!.chain().focus().redo().run()}
+              disabled={!props.editor.can().chain().focus().redo().run()}
+              icon={<RedoOutlined />}
+            />
+          </Tooltip>
+        </Space.Compact>
+      </Flex>
+    </Card>
   )
 }
