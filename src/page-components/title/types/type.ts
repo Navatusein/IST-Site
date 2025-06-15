@@ -9,7 +9,7 @@ export const TitleComponentExample = {
   name: "Заголовок",
   component: {
     type: "title",
-    width: "medium",
+    width: "small",
     level: 3,
     title: "Заголовок"
   } as ITitlePageComponent

@@ -9,7 +9,7 @@ export const NewsListComponentExample = {
   name: "Список новин",
   component: {
     type: "news-list",
-    width: "medium",
+    width: "small",
     countDisplayed: 5,
     pagination: false
   } as INewsListPageComponent

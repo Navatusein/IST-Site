@@ -8,7 +8,7 @@ export const RichTextComponentExample = {
   name: "Текст",
   component: {
     type: "rich-text",
-    width: "medium",
+    width: "small",
     text: "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"Some text\"}]}]}"
   } as IRichTextPageComponent
 }

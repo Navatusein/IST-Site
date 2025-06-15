@@ -1,6 +1,10 @@
 import {App, Button, Card, Flex, Segmented, theme, Tooltip} from "antd";
 import {PageComponentRenderer} from "@/widgets/page-component-renderer";
-import {ArrowsAltOutlined, DeleteOutlined, EditOutlined, HolderOutlined, ShrinkOutlined} from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  HolderOutlined,
+} from "@ant-design/icons";
 import {IBasePageComponent} from "@/entities/dynamic-page";
 import {useRef, useState} from "react";
 import {DraggableList} from "@/features/draggable-list";
@@ -58,8 +62,9 @@ export default function PageComponentEditor(props: IProps) {
             <Tooltip title="Змінити розмір блоку">
               <Segmented
                 options={[
-                  {value: "large", icon: <ArrowsAltOutlined/>, label: "Великий", disabled: props.component.allowedWidth == "medium"},
-                  {value: "medium", icon: <ShrinkOutlined/>, label: "Середній", disabled: props.component.allowedWidth == "large"}
+                  {value: "large", label: "Великий", disabled: props.component.allowedWidth?.includes("large") == false},
+                  {value: "medium", label: "Середній", disabled: props.component.allowedWidth?.includes("medium") == false},
+                  {value: "small", label: "Малий", disabled: props.component.allowedWidth?.includes("small") == false},
                 ]}
                 value={props.component.width}
                 onChange={(value) => props.updateComponent({...props.component, width: value as never}, props.index)}

@@ -20,8 +20,8 @@ export default function NewsView(props: IProps) {
   const {token: {borderRadius, padding}} = theme.useToken();
 
   return (
-    <>
-      <ComponentCol width="medium">
+    <Flex vertical gap="middle" style={{marginBottom: padding}}>
+      <ComponentCol width="small">
         <Flex vertical style={{margin: `${padding}px 0`}}>
           <Typography.Title level={3} style={{margin: 0}}>
             {props.news.title}
@@ -41,10 +41,10 @@ export default function NewsView(props: IProps) {
       <Flex justify='center'>
         <Link href={"/news"}>
           <Button type="primary">
-            Переглянути всі новини
+            Повернутись до новин
           </Button>
         </Link>
       </Flex>
-    </>
+    </Flex>
   )
 }

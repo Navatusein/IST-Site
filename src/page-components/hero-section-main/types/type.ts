@@ -20,7 +20,7 @@ export interface IHeroSectionMainPageComponent extends IBasePageComponent {
   imageHeight: number;
   fastLinks: IHeroSectionMainFastLink[];
   statistics: IHeroSectionMainStatistics[];
-  allowedWidth: "large";
+  allowedWidth: ["large"];
 }
 
 export const HeroSectionMainComponentExample = {
@@ -28,7 +28,7 @@ export const HeroSectionMainComponentExample = {
   component: {
     type: "hero-section-main",
     width: "large",
-    allowedWidth: "large",
+    allowedWidth: ["large"],
     faculty: "Факультету інформаційних технологій",
     department: "КАФЕДРА ІНФОРМАЦІЙНИХ СИСТЕМ ТА ТЕХНОЛОГІЙ",
     university: "Київського національного університету імені Тараса Шевченка",

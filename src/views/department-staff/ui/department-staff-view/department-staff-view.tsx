@@ -16,76 +16,74 @@ const DepartmentStaffRenderer = dynamic(() => import("@/views/department-staff/u
 });
 
 export default function DepartmentStaffView(props: IProps) {
-  const {token: {padding, paddingXS, borderRadius}} = theme.useToken();
+  const {token: {paddingLG, padding, paddingXS, borderRadius}} = theme.useToken();
 
   return (
-    <Row gutter={[padding, padding]} style={{margin: padding, position: "relative"}}>
-      <Col
-        xxl={{span: 4, offset: 4}}
-        xl={{span: 6, offset: 2}}
-        lg={{span: 7, offset: 1}}
-        md={{span: 8}}
-        sm={{span: 10}}
-        xs={{span: 24}}
-      >
-        <Flex vertical gap="middle" style={{position: "sticky", top: padding + 64}}>
-          <Image
-            src={`/api/assets${props.teacher.imagePath}`}
-            fallback="/missing-image.webp"
-            preview={false}
-            style={{
-              objectFit: "cover",
-              borderRadius: borderRadius,
-              aspectRatio: "1",
-              filter: "grayscale(100%)"
-            }}
-          />
-          <Card variant="borderless">
-            <Flex vertical>
+    <ComponentCol width="medium">
+      <Row gutter={[padding, padding]} style={{position: "relative", marginTop: paddingLG}}>
+        <Col
+          xxl={{span: 7}}
+          md={{span: 8}}
+          sm={{span: 10}}
+          xs={{span: 24}}
+        >
+          <Flex vertical gap="middle" style={{position: "sticky", top: paddingLG + 64, marginBottom: paddingLG}}>
+            <Image
+              src={`/api/assets${props.teacher.imagePath}`}
+              fallback="/missing-image.webp"
+              preview={false}
+              style={{
+                objectFit: "cover",
+                borderRadius: borderRadius,
+                aspectRatio: "1",
+                filter: "grayscale(100%)"
+              }}
+            />
+            <Card variant="borderless">
+              <Flex vertical>
+                <Typography.Title level={4} style={{margin: 0}}>
+                  {`${props.teacher.lastName} ${props.teacher.firstName} ${props.teacher.middleName}`}
+                </Typography.Title>
+                <Typography.Text strong style={{margin: 0}}>
+                  {props.teacher.position}
+                </Typography.Text>
+              </Flex>
+            </Card>
+            <Card variant="borderless">
               <Typography.Title level={4} style={{margin: 0}}>
-                {`${props.teacher.lastName} ${props.teacher.firstName} ${props.teacher.middleName}`}
+                Контакти
               </Typography.Title>
-              <Typography.Text strong style={{margin: 0}}>
-                {props.teacher.position}
-              </Typography.Text>
-            </Flex>
-          </Card>
-          <Card variant="borderless">
-            <Typography.Title level={4} style={{margin: 0}}>
-              Контакти
-            </Typography.Title>
-            <Flex vertical style={{marginLeft: "2px"}}>
-              <Typography.Link
-                href={`mailto:${props.teacher.email}`}
-                style={{margin: 0, wordBreak: "break-all"}}
-              >
-                <MailOutlined style={{marginRight: paddingXS}}/>
-                {props.teacher.email}
-              </Typography.Link>
-              {props.teacher.profiles.map((profile) => (
+              <Flex vertical style={{marginLeft: "2px"}}>
                 <Typography.Link
-                  key={`profile-${profile.title}`}
-                  href={profile.url}
+                  href={`mailto:${props.teacher.email}`}
                   style={{margin: 0, wordBreak: "break-all"}}
                 >
-                  <GlobalOutlined style={{marginRight: paddingXS}}/>
-                  {profile.title}
+                  <MailOutlined style={{marginRight: paddingXS}}/>
+                  {props.teacher.email}
                 </Typography.Link>
-              ))}
-            </Flex>
-          </Card>
-        </Flex>
-      </Col>
-      <Col
-        xxl={{span: 12}}
-        xl={{span: 14}}
-        lg={{span: 15}}
-        md={{span: 16}}
-        sm={{span: 14}}
-        xs={{span: 24}}
-      >
-        <DepartmentStaffRenderer teacher={props.teacher}/>
-      </Col>
-    </Row>
+                {props.teacher.profiles.map((profile) => (
+                  <Typography.Link
+                    key={`profile-${profile.title}`}
+                    href={profile.url}
+                    style={{margin: 0, wordBreak: "break-all"}}
+                  >
+                    <GlobalOutlined style={{marginRight: paddingXS}}/>
+                    {profile.title}
+                  </Typography.Link>
+                ))}
+              </Flex>
+            </Card>
+          </Flex>
+        </Col>
+        <Col
+          xxl={{span: 17}}
+          md={{span: 16}}
+          sm={{span: 14}}
+          xs={{span: 24}}
+        >
+          <DepartmentStaffRenderer teacher={props.teacher}/>
+        </Col>
+      </Row>
+    </ComponentCol>
   )
 }

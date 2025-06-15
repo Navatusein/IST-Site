@@ -3,7 +3,7 @@ import {IBasePageComponent} from "@/entities/dynamic-page";
 import {PageComponentError} from "@/shared/ui-kit";
 import DepartmentStaffListEditor from "../department-staff-list-editor/department-staff-list-editor";
 import {IDepartmentStaffListPageComponent} from "../../types/type";
-import {Button, Card, Col, Flex, Image, Row, theme, Typography} from "antd";
+import {Button, Card, Col, ConfigProvider, Flex, Image, Row, theme, Typography} from "antd";
 import Link from "next/link";
 import {IDepartmentStaff} from "@/entities/department-staff";
 import {useServerAction} from "@/shared/hooks/use-server-action";
@@ -21,37 +21,6 @@ export default function DepartmentStaffList(props: IProps) {
     return props.componentProps as IDepartmentStaffListPageComponent;
   }, [props]);
 
-  const colConfigs = useMemo(() => {
-    if (typedComponentProps?.width == "large"){
-      return {
-        container: {
-          xs: {span: 24, offset: 0},
-          xl: {span: 18, offset: 3},
-          xxl: {span: 16, offset: 4}
-        },
-        card: {
-          xs: {span: 24, offset: 0},
-          sm: {span: 12, offset: 0},
-          lg: {span: 8, offset: 0},
-          xl: {span: 8, offset: 0},
-          xxl: {span: 6, offset: 0},
-        }
-      };
-    }
-    else {
-      return {
-        container: {
-          xs: {span: 24, offset: 0},
-        },
-        card: {
-          xs: {span: 24, offset: 0},
-          sm: {span: 12, offset: 0},
-          xl: {span: 8, offset: 0},
-        }
-      }
-    }
-  }, [typedComponentProps?.width]);
-
   const [teachers, setTeachers] = useState<IDepartmentStaff[]>([]);
 
   useEffect(() => {
@@ -63,23 +32,25 @@ export default function DepartmentStaffList(props: IProps) {
     }
   }, []);
 
-  const {token: {padding, paddingXL}} = theme.useToken();
+  const {token: {paddingLG}} = theme.useToken();
 
   return (
     <PageComponentError message={typedComponentProps == null ? "Fail" : ""}>
-      <Col
-        style={typedComponentProps?.width == "large" ? {padding: `0 ${paddingXL}px`}: {}}
-        {...colConfigs.container}
-      >
-        <Row gutter={[padding, paddingXL]} justify="center">
+      <Row gutter={[paddingLG, paddingLG]} justify="center">
+        <ConfigProvider theme={{token: {screenMDMin: 900, screenXLMin: 1300}}}>
           {teachers.map((teacher) => (
-            <Col key={teacher.path} {...colConfigs.card}>
+            <Col
+              key={teacher.path}
+              xs={{span: 24}}
+              sm={{span: 12}}
+              md={{span: 8}}
+              xl={{span: 6}}
+            >
               <Card
                 hoverable
+                variant="borderless"
                 style={{height: "100%", display: "flex", flexDirection: "column"}}
-                styles={{
-                  body: {height: "100%"}
-                }}
+                styles={{body: {height: "100%"}}}
                 cover={
                   <Image
                     src={`/api/assets${teacher.imagePath}`}
@@ -91,9 +62,9 @@ export default function DepartmentStaffList(props: IProps) {
                 }
               >
                 <Flex vertical style={{height: "100%"}} gap="middle" justify="space-between">
-                  <Flex vertical gap="small">
+                  <Flex vertical>
                     <Typography.Title level={4} style={{margin: 0}}>
-                      {`${teacher.firstName} ${teacher.lastName}`}
+                      {`${teacher.lastName} ${teacher.firstName} ${teacher.middleName}`}
                     </Typography.Title>
                     <Typography.Paragraph strong style={{margin: 0}}>
                       {teacher.position}
@@ -108,8 +79,8 @@ export default function DepartmentStaffList(props: IProps) {
               </Card>
             </Col>
           ))}
-        </Row>
-      </Col>
+        </ConfigProvider>
+      </Row>
     </PageComponentError>
   )
 }

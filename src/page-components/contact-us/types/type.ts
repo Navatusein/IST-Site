@@ -8,5 +8,6 @@ export const ContactUsComponentExample = {
   name: "Зворотній звязок",
   component: {
     type: "contact-us",
+    width: "small"
   } as IContactUsPageComponent
 }

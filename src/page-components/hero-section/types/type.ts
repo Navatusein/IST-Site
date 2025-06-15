@@ -4,7 +4,7 @@ export interface IHeroSectionPageComponent extends IBasePageComponent {
   title: string;
   imagePath: string;
   imageHeight: number;
-  allowedWidth: "large";
+  allowedWidth: ["large"];
 }
 
 export const HeroSectionComponentExample = {
@@ -14,7 +14,7 @@ export const HeroSectionComponentExample = {
     title: "Назва",
     imagePath: "",
     imageHeight: 400,
-    allowedWidth: "large",
+    allowedWidth: ["large"],
     width: "large"
   } as IHeroSectionPageComponent
 }
