@@ -1,5 +1,5 @@
 import {Editor} from "@tiptap/react";
-import {Button, Card, Flex, Input, Select, Space, theme, Tooltip} from "antd";
+import {Button, Card, Flex, Select, Space, Tooltip} from "antd";
 import {
   BoldOutlined, ClearOutlined, CloseCircleOutlined, CommentOutlined, DisconnectOutlined, EnterOutlined,
   ItalicOutlined, LineOutlined, LinkOutlined,
