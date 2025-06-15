@@ -10,6 +10,7 @@ const departmentStaffScheme = new Schema<IDepartmentStaff>({
   imagePath: {type: String},
   path: {type: String, required: true, unique: true},
   components: [{type: Schema.Types.Mixed, required: true}],
+  profiles: [{type: Schema.Types.Mixed, required: true}]
 }, {timestamps: true});
 
 export {departmentStaffScheme};

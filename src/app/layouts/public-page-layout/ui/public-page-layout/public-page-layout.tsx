@@ -22,7 +22,7 @@ export default function PublicPageLayout(props: IProps) {
   return (
     <Layout>
       <PublicHeader menuItems={props.menuItems}/>
-      <Layout.Content style={{overflow: "hidden", minHeight: "calc(100svh - 60px)"}}>
+      <Layout.Content style={{contain: "paint", minHeight: "calc(100svh - 60px)"}}>
         {props.children}
       </Layout.Content>
       <PublicFooter/>

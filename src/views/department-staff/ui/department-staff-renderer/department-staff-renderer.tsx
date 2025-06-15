@@ -14,7 +14,7 @@ export default function DepartmentStaffRenderer(props: IProps) {
   return (
     <Flex vertical gap="middle" style={{marginBottom: padding}}>
       {props.teacher.components.map((component, index) => (
-        <PageComponentRenderer propsClass={component} key={`component-${index}`}/>
+        <PageComponentRenderer propsClass={{...component, width: "large"}} key={`component-${index}`}/>
       ))}
     </Flex>
   )
