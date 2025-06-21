@@ -5,6 +5,7 @@ import HeroSectionEditor from "../hero-section-editor/hero-section-editor";
 import {IHeroSectionPageComponent} from "../../types/type";
 import {Flex, Image, Typography} from "antd";
 import styles from "./hero-section.module.scss";
+import {RichTextRenderer} from "@/features/rich-text-renderer";
 
 interface IProps {
   componentProps: IBasePageComponent;
@@ -31,9 +32,7 @@ export default function HeroSection(props: IProps) {
           loading={"lazy"}
         />
         <Flex vertical gap="small" className={styles.titleFlexContainer}>
-          <Typography.Title level={1} className={styles.titleTypography}>
-            {typedComponentProps!.title}
-          </Typography.Title>
+          <RichTextRenderer content={typedComponentProps!.title} className={styles.titleTypography}/>
         </Flex>
       </Flex>
     </PageComponentError>

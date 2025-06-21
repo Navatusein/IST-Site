@@ -4,6 +4,7 @@ import {PageComponentError} from "@/shared/ui-kit";
 import {IHeroSectionPageComponent} from "../../types/type";
 import {Flex, Form, Input, InputNumber} from "antd";
 import {SelectFileButton} from "@/features/select-file-button";
+import {RichTextEditor} from "@/features/rich-text-editor";
 
 interface IProps {
   componentProps: IBasePageComponent;
@@ -40,7 +41,7 @@ export default function HeroSectionEditor(props: IProps) {
             style={{marginBottom: 0}}
             extra="Заголовок сторінки"
           >
-            <Input/>
+            <RichTextEditor style={{textAlign: "center"}}/>
           </Form.Item>
           <Form.Item<IHeroSectionPageComponent>
             label="Малюнок"

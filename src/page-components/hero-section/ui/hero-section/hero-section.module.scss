@@ -6,7 +6,7 @@
 .image {
   object-fit: cover;
   object-position: 50% 40%;
-  filter: brightness(0.7);
+  filter: brightness(0.6);
 }
 
 .titleFlexContainer {
@@ -18,7 +18,10 @@
 }
 
 .titleTypography {
-  text-align: center !important;
-  color: var(--ant-color-text-light-solid) !important;
-  margin: 0 !important;
+
+  & h1,h2,h3,h4,h5 {
+    text-align: center !important;
+    color: var(--ant-color-text-light-solid) !important;
+    margin: 0 !important;
+  }
 }

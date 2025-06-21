@@ -11,7 +11,7 @@ export const HeroSectionComponentExample = {
   name: "Вітальний компонент",
   component: {
     type: "hero-section",
-    title: "Назва",
+    title: "{\"type\":\"doc\",\"content\":[{\"type\":\"heading\",\"attrs\":{\"level\":1},\"content\":[{\"type\":\"text\",\"text\":\"Заголовок\"}]}]}",
     imagePath: "",
     imageHeight: 400,
     allowedWidth: ["large"],
