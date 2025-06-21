@@ -21,16 +21,18 @@ export default function HeroSection(props: IProps) {
 
   return (
     <PageComponentError message={typedComponentProps == null ? "Fail" : ""}>
-      <Flex vertical className={styles.titleBaseContainer}>
-        <Image
-          src={`/api/assets${typedComponentProps!.imagePath}`}
-          fallback="/missing-image.webp"
-          preview={false}
-          height={typedComponentProps!.imageHeight}
-          width={"100%"}
-          className={styles.image}
-          loading={"lazy"}
-        />
+      <Flex vertical className={styles.titleBaseContainer} style={{height: typedComponentProps!.imageHeight}}>
+        {typedComponentProps!.imagePath &&
+          <Image
+            src={`/api/assets${typedComponentProps!.imagePath}`}
+            fallback="/missing-image.webp"
+            preview={false}
+            height={typedComponentProps!.imageHeight}
+            width={"100%"}
+            className={styles.image}
+            loading={"lazy"}
+          />
+        }
         <Flex vertical gap="small" className={styles.titleFlexContainer}>
           <RichTextRenderer content={typedComponentProps!.title} className={styles.titleTypography}/>
         </Flex>
