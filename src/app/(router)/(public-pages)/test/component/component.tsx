@@ -64,49 +64,23 @@ export default function Component(props: IProps) {
 
   return (
     <>
-      <Col
-        style={typedComponentProps.width == "large" ? {padding: `0 ${paddingXL}px`}: {}}
-        {...colConfigs.container}
-      >
-        <Row gutter={[padding, paddingXL]}>
-          {teachers.map((teacher) => (
-            <Col key={teacher.path} {...colConfigs.card}>
-              <Card
-                hoverable
-                style={{height: "100%", display: "flex", flexDirection: "column"}}
-                styles={{
-                  body: {height: "100%"}
-                }}
-                cover={
-                  <Image
-                    src={`/api/assets${teacher.imagePath}`}
-                    fallback="/missing-image.webp"
-                    preview={false}
-                    height={350}
-                    style={{objectFit: "cover", borderRadius: " 8px 8px 0 0", aspectRatio: "3 \ 4", filter: "grayscale(100%)"}}
-                  />
-                }
-              >
-                <Flex vertical style={{height: "100%"}} gap="middle" justify="space-between">
-                  <Flex vertical gap="small">
-                    <Typography.Title level={4} style={{margin: 0}}>
-                      {`${teacher.firstName} ${teacher.lastName}`}
-                    </Typography.Title>
-                    <Typography.Paragraph strong style={{margin: 0}}>
-                      {teacher.position}
-                    </Typography.Paragraph>
-                  </Flex>
-                  <Link href={`/department-staff/${teacher.path}`}>
-                    <Button block type="primary">
-                      Перейти до профілю
-                    </Button>
-                  </Link>
-                </Flex>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-      </Col>
+      <Row>
+        <Col>
+          <Link href="#">
+            <Button>ОПИС ОСВІТНЬО-ПРОФЕСІЙНОЇ ПРОГРАМИ</Button>
+          </Link>
+        </Col>
+        <Col>
+          <Link href="#">
+            <Button>ОПИС ОСВІТНЬО-ПРОФЕСІЙНОЇ ПРОГРАМИ</Button>
+          </Link>
+        </Col>
+        <Col>
+          <Link href="#">
+            <Button>ОПИС ОСВІТНЬО-ПРОФЕСІЙНОЇ ПРОГРАМИ</Button>
+          </Link>
+        </Col>
+      </Row>
     </>
   )
 }
