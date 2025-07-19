@@ -76,7 +76,7 @@ export default function ToolBar(props: IProps) {
       return
     }
 
-    props.editor!.chain().focus().extendMarkRange('link').setLink({href: url}).run()
+    props.editor!.chain().focus().extendMarkRange('link').setLink({href: url, target: "_self"}).run()
   }, [props.editor])
 
   return (
