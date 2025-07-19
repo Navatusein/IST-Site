@@ -1,6 +1,6 @@
 "use client"
 
-// import styles from "./component.module.scss";
+import styles from "./component.module.scss";
 import {theme} from "antd";
 import {useMemo} from "react";
 
@@ -16,14 +16,14 @@ export default function Component(props: IProps) {
     width: props.width,
   }
 
-  // const colConfigs = useMemo(() => {
-  //   if (typedComponentProps.width == "small"){
-  //     return {};
-  //   }
-  //   else {
-  //     return {}
-  //   }
-  // }, [typedComponentProps.width]);
+  const colConfigs = useMemo(() => {
+    if (typedComponentProps.width == "small"){
+      return {};
+    }
+    else {
+      return {}
+    }
+  }, [typedComponentProps.width]);
 
   return (
     <>
