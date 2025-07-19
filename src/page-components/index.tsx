@@ -8,10 +8,12 @@ import {ContactUs, ContactUsComponentExample} from "./contact-us";
 import {GalleryCarousel, GalleryCarouselComponentExample} from "./gallery-carousel";
 import {HeroSection, HeroSectionComponentExample} from "./hero-section";
 import {DepartmentStaffList, DepartmentStaffListComponentExample} from "./department-staff-list";
+import {Cards, CardsComponentExample} from "./cards"
 
 export type PageComponentType = "title"|
   "rich-text"|
   "gallery-carousel"|
+  "cards"|
   "hero-section"|
   "hero-section-main"|
   "news-list"|
@@ -30,6 +32,10 @@ export const componentTypes: ComponentDescriptorType = {
   "gallery-carousel": {
     "renderComponent": (props) => <GalleryCarousel componentProps={props}/>,
     "renderEditor": (props, onChange) => <GalleryCarousel.Editor componentProps={props} onChange={onChange}/>
+  },
+  "cards": {
+    "renderComponent": (props) => <Cards componentProps={props}/>,
+    "renderEditor": (props, onChange) => <Cards.Editor componentProps={props} onChange={onChange}/>
   },
   "hero-section": {
     "renderComponent": (props) => <HeroSection componentProps={props}/>,
@@ -57,6 +63,7 @@ export const pageComponentExamples: IPageComponentExample[] = [
   TitleComponentExample,
   RichTextComponentExample,
   GalleryCarouselComponentExample,
+  CardsComponentExample,
   HeroSectionComponentExample,
   HeroSectionMainComponentExample,
   NewsListComponentExample,

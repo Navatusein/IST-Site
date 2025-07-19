@@ -1,32 +1,31 @@
 import {useMemo} from "react";
 import {IBasePageComponent} from "@/entities/dynamic-page";
 import {PageComponentError} from "@/shared/ui-kit";
-import {IHeroSectionMainPageComponent} from "../../types/type";
+import {ICardsPageComponent} from "../../types/type";
 import {Flex, Form, Tabs, TabsProps} from "antd";
-import FormComponentFastLinks from "../form-component-fast-links/form-component-fast-links";
-import FormComponentStatistics from "../form-component-statistics/form-component-statistics";
 import FormComponentCommon from "../form-component-common/form-component-common";
+import FormComponentCard from "../form-component-card/form-component-card";
 
 interface IProps {
   componentProps: IBasePageComponent;
   onChange: (value: IBasePageComponent) => void;
 }
 
-export default function HeroSectionMainEditor(props: IProps) {
+export default function CardsEditor(props: IProps) {
   const [form] = Form.useForm();
 
   const typedComponentProps = useMemo(() => {
-    if (props.componentProps.type !== "hero-section-main")
+    if (props.componentProps.type !== "cards")
       return null;
 
-    return props.componentProps as IHeroSectionMainPageComponent;
+    return props.componentProps as ICardsPageComponent;
   }, [props]);
 
   const onChange = () => {
     props.onChange(form.getFieldsValue(true));
   }
 
-  const items: TabsProps["items"] = [
+  const items: TabsProps['items'] = [
     {
       key: "1",
       label: "Загальні налаштування",
@@ -38,30 +37,17 @@ export default function HeroSectionMainEditor(props: IProps) {
     },
     {
       key: "2",
-      label: "Швидкі посилання",
+      label: "Картки",
       children: (
         <Flex vertical gap="small">
-          <Form.List name="fastLinks">
+          <Form.List name="cards">
             {(fields, operations) =>
-              <FormComponentFastLinks fields={fields} operations={operations}/>
+              <FormComponentCard fields={fields} operations={operations}/>
             }
           </Form.List>
         </Flex>
       ),
-    },
-    {
-      key: "3",
-      label: "Картки статистики",
-      children: (
-        <Flex vertical gap="small">
-          <Form.List name="statistics">
-            {(fields, operations) =>
-              <FormComponentStatistics fields={fields} operations={operations}/>
-            }
-          </Form.List>
-        </Flex>
-      ),
-    },
+    }
   ];
 
   return (

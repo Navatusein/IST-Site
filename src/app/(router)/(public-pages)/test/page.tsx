@@ -3,7 +3,6 @@
 import dynamic from "next/dynamic";
 import {useState} from "react";
 import {Card, Checkbox, Flex, Segmented, theme, Tooltip} from "antd";
-import {ArrowsAltOutlined, ShrinkOutlined} from "@ant-design/icons";
 import {ComponentCol} from "@/shared/ui-kit";
 
 
@@ -14,7 +13,7 @@ const Component = dynamic(() => import("@/app/(router)/(public-pages)/test/compo
 export default function Page() {
   const {token: {padding}} = theme.useToken();
 
-  const [componentWidth, setComponentWidth] = useState<"medium"|"large">("medium");
+  const [componentWidth, setComponentWidth] = useState<"medium"|"large"|"small">("medium");
   const [marginTop, setMarginTop] = useState<number|undefined>(padding);
 
   return (
@@ -27,8 +26,9 @@ export default function Page() {
          <Tooltip title="Змінити розмір блоку">
            <Segmented
              options={[
-               {value: "large", icon: <ArrowsAltOutlined/>, label: "Великий"},
-               {value: "medium", icon: <ShrinkOutlined/>, label: "Середній"}
+               {value: "large", label: "Великий"},
+               {value: "medium", label: "Середній"},
+               {value: "small", label: "Маленький"},
              ]}
              value={componentWidth}
              onChange={setComponentWidth}

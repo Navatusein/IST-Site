@@ -1,7 +1,7 @@
 import {Editor} from "@tiptap/react";
 import {Button, Card, Flex, Select, Space, Tooltip} from "antd";
 import {
-  BoldOutlined, ClearOutlined, CloseCircleOutlined, CommentOutlined, DisconnectOutlined, EnterOutlined,
+  BoldOutlined, ClearOutlined, CloseCircleOutlined, CommentOutlined, CopyOutlined, DisconnectOutlined, EnterOutlined,
   ItalicOutlined, LineOutlined, LinkOutlined,
   OrderedListOutlined, RedoOutlined,
   StrikethroughOutlined, UndoOutlined,
@@ -12,6 +12,8 @@ import {useCallback, useMemo} from "react";
 interface IProps {
   editor: Editor|null;
 }
+
+const IS_DEV_MODE = process.env.NODE_ENV === "development";
 
 const TEXT_TYPES_OPTIONS = [
   {value: "header-1", label: "Заголовок 1"},
@@ -215,6 +217,17 @@ export default function ToolBar(props: IProps) {
             />
           </Tooltip>
         </Space.Compact>
+
+        {IS_DEV_MODE &&
+          <Tooltip title="Копіювати контент">
+            <Button
+              onClick={() => {
+                window.navigator.clipboard.writeText(JSON.stringify(props.editor?.getJSON()) ?? "")
+              }}
+              icon={<CopyOutlined />}
+            />
+          </Tooltip>
+        }
       </Flex>
     </Card>
   )
