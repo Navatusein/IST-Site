@@ -117,13 +117,11 @@ export default function DepartmentStaffCrud(props: IProps) {
   const [selectedRows, setSelectedRows] = useState<IDepartmentStaff[]>([]);
 
   const create = async (data: IDepartmentStaff) => {
-    console.log(data)
-
-    await useServerAction(addDepartmentStaffAction({...data, _id: null} as IDepartmentStaff));
+    await useServerAction(addDepartmentStaffAction({...data, _id: null}));
   }
 
   const update = async (data: IDepartmentStaff) => {
-    await useServerAction(updateDepartmentStaffAction({...data} as IDepartmentStaff));
+    await useServerAction(updateDepartmentStaffAction({...data}));
   }
 
   const remove = async (data: IDepartmentStaff[]) => {

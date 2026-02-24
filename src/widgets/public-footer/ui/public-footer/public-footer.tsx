@@ -20,7 +20,7 @@ export default function PublicFooter() {
             <Card variant="borderless">
               <Flex vertical align="center" gap="middle">
                 <Typography.Title level={4} style={{textAlign: "center", margin: 0}}>
-                  Кафедра інформаційних систем на технологій
+                  Кафедра інформаційних систем та технологій
                 </Typography.Title>
                 <Flex vertical>
                   <Typography.Text style={{textAlign: "center"}}>

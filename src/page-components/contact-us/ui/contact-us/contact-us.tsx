@@ -62,7 +62,7 @@ export default function ContactUs(props: IProps) {
                 <Flex vertical align="center" gap="small">
                   <EnvironmentOutlined style={{fontSize: 32}}/>
                   <Typography.Title level={4} style={{margin: 0}}>
-                    Наш адрес
+                    Наша адреса
                   </Typography.Title>
                   <Typography.Link style={{textAlign: "center"}} href={"https://maps.app.goo.gl/wEdHhfHdVc15HExb9"}>
                     вул. Богдана Гаврилишина, 24, Київ
