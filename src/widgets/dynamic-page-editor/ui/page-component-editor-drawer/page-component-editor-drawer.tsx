@@ -34,7 +34,7 @@ export default function PageComponentEditorDrawer(props: IProps) {
       open={props.isOpen}
       destroyOnHidden
       onClose={onCancel}
-      size='large'
+      size="large"
       footer={
         <Flex gap={padding}>
           <Button onClick={onCancel} block>

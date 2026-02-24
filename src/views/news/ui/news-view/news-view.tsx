@@ -27,7 +27,7 @@ export default function NewsView(props: IProps) {
             {props.news.title}
           </Typography.Title>
           <Typography.Text type="secondary">
-            {dayjs(props.news.date).format('D MMMM YYYY, dddd').toString()}
+            {dayjs(props.news.date).format("D MMMM YYYY, dddd").toString()}
           </Typography.Text>
         </Flex>
         <Image
@@ -38,7 +38,7 @@ export default function NewsView(props: IProps) {
         />
       </ComponentCol>
       <NewsRenderer news={props.news}/>
-      <Flex justify='center'>
+      <Flex justify="center">
         <Link href={"/news"}>
           <Button type="primary">
             Повернутись до новин

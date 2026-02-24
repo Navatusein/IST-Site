@@ -18,7 +18,7 @@ export default function NewsCard(props: IProps) {
               {props.news.title}
             </Typography.Title>
             <Typography.Text type="secondary">
-              {dayjs(props.news.date).format('D MMMM YYYY, dddd').toString()}
+              {dayjs(props.news.date).format("D MMMM YYYY, dddd").toString()}
             </Typography.Text>
           </Flex>
           <Typography.Text className={styles.textTypography}>

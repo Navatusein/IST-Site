@@ -33,7 +33,7 @@ export default function AddPageComponentDrawer(props: IProps) {
             key={`example-${index}`}
             onClick={() => addComponent(component.component)}
           >
-            <Flex vertical style={{ height: "100%", width: "100%"}}>
+            <Flex vertical style={{height: "100%", width: "100%"}}>
               <Typography.Title level={5}>
                 {component.name}
               </Typography.Title>

@@ -65,18 +65,18 @@ export default function ToolBar(props: IProps) {
   }
 
   const setLink = useCallback(() => {
-    const previousUrl = props.editor!.getAttributes('link').href
-    const url = window.prompt('URL', previousUrl)
+    const previousUrl = props.editor!.getAttributes("link").href
+    const url = window.prompt("URL", previousUrl)
 
     if (url === null)
       return
 
-    if (url === '') {
-      props.editor!.chain().focus().extendMarkRange('link').unsetLink().run()
+    if (url === "") {
+      props.editor!.chain().focus().extendMarkRange("link").unsetLink().run()
       return
     }
 
-    props.editor!.chain().focus().extendMarkRange('link').setLink({href: url, target: "_self"}).run()
+    props.editor!.chain().focus().extendMarkRange("link").setLink({href: url, target: "_self"}).run()
   }, [props.editor])
 
   return (

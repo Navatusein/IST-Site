@@ -6,13 +6,13 @@ import toPlainObject from "@/shared/utilities/to-plain-object";
 import {createServerAction} from "@/shared/utilities/create-server-action";
 
 export const getNewsAction = createServerAction<INews[]>(async () => {
-  return toPlainObject<INews[]>(await NewsModel.find<INews>({}).sort({ date: 'desc' }));
+  return toPlainObject<INews[]>(await NewsModel.find<INews>({}).sort({date: "desc"}));
 });
 
 export const getNewsPaginationAction = createServerAction<INews[]>(async (offset: number, limit: number) => {
   return toPlainObject<INews[]>(await NewsModel
     .find<INews>({})
-    .sort({ date: 'desc', createdAt: 'desc' })
+    .sort({date: "desc", createdAt: "desc"})
     .skip(offset)
     .limit(limit)
   );
@@ -23,7 +23,7 @@ export const getNewsCountAction = createServerAction<number>(async () => {
 });
 
 export const getNewsByPathAction = createServerAction<INews | null>(async (path: string) => {
-  const data = await NewsModel.findOne<INews>({ path });
+  const data = await NewsModel.findOne<INews>({path});
 
   if (!data)
     return null;

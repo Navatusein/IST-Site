@@ -1,5 +1,5 @@
 import {Form, Input, InputNumber} from "antd";
-import { IHeroSectionMainPageComponent } from "../../types/type";
+import {IHeroSectionMainPageComponent} from "../../types/type";
 import {RichTextEditor} from "@/features/rich-text-editor";
 import {SelectFileButton} from "@/features/select-file-button";
 

@@ -25,7 +25,7 @@ export default function CardsEditor(props: IProps) {
     props.onChange(form.getFieldsValue(true));
   }
 
-  const items: TabsProps['items'] = [
+  const items: TabsProps["items"] = [
     {
       key: "1",
       label: "Загальні налаштування",

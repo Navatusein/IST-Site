@@ -8,7 +8,7 @@ export class FileManagerService {
 
   public static getFiles(currentPath: string): (IFile | IDirectory)[] {
     if (!fs.existsSync(this.baseDirectory))
-      fs.mkdirSync(this.baseDirectory, { recursive: true });
+      fs.mkdirSync(this.baseDirectory, {recursive: true});
 
     const resolvedPath = this.resolvePath(currentPath);
 
@@ -66,7 +66,7 @@ export class FileManagerService {
       const stats = fs.statSync(resolvedPath);
 
       if (stats.isDirectory()) {
-        fs.rmSync(resolvedPath, { recursive: true, force: true });
+        fs.rmSync(resolvedPath, {recursive: true, force: true});
       }
       else {
         fs.unlinkSync(resolvedPath);
@@ -80,7 +80,7 @@ export class FileManagerService {
     if (fs.existsSync(resolvedPath))
       throw new Error(`Directory "${folderName}" already exists in "${currentPath}"`);
 
-    fs.mkdirSync(resolvedPath, { recursive: true });
+    fs.mkdirSync(resolvedPath, {recursive: true});
   }
 
   public static moveOrCopyFiles(targetDirectoryPath: string, files: string[], cut: boolean): void {
@@ -106,7 +106,7 @@ export class FileManagerService {
         this.copyDirectory(resolvedItemPath, destinationPath);
 
         if (cut)
-          fs.rmSync(resolvedItemPath, { recursive: true, force: true });
+          fs.rmSync(resolvedItemPath, {recursive: true, force: true});
       }
       else {
         fs.copyFileSync(resolvedItemPath, destinationPath);
@@ -176,8 +176,8 @@ export class FileManagerService {
   }
 
   private static copyDirectory(src: string, dest: string): void {
-    fs.mkdirSync(dest, { recursive: true });
-    const entries = fs.readdirSync(src, { withFileTypes: true });
+    fs.mkdirSync(dest, {recursive: true});
+    const entries = fs.readdirSync(src, {withFileTypes: true});
 
     for (const entry of entries) {
       const srcPath = path.join(src, entry.name);

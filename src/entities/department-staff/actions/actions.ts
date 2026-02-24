@@ -7,11 +7,11 @@ import DepartmentStaff from "../types/schema";
 import {IDepartmentStaff} from "../types/type";
 
 export const getDepartmentStaffAction = createServerAction<IDepartmentStaff[]>(async () => {
-  return toPlainObject<IDepartmentStaff[]>(await DepartmentStaff.find<IDepartmentStaff>({}).sort({ date: 'desc' }));
+  return toPlainObject<IDepartmentStaff[]>(await DepartmentStaff.find<IDepartmentStaff>({}).sort({date: "desc"}));
 });
 
 export const getDepartmentStaffByPathAction = createServerAction<IDepartmentStaff | null>(async (path: string) => {
-  const data = await DepartmentStaff.findOne<IDepartmentStaff>({ path });
+  const data = await DepartmentStaff.findOne<IDepartmentStaff>({path});
 
   if (!data)
     return null;

@@ -10,7 +10,7 @@ export const getDynamicPagesAction = createServerAction<IDynamicPage[]>(async ()
 });
 
 export const getDynamicPageByPathAction = createServerAction<IDynamicPage | null>(async (path: string) => {
-  const data = await DynamicPageModel.findOne<IDynamicPage>({ path });
+  const data = await DynamicPageModel.findOne<IDynamicPage>({path});
 
   if (!data)
     return null;

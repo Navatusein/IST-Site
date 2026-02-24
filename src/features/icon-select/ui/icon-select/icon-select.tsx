@@ -1,5 +1,5 @@
 import {Flex, Select} from "antd";
-import * as AntIcons from '@ant-design/icons';
+import * as AntIcons from "@ant-design/icons";
 import {useMemo} from "react";
 
 interface IProps {}

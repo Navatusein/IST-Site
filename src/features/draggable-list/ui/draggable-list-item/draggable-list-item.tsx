@@ -31,7 +31,7 @@ export default function DraggableListItem<T extends {id: string|number}>(props: 
     invariant(element);
     invariant(dragHandler);
 
-    const onChange = ({ source, self }: ElementDropTargetEventBasePayload) => {
+    const onChange = ({source, self}: ElementDropTargetEventBasePayload) => {
       const isSource = source.element === dragHandler;
 
       if (isSource) {

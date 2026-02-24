@@ -9,7 +9,7 @@ declare global {
 let cached = global.mongodbService;
 
 if (!global.mongodbService) {
-  cached = global.mongodbService = { connection: null, promise: null };
+  cached = global.mongodbService = {connection: null, promise: null};
 }
 
 async function mongoDbConnect() {

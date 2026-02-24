@@ -17,10 +17,10 @@ export default function DepartmentStaffCrudForm(props: IProps) {
     });
   }
 
-  const items: TabsProps['items'] = [
+  const items: TabsProps["items"] = [
     {
-      key: '1',
-      label: 'Загалні налаштування',
+      key: "1",
+      label: "Загалні налаштування",
       children: (
         <>
           <Form.Item<IDepartmentStaff> hidden name="_id">
@@ -107,14 +107,14 @@ export default function DepartmentStaffCrudForm(props: IProps) {
       ),
     },
     {
-      key: '2',
-      label: 'Профілі',
+      key: "2",
+      label: "Профілі",
       children: (
         <Flex vertical gap="small">
           <Form.List name="profiles">
             {(fields, operations) =>
               <>
-                {fields.map(({ key, name, ...restField }) => (
+                {fields.map(({key, name, ...restField}) => (
                   <Card key={key} size="small">
                     <Flex vertical gap="small">
                       <Form.Item

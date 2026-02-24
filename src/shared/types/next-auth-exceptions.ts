@@ -1,4 +1,4 @@
-import {CredentialsSignin} from 'next-auth';
+import {CredentialsSignin} from "next-auth";
 
 export class CouldNotParseError extends CredentialsSignin {
   code = "CouldNotParseError";

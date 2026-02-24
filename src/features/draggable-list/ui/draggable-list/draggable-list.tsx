@@ -17,7 +17,7 @@ export default function DraggableList<T extends {id: string|number}>(props: IPro
       canMonitor: () => {
         return true;
       },
-      onDrop: ({ location, source }) => {
+      onDrop: ({location, source}) => {
         const target = location.current.dropTargets[0];
 
         if (!target)

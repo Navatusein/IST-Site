@@ -23,36 +23,36 @@ export default function Cards(props: IProps) {
   const colConfigs = useMemo(() => {
     if (typedComponentProps?.width == "small"){
       return {
-        ['count-2']: {
+        ["count-2"]: {
           lg: 12,
           xs: 24
         },
-        ['count-2-first']: {
+        ["count-2-first"]: {
           xs: 24
         },
-        ['count-3']: {
+        ["count-3"]: {
           xl: 8,
           xs: 24
         },
-        ['count-3-first']: {
+        ["count-3-first"]: {
           xs: 24
         }
       };
     }
     else {
       return {
-        ['count-2']: {
+        ["count-2"]: {
           md: 12,
           xs: 24
         },
-        ['count-2-first']: {
+        ["count-2-first"]: {
           xs: 24
         },
-        ['count-3']: {
+        ["count-3"]: {
           lg: 8,
           xs: 24
         },
-        ['count-3-first']: {
+        ["count-3-first"]: {
           xs: 24
         }
       };

@@ -9,7 +9,7 @@ interface IProps {
 export default function FormComponentFastLinks(props: IProps) {
   return (
     <>
-      {props.fields.map(({ key, name, ...restField }) => (
+      {props.fields.map(({key, name, ...restField}) => (
         <Card key={key} size="small">
           <Flex vertical gap="small">
             <Form.Item

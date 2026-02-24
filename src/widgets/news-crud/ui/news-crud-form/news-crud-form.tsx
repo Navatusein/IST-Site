@@ -69,13 +69,13 @@ export default function NewsCrudForm(props: IProps) {
         name="date"
         extra="Дата новини"
         style={{marginBottom: 0}}
-        rules={[{required: true, message: "Введіть дату новини!"}]} // ({ value: new Date(value).toDateString() })
+        rules={[{required: true, message: "Введіть дату новини!"}]} // ({value: new Date(value).toDateString()})
         getValueProps={(value) => {
           return {value: value == undefined ? undefined : dayjs(value)}
         }}
 
       >
-        <DatePicker format='DD.MM.YYYY' placeholder='DD.MM.YYYY' style={{width: "100%"}}/>
+        <DatePicker format="DD.MM.YYYY" placeholder="DD.MM.YYYY" style={{width: "100%"}}/>
       </Form.Item>
       <Form.Item<INews>
         label="Малюнок"

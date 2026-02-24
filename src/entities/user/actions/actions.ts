@@ -10,7 +10,7 @@ export const getUsersAction = createServerAction<IUser[]>(async () => {
 });
 
 export const getUserByIdAction = createServerAction<IUser | null>(async (id: string) => {
-  const data = await UserModel.findOne<IUser>({ _id: id });
+  const data = await UserModel.findOne<IUser>({_id: id});
 
   if (!data)
     return null;
@@ -23,16 +23,16 @@ export const addUserAction = createServerAction<void>(async (data: IUser) => {
 });
 
 export const updateUserAction = createServerAction<void>(async (data: IUser) => {
-  const { _id, ...updateData } = data;
-  await UserModel.findByIdAndUpdate(_id, { $set: updateData });
+  const {_id, ...updateData} = data;
+  await UserModel.findByIdAndUpdate(_id, {$set: updateData});
 });
 
 export const removeUsersAction = createServerAction<void>(async (data: IUser[]) => {
-  await UserModel.deleteMany({ _id: { $in: data.map((value) => value._id) } });
+  await UserModel.deleteMany({_id: {$in: data.map((value) => value._id)}});
 });
 
 export const updateUserPasswordAction = createServerAction<void>(async (id: string, password: string) => {
-  const data = await UserModel.findOne<IUser>({ _id: id });
+  const data = await UserModel.findOne<IUser>({_id: id});
 
   if (!data)
     throw new Error("Invalid user Id");

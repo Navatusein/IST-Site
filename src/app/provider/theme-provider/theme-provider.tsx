@@ -20,7 +20,7 @@ export default function ThemeProvider(props: IProps) {
   const {theme, setTheme, systemTheme} = useTheme();
 
   useEffect(() => {
-    dayjs.locale('uk');
+    dayjs.locale("uk");
   }, []);
 
   const themeConfig = useMemo((): ThemeConfig => {
