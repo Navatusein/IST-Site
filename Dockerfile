@@ -1,4 +1,4 @@
-FROM node:18-alpine AS base
+FROM node:25-alpine AS base
 
 LABEL org.opencontainers.image.source="https://github.com/Navatusein/IST-Site"
 
