@@ -2,9 +2,9 @@
 
 import {App, Button, Tooltip, Upload} from "antd";
 import {uploadFilesAction} from "@/shared/services/file-manager-service/actions/actions";
-import type {UploadRequestOption} from "rc-upload/lib/interface";
+import type {UploadRequestOption} from "@rc-component/upload/lib/interface";
 import {Dispatch, SetStateAction} from "react";
-import {CloudUploadOutlined, UploadOutlined} from "@ant-design/icons";
+import {CloudUploadOutlined} from "@ant-design/icons";
 import {useServerAction} from "@/shared/hooks/use-server-action";
 
 interface IProps {
@@ -20,13 +20,13 @@ export default function UploadFilesButton(props: IProps) {
 
     useServerAction(uploadFilesAction(props.currentPath, file))
       .then(() => {
-        notification.success({message: "Файл завантажено успішно", description: file.name});
+        notification.success({title: "Файл завантажено успішно", description: file.name});
         setTimeout(() => {
           props.setUpdateFiles((prevState) => prevState + 1);
         }, 500)
       })
       .catch((error) => {
-        notification.error({message: "Помилка завантаження файлу", description: error.message});
+        notification.error({title: "Помилка завантаження файлу", description: error.message});
       });
   }
 

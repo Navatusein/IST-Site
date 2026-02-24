@@ -1,3 +1,5 @@
+@use "@/shared/styles/utilities/media" as media;
+
 .carousel {
   margin: 0 calc(var(--ant-padding-xs) * -1);
 
@@ -5,7 +7,7 @@
     padding: 0 var(--ant-padding-xs);
     height: 450px !important;
 
-    @include respond-below(sm) {
+    @include media.respond-below(sm) {
       height: 300px !important;
     }
 
@@ -14,7 +16,7 @@
       height: 450px !important;
       object-fit: cover;
 
-      @include respond-below(sm) {
+      @include media.respond-below(sm) {
         height: 300px !important;
       }
     }

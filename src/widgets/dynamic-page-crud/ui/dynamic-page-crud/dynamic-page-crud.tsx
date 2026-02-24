@@ -77,7 +77,7 @@ export default function DynamicPageCrud(props: IProps) {
   const [selectedRows, setSelectedRows] = useState<IDynamicPage[]>([]);
 
   const create = async (data: IDynamicPage) => {
-    await useServerAction(addDynamicPageAction({...data, _id: null} as IDynamicPage));
+    await useServerAction(addDynamicPageAction({...data, _id: null}));
   }
 
   const update = async (data: IDynamicPage) => {

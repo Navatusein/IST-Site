@@ -30,9 +30,6 @@ const nextConfig: NextConfig = {
   devIndicators: {
     position: "top-left"
   },
-  sassOptions: {
-    additionalData: '@use "@/shared/styles/utilities/index.scss" as *;'
-  },
   allowedDevOrigins: process.env.ALLOWED_DEV_ORIGINS?.split(",")
 };
 

@@ -99,7 +99,7 @@ export default function NewsCrud(props: IProps) {
   const [selectedRows, setSelectedRows] = useState<INews[]>([]);
 
   const create = async (data: INews) => {
-    await useServerAction(addNewsAction({...data, _id: null, date: dayjs(data.date).toISOString()} as INews));
+    await useServerAction(addNewsAction({...data, _id: null, date: dayjs(data.date).toISOString()}));
   }
 
   const update = async (data: INews) => {

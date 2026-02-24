@@ -65,7 +65,7 @@ export const nextAuthConfig: NextAuthConfig = {
   callbacks: {
     jwt({token, user}) {
       if (user)
-        token.id = (user as IUser)._id as string
+        token.id = (user as IUser)._id.toHexString()
 
       return token;
     },

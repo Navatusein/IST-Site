@@ -1,3 +1,5 @@
+@use "@/shared/styles/utilities/media" as media;
+
 .titleBaseContainer {
   position: relative;
 }
@@ -26,13 +28,13 @@
   padding: var(--ant-padding-lg) 0 !important;
   height: 100%;
 
-  @include respond-below(lg) {
+  @include media.respond-below(lg) {
     padding: 0 !important;
   }
 }
 
 .textCardContainer {
-  @include respond-below(lg) {
+  @include media.respond-below(lg) {
     border-radius: 0 !important;
   }
 }
@@ -41,7 +43,7 @@
   gap: var(--ant-padding-xs);
   padding: calc(var(--ant-padding-lg) * 2) 0 !important;
 
-  @include respond-below(lg) {
+  @include media.respond-below(lg) {
     gap: 2px;
     padding: unset !important;
   }

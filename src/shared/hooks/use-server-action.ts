@@ -7,6 +7,6 @@ export async function useServerAction<T> (serverActionResult: Promise<IServerAct
     return result.data;
   }
   else {
-    throw new Error(result.errorMessage);
+    throw new Error(result.errorMessage ?? "Unknown server action result");
   }
 }

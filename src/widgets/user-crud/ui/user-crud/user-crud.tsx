@@ -93,7 +93,7 @@ export default function UserCrud(props: IProps) {
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState<boolean>(false);
 
   const create = async (data: IUser) => {
-    await useServerAction(addUserAction({...data, _id: null} as IUser));
+    await useServerAction(addUserAction({...data, _id: null}));
   }
 
   const update = async (data: IUser) => {
@@ -116,9 +116,9 @@ export default function UserCrud(props: IProps) {
   }
 
   const setPassword = async (password: string) => {
-    updateUserPasswordAction(selectedRows[0]._id as string, password)
+    updateUserPasswordAction(selectedRows[0]._id, password)
       .then(() => {
-        notification.success({message: "Успішно оновлено пароль"});
+        notification.success({title: "Успішно оновлено пароль"});
         setSelectedRows(() => []);
         setIsPasswordModalOpen(() => false);
 
@@ -127,7 +127,7 @@ export default function UserCrud(props: IProps) {
         }, 500);
       })
       .catch((error) => {
-        notification.error({message: "Помилка оновленя паролю", description: error.message});
+        notification.error({title: "Помилка оновленя паролю", description: error.message});
       });
   }
 

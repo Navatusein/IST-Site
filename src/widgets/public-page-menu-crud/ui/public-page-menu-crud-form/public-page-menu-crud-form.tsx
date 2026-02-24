@@ -15,7 +15,7 @@ export default function PublicPageMenuCrudForm(props: IProps) {
     menuItems
       .sort((a, b) => (a.index - b.index))
       .forEach(menuItem => {
-        if (menuItem._id != props.selectedMenuItemId) {
+        if (menuItem._id.toHexString() != props.selectedMenuItemId) {
           mapMenuItems.push({
             key: `${menuItem._id}`,
             value: `${menuItem._id}`,

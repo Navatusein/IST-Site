@@ -1,7 +1,9 @@
+@use "@/shared/styles/utilities/media" as media;
+
 .contentFlex {
   align-items: center;
 
-  @include respond-below(sm) {
+  @include media.respond-below(sm) {
     flex-direction: column;
     align-items: unset;
   }
@@ -22,7 +24,7 @@
     flex: 1;
   }
 
-  @include respond-below(sm) {
+  @include media.respond-below(sm) {
     display: contents !important;
   }
 }
@@ -34,7 +36,7 @@
     object-fit: cover;
   }
 
-  @include respond-below(sm) {
+  @include media.respond-below(sm) {
     width: 100%;
     order: -1;
   }

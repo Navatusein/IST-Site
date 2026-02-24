@@ -3,10 +3,10 @@ import {IUser} from "./type";
 import bcrypt from "bcryptjs";
 
 const userScheme = new Schema<IUser>({
-  login: {type: String, required: true, unique: true},
-  passwordHash: {type: String},
-  name: {type: String, required: true},
-  permissions: {type: [String]}
+  login: {type: Schema.Types.String, required: true, unique: true},
+  passwordHash: {type: Schema.Types.String},
+  name: {type: Schema.Types.String, required: true},
+  permissions: {type: [Schema.Types.String]}
 }, {timestamps: true});
 
 userScheme.methods.setPassword = async function (password: string) {

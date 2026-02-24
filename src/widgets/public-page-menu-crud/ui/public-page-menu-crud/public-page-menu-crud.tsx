@@ -54,7 +54,7 @@ export default function PublicPageMenuCrud(props: IProps) {
   const [selectedRows, setSelectedRows] = useState<IPublicMenuItem[]>([]);
 
   const create = async (data: IPublicMenuItem) => {
-    await useServerAction(addPublicMenuItemAction({...data, _id: null} as IPublicMenuItem));
+    await useServerAction(addPublicMenuItemAction({...data, _id: null}));
   }
 
   const update = async (data: IPublicMenuItem) => {
@@ -84,7 +84,7 @@ export default function PublicPageMenuCrud(props: IProps) {
       >
         <PublicPageMenuCrudForm
           menuItems={props.menuItems}
-          selectedMenuItemId={selectedRows[0]?._id as string ?? undefined}
+          selectedMenuItemId={selectedRows[0]?._id.toHexString() ?? undefined}
         />
       </CrudComponent>
     </>
