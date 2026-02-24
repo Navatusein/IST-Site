@@ -11,19 +11,19 @@ interface IProps {
 }
 
 export default function DownloadButton(props: IProps) {
-  const download = () => {
-    props.selectedRowKeys.forEach(async (key) => {
+  const download = async () => {
+    for (const key of props.selectedRowKeys) {
       const path = key as string;
 
       if (await useServerAction(isDirectoryAction(path)))
-        return;
+        continue;
 
       const link = document.createElement("a");
 
       link.download = "";
-      link.href = normalizeUrl(`${process.env.NEXT_PUBLIC_BASE_URL}/files/${path}`);//TODO Replace with download fix
+      link.href = normalizeUrl(`${window.location.origin}/api/assets/${path}`);
       link.click();
-    });
+    }
 
     props.setSelectedRowKeys(() => []);
   }

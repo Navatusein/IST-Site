@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
   devIndicators: {
     position: "top-left"
   },
-  allowedDevOrigins: process.env.ALLOWED_DEV_ORIGINS?.split(","),
+  allowedDevOrigins: process.env.DEV_ORIGINS?.split(","),
   experimental: {
     serverActions: {
       bodySizeLimit: "100mb"

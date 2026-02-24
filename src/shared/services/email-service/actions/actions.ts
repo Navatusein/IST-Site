@@ -1,6 +1,5 @@
 "use server"
 
-
 import {createServerAction} from "@/shared/utilities/create-server-action";
 import {EmailService} from "@/shared/services/email-service/email-service";
 

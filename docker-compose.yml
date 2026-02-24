@@ -11,6 +11,7 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGODB_USER}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGODB_DATABASE}
     restart: unless-stopped
 
   ist-site:
@@ -21,9 +22,13 @@ services:
     volumes:
       - ist-public-files:/app/public/files
     environment:
-      - MONGODB_URI=mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@mongodb/ist
-      - NEXT_PUBLIC_BASE_URL=${PUBLIC_URL}
-      - SECRET=${SECRET}
+      - MONGODB_URI=mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@mongodb/${MONGODB_DATABASE}
+      - APP_PUBLIC_URL=${APP_PUBLIC_URL}
+      - APP_SECRET=${APP_SECRET}
+      - MAIL_HOST=${MAIL_HOST}
+      - MAIL_PORT=${MAIL_PORT}
+      - MAIL_USERNAME=${MAIL_USERNAME}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
     restart: unless-stopped
 
 volumes:
