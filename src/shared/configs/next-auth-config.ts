@@ -1,9 +1,11 @@
 import Credentials from "next-auth/providers/credentials";
 import {NextAuthConfig} from "next-auth";
 import {CouldNotParseError, InvalidPasswordError} from "@/shared/types/next-auth-exceptions";
-import {JWT} from "next-auth/jwt"
 import {IUser} from "@/entities/user";
 import normalizeUrl from "normalize-url";
+
+//@ts-ignore
+import {JWT} from "next-auth/jwt"
 
 declare module "next-auth" {
   interface Session {
@@ -65,7 +67,7 @@ export const nextAuthConfig: NextAuthConfig = {
   callbacks: {
     jwt({token, user}) {
       if (user)
-        token.id = (user as IUser)._id.toHexString()
+        token.id = (user as IUser)._id as unknown as string
 
       return token;
     },

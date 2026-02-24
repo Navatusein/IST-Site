@@ -21,14 +21,14 @@ export default function CopyCutPasteButtons(props: IProps) {
   const pasteFromMemory = () => {
     useServerAction(moveOrCopyFilesAction(props.currentPath, props.filesInMemory, props.filesInMemoryCut))
       .then(() => {
-        notification.success({message: "Успішно файли вставлено"});
+        notification.success({title: "Успішно файли вставлено"});
         props.setFilesInMemory(() => []);
         setTimeout(() => {
           props.setUpdateFiles((prevState) => prevState + 1)
         }, 500)
       })
       .catch((error) => {
-        notification.error({message: "Помилка встааляння файлів", description: error.message});
+        notification.error({title: "Помилка встааляння файлів", description: error.message});
       });
   }
 

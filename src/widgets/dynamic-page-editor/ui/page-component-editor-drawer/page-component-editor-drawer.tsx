@@ -32,9 +32,9 @@ export default function PageComponentEditorDrawer(props: IProps) {
     <Drawer
       title="Редагувати компонент"
       open={props.isOpen}
-      width={800}
-      destroyOnClose
+      destroyOnHidden
       onClose={onCancel}
+      size='large'
       footer={
         <Flex gap={padding}>
           <Button onClick={onCancel} block>

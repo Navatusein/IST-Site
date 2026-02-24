@@ -151,7 +151,7 @@ export default function DepartmentStaffCrud(props: IProps) {
   }
 
   return (
-    <Space direction="vertical" size="middle" style={{width: "100%"}}>
+    <Space orientation="vertical" size="middle" style={{width: "100%"}}>
       <CrudComponent<IDepartmentStaff>
         columns={COLUMNS}
         data={props.teachers}

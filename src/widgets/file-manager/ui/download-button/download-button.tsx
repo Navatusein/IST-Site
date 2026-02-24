@@ -1,7 +1,7 @@
 import {Button, Tooltip} from "antd";
 import {Dispatch, Key, SetStateAction} from "react";
 import {isDirectoryAction} from "@/shared/services/file-manager-service/actions/actions";
-import {CloudDownloadOutlined, DownloadOutlined} from "@ant-design/icons";
+import {CloudDownloadOutlined} from "@ant-design/icons";
 import normalizeUrl from "normalize-url";
 import {useServerAction} from "@/shared/hooks/use-server-action";
 

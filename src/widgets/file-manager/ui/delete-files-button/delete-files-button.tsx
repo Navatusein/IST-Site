@@ -1,6 +1,6 @@
 "use client"
 
-import {App, Button, Popconfirm, Tooltip} from "antd";
+import {App, Button, Tooltip} from "antd";
 import {Dispatch, Key, SetStateAction} from "react";
 import {deleteFilesAction} from "@/shared/services/file-manager-service/actions/actions";
 import {DeleteOutlined} from "@ant-design/icons";
@@ -24,14 +24,14 @@ export default function DeleteFilesButton(props: IProps) {
       onOk: () => {
         useServerAction(deleteFilesAction(props.selectedRowKeys as string[]))
           .then(() => {
-            notification.success({message: "Файли видалено успішно",});
+            notification.success({title: "Файли видалено успішно",});
             props.setSelectedRowKeys([]);
             setTimeout(() => {
               props.setUpdateFiles((prevState) => prevState + 1);
             }, 500)
           })
           .catch((error) => {
-            notification.error({message: "Помилка видаленя файлів", description: error.message});
+            notification.error({title: "Помилка видаленя файлів", description: error.message});
           });
       }
     });

@@ -14,7 +14,7 @@ export default function PageComponentError(props: IProps) {
     <>
       {
         props.message ?
-        <Alert type="error" message={props.message}/> :
+        <Alert type="error" title={props.message}/> :
         props.children
       }
     </>

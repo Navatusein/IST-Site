@@ -27,7 +27,7 @@ export default function FileManager() {
   const [filesInMemoryCut, setFilesInMemoryCut] = useState<boolean>(false);
 
   return(
-    <Space direction="vertical" size="middle" style={{width: "100%"}}>
+    <Space orientation="vertical" size="middle" style={{width: "100%"}}>
       <Space wrap size={[0, 0]}>
         <Typography.Text>Поточний шлях:</Typography.Text>
         <Breadcrumb items={currentPath?.split("/").map(value => ({title: value}))}/>

@@ -21,13 +21,13 @@ export default function CreateFolderButton(props: IProps) {
 
     useServerAction(createDirectoryAction(props.currentPath, directoryName))
       .then(() => {
-        notification.success({message: "Папку стоврено успішно",});
+        notification.success({title: "Папку стоврено успішно",});
         setTimeout(() => {
           props.setUpdateFiles((prevState) => prevState + 1);
         }, 500)
       })
       .catch((error) => {
-        notification.error({message: "Помилка створення папки", description: error.message});
+        notification.error({title: "Помилка створення папки", description: error.message});
       });
   }
 

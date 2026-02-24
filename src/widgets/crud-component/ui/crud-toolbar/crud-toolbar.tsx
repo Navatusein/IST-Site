@@ -9,7 +9,6 @@ import {
   SearchOutlined
 } from "@ant-design/icons";
 import styles from "./crud-toolbar.module.scss";
-import {ChangeEvent} from "react";
 
 interface IProps<T> {
   selectedRows: T[]

@@ -123,11 +123,11 @@ export default function FileViewer(props: IProps) {
         ]);
       })
       .catch((error) => {
-        notification.error({message: "Помилка завантаження файлів", description: error.message});
+        notification.error({title: "Помилка завантаження файлів", description: error.message});
 
         if (error.message.includes("no such file or directory")) {
           props.setCurrentPath("/").catch((error) => {
-            notification.error({message: "Помилка шляху", description: error.message});
+            notification.error({title: "Помилка шляху", description: error.message});
           });
         }
       })
@@ -145,7 +145,7 @@ export default function FileViewer(props: IProps) {
       props.setSelectedRowKeys(() => []);
       props.setCurrentPath((record as IDirectory).pathTo ?? "/")
         .catch((error) => {
-          notification.error({message: "Помилка", description: error.message});
+          notification.error({title: "Помилка", description: error.message});
         });
     }
   }

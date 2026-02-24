@@ -45,9 +45,11 @@ export default function UserCrudForm() {
         <Select
           mode="multiple"
           options={PERMISSIONS_OPTIONS as never}
-          filterSort={(a, b) => (
-            (a.value as string).localeCompare((b.value as string))
-          )}
+          showSearch={{
+            filterSort: (a, b) => (
+              (a.value as string).localeCompare((b.value as string))
+            )
+          }}
         />
       </Form.Item>
     </>

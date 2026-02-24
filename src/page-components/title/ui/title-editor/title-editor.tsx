@@ -2,7 +2,7 @@ import {useMemo} from "react";
 import {IBasePageComponent} from "@/entities/dynamic-page";
 import {PageComponentError} from "@/shared/ui-kit";
 import {ITitlePageComponent} from "../../types/type";
-import {Flex, Form, Input, InputNumber, Select, Switch} from "antd";
+import {Flex, Form, Input, Select} from "antd";
 
 interface IProps {
   componentProps: IBasePageComponent;

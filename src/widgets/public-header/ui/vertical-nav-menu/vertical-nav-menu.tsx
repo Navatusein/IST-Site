@@ -2,14 +2,14 @@
 
 import {Button, Drawer, Flex, Menu, theme, Typography} from "antd";
 import React, {useState} from "react";
-import {ItemType, MenuItemType} from "antd/lib/menu/interface";
+import {ItemType} from "antd/lib/menu/interface";
 import {UnorderedListOutlined} from "@ant-design/icons";
 import {ThemeSwitcher} from "@/features/theme-switcher";
 import {useUserPermissions} from "@/entities/user/hooks/useUserPermissions";
 import Link from "next/link";
 
 interface IProps {
-  navMenuItems:  ItemType<MenuItemType>[];
+  navMenuItems:  ItemType[];
 }
 
 export default function VerticalNavMenu(props: IProps) {

@@ -33,16 +33,16 @@ export default function SignInForm() {
         switch (data) {
           case "CouldNotParseError":
           case "InvalidPasswordError":
-            notification.error({message: "Помилка авторизації", description: "Неправильний логін чи пароль"});
+            notification.error({title: "Помилка авторизації", description: "Неправильний логін чи пароль"});
             break
           default:
-            notification.error({message: "Помилка авторизації", description: "Невідома помилка"});
+            notification.error({title: "Помилка авторизації", description: "Невідома помилка"});
             break;
         }
       })
       .catch((error) => {
         console.log(error);
-        notification.error({message: "Помилка авторизації", description: "Невідома помилка"});
+        notification.error({title: "Помилка авторизації", description: "Невідома помилка"});
       })
       .finally(() => {
         if (redirectPath)

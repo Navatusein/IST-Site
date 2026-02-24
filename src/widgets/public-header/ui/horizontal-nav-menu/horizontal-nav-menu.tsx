@@ -1,14 +1,14 @@
 "use client"
 
 import {Button, Flex, Menu, theme} from "antd";
-import {ItemType, MenuItemType} from "antd/lib/menu/interface";
+import {ItemType} from "antd/lib/menu/interface";
 import {ThemeSwitcher} from "@/features/theme-switcher";
 import React from "react";
 import Link from "next/link";
 import {useUserPermissions} from "@/entities/user/hooks/useUserPermissions";
 
 interface IProps {
-  navMenuItems:  ItemType<MenuItemType>[];
+  navMenuItems:  ItemType[];
 }
 
 export default function HorizontalNavMenu(props: IProps) {

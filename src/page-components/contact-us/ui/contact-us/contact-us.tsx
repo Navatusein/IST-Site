@@ -42,12 +42,12 @@ export default function ContactUs(props: IProps) {
     useServerAction(sendEmailAction(undefined, subject, content))
       .then(() => {
         notification.success({
-          message: "Ваше повідомленя успішно відправлено"
+          title: "Ваше повідомленя успішно відправлено"
         });
       })
       .catch(() => {
         notification.error({
-          message: "Помилка відправленя повідомлення"
+          title: "Помилка відправленя повідомлення"
         });
       })
   }

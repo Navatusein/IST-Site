@@ -1,5 +1,5 @@
 import {INews} from "@/entities/news";
-import {DatePicker, Form, FormInstance, Image, Input} from "antd";
+import {DatePicker, Form, FormInstance, Input} from "antd";
 import {SelectFileButton} from "@/features/select-file-button";
 import dayjs from "dayjs";
 

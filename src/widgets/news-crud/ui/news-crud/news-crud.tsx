@@ -130,7 +130,7 @@ export default function NewsCrud(props: IProps) {
   }
 
   return (
-    <Space direction="vertical" size="middle" style={{width: "100%"}}>
+    <Space orientation="vertical" size="middle" style={{width: "100%"}}>
       <CrudComponent<INews>
         columns={COLUMNS}
         data={props.news}

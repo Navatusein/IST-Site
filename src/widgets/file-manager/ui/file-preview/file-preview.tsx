@@ -1,6 +1,6 @@
 import {DocumentViewer} from "react-documents";
 import {Modal} from "antd";
-import {Dispatch, Key, SetStateAction} from "react";
+import {Dispatch, SetStateAction} from "react";
 
 interface IProps {
   filePathToPreview: string,

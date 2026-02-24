@@ -23,7 +23,7 @@ export default function AddPageComponentDrawer(props: IProps) {
     <Drawer
       open={props.isOpen}
       onClose={closeModal}
-      width={800}
+      size="large"
       title="Додати новий блок"
     >
       <Flex gap="middle" vertical>

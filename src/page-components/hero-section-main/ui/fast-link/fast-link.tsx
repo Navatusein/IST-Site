@@ -1,4 +1,4 @@
-import {Button, Col, Typography} from "antd";
+import {Button, Typography} from "antd";
 import Link from "next/link";
 import {IHeroSectionMainFastLink} from "../../types/type";
 import styles from "./fast-link.module.scss";

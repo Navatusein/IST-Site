@@ -30,7 +30,7 @@ export default function CrudDrawer<T>(props: IProps<T>) {
       closable
       open={props.isOpen}
       title={props.title}
-      width={800}
+      size="large"
       onClose={onCancel}
       footer={
         <Flex gap={padding}>

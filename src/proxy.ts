@@ -3,7 +3,6 @@ import {permissions} from "@/shared/configs/permissions-config"
 import resolveRequirementPermission from "@/shared/utilities/resolve-requirement-permission";
 import {UserPermissionType} from "@/entities/user";
 import normalizeUrl from "normalize-url";
-import {notFound} from "next/navigation";
 
 export default auth(async (request) => {
   const {nextUrl, auth} = request;

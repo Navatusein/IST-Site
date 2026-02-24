@@ -68,7 +68,7 @@ export default function DynamicPageEditor(props: IProps) {
     props.saveComponents()
       .then(() => {
         notification.success({
-          message: "Успішно збережено"
+          title: "Успішно збережено"
         });
 
         setInitialComponentsState(props.components);
@@ -79,7 +79,7 @@ export default function DynamicPageEditor(props: IProps) {
       })
       .catch((error) => {
         notification.error({
-          message: "Помилка збереження",
+          title: "Помилка збереження",
           description: error.message
         });
       });

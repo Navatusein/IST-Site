@@ -77,12 +77,12 @@ export default function CrudComponent<T>(props: IProps<T>) {
         props.refresh();
 
         notification.success({
-          message: isEdit ? "Успішно збережено" : "Успішно створено"
+          title: isEdit ? "Успішно збережено" : "Успішно створено"
         });
       })
       .catch((error) => {
         notification.error({
-          message: isEdit ? "Помилка збереження" : "Помилка створення",
+          title: isEdit ? "Помилка збереження" : "Помилка створення",
           description: error.message
         });
       });
@@ -122,12 +122,12 @@ export default function CrudComponent<T>(props: IProps<T>) {
             props.refresh()
 
             notification.success({
-              message: "Успішно видалено"
+              title: "Успішно видалено"
             })
           })
           .catch((error) => {
             notification.error({
-              message: "Помилка видалення",
+              title: "Помилка видалення",
               description: error.message
             })
           });
@@ -136,7 +136,7 @@ export default function CrudComponent<T>(props: IProps<T>) {
   }
 
   return (
-    <Space direction="vertical" size="middle" style={{width: "100%"}}>
+    <Space orientation="vertical" size="middle" style={{width: "100%"}}>
       <CrudToolbar<T>
         selectedRows={props.selectedRows}
         onAdd={onAdd}
