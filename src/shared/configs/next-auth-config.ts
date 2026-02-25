@@ -7,7 +7,6 @@ import normalizeUrl from "normalize-url";
 //@ts-ignore
 import {JWT} from "next-auth/jwt"
 import bcrypt from "bcryptjs";
-import {json} from "node:stream/consumers";
 import toPlainObject from "@/shared/utilities/to-plain-object";
 
 declare module "next-auth" {
