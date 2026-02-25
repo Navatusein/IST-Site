@@ -24,6 +24,7 @@ const COLUMNS: TableColumnsType<IUser> = [
     title: "Логін",
     dataIndex: "login",
     key: "login",
+    width: 150,
     sorter: (a, b) => stringSorter(a.login, b.login),
     showSorterTooltip: {
       title: "Сортування за логіном"
@@ -33,6 +34,7 @@ const COLUMNS: TableColumnsType<IUser> = [
     title: "Імя",
     dataIndex: "name",
     key: "name",
+    width: 150,
     sorter: (a, b) => stringSorter(a.name, b.name),
     showSorterTooltip: {
       title: "Сортування за іменем"
@@ -42,9 +44,10 @@ const COLUMNS: TableColumnsType<IUser> = [
     title: "Дозволи",
     dataIndex: "permissions",
     key: "permissions",
+    width: 350,
     render: (permissions: string[]) => (
       permissions.sort().map((permission) => (
-        <Tag color="blue" key={permission}>{permission}</Tag>
+        <Tag color="blue" key={permission} style={{margin: 2}}>{permission}</Tag>
       ))
     )
   },
@@ -52,6 +55,7 @@ const COLUMNS: TableColumnsType<IUser> = [
     title: "Має пароль",
     dataIndex: "passwordHash",
     key: "passwordHash",
+    width: 115,
     render: (passwordHash?: string) => (
       passwordHash != null ?
         <Tag color="green">Так</Tag> :
@@ -62,6 +66,7 @@ const COLUMNS: TableColumnsType<IUser> = [
     title: "Створено",
     dataIndex: "createdAt",
     key: "createdAt",
+    width: 115,
     render: (date: string) => (
       new Date(date).toLocaleString()
     ),
@@ -74,6 +79,7 @@ const COLUMNS: TableColumnsType<IUser> = [
     title: "Оновлено",
     dataIndex: "updatedAt",
     key: "updatedAt",
+    width: 115,
     render: (date: string) => (
       new Date(date).toLocaleString()
     ),

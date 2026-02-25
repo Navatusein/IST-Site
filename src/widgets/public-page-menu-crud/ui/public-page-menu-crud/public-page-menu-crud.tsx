@@ -15,7 +15,8 @@ const COLUMNS: TableColumnsType<IPublicMenuItem> = [
   {
     title: "Назва",
     dataIndex: "label",
-    key: "label"
+    key: "label",
+    width: 250,
   },
   {
     title: "Позиція",
@@ -28,12 +29,14 @@ const COLUMNS: TableColumnsType<IPublicMenuItem> = [
   {
     title: "Шлях",
     dataIndex: "path",
-    key: "path"
+    key: "path",
+    width: 250,
   },
   {
     title: "Створено",
     dataIndex: "createdAt",
     key: "createdAt",
+    width: 115,
     render: (date: string) => (
       new Date(date).toLocaleString()
     )
@@ -42,6 +45,7 @@ const COLUMNS: TableColumnsType<IPublicMenuItem> = [
     title: "Оновлено",
     dataIndex: "updatedAt",
     key: "updatedAt",
+    width: 115,
     render: (date: string) => (
       new Date(date).toLocaleString()
     )

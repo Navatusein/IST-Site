@@ -75,7 +75,7 @@ export default function DepartmentAspirantCrud(props: IProps) {
       key: "thesisDate",
       width: 150,
       render: (date: string) => (
-        date ? new Date(date).toLocaleDateString() : <Tag color="blue">Ще вчиться</Tag>
+        date ? <Tag color="green">{new Date(date).toLocaleDateString()}</Tag> : <Tag color="blue">Ще вчиться</Tag>
       ),
       sorter: (a, b) => dateStringSorter(a.thesisDate?.toString() ?? "", b.thesisDate?.toString() ?? ""),
       showSorterTooltip: {

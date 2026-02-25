@@ -22,6 +22,7 @@ const COLUMNS: TableColumnsType<IDynamicPage> = [
     title: "Назва",
     dataIndex: "name",
     key: "name",
+    width: 200,
     sorter: (a, b) => stringSorter(a.name, b.name),
     showSorterTooltip: {
       title: "Сортування за назвою"
@@ -31,6 +32,7 @@ const COLUMNS: TableColumnsType<IDynamicPage> = [
     title: "Заголовок",
     dataIndex: "title",
     key: "title",
+    width: 200,
     sorter: (a, b) => stringSorter(a.title, b.title),
     showSorterTooltip: {
       title: "Сортування за заголовком"
@@ -40,6 +42,7 @@ const COLUMNS: TableColumnsType<IDynamicPage> = [
     title: "Шлях",
     dataIndex: "path",
     key: "path",
+    width: 250,
     sorter: (a, b) => stringSorter(a.path, b.path),
     showSorterTooltip: {
       title: "Сортування за шляхом"
@@ -49,6 +52,7 @@ const COLUMNS: TableColumnsType<IDynamicPage> = [
     title: "Створено",
     dataIndex: "createdAt",
     key: "createdAt",
+    width: 115,
     render: (date: string) => (
       new Date(date).toLocaleString()
     ),
@@ -61,6 +65,7 @@ const COLUMNS: TableColumnsType<IDynamicPage> = [
     title: "Оновлено",
     dataIndex: "updatedAt",
     key: "updatedAt",
+    width: 115,
     render: (date: string) => (
       new Date(date).toLocaleString()
     ),

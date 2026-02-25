@@ -19,6 +19,7 @@ const COLUMNS: TableColumnsType<INews> = [
     title: "Заголовок",
     dataIndex: "title",
     key: "title",
+    width: 250,
     sorter: (a, b) => stringSorter(a.title, b.title),
     showSorterTooltip: {
       title: "Сортування за заголовком"
@@ -28,6 +29,7 @@ const COLUMNS: TableColumnsType<INews> = [
     title: "Опис",
     dataIndex: "description",
     key: "description",
+    width: 250,
     render: (text: string) => (
       text.length > 100 ? `${text.slice(0, 50)}...`: text
     ),
@@ -40,7 +42,7 @@ const COLUMNS: TableColumnsType<INews> = [
     title: "Шлях до малюнка",
     dataIndex: "imagePath",
     key: "imagePath",
-    ellipsis: true,
+    width: 250,
     render: (imagePath: string | null) => (
       imagePath ?? <Tag color="red">Шляї не вказан</Tag>
     )
@@ -49,6 +51,7 @@ const COLUMNS: TableColumnsType<INews> = [
     title: "Шлях",
     dataIndex: "path",
     key: "path",
+    width: 200,
     ellipsis: true,
     sorter: (a, b) => stringSorter(a.path, b.path),
     showSorterTooltip: {
@@ -59,6 +62,7 @@ const COLUMNS: TableColumnsType<INews> = [
     title: "Дата",
     dataIndex: "date",
     key: "date",
+    width: 115,
     render: (date: string) => (
       new Date(date).toLocaleDateString()
     ),
@@ -71,6 +75,7 @@ const COLUMNS: TableColumnsType<INews> = [
     title: "Створено",
     dataIndex: "createdAt",
     key: "createdAt",
+    width: 115,
     render: (date: string) => (
       new Date(date).toLocaleString()
     ),
@@ -83,6 +88,7 @@ const COLUMNS: TableColumnsType<INews> = [
     title: "Оновлено",
     dataIndex: "updatedAt",
     key: "updatedAt",
+    width: 115,
     render: (date: string) => (
       new Date(date).toLocaleString()
     ),
