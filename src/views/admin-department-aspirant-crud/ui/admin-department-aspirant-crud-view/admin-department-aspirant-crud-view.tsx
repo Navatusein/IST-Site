@@ -14,7 +14,7 @@ interface IProps {
 export default function AdminDepartmentAspirantCrudView(props: IProps) {
   return (
     <Card variant="borderless">
-      <Typography.Title level={2}>Керування аспірантами</Typography.Title>
+      <Typography.Title level={2}>Аспіранти кафедри</Typography.Title>
       <DepartmentAspirantCrud departmentStaff={props.departmentStaff} departmentAspirants={props.departmentAspirants}/>
     </Card>
   )

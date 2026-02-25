@@ -11,7 +11,7 @@ interface IProps {
 export default function AdminPublicMenuCrudView(props: IProps) {
   return (
     <Card variant="borderless">
-      <Typography.Title level={2}>Керування меню</Typography.Title>
+      <Typography.Title level={2}>Навігаційне меню</Typography.Title>
       <PublicPageMenuCrud menuItems={props.menuItems}/>
     </Card>
   )

@@ -11,7 +11,7 @@ interface IProps {
 export default function AdminNewsCrudView(props: IProps) {
   return (
     <Card variant="borderless">
-      <Typography.Title level={2}>Керування новинами</Typography.Title>
+      <Typography.Title level={2}>Новини</Typography.Title>
       <NewsCrud news={props.news}/>
     </Card>
   )

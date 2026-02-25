@@ -36,7 +36,7 @@ export const getPublicMenuItemsTreeAction = createServerAction<IPublicMenuItem[]
 });
 
 export const addPublicMenuItemAction = createServerAction<void>(async (data: IPublicMenuItem) => {
-  await PublicMenuItemModel.create<IPublicMenuItem>(data);
+  await PublicMenuItemModel.create(data);
 });
 
 export const updatePublicMenuItemAction = createServerAction<void>(async (data: IPublicMenuItem) => {

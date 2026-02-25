@@ -19,7 +19,7 @@ export const getUserByIdAction = createServerAction<IUser | null>(async (id: str
 });
 
 export const addUserAction = createServerAction<void>(async (data: IUser) => {
-  await UserModel.create<IUser>(data);
+  await UserModel.create(data);
 });
 
 export const updateUserAction = createServerAction<void>(async (data: IUser) => {

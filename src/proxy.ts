@@ -13,7 +13,7 @@ export default proxy(async (request) => {
 
   const requiredPermission = resolveRequirementPermission(permissions, nextUrl.pathname);
 
-  const user = await useServerAction(getUserByIdAction(auth.user.id));
+  const user = await useServerAction(getUserByIdAction(auth.user.id as unknown));
 
   if (!user)
     return Response.redirect(new URL("/requiredPermission", nextUrl));

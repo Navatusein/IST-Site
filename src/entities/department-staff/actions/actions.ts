@@ -20,7 +20,7 @@ export const getDepartmentStaffByPathAction = createServerAction<IDepartmentStaf
 });
 
 export const addDepartmentStaffAction = createServerAction<void>(async (data: IDepartmentStaff) => {
-  await DepartmentStaff.create<IDepartmentStaff>(data);
+  await DepartmentStaff.create(data);
 });
 
 export const updateDepartmentStaffAction = createServerAction<void>(async (data: IDepartmentStaff) => {

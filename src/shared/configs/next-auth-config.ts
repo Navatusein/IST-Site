@@ -11,7 +11,7 @@ import toPlainObject from "@/shared/utilities/to-plain-object";
 
 declare module "next-auth" {
   interface Session {
-    user: IUser
+    user: IUser & {id: string}
   }
 }
 

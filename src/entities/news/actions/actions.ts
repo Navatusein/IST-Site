@@ -32,7 +32,7 @@ export const getNewsByPathAction = createServerAction<INews | null>(async (path:
 });
 
 export const addNewsAction = createServerAction<void>(async (data: INews) => {
-  await NewsModel.create<INews>(data);
+  await NewsModel.create(data);
 });
 
 export const updateNewsAction = createServerAction<void>(async (data: INews) => {

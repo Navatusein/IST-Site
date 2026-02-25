@@ -11,7 +11,7 @@ interface IProps {
 export default function AdminUsersCrudView(props: IProps) {
   return (
     <Card variant="borderless">
-      <Typography.Title level={2}>Керування користувачами</Typography.Title>
+      <Typography.Title level={2}>Користувачі</Typography.Title>
       <UserCrud users={props.users}/>
     </Card>
   )

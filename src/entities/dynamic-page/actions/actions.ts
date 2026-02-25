@@ -19,7 +19,7 @@ export const getDynamicPageByPathAction = createServerAction<IDynamicPage | null
 });
 
 export const addDynamicPageAction = createServerAction<void>(async (data: IDynamicPage) => {
-  await DynamicPageModel.create<IDynamicPage>(data);
+  await DynamicPageModel.create(data);
 });
 
 export const updateDynamicPageAction = createServerAction<void>(async (data: IDynamicPage) => {

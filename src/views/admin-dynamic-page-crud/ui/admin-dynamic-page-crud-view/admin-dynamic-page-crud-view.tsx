@@ -11,7 +11,7 @@ interface IProps {
 export default function AdminDynamicPageCrudView(props: IProps) {
   return (
     <Card variant="borderless">
-      <Typography.Title level={2}>Керування сторінками</Typography.Title>
+      <Typography.Title level={2}>Динамічні сторінки</Typography.Title>
       <DynamicPageCrud pages={props.pages}/>
     </Card>
   )

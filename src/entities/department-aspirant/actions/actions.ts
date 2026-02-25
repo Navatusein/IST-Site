@@ -11,7 +11,7 @@ export const getDepartmentAspirantAction = createServerAction<IDepartmentAspiran
 });
 
 export const addDepartmentAspirantAction = createServerAction<void>(async (data: IDepartmentAspirant) => {
-  await DepartmentAspirant.create<IDepartmentAspirant>(data);
+  await DepartmentAspirant.create(data);
 });
 
 export const updateDepartmentAspirantAction = createServerAction<void>(async (data: IDepartmentAspirant) => {

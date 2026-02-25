@@ -29,25 +29,25 @@ export default function AdminSideMenu() {
     const items: MenuProps["items"]  = []
 
     if (userPermissions.includes("edit-news"))
-      items.push({key: "news-control", icon: <ReadOutlined/>, label: <Link href={"/admin/news"}>Керування новинами</Link>});
+      items.push({key: "news-control", icon: <ReadOutlined/>, label: <Link href={"/admin/news"}>Новини</Link>});
 
     if (userPermissions.includes("edit-dynamic-pages"))
-      items.push({key: "edit-pages", icon: <FileTextOutlined/>, label: <Link href={"/admin/dynamic-pages"}>Керування сторінками</Link>});
+      items.push({key: "edit-pages", icon: <FileTextOutlined/>, label: <Link href={"/admin/dynamic-pages"}>Динамічні сторінки</Link>});
 
     if (userPermissions.includes("edit-public-menu"))
-      items.push({key: "edit-menu", icon: <ProfileOutlined/>, label: <Link href={"/admin/public-menu"}>Керування меню</Link>});
+      items.push({key: "edit-menu", icon: <ProfileOutlined/>, label: <Link href={"/admin/public-menu"}>Навігаційне меню</Link>});
 
     if (userPermissions.includes("edit-department-staff"))
-      items.push({key: "edit-department-staff", icon: <TeamOutlined/>, label: <Link href={"/admin/department-staff"}>Керування співробітниками</Link>});
+      items.push({key: "edit-department-staff", icon: <TeamOutlined/>, label: <Link href={"/admin/department-staff"}>Співробітники кафедри</Link>});
 
     if (userPermissions.includes("edit-department-aspirants"))
-      items.push({key: "edit-department-aspirants", icon: <SolutionOutlined/>, label: <Link href={"/admin/department-aspirants"}>Керування аспірантами</Link>});
+      items.push({key: "edit-department-aspirants", icon: <SolutionOutlined/>, label: <Link href={"/admin/department-aspirants"}>Аспіранти кафедри</Link>});
 
     if (userPermissions.includes("edit-files"))
       items.push({key: "files-manager", icon: <FolderOpenOutlined/>, label: <Link href={"/admin/file-manager"}>Файловий менеджер</Link>});
 
     if (userPermissions.includes("edit-users"))
-      items.push({key: "user-control", icon: <UserOutlined/>, label: <Link href={"/admin/users"}>Керування користувачами</Link>});
+      items.push({key: "user-control", icon: <UserOutlined/>, label: <Link href={"/admin/users"}>Користувачі</Link>});
 
     return items;
   }, [userPermissions])
