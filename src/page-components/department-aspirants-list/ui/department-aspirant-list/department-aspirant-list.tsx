@@ -5,7 +5,7 @@ import DepartmentAspirantListEditor from "@/page-components/department-aspirants
 import {IDepartmentAspirantListPageComponent} from "../../types/type";
 import {ConfigProvider, Flex, Row, theme, Typography} from "antd";
 import {useServerAction} from "@/shared/hooks/use-server-action";
-import {IDepartmentAspirant} from "@/entities/department-aspirant/types/type";
+import {IDepartmentAspirant} from "@/entities/department-aspirant";
 import {getDepartmentAspirantAction} from "@/entities/department-aspirant/actions/actions";
 import {getDepartmentStaffAction} from "@/entities/department-staff/actions/actions";
 

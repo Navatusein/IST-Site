@@ -4,7 +4,7 @@ import {useServerAction} from "@/shared/hooks/use-server-action";
 import {Space, TableColumnsType, Tag} from "antd";
 import {CrudComponent} from "@/widgets/crud-component";
 import {dateStringSorter, stringSorter} from "@/shared/utilities/sorters";
-import {IDepartmentAspirant} from "@/entities/department-aspirant/types/type";
+import {IDepartmentAspirant} from "@/entities/department-aspirant";
 import DepartmentAspirantCrudForm from "../department-aspirant-crud-form/department-aspirant-crud-form";
 import {addDepartmentAspirantAction, removeDepartmentAspirantAction, updateDepartmentAspirantAction} from "@/entities/department-aspirant/actions/actions";
 import {IDepartmentStaff} from "@/entities/department-staff";

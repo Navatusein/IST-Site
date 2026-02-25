@@ -1,7 +1,7 @@
 import {DatePicker, Form, Input, Select} from "antd";
 import {SelectFileButton} from "@/features/select-file-button";
 import {IDepartmentStaff} from "@/entities/department-staff";
-import {IDepartmentAspirant} from "@/entities/department-aspirant/types/type";
+import {IDepartmentAspirant} from "@/entities/department-aspirant";
 import dayjs from "dayjs";
 import {useMemo} from "react";
 

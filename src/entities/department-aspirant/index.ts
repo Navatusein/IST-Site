@@ -1,6 +1,6 @@
-import DepartmentStaff, {departmentStaffScheme} from "./types/schema";
-import {IDepartmentStaff} from "./types/type";
+import DepartmentStaff, {departmentAspirantScheme} from "./types/schema";
+import {IDepartmentAspirant} from "./types/type";
 
 
-export type {IDepartmentStaff};
-export {DepartmentStaff, departmentStaffScheme};
+export type {IDepartmentAspirant};
+export {DepartmentStaff, departmentAspirantScheme};

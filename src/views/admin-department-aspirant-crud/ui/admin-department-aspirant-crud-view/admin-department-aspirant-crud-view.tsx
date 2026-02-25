@@ -1,6 +1,6 @@
 "use client"
 
-import {IDepartmentAspirant} from "@/entities/department-aspirant/types/type";
+import {IDepartmentAspirant} from "@/entities/department-aspirant";
 import {IDepartmentStaff} from "@/entities/department-staff";
 import {Card, Typography} from "antd";
 import {DepartmentAspirantCrud} from "@/widgets/department-aspirant-crud";
