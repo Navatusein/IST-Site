@@ -14,6 +14,7 @@ import Paragraph from "./ant-paragraph/ant-paragraph";
 import Heading from "./ant-heading/ant-heading";
 import Blockquote from "./ant-blockquote/ant-blockquote";
 import HorizontalRule from "./ant-horizontal-rule/ant-horizontal-rule";
+import TextAlign from "@tiptap/extension-text-align";
 
 export const ExtensionsForRender = [
   Document,
@@ -31,6 +32,11 @@ export const ExtensionsForRender = [
   Blockquote,
   HorizontalRule,
   Link,
+  TextAlign.configure({
+    defaultAlignment: "left",
+    alignments: ["left", "right", "center"],
+    types: ["heading", "paragraph"],
+  })
 ]
 
 export const ExtensionsForEditor= [
@@ -51,4 +57,9 @@ export const ExtensionsForEditor= [
   Link.configure({
     openOnClick: false
   }),
+  TextAlign.configure({
+    defaultAlignment: "left",
+    alignments: ["left", "right", "center"],
+    types: ["heading", "paragraph"],
+  })
 ]

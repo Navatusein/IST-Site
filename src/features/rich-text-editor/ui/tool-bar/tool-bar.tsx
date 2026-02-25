@@ -1,6 +1,8 @@
 import {Editor} from "@tiptap/react";
 import {Button, Card, Flex, Select, Space, Tooltip} from "antd";
 import {
+  AlignCenterOutlined, AlignLeftOutlined,
+  AlignRightOutlined,
   BoldOutlined, ClearOutlined, CloseCircleOutlined, CommentOutlined, CopyOutlined, DisconnectOutlined, EnterOutlined,
   ItalicOutlined, LineOutlined, LinkOutlined,
   OrderedListOutlined, RedoOutlined,
@@ -115,6 +117,33 @@ export default function ToolBar(props: IProps) {
           value={textTypeOptionValue}
           style={{width: 150}}
         />
+
+        <Space.Compact>
+          <Tooltip title="Вирівняти по лівій стороні">
+            <Button
+              onClick={() => props.editor!.chain().focus().toggleTextAlign("left").run()}
+              type={props.editor.isActive({textAlign: "left"}) ? "primary" : "default"}
+              disabled={!props.editor.can().chain().focus().toggleTextAlign("left").run()}
+              icon={<AlignLeftOutlined/>}
+            />
+          </Tooltip>
+          <Tooltip title="Вирівняти по центру">
+            <Button
+              onClick={() => props.editor!.chain().focus().toggleTextAlign("center").run()}
+              type={props.editor.isActive({textAlign: "center"}) ? "primary" : "default"}
+              disabled={!props.editor.can().chain().focus().toggleTextAlign("center").run()}
+              icon={<AlignCenterOutlined/>}
+            />
+          </Tooltip>
+          <Tooltip title="Вирівняти по правій стороні">
+            <Button
+              onClick={() => props.editor!.chain().focus().toggleTextAlign("right").run()}
+              type={props.editor.isActive({textAlign: "right"}) ? "primary" : "default"}
+              disabled={!props.editor.can().chain().focus().toggleTextAlign("right").run()}
+              icon={<AlignRightOutlined/>}
+            />
+          </Tooltip>
+        </Space.Compact>
 
         <Space.Compact>
           <Tooltip title="Маркований список">

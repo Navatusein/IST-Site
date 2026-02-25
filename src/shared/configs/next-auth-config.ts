@@ -64,8 +64,6 @@ export const nextAuthConfig: NextAuthConfig = {
         if (!passwordMatch)
           throw new InvalidPasswordError();
 
-        console.log("asdfs", toPlainObject<IUser>({...user, passwordHash: ""} as unknown as IUser))
-
         return toPlainObject<IUser>({...user, passwordHash: ""} as unknown as IUser);
       },
     })

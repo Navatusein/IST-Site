@@ -6,7 +6,10 @@ import styles from "./ant-paragraph.module.scss"
 export function AntParagraphComponent(props: NodeViewProps) {
   return (
     <NodeViewWrapper>
-      <Typography.Paragraph className={styles.paragraph}>
+      <Typography.Paragraph
+        className={styles.paragraph}
+        style={{textAlign: props.node.attrs.textAlign ?? "left"}}
+      >
         <NodeViewContent/>
       </Typography.Paragraph>
     </NodeViewWrapper>

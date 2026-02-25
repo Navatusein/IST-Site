@@ -5,7 +5,10 @@ import {Typography} from "antd";
 export function AntHeadingComponent(props: NodeViewProps) {
   return (
     <NodeViewWrapper>
-      <Typography.Title level={props.node.attrs.level}>
+      <Typography.Title
+        level={props.node.attrs.level}
+        style={{textAlign: props.node.attrs.textAlign ?? "left"}}
+      >
         <NodeViewContent/>
       </Typography.Title>
     </NodeViewWrapper>
