@@ -2,7 +2,7 @@
 
 import {notFound} from "next/navigation";
 import {getNewsByPathAction} from "@/entities/news/actions/actions";
-import {AdminEditNewsView} from "@/views/admin-edit-news";
+import {AdminNewsPageEdit} from "@/views/admin-news-page-edit";
 import {useServerAction} from "@/shared/hooks/use-server-action";
 
 
@@ -21,6 +21,6 @@ export default async function Page(props: IProps) {
     notFound();
 
   return (
-    <AdminEditNewsView news={news}/>
+    <AdminNewsPageEdit news={news}/>
   )
 }

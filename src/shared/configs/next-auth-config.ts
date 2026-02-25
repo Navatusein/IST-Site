@@ -74,7 +74,7 @@ export const nextAuthConfig: NextAuthConfig = {
   callbacks: {
     jwt({token, user}) {
       if (user)
-        token.id = (user as IUser)._id as unknown as string;
+        token.id = String((user as IUser)._id);
 
       return token;
     },

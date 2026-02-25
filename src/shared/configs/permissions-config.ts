@@ -40,4 +40,10 @@ export const permissions: PermissionType = {
       "/admin/edit-page/department-staff/[path]"
     ],
   },
+  "edit-department-aspirants": {
+    name: "Edit Department Aspirants",
+    paths: [
+      "/admin/edit-department-aspirants",
+    ],
+  },
 };

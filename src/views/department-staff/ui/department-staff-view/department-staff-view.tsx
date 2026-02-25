@@ -7,7 +7,7 @@ import {Card, Col, Flex, Image, Row, theme, Typography} from "antd";
 import {GlobalOutlined, MailOutlined} from "@ant-design/icons";
 
 interface IProps {
-  teacher: IDepartmentStaff;
+  departmentStaff: IDepartmentStaff;
 }
 
 const DepartmentStaffRenderer = dynamic(() => import("@/views/department-staff/ui/department-staff-renderer/department-staff-renderer"), {
@@ -29,7 +29,7 @@ export default function DepartmentStaffView(props: IProps) {
         >
           <Flex vertical gap="middle" style={{position: "sticky", top: paddingLG + 64, marginBottom: paddingLG}}>
             <Image
-              src={`/api/assets${props.teacher.imagePath}`}
+              src={`/api/assets${props.departmentStaff.imagePath}`}
               fallback="/missing-image.webp"
               preview={false}
               style={{
@@ -42,10 +42,10 @@ export default function DepartmentStaffView(props: IProps) {
             <Card variant="borderless">
               <Flex vertical>
                 <Typography.Title level={4} style={{margin: 0}}>
-                  {`${props.teacher.lastName} ${props.teacher.firstName} ${props.teacher.middleName}`}
+                  {`${props.departmentStaff.lastName} ${props.departmentStaff.firstName} ${props.departmentStaff.middleName}`}
                 </Typography.Title>
                 <Typography.Text strong style={{margin: 0}}>
-                  {props.teacher.position}
+                  {props.departmentStaff.position}
                 </Typography.Text>
               </Flex>
             </Card>
@@ -55,13 +55,13 @@ export default function DepartmentStaffView(props: IProps) {
               </Typography.Title>
               <Flex vertical style={{marginLeft: "2px"}}>
                 <Typography.Link
-                  href={`mailto:${props.teacher.email}`}
+                  href={`mailto:${props.departmentStaff.email}`}
                   style={{margin: 0, wordBreak: "break-all"}}
                 >
                   <MailOutlined style={{marginRight: paddingXS}}/>
-                  {props.teacher.email}
+                  {props.departmentStaff.email}
                 </Typography.Link>
-                {props.teacher.profiles.map((profile) => (
+                {props.departmentStaff.profiles.map((profile) => (
                   <Typography.Link
                     key={`profile-${profile.title}`}
                     href={profile.url}
@@ -81,7 +81,7 @@ export default function DepartmentStaffView(props: IProps) {
           sm={{span: 14}}
           xs={{span: 24}}
         >
-          <DepartmentStaffRenderer teacher={props.teacher}/>
+          <DepartmentStaffRenderer departmentStaff={props.departmentStaff}/>
         </Col>
       </Row>
     </ComponentCol>

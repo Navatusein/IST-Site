@@ -8,7 +8,7 @@ export interface IHeroSectionPageComponent extends IBasePageComponent {
 }
 
 export const HeroSectionComponentExample = {
-  name: "Вітальний компонент",
+  name: "Вітальний блок",
   component: {
     type: "hero-section",
     title: "{\"type\":\"doc\",\"content\":[{\"type\":\"heading\",\"attrs\":{\"level\":1},\"content\":[{\"type\":\"text\",\"text\":\"Заголовок\"}]}]}",

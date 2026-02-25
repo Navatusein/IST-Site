@@ -15,12 +15,12 @@ interface IProps {
 export default async function Page(props: IProps) {
   const {path} = await props.params;
 
-  const teacher = await useServerAction(getDepartmentStaffByPathAction(path));
+  const departmentStaff = await useServerAction(getDepartmentStaffByPathAction(path));
 
-  if (!teacher)
+  if (!departmentStaff)
     notFound();
 
   return (
-    <DepartmentStaffView teacher={teacher}/>
+    <DepartmentStaffView departmentStaff={departmentStaff}/>
   )
 }

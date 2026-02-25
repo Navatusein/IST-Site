@@ -1,4 +1,4 @@
-import {AdminUsersControlView} from "@/views/admin-users-control";
+import {AdminUsersCrudView} from "@/views/admin-users-crud";
 import {getUsersAction} from "@/entities/user/actions/actions";
 import {useServerAction} from "@/shared/hooks/use-server-action";
 
@@ -7,7 +7,7 @@ export default async function Page() {
 
   return (
     <>
-      <AdminUsersControlView users={users}/>
+      <AdminUsersCrudView users={users}/>
     </>
   )
 }

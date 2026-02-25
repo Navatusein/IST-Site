@@ -7,6 +7,7 @@ const PERMISSIONS_OPTIONS: {label: string, value: UserPermissionType}[] = [
   {label: "Редагувати сторіник", value: "edit-dynamic-pages"},
   {label: "Редагувати меню", value: "edit-public-menu"},
   {label: "Редагувати співробітників", value: "edit-department-staff"},
+  {label: "Редагувати аспірантів", value: "edit-department-aspirants"},
   {label: "Редагувати файли", value: "edit-files"},
   {label: "Редагувати користувачів", value: "edit-users"},
 

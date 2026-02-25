@@ -3,7 +3,7 @@
 import {notFound} from "next/navigation";
 import {useServerAction} from "@/shared/hooks/use-server-action";
 import {getDepartmentStaffByPathAction} from "@/entities/department-staff/actions/actions";
-import {AdminEditDepartmentStaffView} from "@/views/admin-department-staff";
+import {AdminDepartmentStaffPageEditView} from "@/views/admin-department-staff-page-edit";
 
 interface IProps {
   params: Promise<{
@@ -20,6 +20,6 @@ export default async function Page(props: IProps) {
     notFound();
 
   return (
-    <AdminEditDepartmentStaffView teacher={teacher}/>
+    <AdminDepartmentStaffPageEditView departmentStaff={teacher}/>
   )
 }

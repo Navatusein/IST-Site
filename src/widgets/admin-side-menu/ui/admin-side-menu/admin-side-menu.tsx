@@ -40,6 +40,9 @@ export default function AdminSideMenu() {
     if (userPermissions.includes("edit-department-staff"))
       items.push({key: "edit-department-staff", icon: <TeamOutlined/>, label: <Link href={"/admin/department-staff"}>Керування співробітниками</Link>});
 
+    if (userPermissions.includes("edit-department-aspirants"))
+      items.push({key: "edit-department-aspirants", icon: <TeamOutlined/>, label: <Link href={"/admin/department-aspirants"}>Керування аспірантами</Link>});
+
     if (userPermissions.includes("edit-files"))
       items.push({key: "files-manager", icon: <FolderOpenOutlined/>, label: <Link href={"/admin/file-manager"}>Файловий менеджер</Link>});
 

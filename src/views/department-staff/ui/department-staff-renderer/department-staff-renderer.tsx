@@ -5,7 +5,7 @@ import {Flex, theme} from "antd";
 import {PageComponentRenderer} from "@/widgets/page-component-renderer";
 
 interface IProps {
-  teacher: IDepartmentStaff;
+  departmentStaff: IDepartmentStaff;
 }
 
 export default function DepartmentStaffRenderer(props: IProps) {
@@ -13,7 +13,7 @@ export default function DepartmentStaffRenderer(props: IProps) {
 
   return (
     <Flex vertical gap="middle" style={{marginBottom: padding}}>
-      {props.teacher.components.map((component, index) => (
+      {props.departmentStaff.components.map((component, index) => (
         <PageComponentRenderer propsClass={{...component, width: "large"}} key={`component-${index}`}/>
       ))}
     </Flex>

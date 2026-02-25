@@ -7,10 +7,10 @@ import {FormOutlined} from "@ant-design/icons";
 import {dateStringSorter, stringSorter} from "@/shared/utilities/sorters";
 import {IDepartmentStaff} from "@/entities/department-staff";
 import {addDepartmentStaffAction, removeDepartmentStaffAction, updateDepartmentStaffAction} from "@/entities/department-staff/actions/actions";
-import DepartmentStaffCrudForm from "@/widgets/department-staff-crud/ui/department-staff-crud-form/department-staff-crud-form";
+import DepartmentStaffCrudForm from "../department-staff-crud-form/department-staff-crud-form";
 
 interface IProps {
-  teachers: IDepartmentStaff[]
+  departmentStaff: IDepartmentStaff[];
 }
 
 const COLUMNS: TableColumnsType<IDepartmentStaff> = [
@@ -51,7 +51,7 @@ const COLUMNS: TableColumnsType<IDepartmentStaff> = [
     width: 200,
     sorter: (a, b) => stringSorter(a.position, b.position),
     showSorterTooltip: {
-      title: "Сортування за Посадою"
+      title: "Сортування за посадою"
     }
   },
   {
@@ -70,7 +70,7 @@ const COLUMNS: TableColumnsType<IDepartmentStaff> = [
     key: "imagePath",
     width: 200,
     render: (imagePath: string | null) => (
-      imagePath ?? <Tag color="red">Шляї не вказан</Tag>
+      imagePath ?? <Tag color="red">Шлях не вказан</Tag>
     )
   },
   {
@@ -154,7 +154,7 @@ export default function DepartmentStaffCrud(props: IProps) {
     <Space orientation="vertical" size="middle" style={{width: "100%"}}>
       <CrudComponent<IDepartmentStaff>
         columns={COLUMNS}
-        data={props.teachers}
+        data={props.departmentStaff}
         isLoading={false}
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
@@ -181,7 +181,7 @@ export default function DepartmentStaffCrud(props: IProps) {
           },
         ]}
       >
-        <DepartmentStaffCrudForm teachers={props.teachers}/>
+        <DepartmentStaffCrudForm departmentStaff={props.departmentStaff}/>
       </CrudComponent>
     </Space>
   )

@@ -6,7 +6,8 @@ export type UserPermissionType =
   "edit-public-menu" |
   "edit-users" |
   "edit-files" |
-  "edit-department-staff";
+  "edit-department-staff" |
+  "edit-department-aspirants";
 
 export interface IUser extends Document {
   login: string,

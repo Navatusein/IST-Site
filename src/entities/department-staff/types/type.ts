@@ -12,7 +12,7 @@ export interface IDepartmentStaff extends Document {
   middleName: string;
   email: string;
   position: string;
-  imagePath: string;
+  imagePath?: string;
   path: string,
   components: IBasePageComponent[];
   profiles: IDepartmentStaffProfile[];

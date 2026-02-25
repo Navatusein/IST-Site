@@ -4,13 +4,13 @@ import {SelectFileButton} from "@/features/select-file-button";
 import {PlusOutlined} from "@ant-design/icons";
 
 interface IProps {
-  teachers: IDepartmentStaff[];
+  departmentStaff: IDepartmentStaff[];
 }
 
 export default function DepartmentStaffCrudForm(props: IProps) {
   const validPath = (value: string, form: FormInstance<IDepartmentStaff>) => {
     return new Promise((resolve, reject) => {
-      if (props.teachers.find(x => (x._id != form.getFieldValue("_id") && x.path == value)) != null)
+      if (props.departmentStaff.find(x => (x._id != form.getFieldValue("_id") && x.path == value)) != null)
         reject("Шлях має бути унікальним");
 
       resolve("");
