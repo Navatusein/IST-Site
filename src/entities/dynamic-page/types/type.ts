@@ -1,23 +1,41 @@
 import {Document} from "mongoose";
 import {PageComponentType} from "@/page-components";
 
-export type PageComponentWidth = "large"|"medium"|"small";
+export type PageEntityWidth = "large"|"medium"|"small";
+export type PageEntityType = "component"|"group";
 
-export interface IBasePageComponent {
+export interface IPageEntity {
   id: string;
-  type: PageComponentType;
-  width: PageComponentWidth;
-  allowedWidth?: PageComponentWidth[];
+  type: PageEntityType;
+  width: PageEntityWidth;
+}
+
+export interface IBasePageComponent extends IPageEntity {
+  type: "component";
+  componentType: PageComponentType;
+  allowedWidth?: PageEntityWidth[];
+}
+
+export interface IPageComponentGroup extends IPageEntity {
+  type: "group";
+  components: IBasePageComponent[];
 }
 
 export interface IDynamicPage extends Document {
   name: string;
   title: string;
   path: string;
-  components: IBasePageComponent[];
+  entities: IPageEntity[];
 }
 
 export interface IPageComponentExample {
   name: string;
   component: IBasePageComponent;
+}
+
+export const EmptyPageComponentGroup: IPageComponentGroup = {
+  id: "",
+  type: "group",
+  width: "medium",
+  components: []
 }

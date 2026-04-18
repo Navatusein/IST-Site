@@ -7,18 +7,18 @@ import {PlusOutlined} from "@ant-design/icons";
 import {SelectFileButton} from "@/features/select-file-button";
 
 interface IProps {
-  componentProps: IBasePageComponent;
+  component: IBasePageComponent;
   onChange: (value: IBasePageComponent) => void;
 }
 
 export default function GalleryCarouselEditor(props: IProps) {
   const [form] = Form.useForm();
 
-  const typedComponentProps = useMemo(() => {
-    if (props.componentProps.type !== "gallery-carousel")
+  const typedComponent = useMemo(() => {
+    if (props.component.componentType !== "gallery-carousel")
       return null;
 
-    return props.componentProps as IGalleryCarouselPageComponent;
+    return props.component as IGalleryCarouselPageComponent;
   }, [props]);
 
   const onChange = () => {
@@ -26,11 +26,11 @@ export default function GalleryCarouselEditor(props: IProps) {
   }
 
   return (
-    <PageComponentError message={typedComponentProps == null ? "Fail" : ""}>
+    <PageComponentError component={typedComponent}>
       <Form
         form={form}
         layout="vertical"
-        initialValues={typedComponentProps as never}
+        initialValues={typedComponent as never}
         style={{width: "100%"}}
         onFieldsChange={onChange}
       >

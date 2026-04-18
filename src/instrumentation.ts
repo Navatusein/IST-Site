@@ -1,6 +1,6 @@
-import normalizeUrl from "normalize-url";
 import mongoDbConnect from "@/shared/services/mongodb-service/mongodb-service";
 import {IUser, UserModel} from "@/entities/user";
+import {defaultPermissions} from "@/shared/configs/permissions-config";
 
 export async function register() {
   const connection = await mongoDbConnect();
@@ -13,7 +13,7 @@ export async function register() {
     const newUser = new UserModel({
       login: process.env.ADMIN_LOGIN,
       name: "Admin",
-      permissions: ["edit-news", "edit-users", "edit-pages", "edit-files"]
+      permissions: defaultPermissions
     } as IUser);
 
     console.log("No users found");

@@ -7,7 +7,8 @@ export interface IDepartmentAspirantListPageComponent extends IBasePageComponent
 export const DepartmentAspirantListComponentExample = {
   name: "Список аспірантів",
   component: {
-    type: "department-aspirant-list",
+    type: "component",
+    componentType: "department-aspirant-list",
     allowedWidth: ["medium"],
     width: "medium"
   } as IDepartmentAspirantListPageComponent

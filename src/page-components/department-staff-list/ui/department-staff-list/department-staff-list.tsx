@@ -10,21 +10,21 @@ import {useServerAction} from "@/shared/hooks/use-server-action";
 import {getDepartmentStaffAction} from "@/entities/department-staff/actions/actions";
 
 interface IProps {
-  componentProps: IBasePageComponent;
+  component: IBasePageComponent;
 }
 
 export default function DepartmentStaffList(props: IProps) {
-  const typedComponentProps = useMemo(() => {
-    if (props.componentProps.type !== "department-staff-list")
+  const typedComponent = useMemo(() => {
+    if (props.component.componentType !== "department-staff-list")
       return null;
 
-    return props.componentProps as IDepartmentStaffListPageComponent;
+    return props.component as IDepartmentStaffListPageComponent;
   }, [props]);
 
   const [departmentStaffs, setDepartmentStaffs] = useState<IDepartmentStaff[]>([]);
 
   useEffect(() => {
-    if (typedComponentProps != null) {
+    if (typedComponent != null) {
       useServerAction(getDepartmentStaffAction())
         .then((data) => {
           setDepartmentStaffs(() => data);
@@ -35,7 +35,7 @@ export default function DepartmentStaffList(props: IProps) {
   const {token: {paddingLG}} = theme.useToken();
 
   return (
-    <PageComponentError message={typedComponentProps == null ? "Fail" : ""}>
+    <PageComponentError component={typedComponent}>
       <Row gutter={[paddingLG, paddingLG]} justify="center">
         <ConfigProvider theme={{token: {screenMDMin: 900, screenXLMin: 1300}}}>
           {departmentStaffs.map((departmentStaff) => (

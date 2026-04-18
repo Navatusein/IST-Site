@@ -6,25 +6,25 @@ import {RichTextEditor as Editor} from "@/features/rich-text-editor";
 
 
 interface IProps {
-  componentProps: IBasePageComponent;
+  component: IBasePageComponent;
   onChange: (value: IBasePageComponent) => void;
 }
 
 export default function RichTextEditor(props: IProps) {
-  const typedComponentProps = useMemo(() => {
-    if (props.componentProps.type !== "rich-text")
+  const typedComponent = useMemo(() => {
+    if (props.component.componentType !== "rich-text")
       return null;
 
-    return props.componentProps as IRichTextPageComponent;
+    return props.component as IRichTextPageComponent;
   }, [props]);
 
   const onChange = (value: string) => {
-    props.onChange({...typedComponentProps, text: value} as IRichTextPageComponent);
+    props.onChange({...typedComponent, text: value} as IRichTextPageComponent);
   }
 
   return (
-    <PageComponentError message={typedComponentProps == null ? "Fail" : ""}>
-      <Editor value={typedComponentProps!.text} onChange={onChange}/>
+    <PageComponentError component={typedComponent}>
+      <Editor value={typedComponent!.text} onChange={onChange}/>
     </PageComponentError>
   )
 }

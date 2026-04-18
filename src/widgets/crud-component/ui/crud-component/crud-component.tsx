@@ -112,7 +112,7 @@ export default function CrudComponent<T>(props: IProps<T>) {
   const onRemove = (rows?: T[]) => {
     modal.confirm({
       title: "Видалити",
-      content: "Ви впевнені що хочите видалити вибрані рядки ?",
+      content: "Ви впевнені що хочете видалити вибрані рядки?",
       okText: "Так",
       cancelText: "Ні",
       onOk: () => {

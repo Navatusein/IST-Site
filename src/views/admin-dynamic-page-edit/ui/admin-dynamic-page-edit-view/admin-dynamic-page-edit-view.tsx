@@ -1,6 +1,6 @@
 "use client"
 
-import {IBasePageComponent, IDynamicPage} from "@/entities/dynamic-page";
+import {IDynamicPage, IPageEntity} from "@/entities/dynamic-page";
 import {useEffect, useState} from "react";
 import {updateDynamicPageAction} from "@/entities/dynamic-page/actions/actions";
 import {useServerAction} from "@/shared/hooks/use-server-action";
@@ -23,9 +23,9 @@ export default function AdminDynamicPageEditView(props: IProps) {
     setPage(() => props.page);
   }, [props.page]);
 
-  const setComponents = (components: IBasePageComponent[]) => {
+  const setEntities = (entities: IPageEntity[]) => {
     setPage((prevState) => (
-      {...prevState, components: components} as IDynamicPage
+      {...prevState, entities: entities} as IDynamicPage
     ));
   }
 
@@ -35,9 +35,9 @@ export default function AdminDynamicPageEditView(props: IProps) {
 
   return (
     <DynamicPageEditor
-      components={page.components}
-      setComponents={setComponents}
-      saveComponents={saveComponents}
+      entities={page.entities}
+      setEntities={setEntities}
+      saveEntities={saveComponents}
     />
   )
 }

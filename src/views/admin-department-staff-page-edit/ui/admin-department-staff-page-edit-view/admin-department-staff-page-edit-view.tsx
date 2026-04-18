@@ -30,9 +30,9 @@ export default function AdminDepartmentStaffPageEditView(props: IProps) {
 
   return (
     <DynamicPageEditor
-      components={departmentStaff.components}
-      setComponents={setComponents}
-      saveComponents={saveComponents}
+      entities={departmentStaff.components}
+      setEntities={setComponents}
+      saveEntities={saveComponents}
     />
   )
 }

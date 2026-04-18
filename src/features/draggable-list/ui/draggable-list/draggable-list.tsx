@@ -9,6 +9,7 @@ interface IProps<T> {
   items: T[];
   setItems: (value: T[]) => void;
   children: ReactNode;
+  horizontal?: boolean;
 }
 
 export default function DraggableList<T extends {id: string|number}>(props: IProps<T>) {
@@ -40,7 +41,7 @@ export default function DraggableList<T extends {id: string|number}>(props: IPro
             startIndex: indexOfSource,
             indexOfTarget: indexOfTarget,
             closestEdgeOfTarget: closestEdgeOfTarget,
-            axis: "vertical",
+            axis: props.horizontal == true ? "horizontal" : "vertical",
           })]);
         });
       },

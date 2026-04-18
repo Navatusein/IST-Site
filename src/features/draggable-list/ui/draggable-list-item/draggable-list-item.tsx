@@ -16,6 +16,7 @@ interface IProps<T> {
   renderPreview: (item: T) => ReactNode;
   children: ReactNode;
   style?: CSSProperties;
+  horizontal?: boolean;
 }
 
 export default function DraggableListItem<T extends {id: string|number}>(props: IProps<T>) {
@@ -49,8 +50,10 @@ export default function DraggableListItem<T extends {id: string|number}>(props: 
       const isItemAfterSource = props.index === sourceIndex + 1;
 
       const isDropIndicatorHidden =
-        (isItemBeforeSource && closestEdge === "bottom") ||
-        (isItemAfterSource && closestEdge === "top");
+        (isItemBeforeSource && closestEdge === "left" && props.horizontal == true) ||
+        (isItemAfterSource && closestEdge === "right" && props.horizontal == true) ||
+        (isItemBeforeSource && closestEdge === "bottom" && props.horizontal != true) ||
+        (isItemAfterSource && closestEdge === "top" && props.horizontal != true);
 
       if (isDropIndicatorHidden) {
         setClosestEdge(null);
@@ -81,7 +84,7 @@ export default function DraggableListItem<T extends {id: string|number}>(props: 
           return attachClosestEdge(data, {
             element,
             input,
-            allowedEdges: ["top", "bottom"],
+            allowedEdges: props.horizontal == true ? ["left", "right"] : ["top", "bottom"],
           });
         },
         getIsSticky: () => true,
@@ -99,7 +102,7 @@ export default function DraggableListItem<T extends {id: string|number}>(props: 
         {props.children}
       </div>
       {closestEdge && <DropIndicator edge={closestEdge}/>}
-      {state.type === "preview" && createPortal(<div>asd</div>, state.container)}
+      {state.type === "preview" && createPortal(<div>preview</div>, state.container)}
     </Flex>
   )
 }

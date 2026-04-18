@@ -7,21 +7,21 @@ import {Card, Col, Row, theme} from "antd";
 import {RichTextRenderer} from "@/features/rich-text-renderer";
 
 interface IProps {
-  componentProps: IBasePageComponent;
+  component: IBasePageComponent;
 }
 
 export default function Cards(props: IProps) {
   const {token: {padding}} = theme.useToken();
 
-  const typedComponentProps = useMemo(() => {
-    if (props.componentProps.type !== "cards")
+  const typedComponent = useMemo(() => {
+    if (props.component.componentType !== "cards")
       return null;
 
-    return props.componentProps as ICardsPageComponent;
+    return props.component as ICardsPageComponent;
   }, [props]);
 
   const colConfigs = useMemo(() => {
-    if (typedComponentProps?.width == "small"){
+    if (typedComponent?.width == "small"){
       return {
         ["count-2"]: {
           lg: 12,
@@ -57,17 +57,17 @@ export default function Cards(props: IProps) {
         }
       };
     }
-  }, [typedComponentProps?.width]);
+  }, [typedComponent?.width]);
 
   const getIndex = (index: number): "count-2" | "count-2-first" | "count-3" | "count-3-first" => {
-    return (index == 0 && typedComponentProps!.cards.length % typedComponentProps!.cardsInRow == 1) ?
-      `count-${typedComponentProps!.cardsInRow as 2 | 3}-first`: `count-${typedComponentProps!.cardsInRow as 2 | 3}`;
+    return (index == 0 && typedComponent!.cards.length % typedComponent!.cardsInRow == 1) ?
+      `count-${typedComponent!.cardsInRow as 2 | 3}-first`: `count-${typedComponent!.cardsInRow as 2 | 3}`;
   }
 
   return (
-    <PageComponentError message={typedComponentProps == null ? "Fail" : ""}>
+    <PageComponentError component={typedComponent}>
       <Row gutter={[padding, padding]}>
-        {typedComponentProps!.cards.map((card, index) => (
+        {typedComponent!.cards.map((card, index) => (
           <Col
             key={`card-${index}`}
             {...colConfigs[getIndex(index)]}

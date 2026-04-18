@@ -11,19 +11,19 @@ interface IProps {
 export default function Component(props: IProps) {
   const {token: {}} = theme.useToken();
 
-  const typedComponentProps = {
+  const typedComponent = {
     type: "cards",
     width: props.width,
   }
 
   const colConfigs = useMemo(() => {
-    if (typedComponentProps.width == "small"){
+    if (typedComponent.width == "small"){
       return {};
     }
     else {
       return {}
     }
-  }, [typedComponentProps.width]);
+  }, [typedComponent.width]);
 
   return (
     <>

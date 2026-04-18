@@ -8,8 +8,9 @@ export interface ICardsPageComponent extends IBasePageComponent {
 export const CardsComponentExample = {
   name: "Картки",
   component: {
+    type: "component",
     width: "medium",
-    type: "cards",
+    componentType: "cards",
     cardsInRow: 2,
     cards: [
       {

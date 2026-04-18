@@ -6,7 +6,7 @@ interface IProps {
 
 export default function Loader(props: IProps) {
   return (
-    <Flex style={{width: "100%", height: "100%"}} align="center" justify="center">
+    <Flex justify="center" align="center" style={{width: "100%", height: "100%", flexGrow: 1}}>
       <Spin/>
     </Flex>
   )

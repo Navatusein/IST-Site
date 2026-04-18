@@ -1,14 +1,15 @@
 import {Button, Tooltip} from "antd";
-import {Dispatch, SetStateAction} from "react";
+import {useContext} from "react";
 import {ReloadOutlined} from "@ant-design/icons";
+import {FileExplorerContext} from "@/shared/context/file-explorer-context/file-explorer-context";
 
-interface IProps {
-  setUpdateFiles: Dispatch<SetStateAction<number>>
-}
+interface IProps {}
 
 export default function UpdateButton(props: IProps) {
+  const {setUpdateFiles} = useContext(FileExplorerContext);
+
   const update = () => {
-    props.setUpdateFiles((prevState) => prevState + 1)
+    setUpdateFiles((prevState) => prevState + 1)
   }
 
   return (

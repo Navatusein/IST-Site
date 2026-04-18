@@ -7,7 +7,8 @@ export interface IRichTextPageComponent extends IBasePageComponent {
 export const RichTextComponentExample = {
   name: "Текст",
   component: {
-    type: "rich-text",
+    type: "component",
+    componentType: "rich-text",
     width: "small",
     text: "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"Текст\"}]}]}"
   } as IRichTextPageComponent

@@ -4,20 +4,19 @@ import {PageComponentError} from "@/shared/ui-kit";
 import {IDepartmentAspirantListPageComponent} from "../../types/type";
 
 interface IProps {
-  componentProps: IBasePageComponent;
+  component: IBasePageComponent;
   onChange: (value: IBasePageComponent) => void;
 }
 
 export default function DepartmentAspirantListEditor(props: IProps) {
-  const typedComponentProps = useMemo(() => {
-    if (props.componentProps.type !== "department-aspirant-list")
+  const typedComponent = useMemo(() => {
+    if (props.component.componentType !== "department-aspirant-list")
       return null;
 
-    return props.componentProps as IDepartmentAspirantListPageComponent;
+    return props.component as IDepartmentAspirantListPageComponent;
   }, [props]);
 
   return (
-    <PageComponentError message={typedComponentProps == null ? "Fail" : ""}>
-    </PageComponentError>
+    <PageComponentError component={typedComponent}/>
   )
 }

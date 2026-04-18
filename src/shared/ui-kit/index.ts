@@ -4,5 +4,6 @@ import Icon from "./icon/icon";
 import Loader from "./loader/loader";
 import PageComponentError from "./page-component-error/page-component-error";
 import DepartmentPersonCard from "./department-person-card/department-person-card";
+import FullScreenModal from "./full-screen-modal/full-screen-modal";
 
-export {PageComponentError, Icon, DynamicIcon, Loader, ComponentCol, DepartmentPersonCard};
+export {PageComponentError, Icon, DynamicIcon, Loader, ComponentCol, DepartmentPersonCard, FullScreenModal};

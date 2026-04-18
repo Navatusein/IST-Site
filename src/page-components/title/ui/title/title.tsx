@@ -6,21 +6,21 @@ import {ITitlePageComponent} from "../../types/type";
 import {Typography} from "antd";
 
 interface IProps {
-  componentProps: IBasePageComponent;
+  component: IBasePageComponent;
 }
 
 export default function Title(props: IProps) {
-  const typedComponentProps = useMemo(() => {
-    if (props.componentProps.type !== "title")
+  const typedComponent = useMemo(() => {
+    if (props.component.componentType !== "title")
       return null;
 
-    return props.componentProps as ITitlePageComponent;
+    return props.component as ITitlePageComponent;
   }, [props]);
 
   return (
-    <PageComponentError message={typedComponentProps == null ? "Fail" : ""}>
-      <Typography.Title level={typedComponentProps!.level} style={{margin: 0}}>
-        {typedComponentProps!.title}
+    <PageComponentError component={typedComponent}>
+      <Typography.Title level={typedComponent!.level} style={{margin: 0}}>
+        {typedComponent!.title}
       </Typography.Title>
     </PageComponentError>
   )

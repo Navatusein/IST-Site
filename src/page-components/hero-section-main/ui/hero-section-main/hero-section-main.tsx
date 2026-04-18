@@ -10,39 +10,39 @@ import {RichTextRenderer} from "../../../../features/rich-text-renderer";
 import styles from "./hero-section-main.module.scss";
 
 interface IProps {
-  componentProps: IBasePageComponent;
+  component: IBasePageComponent;
 }
 
 export default function HeroSectionMain(props: IProps) {
-  const typedComponentProps = useMemo(() => {
-    if (props.componentProps.type !== "hero-section-main")
+  const typedComponent = useMemo(() => {
+    if (props.component.componentType !== "hero-section-main")
       return null;
 
-    return props.componentProps as IHeroSectionMainPageComponent;
+    return props.component as IHeroSectionMainPageComponent;
   }, [props]);
 
   return (
-    <PageComponentError message={typedComponentProps == null ? "Fail" : ""}>
+    <PageComponentError component={typedComponent}>
       <Flex vertical>
         <Flex vertical className={styles.titleBaseContainer}>
           <Image
-            src={`/api/assets${typedComponentProps!.imagePath}`}
+            src={`/api/assets${typedComponent!.imagePath}`}
             fallback="/missing-image.webp"
             preview={false}
-            height={typedComponentProps!.imageHeight}
+            height={typedComponent!.imageHeight}
             width={"100%"}
             className={styles.image}
             loading={"lazy"}
           />
           <Flex vertical gap="small" className={styles.titleFlexContainer}>
             <Typography.Title className={styles.titleTypography}>
-              {typedComponentProps!.department}
+              {typedComponent!.department}
             </Typography.Title>
             <Typography.Title level={3} className={styles.titleTypography}>
-              {typedComponentProps!.faculty}
+              {typedComponent!.faculty}
             </Typography.Title>
             <Typography.Title level={3} className={styles.titleTypography}>
-              {typedComponentProps!.university}
+              {typedComponent!.university}
             </Typography.Title>
           </Flex>
         </Flex>
@@ -55,7 +55,7 @@ export default function HeroSectionMain(props: IProps) {
           >
             <Flex vertical align="center" justify="center" className={styles.textFlexContainer}>
               <Card variant="borderless" className={styles.textCardContainer}>
-                <RichTextRenderer content={typedComponentProps!.text}/>
+                <RichTextRenderer content={typedComponent!.text}/>
               </Card>
             </Flex>
           </Col>
@@ -66,14 +66,14 @@ export default function HeroSectionMain(props: IProps) {
             xxl={{span: 6, offset: 4}}
           >
             <Flex vertical className={styles.fastLinkFlexContainer}>
-              {typedComponentProps!.fastLinks.map((fastLink, index) => (
+              {typedComponent!.fastLinks.map((fastLink, index) => (
                 <FastLink key={`fastLink-${index}`} fastLink={fastLink}/>
               ))}
             </Flex>
           </Col>
         </Row>
         <Row gutter={[2, 2]}>
-          {typedComponentProps!.statistics.map((statistic, index) => (
+          {typedComponent!.statistics.map((statistic, index) => (
             <Statistic key={`statistic-${index}`} statistic={statistic}/>
           ))}
         </Row>

@@ -3,26 +3,25 @@
 import {App, Button, Tooltip, Upload} from "antd";
 import {uploadFilesAction} from "@/shared/services/file-manager-service/actions/actions";
 import type {UploadRequestOption} from "@rc-component/upload/lib/interface";
-import {Dispatch, SetStateAction} from "react";
+import {useContext} from "react";
 import {CloudUploadOutlined} from "@ant-design/icons";
 import {useServerAction} from "@/shared/hooks/use-server-action";
+import {FileExplorerContext} from "@/shared/context/file-explorer-context/file-explorer-context";
 
-interface IProps {
-  currentPath: string;
-  setUpdateFiles: Dispatch<SetStateAction<number>>
-}
+interface IProps {}
 
 export default function UploadFilesButton(props: IProps) {
   const {notification} = App.useApp();
+  const {currentPath, setUpdateFiles} = useContext(FileExplorerContext);
 
   const uploadFile = (options: UploadRequestOption<any>) => {
     const file = options.file as File;
 
-    useServerAction(uploadFilesAction(props.currentPath, file))
+    useServerAction(uploadFilesAction(currentPath, file))
       .then(() => {
         notification.success({title: "Файл завантажено успішно", description: file.name});
         setTimeout(() => {
-          props.setUpdateFiles((prevState) => prevState + 1);
+          setUpdateFiles((prevState) => prevState + 1);
         }, 500)
       })
       .catch((error) => {

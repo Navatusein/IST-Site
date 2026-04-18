@@ -8,7 +8,7 @@ interface IProps {
   page: IDynamicPage
 }
 
-const DynamicPageRenderer = dynamic(() => import("@/views/dynamic-page/ui/dynamic-page-renderer/dynamic-page-renderer"), {
+const DynamicPageRenderer = dynamic(() => import("@/widgets/dynamic-page-renderer").then(x => x.DynamicPageRenderer), {
   ssr: false,
   loading: () => <Loader/>
 });

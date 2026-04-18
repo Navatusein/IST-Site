@@ -6,20 +6,20 @@ import {IRichTextPageComponent} from "../../types/type";
 import {RichTextRenderer} from "../../../../features/rich-text-renderer";
 
 interface IProps {
-  componentProps: IBasePageComponent;
+  component: IBasePageComponent;
 }
 
 export default function RichText(props: IProps) {
-  const typedComponentProps = useMemo(() => {
-    if (props.componentProps.type !== "rich-text")
+  const typedComponent = useMemo(() => {
+    if (props.component.componentType !== "rich-text")
       return null;
 
-    return props.componentProps as IRichTextPageComponent;
+    return props.component as IRichTextPageComponent;
   }, [props]);
 
   return (
-    <PageComponentError message={typedComponentProps == null ? "Fail" : ""}>
-      <RichTextRenderer content={typedComponentProps!.text}/>
+    <PageComponentError component={typedComponent}>
+      <RichTextRenderer content={typedComponent!.text}/>
     </PageComponentError>
   )
 }

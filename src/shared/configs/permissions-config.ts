@@ -1,5 +1,15 @@
 import {PermissionType} from "@/shared/types/permissions";
 
+export const defaultPermissions = [
+  "edit-news",
+  "edit-dynamic-pages",
+  "edit-public-menu",
+  "edit-users",
+  "edit-files",
+  "edit-department-staff",
+  "edit-department-aspirants"
+]
+
 export const permissions: PermissionType = {
   "edit-news": {
     name: "Edit News",

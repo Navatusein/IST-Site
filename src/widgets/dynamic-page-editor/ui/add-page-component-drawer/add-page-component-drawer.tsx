@@ -1,12 +1,13 @@
 import {Button, Col, Divider, Drawer, Flex, Row, Typography} from "antd";
-import {IBasePageComponent} from "@/entities/dynamic-page";
+import {IPageEntity} from "@/entities/dynamic-page";
 import {Dispatch, SetStateAction} from "react";
 import {pageComponentGroupExamples} from "@/page-components";
 
 interface IProps {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  addComponent: (value: IBasePageComponent) => void;
+  addEntity: (value: IPageEntity) => void;
+  showGroupComponent?: boolean;
 }
 
 export default function AddPageComponentDrawer(props: IProps) {
@@ -14,8 +15,8 @@ export default function AddPageComponentDrawer(props: IProps) {
     props.setIsOpen(() => false);
   }
 
-  const addComponent = (component: IBasePageComponent) => {
-    props.addComponent(component);
+  const addEntity = (component: IPageEntity) => {
+    props.addEntity(component);
     props.setIsOpen(() => false);
   }
 
@@ -42,7 +43,7 @@ export default function AddPageComponentDrawer(props: IProps) {
                 <Col span={12} key={`example-${group.name}-${componentIndex}`}>
                   <Button
                     style={{padding: "10px", height: "100%", width: "100%"}}
-                    onClick={() => addComponent(component.component)}
+                    onClick={() => addEntity(component.component)}
                   >
                     <Flex vertical style={{height: "100%", width: "100%"}}>
                       <Typography.Text strong ellipsis>

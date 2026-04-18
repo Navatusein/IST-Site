@@ -9,7 +9,7 @@ import {sendEmailAction} from "@/shared/services/email-service/actions/actions";
 import {useServerAction} from "@/shared/hooks/use-server-action";
 
 interface IProps {
-  componentProps: IBasePageComponent;
+  component: IBasePageComponent;
 }
 
 interface IFormData {
@@ -23,11 +23,11 @@ export default function ContactUs(props: IProps) {
   const {token: {padding, paddingXS}} = theme.useToken();
   const {notification} = App.useApp();
 
-  const typedComponentProps = useMemo(() => {
-    if (props.componentProps.type !== "contact-us")
+  const typedComponent = useMemo(() => {
+    if (props.component.componentType !== "contact-us")
       return null;
 
-    return props.componentProps as IContactUsPageComponent;
+    return props.component as IContactUsPageComponent;
   }, [props]);
 
   const formSubmit = (formData: IFormData) => {
@@ -42,18 +42,18 @@ export default function ContactUs(props: IProps) {
     useServerAction(sendEmailAction(undefined, subject, content))
       .then(() => {
         notification.success({
-          title: "Ваше повідомленя успішно відправлено"
+          title: "Ваше повідомлення успішно відправлено"
         });
       })
       .catch(() => {
         notification.error({
-          title: "Помилка відправленя повідомлення"
+          title: "Помилка відправлення повідомлення"
         });
       })
   }
 
   return (
-    <PageComponentError message={typedComponentProps == null ? "Fail" : ""}>
+    <PageComponentError component={typedComponent}>
       <Row gutter={[padding, padding]}>
         <Col sm={{span: 24}} md={{span: 12}}>
           <Row gutter={[padding, padding]}>

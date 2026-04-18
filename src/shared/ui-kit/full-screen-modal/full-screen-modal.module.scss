@@ -1,0 +1,15 @@
+.modal {
+  top: var(--ant-margin) !important;
+
+  .body {
+    height: calc(100svh - 100px - var(--ant-margin));
+  }
+
+  @media (max-width: 767px) {
+    top: 0 !important;
+
+    .body {
+      height: calc(100svh - 100px);
+    }
+  }
+}

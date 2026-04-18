@@ -7,18 +7,18 @@ import FormComponentCommon from "../form-component-common/form-component-common"
 import FormComponentCard from "../form-component-card/form-component-card";
 
 interface IProps {
-  componentProps: IBasePageComponent;
+  component: IBasePageComponent;
   onChange: (value: IBasePageComponent) => void;
 }
 
 export default function CardsEditor(props: IProps) {
   const [form] = Form.useForm();
 
-  const typedComponentProps = useMemo(() => {
-    if (props.componentProps.type !== "cards")
+  const typedComponent = useMemo(() => {
+    if (props.component.componentType !== "cards")
       return null;
 
-    return props.componentProps as ICardsPageComponent;
+    return props.component as ICardsPageComponent;
   }, [props]);
 
   const onChange = () => {
@@ -51,11 +51,11 @@ export default function CardsEditor(props: IProps) {
   ];
 
   return (
-    <PageComponentError message={typedComponentProps == null ? "Fail" : ""}>
+    <PageComponentError component={typedComponent}>
       <Form
         form={form}
         layout="vertical"
-        initialValues={typedComponentProps as never}
+        initialValues={typedComponent as never}
         style={{width: "100%", marginTop: "-24px"}}
         onFieldsChange={onChange}
       >

@@ -26,7 +26,8 @@ export interface IHeroSectionMainPageComponent extends IBasePageComponent {
 export const HeroSectionMainComponentExample = {
   name: "Вітальний блок домашньої сторінки",
   component: {
-    type: "hero-section-main",
+    type: "component",
+    componentType: "hero-section-main",
     width: "large",
     allowedWidth: ["large"],
     faculty: "Факультету інформаційних технологій",

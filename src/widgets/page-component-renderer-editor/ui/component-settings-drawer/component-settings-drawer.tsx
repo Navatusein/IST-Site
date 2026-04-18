@@ -10,7 +10,7 @@ interface IProps {
   updateComponent: (value: IBasePageComponent) => void;
 }
 
-export default function PageComponentEditorDrawer(props: IProps) {
+export default function ComponentSettingsDrawer(props: IProps) {
   const {token: {padding}} = theme.useToken();
   const [localComponentState, setLocalComponentState] = useState<IBasePageComponent>(props.component)
 
@@ -47,7 +47,7 @@ export default function PageComponentEditorDrawer(props: IProps) {
       }
     >
       <PageComponentRenderer
-        propsClass={localComponentState}
+        component={localComponentState}
         editMode
         onChange={setLocalComponentState}
       />

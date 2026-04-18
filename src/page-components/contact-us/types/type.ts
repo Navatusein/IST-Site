@@ -5,9 +5,10 @@ export interface IContactUsPageComponent extends IBasePageComponent {
 }
 
 export const ContactUsComponentExample = {
-  name: "Зворотній звязок",
+  name: "Зворотній зв'язок",
   component: {
-    type: "contact-us",
+    type: "component",
+    componentType: "contact-us",
     width: "small"
   } as IContactUsPageComponent
 }

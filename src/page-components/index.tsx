@@ -9,6 +9,7 @@ import {GalleryCarousel, GalleryCarouselComponentExample} from "./gallery-carous
 import {HeroSection, HeroSectionComponentExample} from "./hero-section";
 import {DepartmentStaffList, DepartmentStaffListComponentExample} from "./department-staff-list";
 import {DepartmentAspirantList, DepartmentAspirantListComponentExample} from "./department-aspirants-list";
+import {LinkButton, LinkButtonComponentExample} from "./link-button";
 import {Cards, CardsComponentExample} from "./cards"
 
 export type PageComponentType = "title"|
@@ -20,7 +21,8 @@ export type PageComponentType = "title"|
   "news-list"|
   "contact-us"|
   "department-staff-list"|
-  "department-aspirant-list";
+  "department-aspirant-list"|
+  "link-button";
 
 export interface IPageComponentGroupExamples {
   name: string;
@@ -31,44 +33,48 @@ export interface IPageComponentGroupExamples {
 
 export const componentTypes: ComponentDescriptorType = {
   "title": {
-    "renderComponent": (props) => <Title componentProps={props}/>,
-    "renderEditor": (props, onChange) => <Title.Editor componentProps={props} onChange={onChange}/>
+    "renderComponent": (props) => <Title component={props}/>,
+    "renderEditor": (props, onChange) => <Title.Editor component={props} onChange={onChange}/>
   },
   "rich-text": {
-    "renderComponent": (props) => <RichText componentProps={props}/>,
-    "renderEditor": (props, onChange) => <RichText.Editor componentProps={props} onChange={onChange}/>
+    "renderComponent": (props) => <RichText component={props}/>,
+    "renderEditor": (props, onChange) => <RichText.Editor component={props} onChange={onChange}/>
   },
   "gallery-carousel": {
-    "renderComponent": (props) => <GalleryCarousel componentProps={props}/>,
-    "renderEditor": (props, onChange) => <GalleryCarousel.Editor componentProps={props} onChange={onChange}/>
+    "renderComponent": (props) => <GalleryCarousel component={props}/>,
+    "renderEditor": (props, onChange) => <GalleryCarousel.Editor component={props} onChange={onChange}/>
   },
   "cards": {
-    "renderComponent": (props) => <Cards componentProps={props}/>,
-    "renderEditor": (props, onChange) => <Cards.Editor componentProps={props} onChange={onChange}/>
+    "renderComponent": (props) => <Cards component={props}/>,
+    "renderEditor": (props, onChange) => <Cards.Editor component={props} onChange={onChange}/>
   },
   "hero-section": {
-    "renderComponent": (props) => <HeroSection componentProps={props}/>,
-    "renderEditor": (props, onChange) => <HeroSection.Editor componentProps={props} onChange={onChange}/>
+    "renderComponent": (props) => <HeroSection component={props}/>,
+    "renderEditor": (props, onChange) => <HeroSection.Editor component={props} onChange={onChange}/>
   },
   "hero-section-main": {
-    "renderComponent": (props) => <HeroSectionMain componentProps={props}/>,
-    "renderEditor": (props, onChange) => <HeroSectionMain.Editor componentProps={props} onChange={onChange}/>
+    "renderComponent": (props) => <HeroSectionMain component={props}/>,
+    "renderEditor": (props, onChange) => <HeroSectionMain.Editor component={props} onChange={onChange}/>
   },
   "news-list": {
-    "renderComponent": (props) => <NewsList componentProps={props}/>,
-    "renderEditor": (props, onChange) => <NewsList.Editor componentProps={props} onChange={onChange}/>
+    "renderComponent": (props) => <NewsList component={props}/>,
+    "renderEditor": (props, onChange) => <NewsList.Editor component={props} onChange={onChange}/>
   },
   "contact-us": {
-    "renderComponent": (props) => <ContactUs componentProps={props}/>,
-    "renderEditor": (props, onChange) => <ContactUs.Editor componentProps={props} onChange={onChange}/>
+    "renderComponent": (props) => <ContactUs component={props}/>,
+    "renderEditor": (props, onChange) => <ContactUs.Editor component={props} onChange={onChange}/>
   },
   "department-staff-list": {
-    "renderComponent": (props) => <DepartmentStaffList componentProps={props}/>,
-    "renderEditor": (props, onChange) => <DepartmentStaffList.Editor componentProps={props} onChange={onChange}/>
+    "renderComponent": (props) => <DepartmentStaffList component={props}/>,
+    "renderEditor": (props, onChange) => <DepartmentStaffList.Editor component={props} onChange={onChange}/>
   },
   "department-aspirant-list": {
-    "renderComponent": (props) => <DepartmentAspirantList componentProps={props}/>,
-    "renderEditor": (props, onChange) => <DepartmentAspirantList.Editor componentProps={props} onChange={onChange}/>
+    "renderComponent": (props) => <DepartmentAspirantList component={props}/>,
+    "renderEditor": (props, onChange) => <DepartmentAspirantList.Editor component={props} onChange={onChange}/>
+  },
+   "link-button": {
+    "renderComponent": (props) => <LinkButton component={props}/>,
+    "renderEditor": (props, onChange) => <LinkButton.Editor component={props} onChange={onChange}/>
   },
 }
 
@@ -83,11 +89,12 @@ export const pageComponentGroupExamples: IPageComponentGroupExamples[] = [
       GalleryCarouselComponentExample,
       CardsComponentExample,
       HeroSectionComponentExample,
+      LinkButtonComponentExample
     ]
   },
   {
     name: "specific-components",
-    title: "Спецефічні блоки",
+    title: "Специфічні блоки",
     description: "Блоки для конкретних сторінок",
     components: [
       HeroSectionMainComponentExample,

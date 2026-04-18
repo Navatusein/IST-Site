@@ -11,7 +11,7 @@ export default function NewsRenderer(props: IProps) {
   return (
     <>
       {props.news.components.map((component, index) => (
-        <PageComponentRenderer propsClass={component} key={`component-${index}`}/>
+        <PageComponentRenderer component={component} key={`component-${index}`}/>
       ))}
     </>
   )

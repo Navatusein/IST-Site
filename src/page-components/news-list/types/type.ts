@@ -8,7 +8,8 @@ export interface INewsListPageComponent extends IBasePageComponent {
 export const NewsListComponentExample = {
   name: "Список новин",
   component: {
-    type: "news-list",
+    type: "component",
+    componentType: "news-list",
     width: "small",
     countDisplayed: 5,
     pagination: false

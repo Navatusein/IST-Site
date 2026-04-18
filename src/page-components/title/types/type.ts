@@ -8,7 +8,8 @@ export interface ITitlePageComponent extends IBasePageComponent {
 export const TitleComponentExample = {
   name: "Заголовок",
   component: {
-    type: "title",
+    type: "component",
+    componentType: "title",
     width: "small",
     level: 3,
     title: "Заголовок"

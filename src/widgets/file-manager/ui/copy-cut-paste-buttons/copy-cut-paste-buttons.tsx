@@ -1,47 +1,50 @@
-import {Dispatch, Key, SetStateAction} from "react";
+import {Dispatch, SetStateAction, useContext} from "react";
 import {App, Button, Space, Tooltip} from "antd";
 import {moveOrCopyFilesAction} from "@/shared/services/file-manager-service/actions/actions";
 import {CloseSquareOutlined, CopyOutlined, ImportOutlined, ScissorOutlined} from "@ant-design/icons";
 import {useServerAction} from "@/shared/hooks/use-server-action";
+import {FileExplorerContext} from "@/shared/context/file-explorer-context/file-explorer-context";
 
 interface IProps {
-  currentPath: string;
-  selectedRowKeys: Key[];
-  setSelectedRowKeys: Dispatch<SetStateAction<Key[]>>;
   filesInMemory: string[];
   setFilesInMemory: Dispatch<SetStateAction<string[]>>;
   filesInMemoryCut: boolean;
   setFilesInMemoryCut: Dispatch<SetStateAction<boolean>>;
-  setUpdateFiles: Dispatch<SetStateAction<number>>;
 }
 
 export default function CopyCutPasteButtons(props: IProps) {
   const {notification} = App.useApp();
+  const {
+    currentPath,
+    selectedRowKeys,
+    setSelectedRowKeys,
+    setUpdateFiles,
+  } = useContext(FileExplorerContext);
 
   const pasteFromMemory = () => {
-    useServerAction(moveOrCopyFilesAction(props.currentPath, props.filesInMemory, props.filesInMemoryCut))
+    useServerAction(moveOrCopyFilesAction(currentPath, props.filesInMemory, props.filesInMemoryCut))
       .then(() => {
         notification.success({title: "Успішно файли вставлено"});
         props.setFilesInMemory(() => []);
         setTimeout(() => {
-          props.setUpdateFiles((prevState) => prevState + 1)
+          setUpdateFiles((prevState) => prevState + 1)
         }, 500)
       })
       .catch((error) => {
-        notification.error({title: "Помилка встааляння файлів", description: error.message});
+        notification.error({title: "Помилка вставлення файлів", description: error.message});
       });
   }
 
   const copyOrCut = (cut: boolean) => {
-    props.setFilesInMemory(() => props.selectedRowKeys as string[]);
-    props.setSelectedRowKeys(() => []);
+    props.setFilesInMemory(() => selectedRowKeys as string[]);
     props.setFilesInMemoryCut(() => cut);
+    setSelectedRowKeys(() => []);
   }
 
   const clearMemory = () => {
     props.setFilesInMemory(() => []);
-    props.setSelectedRowKeys(() => []);
     props.setFilesInMemoryCut(() => false);
+    setSelectedRowKeys(() => []);
   }
 
   return (
@@ -50,7 +53,7 @@ export default function CopyCutPasteButtons(props: IProps) {
         <Button
           icon={<CopyOutlined/>}
           onClick={() => copyOrCut(false)}
-          disabled={props.selectedRowKeys.length == 0}
+          disabled={selectedRowKeys.length == 0}
         >
           Копіювати
         </Button>
@@ -59,12 +62,12 @@ export default function CopyCutPasteButtons(props: IProps) {
         <Button
           icon={<ScissorOutlined/>}
           onClick={() => copyOrCut(true)}
-          disabled={props.selectedRowKeys.length == 0}
+          disabled={selectedRowKeys.length == 0}
         >
           Вирізати
         </Button>
       </Tooltip>
-      {props.filesInMemory.length != 0 &&
+      {props.filesInMemory.length != 0 && (
         <Tooltip title={`Очистити список вирізаних/скопійованих файлів`}>
           <Button
             icon={<CloseSquareOutlined/>}
@@ -73,8 +76,8 @@ export default function CopyCutPasteButtons(props: IProps) {
             {`Забути ${props.filesInMemoryCut ? "вирізане" : "скопійоване"}`}
           </Button>
         </Tooltip>
-      }
-      {props.filesInMemory.length != 0 &&
+      )}
+      {props.filesInMemory.length != 0 && (
         <Tooltip title={`Вставити вирізані/скопійовані файли`}>
           <Button
             icon={<ImportOutlined/>}
@@ -83,7 +86,7 @@ export default function CopyCutPasteButtons(props: IProps) {
             Вставити
           </Button>
         </Tooltip>
-      }
+      )}
     </Space>
   )
 }

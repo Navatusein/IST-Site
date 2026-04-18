@@ -1,5 +1,5 @@
 import {Document} from "mongoose";
-import {IBasePageComponent} from "@/entities/dynamic-page";
+import {IPageEntity} from "@/entities/dynamic-page";
 
 export interface IDepartmentStaffProfile {
   title: string;
@@ -14,6 +14,6 @@ export interface IDepartmentStaff extends Document {
   position: string;
   imagePath?: string;
   path: string,
-  components: IBasePageComponent[];
+  entities: IPageEntity[];
   profiles: IDepartmentStaffProfile[];
 }

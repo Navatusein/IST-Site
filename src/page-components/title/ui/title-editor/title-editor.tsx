@@ -5,18 +5,18 @@ import {ITitlePageComponent} from "../../types/type";
 import {Flex, Form, Input, Select} from "antd";
 
 interface IProps {
-  componentProps: IBasePageComponent;
+  component: IBasePageComponent;
   onChange: (value: IBasePageComponent) => void;
 }
 
 export default function TitleEditor(props: IProps) {
   const [form] = Form.useForm();
 
-  const typedComponentProps = useMemo(() => {
-    if (props.componentProps.type !== "title")
+  const typedComponent = useMemo(() => {
+    if (props.component.componentType !== "title")
       return null;
 
-    return props.componentProps as ITitlePageComponent;
+    return props.component as ITitlePageComponent;
   }, [props]);
 
   const onChange = () => {
@@ -24,11 +24,11 @@ export default function TitleEditor(props: IProps) {
   }
 
   return (
-    <PageComponentError message={typedComponentProps == null ? "Fail" : ""}>
+    <PageComponentError component={typedComponent}>
       <Form
         form={form}
         layout="vertical"
-        initialValues={typedComponentProps as never}
+        initialValues={typedComponent as never}
         style={{width: "100%"}}
         onFieldsChange={onChange}
       >

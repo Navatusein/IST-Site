@@ -1,29 +1,28 @@
 "use client"
 
 import {App, Button, Input, InputRef, Tooltip} from "antd";
-import {Dispatch, SetStateAction, useRef} from "react";
+import {useContext, useRef} from "react";
 import {createDirectoryAction} from "@/shared/services/file-manager-service/actions/actions";
 import {FolderAddOutlined} from "@ant-design/icons";
 import {useServerAction} from "@/shared/hooks/use-server-action";
+import {FileExplorerContext} from "@/shared/context/file-explorer-context/file-explorer-context";
 
-interface IProps {
-  currentPath: string;
-  setUpdateFiles: Dispatch<SetStateAction<number>>
-}
+interface IProps {}
 
 export default function CreateFolderButton(props: IProps) {
   const {notification, modal} = App.useApp();
+  const {currentPath, setUpdateFiles} = useContext(FileExplorerContext);
 
   const directoryNameInput = useRef<InputRef>(null);
 
   const createFolder = () => {
     const directoryName = directoryNameInput.current?.input?.value.trim() ?? "";
 
-    useServerAction(createDirectoryAction(props.currentPath, directoryName))
+    useServerAction(createDirectoryAction(currentPath, directoryName))
       .then(() => {
         notification.success({title: "Папку стоврено успішно",});
         setTimeout(() => {
-          props.setUpdateFiles((prevState) => prevState + 1);
+          setUpdateFiles((prevState) => prevState + 1);
         }, 500)
       })
       .catch((error) => {

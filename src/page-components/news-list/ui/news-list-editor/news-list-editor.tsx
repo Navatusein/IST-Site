@@ -5,18 +5,18 @@ import {INewsListPageComponent} from "../../types/type";
 import {Flex, Form, InputNumber, Switch} from "antd";
 
 interface IProps {
-  componentProps: IBasePageComponent;
+  component: IBasePageComponent;
   onChange: (value: IBasePageComponent) => void;
 }
 
 export default function NewsListEditor(props: IProps) {
   const [form] = Form.useForm();
 
-  const typedComponentProps = useMemo(() => {
-    if (props.componentProps.type !== "news-list")
+  const typedComponent = useMemo(() => {
+    if (props.component.componentType !== "news-list")
       return null;
 
-    return props.componentProps as INewsListPageComponent;
+    return props.component as INewsListPageComponent;
   }, [props]);
 
   const onChange = () => {
@@ -24,11 +24,11 @@ export default function NewsListEditor(props: IProps) {
   }
 
   return (
-    <PageComponentError message={typedComponentProps == null ? "Fail" : ""}>
+    <PageComponentError component={typedComponent}>
       <Form
         form={form}
         layout="vertical"
-        initialValues={typedComponentProps as never}
+        initialValues={typedComponent as never}
         style={{width: "100%"}}
         onFieldsChange={onChange}
       >

@@ -1,7 +1,6 @@
 import {ReactNode} from "react";
 import {PageEditorLayout} from "@/app/layouts/page-editor-layout";
 
-
 interface IProps {
   children: ReactNode;
 }

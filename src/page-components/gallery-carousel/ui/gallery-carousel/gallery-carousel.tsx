@@ -7,23 +7,23 @@ import {Card, Carousel, Col, Image} from "antd";
 import styles from "./gallery-carousel.module.scss";
 
 interface IProps {
-  componentProps: IBasePageComponent;
+  component: IBasePageComponent;
 }
 
 export default function GalleryCarousel(props: IProps) {
-  const typedComponentProps = useMemo(() => {
-    if (props.componentProps.type !== "gallery-carousel")
+  const typedComponent = useMemo(() => {
+    if (props.component.componentType !== "gallery-carousel")
       return null;
 
-    return props.componentProps as IGalleryCarouselPageComponent;
+    return props.component as IGalleryCarouselPageComponent;
   }, [props]);
 
   const fullImagePaths = useMemo(() => (
-    typedComponentProps?.imagePaths.map(imagePath => `/api/assets${imagePath}`) ?? []
-  ), [typedComponentProps?.imagePaths]);
+    typedComponent?.imagePaths.map(imagePath => `/api/assets${imagePath}`) ?? []
+  ), [typedComponent?.imagePaths]);
 
   return (
-    <PageComponentError message={typedComponentProps == null ? "Fail" : ""}>
+    <PageComponentError component={typedComponent}>
       <Card variant="borderless" style={{borderRadius: 0}}>
         <Carousel
           slidesToShow={3}

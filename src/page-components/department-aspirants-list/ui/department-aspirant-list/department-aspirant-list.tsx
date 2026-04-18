@@ -10,15 +10,15 @@ import {getDepartmentAspirantAction} from "@/entities/department-aspirant/action
 import {getDepartmentStaffAction} from "@/entities/department-staff/actions/actions";
 
 interface IProps {
-  componentProps: IBasePageComponent;
+  component: IBasePageComponent;
 }
 
 export default function DepartmentAspirantList(props: IProps) {
-  const typedComponentProps = useMemo(() => {
-    if (props.componentProps.type !== "department-aspirant-list")
+  const typedComponent = useMemo(() => {
+    if (props.component.componentType !== "department-aspirant-list")
       return null;
 
-    return props.componentProps as IDepartmentAspirantListPageComponent;
+    return props.component as IDepartmentAspirantListPageComponent;
   }, [props]);
 
   const [departmentAspirants, setDepartmentAspirants] = useState<IDepartmentAspirant[]>([]);
@@ -26,7 +26,7 @@ export default function DepartmentAspirantList(props: IProps) {
   const [departmentStaffs, setDepartmentStaffs] = useState<Record<string, string>>()
 
   useEffect(() => {
-    if (typedComponentProps != null) {
+    if (typedComponent != null) {
       useServerAction(getDepartmentAspirantAction())
         .then((data) => {
           setDepartmentAspirants(() => data.filter(x => (x.thesisDate == null)));
@@ -47,7 +47,7 @@ export default function DepartmentAspirantList(props: IProps) {
   const {token: {paddingLG}} = theme.useToken();
 
   return (
-    <PageComponentError message={typedComponentProps == null ? "Fail" : ""}>
+    <PageComponentError component={typedComponent}>
       <Row gutter={[paddingLG, paddingLG]} justify="center">
         <ConfigProvider theme={{token: {screenMDMin: 900, screenXLMin: 1300}}}>
           <Flex vertical gap="middle" align="center" style={{height: "100%"}}>

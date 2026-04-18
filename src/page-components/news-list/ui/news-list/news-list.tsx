@@ -11,15 +11,15 @@ import {NewsList as NewsListElement} from "@/widgets/news-list";
 import {useServerAction} from "@/shared/hooks/use-server-action";
 
 interface IProps {
-  componentProps: IBasePageComponent;
+  component: IBasePageComponent;
 }
 
 export default function NewsList(props: IProps) {
-  const typedComponentProps = useMemo(() => {
-    if (props.componentProps.type !== "news-list")
+  const typedComponent = useMemo(() => {
+    if (props.component.componentType !== "news-list")
       return null;
 
-    return props.componentProps as INewsListPageComponent;
+    return props.component as INewsListPageComponent;
   }, [props]);
 
   const [news, setNews] = useState<INews[]>([]);
@@ -27,10 +27,10 @@ export default function NewsList(props: IProps) {
   const [page, setPage] = useState<number>(1);
 
   useEffect(() => {
-    if (typedComponentProps != null) {
-      const offset = (page - 1) * typedComponentProps.countDisplayed;
+    if (typedComponent != null) {
+      const offset = (page - 1) * typedComponent.countDisplayed;
 
-      useServerAction(getNewsPaginationAction(offset, typedComponentProps.countDisplayed))
+      useServerAction(getNewsPaginationAction(offset, typedComponent.countDisplayed))
         .then((data) => {
           setNews(() => data);
         });
@@ -40,18 +40,18 @@ export default function NewsList(props: IProps) {
           setTotal(() => total);
         });
     }
-  }, [typedComponentProps?.countDisplayed, page]);
+  }, [typedComponent?.countDisplayed, page]);
 
   const changePage = (page: number) => {
     setPage(() => page)
   }
 
   return (
-    <PageComponentError message={typedComponentProps == null ? "Fail" : ""}>
+    <PageComponentError component={typedComponent}>
       <Flex vertical gap="middle" align="center">
         <NewsListElement newsList={news}/>
-        {typedComponentProps!.pagination ?
-          <Pagination defaultCurrent={1} total={total} pageSize={typedComponentProps!.countDisplayed} onChange={changePage}/> :
+        {typedComponent!.pagination ?
+          <Pagination defaultCurrent={1} total={total} pageSize={typedComponent!.countDisplayed} onChange={changePage}/> :
           <Link href={"/news"}>
             <Button type="primary" block>
               Переглянути всі новини

@@ -2,23 +2,23 @@ import {useMemo} from "react";
 import {IBasePageComponent} from "@/entities/dynamic-page";
 import {PageComponentError} from "@/shared/ui-kit";
 import {IHeroSectionPageComponent} from "../../types/type";
-import {Flex, Form, Input, InputNumber} from "antd";
+import {Flex, Form, InputNumber} from "antd";
 import {SelectFileButton} from "@/features/select-file-button";
 import {RichTextEditor} from "@/features/rich-text-editor";
 
 interface IProps {
-  componentProps: IBasePageComponent;
+  component: IBasePageComponent;
   onChange: (value: IBasePageComponent) => void;
 }
 
 export default function HeroSectionEditor(props: IProps) {
   const [form] = Form.useForm();
 
-  const typedComponentProps = useMemo(() => {
-    if (props.componentProps.type !== "hero-section")
+  const typedComponent = useMemo(() => {
+    if (props.component.componentType !== "hero-section")
       return null;
 
-    return props.componentProps as IHeroSectionPageComponent;
+    return props.component as IHeroSectionPageComponent;
   }, [props]);
 
   const onChange = () => {
@@ -26,11 +26,11 @@ export default function HeroSectionEditor(props: IProps) {
   }
 
   return (
-    <PageComponentError message={typedComponentProps == null ? "Fail" : ""}>
+    <PageComponentError component={typedComponent}>
       <Form
         form={form}
         layout="vertical"
-        initialValues={typedComponentProps as never}
+        initialValues={typedComponent as never}
         style={{width: "100%", marginTop: "-24px"}}
         onFieldsChange={onChange}
       >

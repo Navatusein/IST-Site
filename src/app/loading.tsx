@@ -1,9 +1,7 @@
-"use client"
-
-import {Spin} from "antd";
+import {Loader} from "@/shared/ui-kit";
 
 export default function Loading() {
   return (
-    <Spin style={{width: "100", height: "100%"}}/>
+    <Loader/>
   );
 }

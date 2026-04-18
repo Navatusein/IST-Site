@@ -4,20 +4,19 @@ import {PageComponentError} from "@/shared/ui-kit";
 import {IContactUsPageComponent} from "../../types/type";
 
 interface IProps {
-  componentProps: IBasePageComponent;
+  component: IBasePageComponent;
   onChange: (value: IBasePageComponent) => void;
 }
 
 export default function ContactUsEditor(props: IProps) {
-  const typedComponentProps = useMemo(() => {
-    if (props.componentProps.type !== "contact-us")
+  const typedComponent = useMemo(() => {
+    if (props.component.componentType !== "contact-us")
       return null;
 
-    return props.componentProps as IContactUsPageComponent;
+    return props.component as IContactUsPageComponent;
   }, [props]);
 
   return (
-    <PageComponentError message={typedComponentProps == null ? "Fail" : ""}>
-    </PageComponentError>
+    <PageComponentError component={typedComponent}/>
   )
 }

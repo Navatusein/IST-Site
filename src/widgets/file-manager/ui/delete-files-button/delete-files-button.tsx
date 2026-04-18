@@ -1,19 +1,17 @@
 "use client"
 
 import {App, Button, Tooltip} from "antd";
-import {Dispatch, Key, SetStateAction} from "react";
+import {useContext} from "react";
 import {deleteFilesAction} from "@/shared/services/file-manager-service/actions/actions";
 import {DeleteOutlined} from "@ant-design/icons";
 import {useServerAction} from "@/shared/hooks/use-server-action";
+import {FileExplorerContext} from "@/shared/context/file-explorer-context/file-explorer-context";
 
-interface IProps {
-  selectedRowKeys: Key[],
-  setSelectedRowKeys: Dispatch<SetStateAction<Key[]>>
-  setUpdateFiles: Dispatch<SetStateAction<number>>
-}
+interface IProps {}
 
 export default function DeleteFilesButton(props: IProps) {
   const {modal, notification} = App.useApp();
+  const {selectedRowKeys, setSelectedRowKeys, setUpdateFiles} = useContext(FileExplorerContext);
 
   const deleteFiles = () => {
     modal.confirm({
@@ -22,16 +20,16 @@ export default function DeleteFilesButton(props: IProps) {
       okText: "Так",
       cancelText: "Ні",
       onOk: () => {
-        useServerAction(deleteFilesAction(props.selectedRowKeys as string[]))
+        useServerAction(deleteFilesAction(selectedRowKeys as string[]))
           .then(() => {
             notification.success({title: "Файли видалено успішно",});
-            props.setSelectedRowKeys([]);
+            setSelectedRowKeys([]);
             setTimeout(() => {
-              props.setUpdateFiles((prevState) => prevState + 1);
+              setUpdateFiles((prevState) => prevState + 1);
             }, 500)
           })
           .catch((error) => {
-            notification.error({title: "Помилка видаленя файлів", description: error.message});
+            notification.error({title: "Помилка видалення файлів", description: error.message});
           });
       }
     });
@@ -43,7 +41,7 @@ export default function DeleteFilesButton(props: IProps) {
         icon={<DeleteOutlined/>}
         danger
         onClick={deleteFiles}
-        disabled={props.selectedRowKeys.length == 0}
+        disabled={selectedRowKeys.length == 0}
       >
         Видалити
       </Button>

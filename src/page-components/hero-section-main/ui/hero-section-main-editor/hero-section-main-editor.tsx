@@ -8,18 +8,18 @@ import FormComponentStatistics from "../form-component-statistics/form-component
 import FormComponentCommon from "../form-component-common/form-component-common";
 
 interface IProps {
-  componentProps: IBasePageComponent;
+  component: IBasePageComponent;
   onChange: (value: IBasePageComponent) => void;
 }
 
 export default function HeroSectionMainEditor(props: IProps) {
   const [form] = Form.useForm();
 
-  const typedComponentProps = useMemo(() => {
-    if (props.componentProps.type !== "hero-section-main")
+  const typedComponent = useMemo(() => {
+    if (props.component.componentType !== "hero-section-main")
       return null;
 
-    return props.componentProps as IHeroSectionMainPageComponent;
+    return props.component as IHeroSectionMainPageComponent;
   }, [props]);
 
   const onChange = () => {
@@ -65,11 +65,11 @@ export default function HeroSectionMainEditor(props: IProps) {
   ];
 
   return (
-    <PageComponentError message={typedComponentProps == null ? "Fail" : ""}>
+    <PageComponentError component={typedComponent}>
       <Form
         form={form}
         layout="vertical"
-        initialValues={typedComponentProps as never}
+        initialValues={typedComponent as never}
         style={{width: "100%", marginTop: "-24px"}}
         onFieldsChange={onChange}
       >

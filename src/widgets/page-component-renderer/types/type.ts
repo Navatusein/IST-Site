@@ -4,7 +4,7 @@ import {PageComponentType} from "@/page-components";
 
 export type ComponentDescriptorType = {
   [key in PageComponentType]: {
-    renderComponent: (componentProps: IBasePageComponent) => JSX.Element;
-    renderEditor: (componentProps: IBasePageComponent, onChange: (value: IBasePageComponent) => void) => JSX.Element;
+    renderComponent: (component: IBasePageComponent) => JSX.Element;
+    renderEditor: (component: IBasePageComponent, onChange: (value: IBasePageComponent) => void) => JSX.Element;
   };
 };
