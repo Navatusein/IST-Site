@@ -6,7 +6,7 @@ const newsScheme = new Schema<INews>({
   description: {type: Schema.Types.String, required: true},
   imagePath: {type: Schema.Types.String},
   path: {type: Schema.Types.String, required: true, unique: true},
-  components: [{type: Schema.Types.Mixed, required: true}],
+  entities: [{type: Schema.Types.Mixed, required: true}],
   date: {type: Schema.Types.String, required: true},
 }, {timestamps: true});
 

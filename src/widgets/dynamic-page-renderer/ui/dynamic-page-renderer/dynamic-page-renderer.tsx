@@ -1,11 +1,11 @@
 "use client"
 
 import {Alert, Flex, theme} from "antd";
-import {IBasePageComponent, IDynamicPage} from "@/entities/dynamic-page";
+import {IPageEntity, IBasePageComponent} from "@/entities/dynamic-page";
 import {PageComponentRenderer} from "@/widgets/page-component-renderer";
 
 interface IProps {
-  page: IDynamicPage
+  entities: IPageEntity[];
 }
 
 export default function DynamicPageRenderer(props: IProps) {
@@ -13,7 +13,7 @@ export default function DynamicPageRenderer(props: IProps) {
 
   return (
     <Flex vertical gap="middle" style={{marginBottom: padding}}>
-      {props.page.entities.map((entity, index) => {
+      {props.entities.map((entity, index) => {
         if (entity.type == "component")
           return <PageComponentRenderer component={entity as IBasePageComponent} key={entity.id}/>;
 

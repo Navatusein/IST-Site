@@ -2,7 +2,7 @@
 
 import {IDepartmentStaff} from "@/entities/department-staff";
 import {useEffect, useState} from "react";
-import {IBasePageComponent} from "@/entities/dynamic-page";
+import {IPageEntity} from "@/entities/dynamic-page";
 import {useServerAction} from "@/shared/hooks/use-server-action";
 import {updateDepartmentStaffAction} from "@/entities/department-staff/actions/actions";
 import {DynamicPageEditor} from "@/widgets/dynamic-page-editor";
@@ -18,21 +18,21 @@ export default function AdminDepartmentStaffPageEditView(props: IProps) {
     setDepartmentStaff(() => props.departmentStaff);
   }, [props.departmentStaff]);
 
-  const setComponents = (components: IBasePageComponent[]) => {
+  const setEntities = (components: IPageEntity[]) => {
     setDepartmentStaff((prevState) => (
-      {...prevState, components: components} as IDepartmentStaff
+      {...prevState, entities: components} as IDepartmentStaff
     ));
   }
 
-  const saveComponents = async () => {
+  const saveEntities = async () => {
     await useServerAction(updateDepartmentStaffAction(departmentStaff));
   }
 
   return (
     <DynamicPageEditor
-      entities={departmentStaff.components}
-      setEntities={setComponents}
-      saveEntities={saveComponents}
+      entities={departmentStaff.entities}
+      setEntities={setEntities}
+      saveEntities={saveEntities}
     />
   )
 }

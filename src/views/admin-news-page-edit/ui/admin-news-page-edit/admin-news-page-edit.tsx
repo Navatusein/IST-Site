@@ -1,7 +1,7 @@
 "use client"
 
 import {useEffect, useState} from "react";
-import {IBasePageComponent} from "@/entities/dynamic-page";
+import {IPageEntity} from "@/entities/dynamic-page";
 import {INews} from "@/entities/news";
 import {updateNewsAction} from "@/entities/news/actions/actions";
 import {useServerAction} from "@/shared/hooks/use-server-action";
@@ -24,21 +24,21 @@ export default function AdminNewsPageEdit(props: IProps) {
     setNews(() => props.news);
   }, [props.news]);
 
-  const setComponents = (components: IBasePageComponent[]) => {
+  const setEntities = (entities: IPageEntity[]) => {
     setNews((prevState) => (
-      {...prevState, components: components} as INews
+      {...prevState, entities: entities} as INews
     ));
   }
 
-  const saveComponents = async () => {
+  const saveEntities = async () => {
     await useServerAction(updateNewsAction(news));
   }
 
   return (
     <DynamicPageEditor
-      components={news.components}
-      setComponents={setComponents}
-      saveComponents={saveComponents}
+      entities={news.entities}
+      setEntities={setEntities}
+      saveEntities={saveEntities}
     />
   )
 }

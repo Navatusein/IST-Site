@@ -1,11 +1,11 @@
 import {Document} from "mongoose";
-import {IBasePageComponent} from "@/entities/dynamic-page";
+import {IPageEntity} from "@/entities/dynamic-page";
 
 export interface INews extends Document {
   title: string;
   description: string;
   imagePath: string;
   path: string;
-  components: IBasePageComponent[];
+  entities: IPageEntity[];
   date: string;
 }

@@ -10,7 +10,7 @@ interface IProps {
   departmentStaff: IDepartmentStaff;
 }
 
-const DepartmentStaffRenderer = dynamic(() => import("@/views/department-staff/ui/department-staff-renderer/department-staff-renderer"), {
+const DynamicPageRenderer = dynamic(() => import("@/widgets/dynamic-page-renderer").then(x => x.DynamicPageRenderer), {
   ssr: false,
   loading: () => <Loader/>
 });
@@ -81,7 +81,7 @@ export default function DepartmentStaffView(props: IProps) {
           sm={{span: 14}}
           xs={{span: 24}}
         >
-          <DepartmentStaffRenderer departmentStaff={props.departmentStaff}/>
+          <DynamicPageRenderer entities={props.departmentStaff.entities}/>
         </Col>
       </Row>
     </ComponentCol>

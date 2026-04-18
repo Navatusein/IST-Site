@@ -11,10 +11,11 @@ interface IProps {
   news: INews;
 }
 
-const NewsRenderer = dynamic(() => import("@/views/news/ui/news-renderer/news-renderer"), {
+const DynamicPageRenderer = dynamic(() => import("@/widgets/dynamic-page-renderer").then(x => x.DynamicPageRenderer), {
   ssr: false,
   loading: () => <Loader/>
 });
+
 
 export default function NewsView(props: IProps) {
   const {token: {borderRadius, padding}} = theme.useToken();
@@ -37,7 +38,7 @@ export default function NewsView(props: IProps) {
           fallback="/missing-image.webp"
         />
       </ComponentCol>
-      <NewsRenderer news={props.news}/>
+      <DynamicPageRenderer entities={props.news.entities}/>
       <Flex justify="center">
         <Link href={"/news"}>
           <Button type="primary">

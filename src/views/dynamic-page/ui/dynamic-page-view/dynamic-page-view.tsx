@@ -15,6 +15,6 @@ const DynamicPageRenderer = dynamic(() => import("@/widgets/dynamic-page-rendere
 
 export default function DynamicPageView(props: IProps) {
   return (
-    <DynamicPageRenderer page={props.page}/>
+    <DynamicPageRenderer entities={props.page.entities}/>
   )
 }
