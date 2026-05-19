@@ -2,7 +2,7 @@
 
 import {Card, Typography} from "antd";
 import {IDynamicPage} from "@/entities/dynamic-page";
-import {DynamicPageCrud} from "@/widgets/dynamic-page-crud";
+import DynamicPageCrud from "../dynamic-page-crud/dynamic-page-crud";
 
 interface IProps {
   pages: IDynamicPage[]

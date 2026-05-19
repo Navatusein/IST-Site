@@ -2,7 +2,7 @@
 
 import {IPublicMenuItem} from "@/entities/public-menu-item";
 import {Card, Typography} from "antd";
-import {PublicPageMenuCrud} from "@/widgets/public-page-menu-crud";
+import PublicPageMenuCrud from "../public-page-menu-crud/public-page-menu-crud";
 
 interface IProps {
   menuItems: IPublicMenuItem[]

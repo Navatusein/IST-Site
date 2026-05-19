@@ -10,7 +10,7 @@ import {
   updateUserAction,
   updateUserPasswordAction
 } from "@/entities/user/actions/actions";
-import PasswordModal from "@/widgets/user-crud/ui/password-modal/password-modal";
+import PasswordModal from "../password-modal/password-modal";
 import {FormOutlined} from "@ant-design/icons";
 import {useServerAction} from "@/shared/hooks/use-server-action";
 import {dateStringSorter, stringSorter} from "@/shared/utilities/sorters";

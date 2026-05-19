@@ -3,7 +3,7 @@
 import {IDepartmentAspirant} from "@/entities/department-aspirant";
 import {IDepartmentStaff} from "@/entities/department-staff";
 import {Card, Typography} from "antd";
-import {DepartmentAspirantCrud} from "@/widgets/department-aspirant-crud";
+import DepartmentAspirantCrud from "../department-aspirant-crud/department-aspirant-crud";
 
 
 interface IProps {

@@ -2,7 +2,7 @@
 
 import {IDepartmentStaff} from "@/entities/department-staff";
 import {Card, Typography} from "antd";
-import {DepartmentStaffCrud} from "@/widgets/department-staff-crud";
+import DepartmentStaffCrud from "../department-staff-crud/department-staff-crud";
 
 interface IProps {
   departmentStaff: IDepartmentStaff[];

@@ -1,7 +1,7 @@
 "use client"
 
 import {IUser} from "@/entities/user";
-import {UserCrud} from "@/widgets/user-crud";
+import UserCrud from "../user-crud/user-crud";
 import {Card, Typography} from "antd";
 
 interface IProps {

@@ -15,8 +15,6 @@ interface IProps {
   departmentStaff: IDepartmentStaff[];
 }
 
-
-
 export default function DepartmentAspirantCrud(props: IProps) {
   const router = useRouter()
 

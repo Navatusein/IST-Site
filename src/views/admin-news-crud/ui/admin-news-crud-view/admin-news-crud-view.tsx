@@ -1,7 +1,7 @@
 "use client"
 
 import {Card, Typography} from "antd";
-import {NewsCrud} from "@/widgets/news-crud";
+import NewsCrud from "../news-crud/news-crud";
 import {INews} from "@/entities/news";
 
 interface IProps {
