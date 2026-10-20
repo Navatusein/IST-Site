@@ -11,7 +11,8 @@ import {
   StrikethroughOutlined, UndoOutlined,
   UnorderedListOutlined
 } from "@ant-design/icons";
-import {useCallback, useMemo} from "react";
+import {useState} from "react";
+import LinkModal from "../link-modal/link-modal";
 
 interface IProps {
   editor: Editor|null;
@@ -29,11 +30,13 @@ const TEXT_TYPES_OPTIONS = [
 ]
 
 export default function ToolBar(props: IProps) {
+  const [isLinkModalOpen, setIsLinkModalOpen] = useState<boolean>(false);
+
   if (props.editor == undefined) {
     return null;
   }
 
-  const textTypeOptionValue = useMemo(() => {
+  const textTypeOptionValue = (() => {
     if (props.editor!.isActive("paragraph"))
       return "paragraph"
 
@@ -56,7 +59,7 @@ export default function ToolBar(props: IProps) {
       return "text"
 
     return "paragraph"
-  }, [props.editor.state]);
+  })();
 
   const textTypeOptionOnChange = (value: string) => {
     const [type, attribute] = value.split("-");
@@ -68,23 +71,11 @@ export default function ToolBar(props: IProps) {
       props.editor!.chain().focus().toggleHeading({level: parseInt(attribute) as never}).run()
   }
 
-  const setLink = useCallback(() => {
-    const previousUrl = props.editor!.getAttributes("link").href
-    const url = window.prompt("URL", previousUrl)
-
-    if (url === null)
-      return
-
-    if (url === "") {
-      props.editor!.chain().focus().extendMarkRange("link").unsetLink().run()
-      return
-    }
-
-    props.editor!.chain().focus().extendMarkRange("link").setLink({href: url, target: "_self"}).run()
-  }, [props.editor])
+  const setLink = () => setIsLinkModalOpen(() => true);
 
   return (
     <Card size="small" style={{position: "sticky", top: 0, zIndex: 1000}}>
+      <LinkModal editor={props.editor} open={isLinkModalOpen} onClose={() => setIsLinkModalOpen(() => false)}/>
       <Flex gap="small" wrap>
         <Space.Compact>
           <Tooltip title="Жирний">
