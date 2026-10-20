@@ -1,11 +1,9 @@
 import {Button, Tooltip} from "antd";
 import {useContext} from "react";
 import {ReloadOutlined} from "@ant-design/icons";
-import {FileExplorerContext} from "@/shared/context/file-explorer-context/file-explorer-context";
+import {FileExplorerContext} from "@/entities/file/ui";
 
-interface IProps {}
-
-export default function UpdateButton(props: IProps) {
+export default function UpdateButton() {
   const {setUpdateFiles} = useContext(FileExplorerContext);
 
   const update = () => {

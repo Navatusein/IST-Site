@@ -1,28 +1,24 @@
 import {App, Button, Input, InputRef, Tooltip} from "antd";
 import {useContext, useRef} from "react";
-import {renameAction} from "@/shared/services/file-manager-service/actions/actions";
 import {FormOutlined} from "@ant-design/icons";
-import {useServerAction} from "@/shared/hooks/use-server-action";
-import {FileExplorerContext} from "@/shared/context/file-explorer-context/file-explorer-context";
+import {renameFileEntryAction} from "@/entities/file/actions/actions";
+import {FileExplorerContext} from "@/entities/file/ui";
+import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 
-interface IProps {}
-
-export default function RenameButton(props: IProps) {
+export default function RenameButton() {
   const {notification, modal} = App.useApp();
-  const {selectedRowKeys, setSelectedRowKeys, setUpdateFiles} = useContext(FileExplorerContext);
+  const {selectedEntries, setSelectedEntries, setUpdateFiles} = useContext(FileExplorerContext);
 
   const newNameInput = useRef<InputRef>(null);
 
-  const createFolder = () => {
+  const rename = () => {
     const newName = newNameInput.current?.input?.value.trim() ?? "";
 
-    useServerAction(renameAction(selectedRowKeys[0] as string, newName))
+    unwrapServerAction(renameFileEntryAction(selectedEntries[0].slug, newName))
       .then(() => {
         notification.success({title: "Успішне перейменування"});
-        setSelectedRowKeys(() => []);
-        setTimeout(() => {
-          setUpdateFiles((prevState) => prevState + 1);
-        }, 500);
+        setSelectedEntries(() => []);
+        setUpdateFiles((prevState) => prevState + 1);
       })
       .catch((error) => {
         notification.error({title: "Помилка перейменування", description: error.message});
@@ -40,20 +36,20 @@ export default function RenameButton(props: IProps) {
       title: "Введіть нову назву",
       content:
         <Input
-          defaultValue={(selectedRowKeys[0] as string).split("/").pop()}
+          defaultValue={selectedEntries[0].name}
           ref={newNameInput}
           onChange={(e) => onChange(e.target.value, modalInstance.update)}
         />,
       okButtonProps: {disabled: true},
       okText: "Перейменувати",
       cancelText: "Відмінити",
-      onOk: () => createFolder()
+      onOk: () => rename()
     });
   }
 
   return (
-    <Tooltip title="Перейменувати вибрані файли">
-      <Button icon={<FormOutlined/>} onClick={openRenameModal} disabled={selectedRowKeys.length != 1}>
+    <Tooltip title="Перейменувати вибраний файл">
+      <Button icon={<FormOutlined/>} onClick={openRenameModal} disabled={selectedEntries.length != 1}>
         Перейменувати
       </Button>
     </Tooltip>

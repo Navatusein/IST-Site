@@ -2,28 +2,24 @@
 
 import {App, Button, Input, InputRef, Tooltip} from "antd";
 import {useContext, useRef} from "react";
-import {createDirectoryAction} from "@/shared/services/file-manager-service/actions/actions";
 import {FolderAddOutlined} from "@ant-design/icons";
-import {useServerAction} from "@/shared/hooks/use-server-action";
-import {FileExplorerContext} from "@/shared/context/file-explorer-context/file-explorer-context";
+import {createDirectoryAction} from "@/entities/file/actions/actions";
+import {FileExplorerContext} from "@/entities/file/ui";
+import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 
-interface IProps {}
-
-export default function CreateFolderButton(props: IProps) {
+export default function CreateFolderButton() {
   const {notification, modal} = App.useApp();
-  const {currentPath, setUpdateFiles} = useContext(FileExplorerContext);
+  const {currentFolder, setUpdateFiles} = useContext(FileExplorerContext);
 
   const directoryNameInput = useRef<InputRef>(null);
 
   const createFolder = () => {
     const directoryName = directoryNameInput.current?.input?.value.trim() ?? "";
 
-    useServerAction(createDirectoryAction(currentPath, directoryName))
+    unwrapServerAction(createDirectoryAction(currentFolder, directoryName))
       .then(() => {
         notification.success({title: "Папку стоврено успішно",});
-        setTimeout(() => {
-          setUpdateFiles((prevState) => prevState + 1);
-        }, 500)
+        setUpdateFiles((prevState) => prevState + 1);
       })
       .catch((error) => {
         notification.error({title: "Помилка створення папки", description: error.message});

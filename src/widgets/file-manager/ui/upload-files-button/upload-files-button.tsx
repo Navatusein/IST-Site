@@ -1,28 +1,31 @@
 "use client"
 
 import {App, Button, Tooltip, Upload} from "antd";
-import {uploadFilesAction} from "@/shared/services/file-manager-service/actions/actions";
 import type {UploadRequestOption} from "@rc-component/upload/lib/interface";
 import {useContext} from "react";
 import {CloudUploadOutlined} from "@ant-design/icons";
-import {useServerAction} from "@/shared/hooks/use-server-action";
-import {FileExplorerContext} from "@/shared/context/file-explorer-context/file-explorer-context";
+import type {IFileEntry} from "@/entities/file";
+import {postForm} from "@/shared/utilities/post-form";
+import {FILES_UPLOAD_URL} from "@/shared/utilities/file-urls";
+import {FileExplorerContext} from "@/entities/file/ui";
+import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 
-interface IProps {}
-
-export default function UploadFilesButton(props: IProps) {
+export default function UploadFilesButton() {
   const {notification} = App.useApp();
-  const {currentPath, setUpdateFiles} = useContext(FileExplorerContext);
+  const {currentFolder, setUpdateFiles} = useContext(FileExplorerContext);
 
   const uploadFile = (options: UploadRequestOption<any>) => {
     const file = options.file as File;
+    const form = new FormData();
+    form.append("file", file);
 
-    useServerAction(uploadFilesAction(currentPath, file))
+    if (currentFolder)
+      form.append("folder", currentFolder);
+
+    unwrapServerAction(postForm<IFileEntry>(FILES_UPLOAD_URL, form))
       .then(() => {
         notification.success({title: "Файл завантажено успішно", description: file.name});
-        setTimeout(() => {
-          setUpdateFiles((prevState) => prevState + 1);
-        }, 500)
+        setUpdateFiles((prevState) => prevState + 1);
       })
       .catch((error) => {
         notification.error({title: "Помилка завантаження файлу", description: error.message});

@@ -1,6 +1,6 @@
 "use client"
 
-import {FileViewer} from "@/features/file-viewer";
+import {FileViewer} from "@/entities/file/ui";
 import {useRouter} from "next/navigation";
 import {FullScreenModal} from "@/shared/ui-kit";
 
@@ -20,7 +20,7 @@ export default function FileViewerModalView(props: IProps) {
       open={true}
       width={"100%"}
     >
-      <FileViewer filePath={props.path} style={{height: "100%", width: "100%"}} />
+      <FileViewer file={props.path} style={{height: "100%", width: "100%"}} />
     </FullScreenModal>
   )
 }
