@@ -1,3 +1,12 @@
 .row {
   cursor: pointer !important;
 }
+
+.dropTarget {
+  outline: 2px dashed var(--ant-color-primary);
+  outline-offset: -2px;
+
+  td {
+    background: var(--ant-color-primary-bg) !important;
+  }
+}
