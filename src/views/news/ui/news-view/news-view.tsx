@@ -1,21 +1,18 @@
 "use client"
 
 import {INews} from "@/entities/news";
-import dynamic from "next/dynamic";
-import {ComponentCol, Loader} from "@/shared/ui-kit";
+import {ComponentCol} from "@/shared/ui-kit";
+import {DynamicPageRenderer} from "@/widgets/dynamic-page-renderer";
 import {Button, Flex, Image, theme, Typography} from "antd";
-import dayjs from "dayjs";
+import formatDate from "@/shared/utilities/format-date";
 import Link from "next/link";
+import {getFileAssetUrl} from "@/shared/utilities/file-urls";
+import type {PageComponentsData} from "@/entities/dynamic-page/model";
 
 interface IProps {
   news: INews;
+  componentsData?: PageComponentsData;
 }
-
-const DynamicPageRenderer = dynamic(() => import("@/widgets/dynamic-page-renderer").then(x => x.DynamicPageRenderer), {
-  ssr: false,
-  loading: () => <Loader/>
-});
-
 
 export default function NewsView(props: IProps) {
   const {token: {borderRadius, padding}} = theme.useToken();
@@ -28,17 +25,17 @@ export default function NewsView(props: IProps) {
             {props.news.title}
           </Typography.Title>
           <Typography.Text type="secondary">
-            {dayjs(props.news.date).format("D MMMM YYYY, dddd").toString()}
+            {formatDate(props.news.date)}
           </Typography.Text>
         </Flex>
         <Image
           width={"100%"}
           style={{height: "300px", objectFit: "cover", borderRadius: borderRadius}}
-          src={`/api/assets/${props.news.imagePath}`}
+          src={getFileAssetUrl(props.news.imageSlug) ?? "/missing-image.webp"}
           fallback="/missing-image.webp"
         />
       </ComponentCol>
-      <DynamicPageRenderer entities={props.news.entities}/>
+      <DynamicPageRenderer entities={props.news.entities} componentsData={props.componentsData}/>
       <Flex justify="center">
         <Link href={"/news"}>
           <Button type="primary">

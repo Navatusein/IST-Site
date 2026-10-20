@@ -1,19 +1,17 @@
 "use client"
 
-import dynamic from "next/dynamic";
-import {ComponentCol, Loader} from "@/shared/ui-kit";
+import {ComponentCol} from "@/shared/ui-kit";
+import {DynamicPageRenderer} from "@/widgets/dynamic-page-renderer";
 import {IDepartmentStaff} from "@/entities/department-staff";
 import {Card, Col, Flex, Image, Row, theme, Typography} from "antd";
 import {GlobalOutlined, MailOutlined} from "@ant-design/icons";
+import {getFileAssetUrl} from "@/shared/utilities/file-urls";
+import type {PageComponentsData} from "@/entities/dynamic-page/model";
 
 interface IProps {
   departmentStaff: IDepartmentStaff;
+  componentsData?: PageComponentsData;
 }
-
-const DynamicPageRenderer = dynamic(() => import("@/widgets/dynamic-page-renderer").then(x => x.DynamicPageRenderer), {
-  ssr: false,
-  loading: () => <Loader/>
-});
 
 export default function DepartmentStaffView(props: IProps) {
   const {token: {paddingLG, padding, paddingXS, borderRadius}} = theme.useToken();
@@ -29,7 +27,7 @@ export default function DepartmentStaffView(props: IProps) {
         >
           <Flex vertical gap="middle" style={{position: "sticky", top: paddingLG + 64, marginBottom: paddingLG}}>
             <Image
-              src={`/api/assets${props.departmentStaff.imagePath}`}
+              src={getFileAssetUrl(props.departmentStaff.imageSlug) ?? "/missing-image.webp"}
               fallback="/missing-image.webp"
               preview={false}
               style={{
@@ -81,7 +79,7 @@ export default function DepartmentStaffView(props: IProps) {
           sm={{span: 14}}
           xs={{span: 24}}
         >
-          <DynamicPageRenderer entities={props.departmentStaff.entities}/>
+          <DynamicPageRenderer entities={props.departmentStaff.entities} componentsData={props.componentsData}/>
         </Col>
       </Row>
     </ComponentCol>

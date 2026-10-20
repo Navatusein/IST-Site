@@ -1,33 +1,61 @@
-import {auth as proxy} from "./auth";
+import {NextRequest, NextResponse} from "next/server";
+import {SESSION_COOKIE_NAME, sessionCookieOptions, validateSessionToken} from "./auth";
 import {permissions} from "@/shared/configs/permissions-config"
 import resolveRequirementPermission from "@/shared/utilities/resolve-requirement-permission";
 import {UserPermissionType} from "@/entities/user";
-import {useServerAction} from "@/shared/hooks/use-server-action";
-import {getUserByIdAction} from "@/entities/user/actions/actions";
+import {resolveSiteTheme, THEME_COOKIE_NAME} from "@/shared/configs/site-theme";
 
-export default proxy(async (request) => {
-  const {nextUrl, auth} = request;
+function rewriteToTheme(request: NextRequest): NextResponse {
+  const url = request.nextUrl.clone();
+  url.pathname = `/${resolveSiteTheme(request.cookies.get(THEME_COOKIE_NAME)?.value)}${url.pathname}`;
 
-  if (auth == null)
-    return Response.redirect(new URL("/not-found", nextUrl));
+  const response = NextResponse.rewrite(url);
+
+  response.headers.set("Cache-Control", "private, no-cache");
+
+  return response;
+}
+
+async function guardAdmin(request: NextRequest): Promise<NextResponse> {
+  const {nextUrl} = request;
+
+  const token = request.cookies.get(SESSION_COOKIE_NAME)?.value;
+  const session = token ? await validateSessionToken(token, true) : null;
+
+  if (!session) {
+    const response = NextResponse.redirect(new URL("/not-found", nextUrl));
+
+    if (token)
+      response.cookies.delete(SESSION_COOKIE_NAME);
+
+    return response;
+  }
 
   const requiredPermission = resolveRequirementPermission(permissions, nextUrl.pathname);
 
-  const user = await useServerAction(getUserByIdAction(auth.user.id as unknown));
+  if (requiredPermission && !session.user.permissions.includes(requiredPermission as UserPermissionType))
+    return NextResponse.redirect(new URL("/admin/forbidden", nextUrl));
 
-  if (!user)
-    return Response.redirect(new URL("/requiredPermission", nextUrl));
+  const response = rewriteToTheme(request);
+  response.headers.set("Cache-Control", "private, no-store");
 
-  const userPermissions = user.permissions
+  if (session.renewed)
+    response.cookies.set(SESSION_COOKIE_NAME, token!, sessionCookieOptions(session.expiresAt));
 
-  if (requiredPermission && !userPermissions.includes(requiredPermission as UserPermissionType))
-    return Response.redirect(new URL("/requiredPermission", nextUrl));
+  return response;
+}
 
-  return;
-})
+export default async function proxy(request: NextRequest) {
+  const {pathname} = request.nextUrl;
+
+  if (pathname == "/admin" || pathname.startsWith("/admin/"))
+    return guardAdmin(request);
+
+  return rewriteToTheme(request);
+}
 
 export const config = {
   matcher: [
-    "/admin/:path*"
+    "/((?!api/|_next/|files/|icon\\.webp|missing-image\\.webp|red-corps\\.webp|favicon\\.ico).*)"
   ],
 }

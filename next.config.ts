@@ -7,9 +7,10 @@ const nextConfig: NextConfig = {
     position: "top-left"
   },
   allowedDevOrigins: process.env.DEV_ORIGINS?.split(","),
+  redirects: async () => [{source: "/", destination: "/home", permanent: false}],
   experimental: {
     serverActions: {
-      bodySizeLimit: "100mb"
+      bodySizeLimit: "10mb"
     },
   }
 };

@@ -55,7 +55,7 @@ export default function VerticalNavMenu(props: IProps) {
         />
         <Flex vertical style={{padding: `${padding}px ${paddingLG}px`}}>
           {isAuthorized ?
-            <Link style={{height: controlHeight, display: "flex"}} href={"/admin"}>
+            <Link prefetch={false} style={{height: controlHeight, display: "flex"}} href={"/admin"}>
               <Button block>
                 Адмін панель
               </Button>

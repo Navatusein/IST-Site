@@ -6,7 +6,7 @@ import {ItemType} from "antd/lib/menu/interface";
 import Link from "next/link";
 import VerticalNavMenu from "../vertical-nav-menu/vertical-nav-menu";
 import HorizontalNavMenu from "../horizontal-nav-menu/horizontal-nav-menu";
-import {useMediaQuery} from "react-responsive";
+import styles from "./public-nav-menu.module.scss";
 
 interface IProps {
   menuItems: IPublicMenuItem[]
@@ -26,14 +26,14 @@ export default function PublicNavMenu(props: IProps) {
     return mapToTreeData(props.menuItems);
   }, [props.menuItems]);
 
-  const isMobileWidth = useMediaQuery({maxWidth: 992})
-
   return (
     <>
-      {isMobileWidth ?
-        <VerticalNavMenu navMenuItems={navMenuItems}/> :
+      <div className={styles.horizontal}>
         <HorizontalNavMenu navMenuItems={navMenuItems}/>
-      }
+      </div>
+      <div className={styles.vertical}>
+        <VerticalNavMenu navMenuItems={navMenuItems}/>
+      </div>
     </>
   )
 }

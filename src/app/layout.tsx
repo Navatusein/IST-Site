@@ -1,35 +1,36 @@
 import "@/shared/styles/global.scss";
 
-import "@ant-design/v5-patch-for-react-19";
-
 import {ReactNode} from "react";
-import {BaseLayout} from "@/app/layouts/base-layout";
 import {Metadata} from "next";
-import {cookies} from "next/headers";
 import {AntdRegistry} from "@ant-design/nextjs-registry";
+import {getSiteSettingsAction} from "@/entities/site-settings/actions/actions";
+import {SITE_SETTINGS_DEFAULTS} from "@/entities/site-settings/types/type";
+import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 
 interface IProps {
   children: ReactNode;
 }
 
-export const metadata: Metadata = {
-  title: "Кафедра інформаційних систем та технологій КНУ імені Тараса Шевченка",
-  description: "Інформація про кафедру інформаційних систем та технологій КНУ імені Тараса Шевченка, її співробітників та аспірантів, освітні програми підготовки бакалаврів, магістрів та докторів філософії зі спеціальності 126 - &quot;Інформаційні системи та технології&quot;",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await unwrapServerAction(getSiteSettingsAction()).catch(() => SITE_SETTINGS_DEFAULTS);
 
-export default async function Layout(props: IProps) {
-  const cookieStore = await cookies()
-  const defaultTheme = cookieStore.get("theme")?.value || "light"
-  const systemTheme = cookieStore.get("systemTheme")?.value || "light"
+  return {
+    metadataBase: process.env.APP_PUBLIC_URL ? new URL(process.env.APP_PUBLIC_URL) : undefined,
+    title: {
+      default: settings.siteTitle,
+      template: `%s — ${settings.siteShortName}`
+    },
+    ...(settings.siteDescription && {description: settings.siteDescription}),
+  };
+}
 
+export default function Layout(props: IProps) {
   return (
-    <html lang="en" suppressHydrationWarning={true}>
+    <html lang="uk" suppressHydrationWarning>
       <body>
         <link rel="shortcut icon" href="/icon.webp"/>
         <AntdRegistry>
-          <BaseLayout defaultTheme={defaultTheme} systemTheme={systemTheme}>
-            {props.children}
-          </BaseLayout>
+          {props.children}
         </AntdRegistry>
       </body>
     </html>

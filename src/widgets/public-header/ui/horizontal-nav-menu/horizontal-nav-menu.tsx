@@ -24,7 +24,7 @@ export default function HorizontalNavMenu(props: IProps) {
       />
       <Flex gap="small" justify="center" align="center">
         {isAuthorized ?
-          <Link style={{height: controlHeight, display: "flex"}} href={"/admin"}>
+          <Link prefetch={false} style={{height: controlHeight, display: "flex"}} href={"/admin"}>
             <Button>
               Адмін панель
             </Button>

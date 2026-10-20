@@ -1,0 +1,15 @@
+.horizontal {
+  display: contents;
+
+  @media (max-width: 992px) {
+    display: none;
+  }
+}
+
+.vertical {
+  display: none;
+
+  @media (max-width: 992px) {
+    display: contents;
+  }
+}

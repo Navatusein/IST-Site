@@ -3,29 +3,27 @@
 import {Layout} from "antd";
 import {ReactNode} from "react";
 import {IPublicMenuItem} from "@/entities/public-menu-item";
-import dynamic from "next/dynamic";
+import {ISiteSettingsData} from "@/entities/site-settings";
+import {PublicHeader} from "@/widgets/public-header";
+import {PublicFooter} from "@/widgets/public-footer";
+import SessionProvider from "@/app/provider/session-provider/session-provider";
 
 interface IProps {
   children: ReactNode;
   menuItems: IPublicMenuItem[]
+  siteSettings: ISiteSettingsData;
 }
-
-const PublicHeader = dynamic(() => import("@/widgets/public-header/ui/public-header/public-header"), {
-  ssr: false
-});
-
-const PublicFooter = dynamic(() => import("@/widgets/public-footer/ui/public-footer/public-footer"), {
-  ssr: false
-});
 
 export default function PublicPageLayout(props: IProps) {
   return (
-    <Layout>
-      <PublicHeader menuItems={props.menuItems}/>
-      <Layout.Content style={{contain: "paint", minHeight: "calc(100svh - 60px)"}}>
-        {props.children}
-      </Layout.Content>
-      <PublicFooter/>
-    </Layout>
+    <SessionProvider>
+      <Layout>
+        <PublicHeader menuItems={props.menuItems}/>
+        <Layout.Content style={{contain: "paint", minHeight: "calc(100svh - 60px)"}}>
+          {props.children}
+        </Layout.Content>
+        <PublicFooter settings={props.siteSettings}/>
+      </Layout>
+    </SessionProvider>
   )
 }
