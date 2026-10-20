@@ -4,12 +4,16 @@ import {permissions} from "@/shared/configs/permissions-config"
 import resolveRequirementPermission from "@/shared/utilities/resolve-requirement-permission";
 import {UserPermissionType} from "@/entities/user";
 import {resolveSiteTheme, THEME_COOKIE_NAME} from "@/shared/configs/site-theme";
+import {isTestPageEnabled, TEST_PAGE_PATH} from "@/shared/configs/test-page";
 
 function rewriteToTheme(request: NextRequest): NextResponse {
   const url = request.nextUrl.clone();
-  url.pathname = `/${resolveSiteTheme(request.cookies.get(THEME_COOKIE_NAME)?.value)}${url.pathname}`;
+  const theme = resolveSiteTheme(request.cookies.get(THEME_COOKIE_NAME)?.value);
+  const isHiddenTestPage = (url.pathname == TEST_PAGE_PATH || url.pathname.startsWith(TEST_PAGE_PATH + "/")) && !isTestPageEnabled();
 
-  const response = NextResponse.rewrite(url);
+  url.pathname = isHiddenTestPage ? `/${theme}/not-found` : `/${theme}${url.pathname}`;
+
+  const response = NextResponse.rewrite(url, isHiddenTestPage ? {status: 404} : undefined);
 
   response.headers.set("Cache-Control", "private, no-cache");
 
