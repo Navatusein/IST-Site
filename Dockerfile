@@ -1,4 +1,4 @@
-FROM node:25-alpine AS base
+FROM node:26-alpine AS base
 
 LABEL org.opencontainers.image.source="https://github.com/Navatusein/IST-Site"
 
@@ -21,10 +21,11 @@ RUN npm run build
 FROM base AS runner
 WORKDIR /app
 
-RUN apk add --no-cache bash su-exec
-RUN apk add --update tini
+RUN apk add --no-cache su-exec
 
 ENV NODE_ENV=production
+# Dates rendered on the server (news, theses) must match the visitors' time zone
+ENV TZ=Europe/Kyiv
 
 ENV PORT=80
 ENV HOSTNAME="0.0.0.0"

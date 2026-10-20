@@ -1,0 +1,26 @@
+name: Build Release Image
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+
+concurrency:
+  group: build-release-image-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  image:
+    name: Image
+    uses: ./.github/workflows/build-image.yml
+    permissions:
+      packages: write
+      contents: read
+      attestations: write
+      id-token: write
+    with:
+      tags: |
+        type=semver,pattern={{version}}
+        type=semver,pattern={{major}}.{{minor}}
+        type=raw,value=latest
