@@ -1,156 +1,51 @@
-import {useMemo} from "react";
-import {IBasePageComponent} from "@/entities/dynamic-page";
-import {PageComponentError} from "@/shared/ui-kit";
-import ContactUsEditor from "../contact-us-editor/contact-us-editor";
-import {IContactUsPageComponent} from "../../types/type";
-import {App, Button, Card, Col, Flex, Form, Input, Row, theme, Typography} from "antd";
+import {Card, Col, Row, theme} from "antd";
 import {EnvironmentOutlined, MailOutlined, PhoneOutlined} from "@ant-design/icons";
-import {sendEmailAction} from "@/shared/services/email-service/actions/actions";
-import {useServerAction} from "@/shared/hooks/use-server-action";
+import {IPageComponentViewProps, usePageComponentData} from "@/entities/dynamic-page/model";
+import type {ISiteContacts} from "@/entities/site-settings";
+import getPhoneHref from "@/shared/utilities/get-phone-href";
+import {IContactUsContacts, IContactUsPageComponent} from "../../types/type";
+import ContactCard from "../contact-card/contact-card";
+import ContactUsForm from "../contact-us-form/contact-us-form";
 
-interface IProps {
-  component: IBasePageComponent;
-}
+export default function ContactUs(props: IPageComponentViewProps<IContactUsPageComponent, ISiteContacts>) {
+  const {token: {padding}} = theme.useToken();
 
-interface IFormData {
-  name: string;
-  email: string;
-  subject: string;
-  content: string;
-}
+  const siteContacts = usePageComponentData<ISiteContacts>(props.component, props.data);
 
-export default function ContactUs(props: IProps) {
-  const {token: {padding, paddingXS}} = theme.useToken();
-  const {notification} = App.useApp();
+  const {address, addressLink, email, phone}: IContactUsContacts =
+    props.component.useSiteContacts != false ? (siteContacts ?? {}) : props.component;
 
-  const typedComponent = useMemo(() => {
-    if (props.component.componentType !== "contact-us")
-      return null;
-
-    return props.component as IContactUsPageComponent;
-  }, [props]);
-
-  const formSubmit = (formData: IFormData) => {
-    const subject = `IST ${formData.subject} від: ${formData.name}`;
-    const content = `
-    Імя: ${formData.name}
-    Пошта: ${formData.email}
-    Тема: ${formData.subject}\n
-    ${formData.content}
-    `;
-
-    useServerAction(sendEmailAction(undefined, subject, content))
-      .then(() => {
-        notification.success({
-          title: "Ваше повідомлення успішно відправлено"
-        });
-      })
-      .catch(() => {
-        notification.error({
-          title: "Помилка відправлення повідомлення"
-        });
-      })
-  }
+  const contactSpan = email && phone ? 12 : 24;
+  const hasContacts = Boolean(address || email || phone);
 
   return (
-    <PageComponentError component={typedComponent}>
-      <Row gutter={[padding, padding]}>
-        <Col sm={{span: 24}} md={{span: 12}}>
+    <Row gutter={[padding, padding]}>
+      {hasContacts && (
+        <Col xs={24} md={12}>
           <Row gutter={[padding, padding]}>
-            <Col span={24}>
-              <Card variant="borderless">
-                <Flex vertical align="center" gap="small">
-                  <EnvironmentOutlined style={{fontSize: 32}}/>
-                  <Typography.Title level={4} style={{margin: 0}}>
-                    Наша адреса
-                  </Typography.Title>
-                  <Typography.Link style={{textAlign: "center"}} href={"https://maps.app.goo.gl/wEdHhfHdVc15HExb9"}>
-                    вул. Богдана Гаврилишина, 24, Київ
-                  </Typography.Link>
-                </Flex>
-              </Card>
-            </Col>
-            <Col span={12}>
-              <Card variant="borderless">
-                <Flex vertical align="center" gap="small">
-                  <MailOutlined style={{fontSize: 32}}/>
-                  <Typography.Title level={4} style={{margin: 0}}>
-                    Email
-                  </Typography.Title>
-                  <Typography.Link style={{textAlign: "center"}} href={"mailto:ist@fit.knu.ua"}>
-                    ist@fit.knu.ua
-                  </Typography.Link>
-                </Flex>
-              </Card>
-            </Col>
-            <Col span={12}>
-              <Card variant="borderless">
-                <Flex vertical align="center" gap="small">
-                  <PhoneOutlined style={{fontSize: 32}}/>
-                  <Typography.Title level={4} style={{margin: 0}}>
-                    Телефон
-                  </Typography.Title>
-                  <Typography.Link style={{textAlign: "center"}} href={"tel:+380445213356"}>
-                    044 521 33 56
-                  </Typography.Link>
-                </Flex>
-              </Card>
-            </Col>
+            {address && (
+              <Col span={24}>
+                <ContactCard icon={<EnvironmentOutlined/>} title="Наша адреса" text={address} href={addressLink || undefined}/>
+              </Col>
+            )}
+            {email && (
+              <Col xs={24} sm={contactSpan}>
+                <ContactCard icon={<MailOutlined/>} title="Email" text={email} href={`mailto:${email}`}/>
+              </Col>
+            )}
+            {phone && (
+              <Col xs={24} sm={contactSpan}>
+                <ContactCard icon={<PhoneOutlined/>} title="Телефон" text={phone} href={getPhoneHref(phone)}/>
+              </Col>
+            )}
           </Row>
         </Col>
-        <Col sm={{span: 24}} md={{span: 12}}>
-          <Card variant="borderless" style={{height: "100%"}} styles={{body: {height: "100%"}}}>
-            <Form layout="vertical" style={{height: "100%"}} onFinish={formSubmit}>
-              <Row gutter={[paddingXS, paddingXS]}>
-                <Col xs={{span: 24}} sm={{span: 12}}>
-                  <Form.Item<IFormData>
-                    name="name"
-                    style={{margin: 0}}
-                    rules={[{required: true, message: ""}]}
-                  >
-                    <Input placeholder="Ваше ім'я"/>
-                  </Form.Item>
-                </Col>
-                <Col xs={{span: 24}} sm={{span: 12}}>
-                  <Form.Item<IFormData>
-                    name="email"
-                    style={{margin: 0}}
-                    rules={[{required: true, message: ""}]}
-                  >
-                    <Input placeholder="Ваш Email"/>
-                  </Form.Item>
-                </Col>
-                <Col span={24}>
-                  <Form.Item<IFormData>
-                    name="subject"
-                    style={{margin: 0}}
-                  >
-                    <Input placeholder="Тема"/>
-                  </Form.Item>
-                </Col>
-                <Col span={24}>
-                  <Form.Item<IFormData>
-                    name="content"
-                    style={{margin: 0}}
-                    rules={[{required: true, message: ""}]}
-                  >
-                    <Input.TextArea placeholder="Повідомлення" style={{minHeight: 150}}/>
-                  </Form.Item>
-                </Col>
-                <Col span={24} style={{justifyItems: "center"}}>
-                  <Form.Item style={{margin: 0}}>
-                    <Button type="primary" htmlType="submit">
-                      Відправити
-                    </Button>
-                  </Form.Item>
-                </Col>
-              </Row>
-            </Form>
-          </Card>
-        </Col>
-      </Row>
-    </PageComponentError>
+      )}
+      <Col xs={24} md={hasContacts ? 12 : 24}>
+        <Card variant="borderless" style={{height: "100%"}}>
+          <ContactUsForm/>
+        </Card>
+      </Col>
+    </Row>
   )
 }
-
-ContactUs.Editor = ContactUsEditor

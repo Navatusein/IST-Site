@@ -1,14 +1,29 @@
 import {IBasePageComponent} from "@/entities/dynamic-page";
 
-export interface IContactUsPageComponent extends IBasePageComponent {
-
+export interface IContactUsContacts {
+  address?: string;
+  addressLink?: string;
+  email?: string;
+  phone?: string;
 }
 
-export const ContactUsComponentExample = {
-  name: "Зворотній зв'язок",
-  component: {
-    type: "component",
-    componentType: "contact-us",
-    width: "small"
-  } as IContactUsPageComponent
+export interface IContactUsPageComponent extends IBasePageComponent, IContactUsContacts {
+  componentType: "contact-us";
+  useSiteContacts?: boolean;
 }
+
+export interface IContactUsMessage {
+  name: string;
+  email: string;
+  subject?: string;
+  message: string;
+  website?: string;
+}
+
+export const CONTACT_US_LIMITS = {
+  name: 100,
+  email: 200,
+  subject: 200,
+  messageMin: 10,
+  message: 5000,
+};

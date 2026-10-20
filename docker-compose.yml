@@ -24,11 +24,13 @@ services:
     environment:
       - MONGODB_URI=mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@mongodb/${MONGODB_DATABASE}
       - APP_PUBLIC_URL=${APP_PUBLIC_URL}
-      - APP_SECRET=${APP_SECRET}
+      - TRUSTED_PROXY_COUNT=${TRUSTED_PROXY_COUNT:-1}
       - MAIL_HOST=${MAIL_HOST}
       - MAIL_PORT=${MAIL_PORT}
       - MAIL_USERNAME=${MAIL_USERNAME}
       - MAIL_PASSWORD=${MAIL_PASSWORD}
+      - MAIL_FROM_NAME=${MAIL_FROM_NAME}
+      - CONTACT_EMAIL_TO=${CONTACT_EMAIL_TO}
     restart: unless-stopped
 
 volumes:

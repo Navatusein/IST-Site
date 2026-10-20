@@ -3,7 +3,7 @@ declare namespace NodeJS {
     MONGODB_URI: string;
 
     APP_PUBLIC_URL: string;
-    APP_SECRET: string;
+    TRUSTED_PROXY_COUNT?: string;
 
     DEV_ORIGINS?: string;
 
@@ -14,5 +14,8 @@ declare namespace NodeJS {
     MAIL_PORT: number;
     MAIL_USERNAME: string;
     MAIL_PASSWORD: string;
+    MAIL_FROM_NAME?: string;
+
+    CONTACT_EMAIL_TO?: string;
   }
 }

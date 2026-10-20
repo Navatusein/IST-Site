@@ -7,7 +7,8 @@ export const defaultPermissions = [
   "edit-users",
   "edit-files",
   "edit-department-staff",
-  "edit-department-aspirants"
+  "edit-department-aspirants",
+  "edit-site-settings"
 ]
 
 export const permissions: PermissionType = {
@@ -15,6 +16,7 @@ export const permissions: PermissionType = {
     name: "Edit News",
     paths: [
       "/admin/news",
+      "/admin/news/[path]",
       "/admin/edit-page/news/[path]"
     ],
   },
@@ -22,13 +24,14 @@ export const permissions: PermissionType = {
     name: "Edit Dynamic Pages",
     paths: [
       "/admin/dynamic-pages",
-      "/admin/edit-page/dynamic-pages/[...path]"
+      "/admin/dynamic-pages/[...path]",
+      "/admin/edit-page/dynamic-page/[...path]"
     ],
   },
   "edit-public-menu": {
     name: "Edit Public Pages",
     paths: [
-      "/admin/public-manu"
+      "/admin/public-menu"
     ],
   },
   "edit-users": {
@@ -47,13 +50,20 @@ export const permissions: PermissionType = {
     name: "Edit Department Staff",
     paths: [
       "/admin/department-staff",
+      "/admin/department-staff/[path]",
       "/admin/edit-page/department-staff/[path]"
     ],
   },
   "edit-department-aspirants": {
     name: "Edit Department Aspirants",
     paths: [
-      "/admin/edit-department-aspirants",
+      "/admin/department-aspirants",
+    ],
+  },
+  "edit-site-settings": {
+    name: "Edit Site Settings",
+    paths: [
+      "/admin/site-settings"
     ],
   },
 };
