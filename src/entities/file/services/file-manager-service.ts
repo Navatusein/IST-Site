@@ -188,7 +188,7 @@ export class FileManagerService {
   public static async findServableFile(segments: string[]): Promise<IServableFile | null> {
     let entry: IFileEntryDocument | null = null;
 
-    if (segments.length == 1)
+    if (segments.length == 1 || segments.length == 2)
       entry = await FileEntryModel.findOne({slug: segments[0], kind: "file"}).lean<IFileEntryDocument>();
 
     if (!entry)

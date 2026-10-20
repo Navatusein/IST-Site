@@ -5,6 +5,10 @@ export function getFileAssetUrl(slug: string | null | undefined): string | undef
   return slug ? `/api/assets/${encodeURIComponent(slug)}` : undefined;
 }
 
+export function getFileNamedAssetUrl(slug: string, name: string): string {
+  return `${getFileAssetUrl(slug)}/${encodeURIComponent(name)}`;
+}
+
 export function getFileDownloadUrl(slug: string): string {
   return `${getFileAssetUrl(slug)}?download`;
 }

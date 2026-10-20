@@ -5,7 +5,7 @@ import {FileTypeIcon} from "@/entities/file/ui";
 import {IPageComponentViewProps, usePageComponentData} from "@/entities/dynamic-page/model";
 import type {PageLinkFiles} from "@/features/page-link";
 import formatFileSize from "@/shared/utilities/format-file-size";
-import {getFileAssetUrl, getFileDownloadUrl, getFileViewUrl} from "@/shared/utilities/file-urls";
+import {getFileAssetUrl, getFileDownloadUrl, getFileNamedAssetUrl, getFileViewUrl} from "@/shared/utilities/file-urls";
 import {DocumentAspectRatio, IDocumentPageComponent} from "../../types/type";
 import {DocumentKind, getDocumentKind} from "../../utilities/get-document-kind";
 
@@ -65,7 +65,7 @@ export default function DocumentView(props: IPageComponentViewProps<IDocumentPag
 
   if ((kind == "office" || kind == "presentation") && origin) {
     preview = isPublicOrigin(origin) ?
-      frame(`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(origin + assetUrl)}`) :
+      frame(`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(origin + getFileNamedAssetUrl(slug, file.name))}`) :
       <Alert type="info" showIcon title="Перегляд документів Office працює лише на опублікованому сайті"/>;
   }
 
