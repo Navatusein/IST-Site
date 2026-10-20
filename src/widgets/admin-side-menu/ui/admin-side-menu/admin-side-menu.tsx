@@ -9,7 +9,7 @@ import {
   FileTextOutlined,
   FolderOpenOutlined,
   ProfileOutlined,
-  ReadOutlined, SolutionOutlined,
+  ReadOutlined, SettingOutlined, SolutionOutlined,
   TeamOutlined,
   UserOutlined
 } from "@ant-design/icons";
@@ -29,25 +29,28 @@ export default function AdminSideMenu() {
     const items: MenuProps["items"]  = []
 
     if (userPermissions.includes("edit-news"))
-      items.push({key: "news-control", icon: <ReadOutlined/>, label: <Link href={"/admin/news"}>Новини</Link>});
+      items.push({key: "news-control", icon: <ReadOutlined/>, label: <Link prefetch={false} href={"/admin/news"}>Новини</Link>});
 
     if (userPermissions.includes("edit-dynamic-pages"))
-      items.push({key: "edit-pages", icon: <FileTextOutlined/>, label: <Link href={"/admin/dynamic-pages"}>Динамічні сторінки</Link>});
+      items.push({key: "edit-pages", icon: <FileTextOutlined/>, label: <Link prefetch={false} href={"/admin/dynamic-pages"}>Динамічні сторінки</Link>});
 
     if (userPermissions.includes("edit-public-menu"))
-      items.push({key: "edit-menu", icon: <ProfileOutlined/>, label: <Link href={"/admin/public-menu"}>Навігаційне меню</Link>});
+      items.push({key: "edit-menu", icon: <ProfileOutlined/>, label: <Link prefetch={false} href={"/admin/public-menu"}>Навігаційне меню</Link>});
 
     if (userPermissions.includes("edit-department-staff"))
-      items.push({key: "edit-department-staff", icon: <TeamOutlined/>, label: <Link href={"/admin/department-staff"}>Співробітники кафедри</Link>});
+      items.push({key: "edit-department-staff", icon: <TeamOutlined/>, label: <Link prefetch={false} href={"/admin/department-staff"}>Співробітники кафедри</Link>});
 
     if (userPermissions.includes("edit-department-aspirants"))
-      items.push({key: "edit-department-aspirants", icon: <SolutionOutlined/>, label: <Link href={"/admin/department-aspirants"}>Аспіранти кафедри</Link>});
+      items.push({key: "edit-department-aspirants", icon: <SolutionOutlined/>, label: <Link prefetch={false} href={"/admin/department-aspirants"}>Аспіранти кафедри</Link>});
 
     if (userPermissions.includes("edit-files"))
-      items.push({key: "files-manager", icon: <FolderOpenOutlined/>, label: <Link href={"/admin/file-manager"}>Файловий менеджер</Link>});
+      items.push({key: "files-manager", icon: <FolderOpenOutlined/>, label: <Link prefetch={false} href={"/admin/file-manager"}>Файловий менеджер</Link>});
 
     if (userPermissions.includes("edit-users"))
-      items.push({key: "user-control", icon: <UserOutlined/>, label: <Link href={"/admin/users"}>Користувачі</Link>});
+      items.push({key: "user-control", icon: <UserOutlined/>, label: <Link prefetch={false} href={"/admin/users"}>Користувачі</Link>});
+
+    if (userPermissions.includes("edit-site-settings"))
+      items.push({key: "site-settings", icon: <SettingOutlined/>, label: <Link prefetch={false} href={"/admin/site-settings"}>Налаштування сайту</Link>});
 
     return items;
   }, [userPermissions])

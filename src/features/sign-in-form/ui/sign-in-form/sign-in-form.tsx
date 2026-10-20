@@ -3,10 +3,10 @@
 import {actionSignIn} from "../../actions/actions";
 import {App, Button, Card, Flex, Form, Input} from "antd";
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
-import {redirect} from "next/navigation";
-import {useSession} from "next-auth/react";
+import {useRouter} from "next/navigation";
+import {useState} from "react";
 import {Icon} from "@/shared/ui-kit";
-import {useServerAction} from "@/shared/hooks/use-server-action";
+import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 
 interface IFormData {
   login: string;
@@ -15,39 +15,35 @@ interface IFormData {
 
 export default function SignInForm() {
   const {notification} = App.useApp();
+  const router = useRouter();
 
-  const {update} = useSession();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const onFormSubmit = async (data: IFormData) => {
-    let redirectPath: string | null = null
+  const onFormSubmit = (data: IFormData) => {
+    setIsLoading(() => true);
 
-    useServerAction(actionSignIn(data.login, data.password))
-      .then((data) => {
-        update();
-
-        if (data?.startsWith("http")){
-          redirectPath = data
-          return;
-        }
-
-        switch (data) {
-          case "CouldNotParseError":
-          case "InvalidPasswordError":
-            notification.error({title: "Помилка авторизації", description: "Неправильний логін чи пароль"});
-            break
+    unwrapServerAction(actionSignIn(data.login, data.password))
+      .then((result) => {
+        switch (result) {
+          case "Success":
+            router.push("/admin");
+            router.refresh();
+            return;
+          case "TooManyAttempts":
+            notification.error({title: "Помилка авторизації", description: "Забагато спроб входу, спробуйте пізніше"});
+            break;
           default:
-            notification.error({title: "Помилка авторизації", description: "Невідома помилка"});
+            notification.error({title: "Помилка авторизації", description: "Неправильний логін чи пароль"});
             break;
         }
+
+        setIsLoading(() => false);
       })
       .catch((error) => {
         console.log(error);
         notification.error({title: "Помилка авторизації", description: "Невідома помилка"});
-      })
-      .finally(() => {
-        if (redirectPath)
-          redirect(redirectPath);
-      })
+        setIsLoading(() => false);
+      });
   }
 
   return (
@@ -79,7 +75,7 @@ export default function SignInForm() {
             />
           </Form.Item>
           <Form.Item style={{marginBottom: 0}}>
-            <Button block type="primary" htmlType="submit">
+            <Button block type="primary" htmlType="submit" loading={isLoading}>
               Увійти
             </Button>
           </Form.Item>

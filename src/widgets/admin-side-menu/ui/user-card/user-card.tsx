@@ -1,19 +1,14 @@
 "use client"
 
 import {Avatar, Flex, Typography} from "antd";
-import {useSession} from "next-auth/react";
-import {useMemo} from "react";
+import {useCurrentUser} from "@/entities/user/hooks/useCurrentUser";
 
 interface IProps {
   isMenuClosed: boolean;
 }
 
 export default function UserCard(props: IProps) {
-  const session = useSession()
-
-  const userName = useMemo(() => {
-    return session.data?.user?.name
-  }, [session])
+  const userName = useCurrentUser()?.name;
 
   return (
     <Flex
@@ -23,7 +18,7 @@ export default function UserCard(props: IProps) {
       gap={10}
     >
       <Avatar size="default" style={{minWidth: "32px"}}>
-        {session.data?.user?.name?.slice(0, 1).toUpperCase()}
+        {userName?.slice(0, 1).toUpperCase()}
       </Avatar>
 
       {!props.isMenuClosed &&

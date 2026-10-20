@@ -7,7 +7,8 @@ export type UserPermissionType =
   "edit-users" |
   "edit-files" |
   "edit-department-staff" |
-  "edit-department-aspirants";
+  "edit-department-aspirants" |
+  "edit-site-settings";
 
 export interface IUser extends Document {
   login: string,
@@ -18,4 +19,11 @@ export interface IUser extends Document {
 
 export interface IUserMethods {
   setPassword(password: string): Promise<void>;
+}
+
+export interface ICurrentUser {
+  id: string;
+  login: string;
+  name: string;
+  permissions: UserPermissionType[];
 }
