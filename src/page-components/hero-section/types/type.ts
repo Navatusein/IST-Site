@@ -1,21 +1,8 @@
 import {IBasePageComponent} from "@/entities/dynamic-page";
 
 export interface IHeroSectionPageComponent extends IBasePageComponent {
+  componentType: "hero-section";
   title: string;
-  imagePath?: string;
+  imageSlug?: string;
   imageHeight: number;
-  allowedWidth: ["large"];
-}
-
-export const HeroSectionComponentExample = {
-  name: "Вітальний блок",
-  component: {
-    type: "component",
-    componentType: "hero-section",
-    title: "{\"type\":\"doc\",\"content\":[{\"type\":\"heading\",\"attrs\":{\"level\":1},\"content\":[{\"type\":\"text\",\"text\":\"Заголовок\"}]}]}",
-    imagePath: undefined,
-    imageHeight: 400,
-    allowedWidth: ["large"],
-    width: "large"
-  } as IHeroSectionPageComponent
 }

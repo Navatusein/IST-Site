@@ -1,0 +1,51 @@
+.item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px var(--ant-padding-xs);
+  border-radius: var(--ant-border-radius);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--ant-color-fill-tertiary);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ant-color-primary);
+    outline-offset: -2px;
+  }
+}
+
+.active,
+.active:hover {
+  background: var(--ant-color-primary-bg);
+}
+
+.handle {
+  display: flex;
+}
+
+.number {
+  min-width: 22px;
+  flex-shrink: 0;
+  text-align: center;
+  font-size: 12px;
+  border-radius: 4px;
+  background: var(--ant-color-fill-tertiary);
+  color: var(--ant-color-text-secondary);
+
+  .active & {
+    background: var(--ant-color-primary);
+    color: var(--ant-color-bg-container);
+  }
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.details {
+  font-size: 12px;
+}

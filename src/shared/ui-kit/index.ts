@@ -2,8 +2,26 @@ import ComponentCol from "./component-col/component-col";
 import DynamicIcon from "./dynamic-icon/dynamic-icon";
 import Icon from "./icon/icon";
 import Loader from "./loader/loader";
-import PageComponentError from "./page-component-error/page-component-error";
 import DepartmentPersonCard from "./department-person-card/department-person-card";
 import FullScreenModal from "./full-screen-modal/full-screen-modal";
+import ErrorBoundary from "./error-boundary/error-boundary";
+import EditorForm from "./editor-form/editor-form";
+import {EditorFormHostContext, useEditorFormHost} from "./editor-form/editor-form-host";
+import FormSortableList from "./form-sortable-list/form-sortable-list";
+import {DraggableList, moveItem} from "./draggable-list";
 
-export {PageComponentError, Icon, DynamicIcon, Loader, ComponentCol, DepartmentPersonCard, FullScreenModal};
+export {
+  Icon,
+  DynamicIcon,
+  Loader,
+  ComponentCol,
+  DepartmentPersonCard,
+  FullScreenModal,
+  ErrorBoundary,
+  EditorForm,
+  EditorFormHostContext,
+  useEditorFormHost,
+  FormSortableList,
+  DraggableList,
+  moveItem
+};

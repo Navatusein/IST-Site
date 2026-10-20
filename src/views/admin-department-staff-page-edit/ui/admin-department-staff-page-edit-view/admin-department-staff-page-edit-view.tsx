@@ -3,7 +3,7 @@
 import {IDepartmentStaff} from "@/entities/department-staff";
 import {useEffect, useState} from "react";
 import {IPageEntity} from "@/entities/dynamic-page";
-import {useServerAction} from "@/shared/hooks/use-server-action";
+import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 import {updateDepartmentStaffAction} from "@/entities/department-staff/actions/actions";
 import {DynamicPageEditor} from "@/widgets/dynamic-page-editor";
 
@@ -25,7 +25,7 @@ export default function AdminDepartmentStaffPageEditView(props: IProps) {
   }
 
   const saveEntities = async () => {
-    await useServerAction(updateDepartmentStaffAction(departmentStaff));
+    await unwrapServerAction(updateDepartmentStaffAction(departmentStaff));
   }
 
   return (

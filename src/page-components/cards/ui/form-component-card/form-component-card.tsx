@@ -1,38 +1,34 @@
-import {Button, Card, Flex, Form, FormListFieldData, FormListOperation} from "antd";
-import {PlusOutlined} from "@ant-design/icons";
+import {Form, FormListFieldData, FormListOperation} from "antd";
 import {RichTextEditor} from "@/features/rich-text-editor";
+import {FormSortableList} from "@/shared/ui-kit";
+import richTextToPlainText from "@/shared/utilities/rich-text-to-plain-text";
+import {ICardsPageComponent} from "../../types/type";
 
 interface IProps {
   fields: FormListFieldData[],
-  operations:  FormListOperation
+  operations: FormListOperation
 }
 
+type Card = ICardsPageComponent["cards"][number];
+
 export default function FormComponentCard(props: IProps) {
+  const getTitle = (card: Card | undefined, index: number) => {
+    const text = richTextToPlainText(card?.content);
+    return text ? `Картка ${index + 1}: ${text}` : `Картка ${index + 1}`;
+  }
+
   return (
-    <>
-      {props.fields.map(({key, name, ...restField}) => (
-        <Card key={key} size="small">
-          <Flex vertical gap="small">
-            <Form.Item
-              {...restField}
-              name={[name, "content"]}
-              label="Контент картки"
-              style={{marginBottom: 0}}
-              extra="Редагування контенту картки"
-            >
-              <RichTextEditor/>
-            </Form.Item>
-            <Button onClick={() => props.operations.remove(name)} danger>
-              Видалити
-            </Button>
-          </Flex>
-        </Card>
-      ))}
-      <Form.Item style={{marginBottom: 0}}>
-        <Button type="dashed" onClick={() => props.operations.add()} block icon={<PlusOutlined/>}>
-          Додати картку
-        </Button>
-      </Form.Item>
-    </>
+    <FormSortableList<Card>
+      listName="cards"
+      fields={props.fields}
+      operations={props.operations}
+      getTitle={getTitle}
+      renderFields={(field) => (
+        <Form.Item name={[field.name, "content"]} style={{marginBottom: 0}}>
+          <RichTextEditor/>
+        </Form.Item>
+      )}
+      addLabel="Додати картку"
+    />
   )
 }

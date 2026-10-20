@@ -1,28 +1,21 @@
-import Blockquote from "@tiptap/extension-blockquote";
-import {NodeViewContent, NodeViewProps, NodeViewWrapper, ReactNodeViewRenderer} from "@tiptap/react";
+"use client"
+
+import {ReactNode} from "react";
 import {theme, Typography} from "antd";
 
-export function AntHeadingComponent(props: NodeViewProps) {
+export default function AntBlockquote(props: {children?: ReactNode}) {
   const {token: {colorBorderSecondary, paddingLG, colorTextSecondary}} = theme.useToken();
 
   return (
-    <NodeViewWrapper>
-      <Typography.Paragraph
-        italic
-        style={{
-          borderLeft: `4px solid ${colorBorderSecondary}`,
-          paddingLeft: paddingLG,
-          color: colorTextSecondary
-        }}
-      >
-        <NodeViewContent/>
-      </Typography.Paragraph>
-    </NodeViewWrapper>
-  );
+    <Typography.Paragraph
+      italic
+      style={{
+        borderLeft: `4px solid ${colorBorderSecondary}`,
+        paddingLeft: paddingLG,
+        color: colorTextSecondary
+      }}
+    >
+      {props.children}
+    </Typography.Paragraph>
+  )
 }
-
-export default Blockquote.extend({
-  addNodeView: () => {
-    return ReactNodeViewRenderer(AntHeadingComponent);
-  }
-})

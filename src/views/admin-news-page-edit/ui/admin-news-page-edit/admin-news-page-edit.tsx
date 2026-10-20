@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 import {IPageEntity} from "@/entities/dynamic-page";
 import {INews} from "@/entities/news";
 import {updateNewsAction} from "@/entities/news/actions/actions";
-import {useServerAction} from "@/shared/hooks/use-server-action";
+import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 import dynamic from "next/dynamic";
 import {Loader} from "@/shared/ui-kit";
 
@@ -14,7 +14,7 @@ interface IProps {
 
 const DynamicPageEditor = dynamic(() => import("@/widgets/dynamic-page-editor/ui/dynamic-page-editor/dynamic-page-editor"), {
   ssr: false,
-  loading: () => <Loader/>
+  loading: () => <Loader fullScreen/>
 });
 
 export default function AdminNewsPageEdit(props: IProps) {
@@ -31,7 +31,7 @@ export default function AdminNewsPageEdit(props: IProps) {
   }
 
   const saveEntities = async () => {
-    await useServerAction(updateNewsAction(news));
+    await unwrapServerAction(updateNewsAction(news));
   }
 
   return (

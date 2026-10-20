@@ -1,66 +1,38 @@
-import {useMemo} from "react";
-import {IBasePageComponent} from "@/entities/dynamic-page";
-import {PageComponentError} from "@/shared/ui-kit";
-import {IHeroSectionPageComponent} from "../../types/type";
 import {Flex, Form, InputNumber} from "antd";
-import {SelectFileButton} from "@/features/select-file-button";
+import {SelectFileButton} from "@/entities/file/ui";
+import {IPageComponentEditorProps} from "@/entities/dynamic-page/model";
+import {EditorForm} from "@/shared/ui-kit";
 import {RichTextEditor} from "@/features/rich-text-editor";
+import {IHeroSectionPageComponent} from "../../types/type";
 
-interface IProps {
-  component: IBasePageComponent;
-  onChange: (value: IBasePageComponent) => void;
-}
-
-export default function HeroSectionEditor(props: IProps) {
-  const [form] = Form.useForm();
-
-  const typedComponent = useMemo(() => {
-    if (props.component.componentType !== "hero-section")
-      return null;
-
-    return props.component as IHeroSectionPageComponent;
-  }, [props]);
-
-  const onChange = () => {
-    props.onChange(form.getFieldsValue(true));
-  }
-
+export default function HeroSectionEditor(props: IPageComponentEditorProps<IHeroSectionPageComponent>) {
   return (
-    <PageComponentError component={typedComponent}>
-      <Form
-        form={form}
-        layout="vertical"
-        initialValues={typedComponent as never}
-        style={{width: "100%", marginTop: "-24px"}}
-        onFieldsChange={onChange}
-      >
-        <Flex vertical gap="small">
-          <Form.Item<IHeroSectionPageComponent>
-            label="Заголовок"
-            name="title"
-            style={{marginBottom: 0}}
-            extra="Заголовок сторінки"
-          >
-            <RichTextEditor style={{textAlign: "center"}}/>
-          </Form.Item>
-          <Form.Item<IHeroSectionPageComponent>
-            label="Малюнок"
-            name="imagePath"
-            extra="Малюнок новини"
-            style={{marginBottom: 0}}
-          >
-            <SelectFileButton filter={["image"]}/>
-          </Form.Item>
-          <Form.Item<IHeroSectionPageComponent>
-            label="Вистота малюнку"
-            name="imageHeight"
-            style={{marginBottom: 0}}
-            extra="Вистота яку буде займати малюнок"
-          >
-            <InputNumber min={100} style={{width: "100%"}}/>
-          </Form.Item>
-        </Flex>
-      </Form>
-    </PageComponentError>
+    <EditorForm value={props.component} onChange={props.onChange} style={{marginTop: "-24px"}}>
+      <Flex vertical gap="small">
+        <Form.Item<IHeroSectionPageComponent>
+          label="Заголовок"
+          name="title"
+          style={{marginBottom: 0}}
+        >
+          <RichTextEditor style={{textAlign: "center"}}/>
+        </Form.Item>
+        <Form.Item<IHeroSectionPageComponent>
+          label="Малюнок"
+          name="imageSlug"
+          extra="Фон під заголовком"
+          style={{marginBottom: 0}}
+        >
+          <SelectFileButton filter={["image"]}/>
+        </Form.Item>
+        <Form.Item<IHeroSectionPageComponent>
+          label="Висота малюнку"
+          name="imageHeight"
+          style={{marginBottom: 0}}
+          extra="Висота фону в пікселях"
+        >
+          <InputNumber min={100} style={{width: "100%"}}/>
+        </Form.Item>
+      </Flex>
+    </EditorForm>
   )
 }

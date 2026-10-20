@@ -1,27 +1,14 @@
 import {useMemo} from "react";
-import {IBasePageComponent} from "@/entities/dynamic-page";
-import {PageComponentError} from "@/shared/ui-kit";
-import CardsEditor from "../cards-editor/cards-editor";
-import {ICardsPageComponent} from "../../types/type";
 import {Card, Col, Row, theme} from "antd";
 import {RichTextRenderer} from "@/features/rich-text-renderer";
+import {IPageComponentViewProps} from "@/entities/dynamic-page/model";
+import {ICardsPageComponent} from "../../types/type";
 
-interface IProps {
-  component: IBasePageComponent;
-}
-
-export default function Cards(props: IProps) {
+export default function Cards(props: IPageComponentViewProps<ICardsPageComponent>) {
   const {token: {padding}} = theme.useToken();
 
-  const typedComponent = useMemo(() => {
-    if (props.component.componentType !== "cards")
-      return null;
-
-    return props.component as ICardsPageComponent;
-  }, [props]);
-
   const colConfigs = useMemo(() => {
-    if (typedComponent?.width == "small"){
+    if (props.component.width == "small"){
       return {
         ["count-2"]: {
           lg: 12,
@@ -57,29 +44,25 @@ export default function Cards(props: IProps) {
         }
       };
     }
-  }, [typedComponent?.width]);
+  }, [props.component.width]);
 
   const getIndex = (index: number): "count-2" | "count-2-first" | "count-3" | "count-3-first" => {
-    return (index == 0 && typedComponent!.cards.length % typedComponent!.cardsInRow == 1) ?
-      `count-${typedComponent!.cardsInRow as 2 | 3}-first`: `count-${typedComponent!.cardsInRow as 2 | 3}`;
+    return (index == 0 && props.component.cards.length % props.component.cardsInRow == 1) ?
+      `count-${props.component.cardsInRow}-first`: `count-${props.component.cardsInRow}`;
   }
 
   return (
-    <PageComponentError component={typedComponent}>
-      <Row gutter={[padding, padding]}>
-        {typedComponent!.cards.map((card, index) => (
-          <Col
-            key={`card-${index}`}
-            {...colConfigs[getIndex(index)]}
-          >
-            <Card style={{height: "100%"}} styles={{body: {height: "100%"}}}>
-              <RichTextRenderer content={card.content}/>
-            </Card>
-          </Col>
-        ))}
-      </Row>
-    </PageComponentError>
+    <Row gutter={[padding, padding]}>
+      {props.component.cards.map((card, index) => (
+        <Col
+          key={`card-${index}`}
+          {...colConfigs[getIndex(index)]}
+        >
+          <Card style={{height: "100%"}} styles={{body: {height: "100%"}}}>
+            <RichTextRenderer content={card.content}/>
+          </Card>
+        </Col>
+      ))}
+    </Row>
   )
 }
-
-Cards.Editor = CardsEditor

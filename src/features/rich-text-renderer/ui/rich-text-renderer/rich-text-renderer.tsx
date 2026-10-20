@@ -1,9 +1,7 @@
-"use client"
-
-import {ExtensionsForRender} from "@/shared/rich-text-extensions"
-import {EditorContent, useEditor} from "@tiptap/react";
 import {CSSProperties} from "react";
 import tryCatch from "@/shared/utilities/try-catch";
+import {IRichTextNode} from "@/shared/rich-text-extensions/types";
+import {renderNode} from "../../utilities/render-rich-text";
 
 interface IProps {
   content: string;
@@ -12,15 +10,11 @@ interface IProps {
 }
 
 export default function RichTextRenderer(props: IProps) {
-  const editor = useEditor({
-    editable: false,
-    extensions: ExtensionsForRender,
-    content: tryCatch(() => JSON.parse(props.content ?? ""), null),
-    immediatelyRender: false,
-    shouldRerenderOnTransaction: false,
-  }, [props.content])
+  const doc: IRichTextNode | null = tryCatch(() => JSON.parse(props.content ?? ""), null);
 
   return (
-    <EditorContent editor={editor} className={props.className} style={props.style}/>
+    <div className={props.className} style={props.style}>
+      {doc && renderNode(doc, 0)}
+    </div>
   )
 }

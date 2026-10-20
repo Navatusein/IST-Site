@@ -1,15 +1,8 @@
 import {IBasePageComponent} from "@/entities/dynamic-page";
+import {IDepartmentStaff} from "@/entities/department-staff";
 
 export interface IDepartmentStaffListPageComponent extends IBasePageComponent {
-  allowedWidth: ["medium"];
+  componentType: "department-staff-list";
 }
 
-export const DepartmentStaffListComponentExample = {
-  name: "Список співробітників",
-  component: {
-    type: "component",
-    componentType: "department-staff-list",
-    allowedWidth: ["medium"],
-    width: "medium"
-  } as IDepartmentStaffListPageComponent
-}
+export type DepartmentStaffListData = IDepartmentStaff[];

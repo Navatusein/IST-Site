@@ -1,62 +1,45 @@
 import {useMemo} from "react";
-import {IBasePageComponent} from "@/entities/dynamic-page";
-import {PageComponentError} from "@/shared/ui-kit";
-import GalleryCarouselEditor from "../gallery-carousel-editor/gallery-carousel-editor";
+import {Card, Carousel, Col, Grid, Image} from "antd";
+import {IPageComponentViewProps} from "@/entities/dynamic-page/model";
+import {getFileAssetUrl} from "@/shared/utilities/file-urls";
 import {IGalleryCarouselPageComponent} from "../../types/type";
-import {Card, Carousel, Col, Image} from "antd";
 import styles from "./gallery-carousel.module.scss";
 
-interface IProps {
-  component: IBasePageComponent;
-}
+export default function GalleryCarousel(props: IPageComponentViewProps<IGalleryCarouselPageComponent>) {
+  const imageUrls = useMemo(() => (
+    props.component.imageSlugs.filter(Boolean).map((imageSlug) => getFileAssetUrl(imageSlug))
+  ), [props.component.imageSlugs]);
 
-export default function GalleryCarousel(props: IProps) {
-  const typedComponent = useMemo(() => {
-    if (props.component.componentType !== "gallery-carousel")
-      return null;
-
-    return props.component as IGalleryCarouselPageComponent;
-  }, [props]);
-
-  const fullImagePaths = useMemo(() => (
-    typedComponent?.imagePaths.map(imagePath => `/api/assets${imagePath}`) ?? []
-  ), [typedComponent?.imagePaths]);
+  const screens = Grid.useBreakpoint();
+  const isMeasured = Object.keys(screens).length != 0;
+  const slidesToShow = !isMeasured || screens.xl ? 3 : screens.lg ? 2 : 1;
 
   return (
-    <PageComponentError component={typedComponent}>
-      <Card variant="borderless" style={{borderRadius: 0}}>
-        <Carousel
-          slidesToShow={3}
-          autoplay={true}
-          infinite={true}
-          arrows={true}
-          className={styles.carousel}
-          responsive={[
-            {breakpoint: 1200, settings: {slidesToShow: 2}},
-            {breakpoint: 992, settings: {slidesToShow: 1}},
-          ]}
-        >
-          {fullImagePaths.map((imagePath) => (
-            <div>
-              <Col className={styles.container}>
-                <Image.PreviewGroup
-                  items={fullImagePaths}
-                >
-                  <Image
-                    key={`image-${imagePath}`}
-                    className={styles.image}
-                    width={"100%"}
-                    src={imagePath}
-                    fallback="/missing-image.webp"
-                  />
-                </Image.PreviewGroup>
-              </Col>
-            </div>
-          ))}
-        </Carousel>
-      </Card>
-    </PageComponentError>
+    <Card variant="borderless" style={{borderRadius: 0}}>
+      <Carousel
+        slidesToShow={Math.min(slidesToShow, Math.max(imageUrls.length, 1))}
+        autoplay={true}
+        infinite={true}
+        arrows={true}
+        className={styles.carousel}
+      >
+        {imageUrls.map((imageUrl, index) => (
+          <div key={`image-${index}`}>
+            <Col className={styles.container}>
+              <Image.PreviewGroup
+                items={imageUrls}
+              >
+                <Image
+                  className={styles.image}
+                  width={"100%"}
+                  src={imageUrl}
+                  fallback="/missing-image.webp"
+                />
+              </Image.PreviewGroup>
+            </Col>
+          </div>
+        ))}
+      </Carousel>
+    </Card>
   )
 }
-
-GalleryCarousel.Editor = GalleryCarouselEditor

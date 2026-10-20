@@ -1,5 +1,5 @@
 import {Form, Select} from "antd";
-import {ICardsPageComponent} from "@/page-components/cards";
+import {ICardsPageComponent} from "../../types/type";
 
 export default function FormComponentCommon() {
   return (
@@ -8,7 +8,7 @@ export default function FormComponentCommon() {
         label="Кількість карток в ряд"
         name="cardsInRow"
         style={{marginBottom: 0}}
-        extra="Кількість карток яка буде відображатись ряду"
+        extra="На вузьких екранах картки йдуть одна під одною"
       >
         <Select
           options={[

@@ -16,12 +16,21 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
+  padding: 0 var(--ant-padding);
 }
 
 .titleTypography {
   text-align: center !important;
   color: var(--ant-color-text-light-solid) !important;
   margin: 0 !important;
+}
+
+h1.titleTypography {
+  font-size: clamp(22px, 6.5vw, var(--ant-font-size-heading-1)) !important;
+}
+
+h3.titleTypography {
+  font-size: clamp(16px, 4.5vw, var(--ant-font-size-heading-3)) !important;
 }
 
 .textFlexContainer {

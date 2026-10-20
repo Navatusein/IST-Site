@@ -1,23 +1,16 @@
-import Paragraph from "@tiptap/extension-paragraph";
-import {NodeViewContent, NodeViewProps, NodeViewWrapper, ReactNodeViewRenderer} from "@tiptap/react";
+import {CSSProperties, ReactNode} from "react";
 import {Typography} from "antd";
-import styles from "./ant-paragraph.module.scss"
+import styles from "./ant-paragraph.module.scss";
 
-export function AntParagraphComponent(props: NodeViewProps) {
-  return (
-    <NodeViewWrapper>
-      <Typography.Paragraph
-        className={styles.paragraph}
-        style={{textAlign: props.node.attrs.textAlign ?? "left"}}
-      >
-        <NodeViewContent/>
-      </Typography.Paragraph>
-    </NodeViewWrapper>
-  );
+interface IProps {
+  textAlign?: CSSProperties["textAlign"] | null;
+  children?: ReactNode;
 }
 
-export default Paragraph.extend({
-  addNodeView: () => {
-    return ReactNodeViewRenderer(AntParagraphComponent);
-  }
-})
+export default function AntParagraph(props: IProps) {
+  return (
+    <Typography.Paragraph className={styles.paragraph} style={{textAlign: props.textAlign ?? "left"}}>
+      {props.children}
+    </Typography.Paragraph>
+  )
+}

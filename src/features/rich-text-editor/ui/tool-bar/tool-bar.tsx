@@ -1,3 +1,5 @@
+"use client"
+
 import {Editor} from "@tiptap/react";
 import {Button, Card, Flex, Select, Space, Tooltip} from "antd";
 import {

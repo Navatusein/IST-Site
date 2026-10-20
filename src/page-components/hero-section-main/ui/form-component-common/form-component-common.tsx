@@ -1,7 +1,7 @@
 import {Form, Input, InputNumber} from "antd";
 import {IHeroSectionMainPageComponent} from "../../types/type";
 import {RichTextEditor} from "@/features/rich-text-editor";
-import {SelectFileButton} from "@/features/select-file-button";
+import {SelectFileButton} from "@/entities/file/ui";
 
 export default function FormComponentCommon() {
   return (
@@ -10,7 +10,6 @@ export default function FormComponentCommon() {
         label="Кафедра"
         name="department"
         style={{marginBottom: 0}}
-        extra="Назва кафедри"
       >
         <Input/>
       </Form.Item>
@@ -18,7 +17,6 @@ export default function FormComponentCommon() {
         label="Факультет"
         name="faculty"
         style={{marginBottom: 0}}
-        extra="Назва факультету"
       >
         <Input/>
       </Form.Item>
@@ -26,7 +24,6 @@ export default function FormComponentCommon() {
         label="Університет"
         name="university"
         style={{marginBottom: 0}}
-        extra="Назва університету"
       >
         <Input/>
       </Form.Item>
@@ -34,23 +31,22 @@ export default function FormComponentCommon() {
         label="Текст"
         name="text"
         style={{marginBottom: 0}}
-        extra="Текст компоненту"
       >
         <RichTextEditor/>
       </Form.Item>
       <Form.Item<IHeroSectionMainPageComponent>
         label="Малюнок"
-        name="imagePath"
-        extra="Малюнок новини"
+        name="imageSlug"
+        extra="Фон під заголовком"
         style={{marginBottom: 0}}
       >
         <SelectFileButton filter={["image"]}/>
       </Form.Item>
       <Form.Item<IHeroSectionMainPageComponent>
-        label="Вистота малюнку"
+        label="Висота малюнку"
         name="imageHeight"
         style={{marginBottom: 0}}
-        extra="Вистота яку буде займати малюнок"
+        extra="Висота фону в пікселях"
       >
         <InputNumber min={100} style={{width: "100%"}}/>
       </Form.Item>

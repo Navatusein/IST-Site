@@ -20,9 +20,13 @@
 
 .titleTypography {
 
-  & h1,h2,h3,h4,h5 {
+  & h1, & h2, & h3, & h4, & h5, & li, & :global(.ant-typography) {
     text-align: center !important;
     color: var(--ant-color-text-light-solid) !important;
     margin: 0 !important;
+  }
+
+  & div:global(.ant-typography) {
+    margin-top: var(--ant-padding-xs) !important;
   }
 }

@@ -1,58 +1,22 @@
-import {useEffect, useMemo, useState} from "react";
-import {IBasePageComponent} from "@/entities/dynamic-page";
-import {DepartmentPersonCard, PageComponentError} from "@/shared/ui-kit";
-import DepartmentAspirantListEditor from "@/page-components/department-aspirants-list/ui/department-aspirant-list-editor/department-aspirant-list-editor";
-import {IDepartmentAspirantListPageComponent} from "../../types/type";
 import {ConfigProvider, Flex, Row, theme, Typography} from "antd";
-import {useServerAction} from "@/shared/hooks/use-server-action";
-import {IDepartmentAspirant} from "@/entities/department-aspirant";
-import {getDepartmentAspirantAction} from "@/entities/department-aspirant/actions/actions";
-import {getDepartmentStaffAction} from "@/entities/department-staff/actions/actions";
+import {DepartmentPersonCard} from "@/shared/ui-kit";
+import {IPageComponentViewProps, usePageComponentData} from "@/entities/dynamic-page/model";
+import {IDepartmentAspirantListData, IDepartmentAspirantListPageComponent} from "../../types/type";
 
-interface IProps {
-  component: IBasePageComponent;
-}
-
-export default function DepartmentAspirantList(props: IProps) {
-  const typedComponent = useMemo(() => {
-    if (props.component.componentType !== "department-aspirant-list")
-      return null;
-
-    return props.component as IDepartmentAspirantListPageComponent;
-  }, [props]);
-
-  const [departmentAspirants, setDepartmentAspirants] = useState<IDepartmentAspirant[]>([]);
-  const [departmentGraduates, setDepartmentGraduates] = useState<IDepartmentAspirant[]>([]);
-  const [departmentStaffs, setDepartmentStaffs] = useState<Record<string, string>>()
-
-  useEffect(() => {
-    if (typedComponent != null) {
-      useServerAction(getDepartmentAspirantAction())
-        .then((data) => {
-          setDepartmentAspirants(() => data.filter(x => (x.thesisDate == null)));
-          setDepartmentGraduates(() => data.filter(x => (x.thesisDate != null)));
-        });
-
-      useServerAction(getDepartmentStaffAction())
-        .then((data) => {
-          setDepartmentStaffs(() => data.reduce<Record<string, string>>(
-            (array, value) => {
-              array[String(value._id)] = `${value.lastName} ${value.firstName} ${value.middleName}`;
-              return array;
-            }, {}));
-        });
-    }
-  }, []);
-
+export default function DepartmentAspirantList(props: IPageComponentViewProps<IDepartmentAspirantListPageComponent, IDepartmentAspirantListData>) {
   const {token: {paddingLG}} = theme.useToken();
 
+  const data = usePageComponentData(props.component, props.data);
+
+  const aspirants = data?.aspirants ?? [];
+  const graduates = data?.graduates ?? [];
+
   return (
-    <PageComponentError component={typedComponent}>
-      <Row gutter={[paddingLG, paddingLG]} justify="center">
-        <ConfigProvider theme={{token: {screenMDMin: 900, screenXLMin: 1300}}}>
-          <Flex vertical gap="middle" align="center" style={{height: "100%"}}>
-            {departmentAspirants.map((aspirant) => (
-            <DepartmentPersonCard imagePath={aspirant.imagePath} key={String(aspirant._id)}>
+    <Row gutter={[paddingLG, paddingLG]} justify="center">
+      <ConfigProvider theme={{token: {screenMDMin: 900, screenXLMin: 1300}}}>
+        <Flex vertical gap="middle" align="center" style={{height: "100%"}}>
+          {aspirants.map((aspirant) => (
+            <DepartmentPersonCard imageSlug={aspirant.imageSlug} key={String(aspirant._id)}>
               <Flex vertical>
                 <Typography.Paragraph style={{margin: 0}}>
                   Аспірант кафедри
@@ -65,7 +29,7 @@ export default function DepartmentAspirantList(props: IProps) {
                     <Typography.Text strong>
                       Керівник:&nbsp;
                     </Typography.Text>
-                    {departmentStaffs?.[String(aspirant.thesisHeadId)] ?? ""}
+                    {data?.staffNames[String(aspirant.thesisHeadId)] ?? ""}
                   </Typography.Paragraph>
                   <Typography.Paragraph style={{margin: 0}}>
                     <Typography.Text strong>
@@ -77,37 +41,34 @@ export default function DepartmentAspirantList(props: IProps) {
               </Flex>
             </DepartmentPersonCard>
           ))}
-          {departmentGraduates.length != 0 && (
+          {graduates.length != 0 && (
             <Typography.Title level={3} style={{margin: "0 16px", width: "100%"}}>
               Випускники
             </Typography.Title>
           )}
-          {departmentGraduates.map((graduates) => (
-            <DepartmentPersonCard imagePath={graduates.imagePath} key={String(graduates._id)}>
+          {graduates.map((graduate) => (
+            <DepartmentPersonCard imageSlug={graduate.imageSlug} key={String(graduate._id)}>
               <Flex vertical gap="small">
                 <Typography.Title level={4} style={{margin: 0}}>
-                  {`${graduates.lastName} ${graduates.firstName} ${graduates.middleName}`}
+                  {`${graduate.lastName} ${graduate.firstName} ${graduate.middleName}`}
                 </Typography.Title>
                 <Typography.Paragraph style={{margin: 0}}>
                   <Typography.Text strong>
                     Дата захисту:&nbsp;
                   </Typography.Text>
-                  {new Date(graduates.thesisDate!).toLocaleDateString()}
+                  {new Date(graduate.thesisDate!).toLocaleDateString("uk-UA", {timeZone: "Europe/Kyiv"})}
                 </Typography.Paragraph>
                 <Typography.Paragraph style={{margin: 0}}>
                   <Typography.Text strong>
                     Тема:&nbsp;
                   </Typography.Text>
-                  {graduates.thesisTheme}
+                  {graduate.thesisTheme}
                 </Typography.Paragraph>
               </Flex>
             </DepartmentPersonCard>
           ))}
-          </Flex>
-        </ConfigProvider>
-      </Row>
-    </PageComponentError>
+        </Flex>
+      </ConfigProvider>
+    </Row>
   )
 }
-
-DepartmentAspirantList.Editor = DepartmentAspirantListEditor

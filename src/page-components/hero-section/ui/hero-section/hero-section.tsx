@@ -1,44 +1,27 @@
-import {useMemo} from "react";
-import {IBasePageComponent} from "@/entities/dynamic-page";
-import {PageComponentError} from "@/shared/ui-kit";
-import HeroSectionEditor from "../hero-section-editor/hero-section-editor";
-import {IHeroSectionPageComponent} from "../../types/type";
 import {Flex, Image} from "antd";
-import styles from "./hero-section.module.scss";
 import {RichTextRenderer} from "@/features/rich-text-renderer";
+import {IPageComponentViewProps} from "@/entities/dynamic-page/model";
+import {getFileAssetUrl} from "@/shared/utilities/file-urls";
+import {IHeroSectionPageComponent} from "../../types/type";
+import styles from "./hero-section.module.scss";
 
-interface IProps {
-  component: IBasePageComponent;
-}
-
-export default function HeroSection(props: IProps) {
-  const typedComponent = useMemo(() => {
-    if (props.component.componentType !== "hero-section")
-      return null;
-
-    return props.component as IHeroSectionPageComponent;
-  }, [props]);
-
+export default function HeroSection(props: IPageComponentViewProps<IHeroSectionPageComponent>) {
   return (
-    <PageComponentError component={typedComponent}>
-      <Flex vertical className={styles.titleBaseContainer} style={{height: typedComponent!.imageHeight}}>
-        {typedComponent!.imagePath &&
-          <Image
-            src={`/api/assets${typedComponent!.imagePath}`}
-            fallback="/missing-image.webp"
-            preview={false}
-            height={typedComponent!.imageHeight}
-            width={"100%"}
-            className={styles.image}
-            loading={"lazy"}
-          />
-        }
-        <Flex vertical gap="small" className={styles.titleFlexContainer}>
-          <RichTextRenderer content={typedComponent!.title} className={styles.titleTypography}/>
-        </Flex>
+    <Flex vertical className={styles.titleBaseContainer} style={{height: props.component.imageHeight}}>
+      {props.component.imageSlug &&
+        <Image
+          src={getFileAssetUrl(props.component.imageSlug)}
+          fallback="/missing-image.webp"
+          preview={false}
+          height={props.component.imageHeight}
+          width={"100%"}
+          className={styles.image}
+          loading={"lazy"}
+        />
+      }
+      <Flex vertical gap="small" className={styles.titleFlexContainer}>
+        <RichTextRenderer content={props.component.title} className={styles.titleTypography}/>
       </Flex>
-    </PageComponentError>
+    </Flex>
   )
 }
-
-HeroSection.Editor = HeroSectionEditor

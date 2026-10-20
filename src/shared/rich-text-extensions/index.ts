@@ -10,10 +10,10 @@ import HardBreak from "@tiptap/extension-hard-break";
 import History from "@tiptap/extension-history";
 import Link from "@tiptap/extension-link";
 
-import Paragraph from "./ant-paragraph/ant-paragraph";
-import Heading from "./ant-heading/ant-heading";
-import Blockquote from "./ant-blockquote/ant-blockquote";
-import HorizontalRule from "./ant-horizontal-rule/ant-horizontal-rule";
+import Paragraph from "./ant-paragraph/ant-paragraph-extension";
+import Heading from "./ant-heading/ant-heading-extension";
+import Blockquote from "./ant-blockquote/ant-blockquote-extension";
+import HorizontalRule from "./ant-horizontal-rule/ant-horizontal-rule-extension";
 import TextAlign from "@tiptap/extension-text-align";
 
 export const ExtensionsForRender = [

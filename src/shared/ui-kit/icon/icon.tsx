@@ -26,8 +26,7 @@ export default function Icon(props: IProps) {
           style={{width: props.iconSize ?? "48px", height: props.iconSize ?? "48px"}}
           loading={"lazy"}
         />
-        {props.showText &&
-        props.level ?
+        {props.showText && (props.level ?
           <Typography.Title
             level={props.level}
             style={{margin: 0, textWrap: "wrap", textAlign: props.vertical ? "center" : "unset"}}
@@ -42,7 +41,7 @@ export default function Icon(props: IProps) {
           >
             КАФЕДРА ІНФОРМАЦІЙНИХ СИСТЕМ ТА ТЕХНОЛОГІЙ
           </Typography.Paragraph>
-        }
+        )}
       </Flex>
     </Link>
   )

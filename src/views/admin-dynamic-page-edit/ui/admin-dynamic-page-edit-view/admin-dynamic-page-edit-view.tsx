@@ -3,7 +3,7 @@
 import {IDynamicPage, IPageEntity} from "@/entities/dynamic-page";
 import {useEffect, useState} from "react";
 import {updateDynamicPageAction} from "@/entities/dynamic-page/actions/actions";
-import {useServerAction} from "@/shared/hooks/use-server-action";
+import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 import dynamic from "next/dynamic";
 import {Loader} from "@/shared/ui-kit";
 
@@ -13,7 +13,7 @@ interface IProps {
 
 const DynamicPageEditor = dynamic(() => import("@/widgets/dynamic-page-editor/ui/dynamic-page-editor/dynamic-page-editor"), {
   ssr: false,
-  loading: () => <Loader/>
+  loading: () => <Loader fullScreen/>
 });
 
 export default function AdminDynamicPageEditView(props: IProps) {
@@ -30,7 +30,7 @@ export default function AdminDynamicPageEditView(props: IProps) {
   }
 
   const saveComponents = async () => {
-    await useServerAction(updateDynamicPageAction(page));
+    await unwrapServerAction(updateDynamicPageAction(page));
   }
 
   return (

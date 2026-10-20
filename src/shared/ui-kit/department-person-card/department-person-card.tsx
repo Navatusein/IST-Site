@@ -1,8 +1,9 @@
 import {Card, Col, Flex, Image} from "antd";
 import {ReactNode} from "react";
+import {getFileAssetUrl} from "@/shared/utilities/file-urls";
 
 interface IProps {
-  imagePath?: string;
+  imageSlug?: string;
   children: ReactNode;
 }
 
@@ -16,7 +17,7 @@ export default function DepartmentPersonCard(props: IProps) {
         styles={{body: {height: "100%"}}}
         cover={
           <Image
-            src={`/api/assets${props.imagePath}`}
+            src={getFileAssetUrl(props.imageSlug) ?? "/missing-image.webp"}
             fallback="/missing-image.webp"
             preview={false}
             height={350}

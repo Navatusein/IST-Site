@@ -1,17 +1,13 @@
 import {IBasePageComponent} from "@/entities/dynamic-page";
+import {INews} from "@/entities/news";
 
 export interface INewsListPageComponent extends IBasePageComponent {
+  componentType: "news-list";
   countDisplayed: number;
   pagination: boolean;
 }
 
-export const NewsListComponentExample = {
-  name: "Список новин",
-  component: {
-    type: "component",
-    componentType: "news-list",
-    width: "small",
-    countDisplayed: 5,
-    pagination: false
-  } as INewsListPageComponent
+export interface INewsListData {
+  news: INews[];
+  total: number;
 }

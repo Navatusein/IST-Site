@@ -1,30 +1,13 @@
-import {useMemo} from "react";
-import {IBasePageComponent} from "@/entities/dynamic-page";
-import {PageComponentError} from "@/shared/ui-kit";
-import {IRichTextPageComponent} from "../../types/type";
 import {RichTextEditor as Editor} from "@/features/rich-text-editor";
+import {IPageComponentEditorProps} from "@/entities/dynamic-page/model";
+import {IRichTextPageComponent} from "../../types/type";
 
-
-interface IProps {
-  component: IBasePageComponent;
-  onChange: (value: IBasePageComponent) => void;
-}
-
-export default function RichTextEditor(props: IProps) {
-  const typedComponent = useMemo(() => {
-    if (props.component.componentType !== "rich-text")
-      return null;
-
-    return props.component as IRichTextPageComponent;
-  }, [props]);
-
+export default function RichTextEditor(props: IPageComponentEditorProps<IRichTextPageComponent>) {
   const onChange = (value: string) => {
-    props.onChange({...typedComponent, text: value} as IRichTextPageComponent);
+    props.onChange({...props.component, text: value});
   }
 
   return (
-    <PageComponentError component={typedComponent}>
-      <Editor value={typedComponent!.text} onChange={onChange}/>
-    </PageComponentError>
+    <Editor value={props.component.text} onChange={onChange}/>
   )
 }

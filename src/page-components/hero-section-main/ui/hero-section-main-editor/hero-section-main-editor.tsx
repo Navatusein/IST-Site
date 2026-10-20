@@ -1,35 +1,17 @@
-import {useMemo} from "react";
-import {IBasePageComponent} from "@/entities/dynamic-page";
-import {PageComponentError} from "@/shared/ui-kit";
-import {IHeroSectionMainPageComponent} from "../../types/type";
 import {Flex, Form, Tabs, TabsProps} from "antd";
+import {IPageComponentEditorProps} from "@/entities/dynamic-page/model";
+import {EditorForm} from "@/shared/ui-kit";
+import {IHeroSectionMainPageComponent} from "../../types/type";
 import FormComponentFastLinks from "../form-component-fast-links/form-component-fast-links";
 import FormComponentStatistics from "../form-component-statistics/form-component-statistics";
 import FormComponentCommon from "../form-component-common/form-component-common";
 
-interface IProps {
-  component: IBasePageComponent;
-  onChange: (value: IBasePageComponent) => void;
-}
-
-export default function HeroSectionMainEditor(props: IProps) {
-  const [form] = Form.useForm();
-
-  const typedComponent = useMemo(() => {
-    if (props.component.componentType !== "hero-section-main")
-      return null;
-
-    return props.component as IHeroSectionMainPageComponent;
-  }, [props]);
-
-  const onChange = () => {
-    props.onChange(form.getFieldsValue(true));
-  }
-
+export default function HeroSectionMainEditor(props: IPageComponentEditorProps<IHeroSectionMainPageComponent>) {
   const items: TabsProps["items"] = [
     {
       key: "1",
       label: "Загальні налаштування",
+      forceRender: true,
       children: (
         <Flex vertical gap="small">
           <FormComponentCommon/>
@@ -39,6 +21,7 @@ export default function HeroSectionMainEditor(props: IProps) {
     {
       key: "2",
       label: "Швидкі посилання",
+      forceRender: true,
       children: (
         <Flex vertical gap="small">
           <Form.List name="fastLinks">
@@ -52,6 +35,7 @@ export default function HeroSectionMainEditor(props: IProps) {
     {
       key: "3",
       label: "Картки статистики",
+      forceRender: true,
       children: (
         <Flex vertical gap="small">
           <Form.List name="statistics">
@@ -65,16 +49,8 @@ export default function HeroSectionMainEditor(props: IProps) {
   ];
 
   return (
-    <PageComponentError component={typedComponent}>
-      <Form
-        form={form}
-        layout="vertical"
-        initialValues={typedComponent as never}
-        style={{width: "100%", marginTop: "-24px"}}
-        onFieldsChange={onChange}
-      >
-        <Tabs defaultActiveKey="1" items={items}/>
-      </Form>
-    </PageComponentError>
+    <EditorForm value={props.component} onChange={props.onChange} style={{marginTop: "-24px"}}>
+      <Tabs defaultActiveKey="1" items={items}/>
+    </EditorForm>
   )
 }

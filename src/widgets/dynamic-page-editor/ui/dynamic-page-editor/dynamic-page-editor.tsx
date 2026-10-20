@@ -1,13 +1,18 @@
 "use client"
 
 import {useRouter} from "next/navigation";
-import {App, Button, Flex} from "antd";
+import {App, Button, Drawer, Flex, Grid} from "antd";
 import {useMemo, useState} from "react";
 import {IPageEntity} from "@/entities/dynamic-page";
 import FloatButtonGroup from "../float-button-group/float-button-group";
 import DynamicPageHeader from "../dynamic-page-header/dynamic-page-header";
 import PageEntityList from "../page-entity-list/page-entity-list";
 import AddPageComponentDrawer from "../add-page-component-drawer/add-page-component-drawer";
+import PageOutline from "../page-outline/page-outline";
+import PageOutlinePanel from "../page-outline-panel/page-outline-panel";
+import {useLocalStorage} from "@/shared/hooks/use-local-storage";
+
+const HEADER_HEIGHT = 64;
 
 interface IProps {
   entities: IPageEntity[];
@@ -34,6 +39,10 @@ export default function DynamicPageEditor(props: IProps) {
   }, [props.entities]);
 
   const [isAddPageComponentDrawerOpen, setIsAddPageComponentDrawerOpen] = useState<boolean>(false);
+  const [isOutlineOpen, setIsOutlineOpen] = useLocalStorage<boolean>("isPageOutlineOpen", true);
+
+  const isOutlineFloating = Grid.useBreakpoint().lg == true;
+  const [isOutlineDrawerOpen, setIsOutlineDrawerOpen] = useState<boolean>(false);
 
   const updateEntities = (entities: IPageEntity[]) => {
     props.setEntities(entities);
@@ -49,6 +58,10 @@ export default function DynamicPageEditor(props: IProps) {
 
   const removeEntity = (index: number) => {
     props.setEntities([...props.entities.slice(0, index), ...props.entities.slice(index + 1)]);
+  }
+
+  const replaceEntity = (index: number, entities: IPageEntity[]) => {
+    props.setEntities([...props.entities.slice(0, index), ...entities, ...props.entities.slice(index + 1)]);
   }
 
   const cancelChanges = () => {
@@ -90,13 +103,37 @@ export default function DynamicPageEditor(props: IProps) {
         isChanged={isChanged}
         cancelChanges={cancelChanges}
         saveChanges={saveChanges}
+        isOutlineOpen={isOutlineFloating ? isOutlineOpen : isOutlineDrawerOpen}
+        toggleOutline={() => isOutlineFloating ? setIsOutlineOpen(!isOutlineOpen) : setIsOutlineDrawerOpen(!isOutlineDrawerOpen)}
       />
+      {isOutlineFloating ? (
+        <PageOutlinePanel open={isOutlineOpen} topOffset={HEADER_HEIGHT}>
+          <PageOutline entities={props.entities} updateEntities={updateEntities} topOffset={HEADER_HEIGHT}/>
+        </PageOutlinePanel>
+      ) : (
+        <Drawer
+          title="Структура сторінки"
+          placement="bottom"
+          size="70vh"
+          open={isOutlineDrawerOpen}
+          onClose={() => setIsOutlineDrawerOpen(false)}
+          styles={{body: {padding: 8}}}
+        >
+          <PageOutline
+            entities={props.entities}
+            updateEntities={updateEntities}
+            topOffset={HEADER_HEIGHT}
+            onSelect={() => setIsOutlineDrawerOpen(false)}
+          />
+        </Drawer>
+      )}
       <Flex vertical style={{overflowX: "hidden"}}>
         <PageEntityList
           entities={props.entities}
           updateEntities={updateEntities}
           updateEntity={updateEntity}
           removeEntity={removeEntity}
+          replaceEntity={replaceEntity}
         />
         <Flex vertical gap="small" style={{padding: "12px"}}>
           <Button block type="dashed" size="large" onClick={() => setIsAddPageComponentDrawerOpen(true)}>

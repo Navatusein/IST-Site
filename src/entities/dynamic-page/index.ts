@@ -2,21 +2,22 @@ import DynamicPageModel, {dynamicPageSchema} from "./types/schema";
 import {
   IBasePageComponent,
   IDynamicPage,
-  IPageComponentExample,
   IPageComponentGroup,
   IPageEntity,
   PageEntityType,
-  PageEntityWidth
+  PageEntityWidth,
+  PageGroupProportions,
+  PageGroupVerticalAlign
 } from "./types/type";
-
 
 export type {
   IDynamicPage,
   IBasePageComponent,
-  IPageComponentExample,
   IPageComponentGroup,
   IPageEntity,
   PageEntityType,
-  PageEntityWidth
+  PageEntityWidth,
+  PageGroupProportions,
+  PageGroupVerticalAlign
 };
 export {DynamicPageModel, dynamicPageSchema};

@@ -1,29 +1,11 @@
-import {useMemo} from "react";
-import {IBasePageComponent} from "@/entities/dynamic-page";
-import {PageComponentError} from "@/shared/ui-kit";
-import TitleEditor from "../title-editor/title-editor";
-import {ITitlePageComponent} from "../../types/type";
 import {Typography} from "antd";
+import {IPageComponentViewProps} from "@/entities/dynamic-page/model";
+import {ITitlePageComponent} from "../../types/type";
 
-interface IProps {
-  component: IBasePageComponent;
-}
-
-export default function Title(props: IProps) {
-  const typedComponent = useMemo(() => {
-    if (props.component.componentType !== "title")
-      return null;
-
-    return props.component as ITitlePageComponent;
-  }, [props]);
-
+export default function Title(props: IPageComponentViewProps<ITitlePageComponent>) {
   return (
-    <PageComponentError component={typedComponent}>
-      <Typography.Title level={typedComponent!.level} style={{margin: 0}}>
-        {typedComponent!.title}
-      </Typography.Title>
-    </PageComponentError>
+    <Typography.Title level={props.component.level} style={{margin: 0}}>
+      {props.component.title}
+    </Typography.Title>
   )
 }
-
-Title.Editor = TitleEditor

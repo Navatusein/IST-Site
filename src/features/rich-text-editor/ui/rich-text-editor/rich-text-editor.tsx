@@ -1,12 +1,14 @@
 "use client";
 
-import React, {CSSProperties} from "react";
+import React, {CSSProperties, useContext} from "react";
 import {ExtensionsForEditor} from "@/shared/rich-text-extensions"
 import {EditorContent, useEditor} from "@tiptap/react";
 import ToolBar from "../tool-bar/tool-bar";
 import styles from "./rich-text-editor.module.scss";
 import {Flex, Input} from "antd";
 import tryCatch from "@/shared/utilities/try-catch";
+import {SiteThemeContext} from "@/shared/context/site-theme-context/site-theme-context";
+import {getThemeCssVarKey} from "@/shared/configs/site-theme";
 
 interface IProps {
   value?: string;
@@ -16,6 +18,8 @@ interface IProps {
 }
 
 export default function RichTextEditor(props: IProps) {
+  const {theme} = useContext(SiteThemeContext);
+
   const editor = useEditor({
     extensions: ExtensionsForEditor,
     content: tryCatch(() => JSON.parse(props.value ?? ""), null),
@@ -31,7 +35,7 @@ export default function RichTextEditor(props: IProps) {
       <ToolBar editor={editor}/>
       <EditorContent
         editor={editor}
-        className={`ist-theme ant-input-css-var ${styles.input} ${props.className}`}
+        className={`${getThemeCssVarKey(theme)} ant-input-css-var ${styles.input} ${props.className}`}
         style={props.style}
       />
       <Input style={{display: "none"}}/>
