@@ -1,3 +1,4 @@
+import {FileManagerService} from "@/entities/file/services/file-manager-service";
 import {FileViewerModalView} from "@/views/file-viewer-modal";
 
 export const revalidate = 86400;
@@ -14,8 +15,9 @@ interface IProps {
 
 export default async function Page(props: IProps) {
   const {path} = await props.params;
+  const file = await FileManagerService.findFile(path);
 
   return (
-    <FileViewerModalView path={path.join("/")}/>
+    <FileViewerModalView file={file}/>
   )
 }

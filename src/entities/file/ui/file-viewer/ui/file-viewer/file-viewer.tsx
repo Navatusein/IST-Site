@@ -1,37 +1,31 @@
 "use client"
 
-import {DocumentViewer} from "react-documents";
-import {CSSProperties} from "react";
-import {Button, Flex, Result, Spin} from "antd";
+import {CSSProperties, ReactNode} from "react";
+import {Flex, Result} from "antd";
+import type {IFileEntry} from "../../../../types/type";
+import FileBar from "../../../file-bar/file-bar";
+import FilePreview, {hasFilePreview} from "../../../file-preview/file-preview";
 
 interface IProps {
-  file: string;
+  file: IFileEntry | null;
   style?: CSSProperties;
+  barExtra?: ReactNode;
 }
 
 export default function FileViewer(props: IProps) {
-  const assetPath = props.file.split("/").filter(Boolean).map(encodeURIComponent).join("/");
+  if (!props.file)
+    return <Result status="404" title="Файл не знайдено" subTitle="Його могли видалити або перемістити"/>;
 
   return (
-    <DocumentViewer
-      style={props.style}
-      queryParams="hl=uk"
-      url={`${window.location.origin}/api/assets/${assetPath}`}
-      viewerUrl="https://docs.google.com/gview?url=%URL%&embedded=true"
-      viewer="url"
-      loadingRenderer={<Spin size="large" description="Завантаження документа..."/>}
-      errorRenderer={(context) => (
-        <Result
-          status="warning"
-          title="Не вдалося показати документ"
-          extra={(
-            <Flex gap="small" justify="center" wrap>
-              <Button type="primary" onClick={context.retry}>Спробувати ще</Button>
-              <Button href={context.actionUrl || context.url} target="_blank">Відкрити файл</Button>
-            </Flex>
-          )}
-        />
-      )}
-    />
+    <Flex vertical gap="small" style={{height: "100%", minHeight: 0, ...props.style}}>
+      <FileBar file={props.file} extra={props.barExtra}/>
+      <Flex vertical justify="center" style={{flex: 1, minHeight: 0}}>
+        {hasFilePreview(props.file.name) ? (
+          <FilePreview file={props.file} style={{height: "100%", maxHeight: "100%", borderRadius: 8}}/>
+        ) : (
+          <Result status="info" title="Попередній перегляд недоступний" subTitle="Завантажте файл, щоб відкрити його"/>
+        )}
+      </Flex>
+    </Flex>
   )
 }

@@ -1,14 +1,15 @@
+import type {IFileEntry} from "@/entities/file";
 import {FileViewer} from "@/entities/file/ui";
 import {Flex} from "antd";
 
 interface IProps {
-  path: string;
+  file: IFileEntry | null;
 }
 
 export default function FileViewerView(props: IProps) {
   return (
-    <Flex vertical style={{height: "calc(100svh - 60px)"}}>
-      <FileViewer file={props.path} style={{height: "100%"}}/>
+    <Flex vertical style={{height: "calc(100svh - 60px)", padding: 16}}>
+      <FileViewer file={props.file}/>
     </Flex>
   )
 }

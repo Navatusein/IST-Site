@@ -185,7 +185,12 @@ export class FileManagerService {
     }
   }
 
-  public static async findServableFile(segments: string[]): Promise<IServableFile | null> {
+  public static async findFile(segments: string[]): Promise<IFileEntry | null> {
+    const entry = await this.findFileDocument(segments);
+    return entry ? this.toEntry(entry) : null;
+  }
+
+  private static async findFileDocument(segments: string[]): Promise<IFileEntryDocument | null> {
     let entry: IFileEntryDocument | null = null;
 
     if (segments.length == 1 || segments.length == 2)
@@ -193,6 +198,12 @@ export class FileManagerService {
 
     if (!entry)
       entry = await FileEntryModel.findOne({legacyPath: "/" + segments.join("/"), kind: "file"}).lean<IFileEntryDocument>();
+
+    return entry;
+  }
+
+  public static async findServableFile(segments: string[]): Promise<IServableFile | null> {
+    const entry = await this.findFileDocument(segments);
 
     if (!entry?.storageName)
       return null;
