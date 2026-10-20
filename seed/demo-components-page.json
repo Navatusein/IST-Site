@@ -1,0 +1,443 @@
+{
+  "format": "ist-site-export",
+  "version": 1,
+  "entity": "dynamic-pages",
+  "exportedAt": "2026-10-20T11:38:39.432959+00:00",
+  "items": [
+    {
+      "name": "Демо компонентів",
+      "title": "Демонстрація компонентів",
+      "path": "demo-components",
+      "entities": [
+        {
+          "id": "c768f624-efa1-4dca-9e2d-970d3bea0ca6",
+          "type": "component",
+          "width": "large",
+          "componentType": "hero-section",
+          "title": "{\"type\": \"doc\", \"content\": [{\"type\": \"heading\", \"attrs\": {\"level\": 1}, \"content\": [{\"type\": \"text\", \"text\": \"Демонстрація блоків сайту\"}]}, {\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Усі блоки конструктора сторінок на одній сторінці\"}]}]}",
+          "imageSlug": null,
+          "imageHeight": 320
+        },
+        {
+          "id": "ea27cd52-2b33-4b27-ae1c-07656f359c8b",
+          "type": "component",
+          "width": "medium",
+          "componentType": "title",
+          "level": 2,
+          "title": "Текст"
+        },
+        {
+          "id": "86365e75-baac-49f3-898b-2bf948ea01d8",
+          "type": "component",
+          "width": "medium",
+          "componentType": "rich-text",
+          "text": "{\"type\": \"doc\", \"content\": [{\"type\": \"heading\", \"attrs\": {\"level\": 3}, \"content\": [{\"type\": \"text\", \"text\": \"Заголовок третього рівня\"}]}, {\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Звичайний абзац з \"}, {\"type\": \"text\", \"text\": \"жирним\", \"marks\": [{\"type\": \"bold\"}]}, {\"type\": \"text\", \"text\": \", \"}, {\"type\": \"text\", \"text\": \"курсивом\", \"marks\": [{\"type\": \"italic\"}]}, {\"type\": \"text\", \"text\": \" і \"}, {\"type\": \"text\", \"text\": \"закресленим\", \"marks\": [{\"type\": \"strike\"}]}, {\"type\": \"text\", \"text\": \" текстом, а також \"}, {\"type\": \"text\", \"text\": \"посиланням на головну\", \"marks\": [{\"type\": \"link\", \"attrs\": {\"href\": \"/home\", \"target\": \"_self\"}}]}, {\"type\": \"text\", \"text\": \".\"}]}, {\"type\": \"bulletList\", \"content\": [{\"type\": \"listItem\", \"content\": [{\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Маркований список\"}]}]}, {\"type\": \"listItem\", \"content\": [{\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Другий пункт\"}]}]}, {\"type\": \"listItem\", \"content\": [{\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Третій пункт\"}]}]}]}, {\"type\": \"orderedList\", \"content\": [{\"type\": \"listItem\", \"content\": [{\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Нумерований список\"}]}]}, {\"type\": \"listItem\", \"content\": [{\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Другий пункт\"}]}]}]}, {\"type\": \"blockquote\", \"content\": [{\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Цитата: виділений фрагмент тексту.\"}]}]}, {\"type\": \"horizontalRule\"}, {\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Текст після горизонтальної лінії.\"}]}]}"
+        },
+        {
+          "id": "5ee2b6a3-8cbe-4839-b9c0-8702357634f4",
+          "type": "component",
+          "width": "medium",
+          "componentType": "title",
+          "level": 2,
+          "title": "Фото"
+        },
+        {
+          "id": "1a856c0c-683e-4961-948e-8c9c275c221d",
+          "type": "component",
+          "width": "small",
+          "componentType": "image",
+          "imageSlug": "demo-photo-1",
+          "caption": "Підпис під фото, пропорції 16:9",
+          "aspectRatio": "16/9"
+        },
+        {
+          "id": "a3ceed3e-0f59-4321-915d-c1d6657506ff",
+          "type": "component",
+          "width": "medium",
+          "componentType": "title",
+          "level": 2,
+          "title": "Ряд: фото поруч із текстом (1 : 2, по центру)"
+        },
+        {
+          "id": "d42b737d-3da0-4fc8-bba5-fdd8efdd9243",
+          "type": "group",
+          "width": "medium",
+          "components": [
+            {
+              "id": "39c97b51-da72-4c4b-a57c-bee577fd4112",
+              "type": "component",
+              "width": "small",
+              "componentType": "image",
+              "imageSlug": "demo-photo-2",
+              "caption": "Фото в ряду",
+              "aspectRatio": "4/3"
+            },
+            {
+              "id": "66911adc-913c-4717-ac44-6e601ac0806a",
+              "type": "component",
+              "width": "small",
+              "componentType": "rich-text",
+              "text": "{\"type\": \"doc\", \"content\": [{\"type\": \"heading\", \"attrs\": {\"level\": 4}, \"content\": [{\"type\": \"text\", \"text\": \"Текст поруч із фото\"}]}, {\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Блоки в ряду стоять поруч, на телефоні — один під одним. Пропорції колонок і вирівнювання налаштовуються в ряду.\"}]}]}"
+            }
+          ],
+          "proportions": "1:2",
+          "verticalAlign": "center"
+        },
+        {
+          "id": "c8ade7e2-6332-4d87-8c3f-b5c7df96158a",
+          "type": "component",
+          "width": "medium",
+          "componentType": "title",
+          "level": 2,
+          "title": "Ряд: три колонки"
+        },
+        {
+          "id": "2bcb46a0-441a-40ce-b25b-d149fc911b1b",
+          "type": "group",
+          "width": "medium",
+          "components": [
+            {
+              "id": "e83411e8-eaaa-423e-aa55-bcc45c73e8f4",
+              "type": "component",
+              "width": "small",
+              "componentType": "rich-text",
+              "text": "{\"type\": \"doc\", \"content\": [{\"type\": \"heading\", \"attrs\": {\"level\": 4}, \"content\": [{\"type\": \"text\", \"text\": \"Перша колонка\"}]}, {\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Короткий опис першої колонки.\"}]}]}"
+            },
+            {
+              "id": "406b7984-f744-4f2e-8b0b-b4b75368412d",
+              "type": "component",
+              "width": "small",
+              "componentType": "rich-text",
+              "text": "{\"type\": \"doc\", \"content\": [{\"type\": \"heading\", \"attrs\": {\"level\": 4}, \"content\": [{\"type\": \"text\", \"text\": \"Друга колонка\"}]}, {\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Короткий опис другої колонки.\"}]}]}"
+            },
+            {
+              "id": "305f60f8-ec5e-4731-b847-5517e1572f4a",
+              "type": "component",
+              "width": "small",
+              "componentType": "buttons",
+              "buttons": [
+                {
+                  "title": "Головна",
+                  "linkType": "page",
+                  "link": "/home"
+                },
+                {
+                  "title": "Сайт КНУ",
+                  "linkType": "link",
+                  "link": "https://knu.ua"
+                }
+              ],
+              "layout": "column",
+              "fullWidth": true,
+              "align": "start",
+              "variant": "primary"
+            }
+          ],
+          "proportions": "equal",
+          "verticalAlign": "top"
+        },
+        {
+          "id": "cb9b4731-f0ce-41d2-aa36-ced966b34d1f",
+          "type": "component",
+          "width": "medium",
+          "componentType": "title",
+          "level": 2,
+          "title": "Кнопки"
+        },
+        {
+          "id": "27368389-f99f-49f1-bc43-0827ac644e10",
+          "type": "component",
+          "width": "medium",
+          "componentType": "buttons",
+          "buttons": [
+            {
+              "title": "Сторінка сайту",
+              "linkType": "page",
+              "link": "/home"
+            },
+            {
+              "title": "Зовнішній сайт",
+              "linkType": "link",
+              "link": "https://knu.ua"
+            },
+            {
+              "title": "Кнопка без посилання",
+              "linkType": "link",
+              "link": ""
+            }
+          ],
+          "layout": "row",
+          "fullWidth": false,
+          "align": "center",
+          "variant": "primary"
+        },
+        {
+          "id": "49b958eb-284b-4e83-91f5-3c6f78bddb5d",
+          "type": "component",
+          "width": "small",
+          "componentType": "buttons",
+          "buttons": [
+            {
+              "title": "Кнопки стовпчиком на всю ширину",
+              "linkType": "page",
+              "link": "/home"
+            },
+            {
+              "title": "Звичайний стиль",
+              "linkType": "page",
+              "link": "/home"
+            }
+          ],
+          "layout": "column",
+          "fullWidth": true,
+          "align": "start",
+          "variant": "default"
+        },
+        {
+          "id": "7f1f1cd4-b712-451d-bd68-d80e3ae7aa7d",
+          "type": "component",
+          "width": "medium",
+          "componentType": "title",
+          "level": 2,
+          "title": "Картки"
+        },
+        {
+          "id": "ac0c68c0-ac1a-440c-955a-9e8cd0e94c26",
+          "type": "component",
+          "width": "medium",
+          "componentType": "cards",
+          "cardsInRow": 3,
+          "cards": [
+            {
+              "content": "{\"type\": \"doc\", \"content\": [{\"type\": \"heading\", \"attrs\": {\"level\": 4}, \"content\": [{\"type\": \"text\", \"text\": \"ОСВІТНЯ КВАЛІФІКАЦІЯ\"}]}, {\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Бакалавр інформаційних систем та технологій\"}]}]}"
+            },
+            {
+              "content": "{\"type\": \"doc\", \"content\": [{\"type\": \"heading\", \"attrs\": {\"level\": 4}, \"content\": [{\"type\": \"text\", \"text\": \"КОМПЕТЕНТНОСТІ\"}]}, {\"type\": \"bulletList\", \"content\": [{\"type\": \"listItem\", \"content\": [{\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Проєктування IoT-рішень\"}]}]}, {\"type\": \"listItem\", \"content\": [{\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Програмування пристроїв\"}]}]}, {\"type\": \"listItem\", \"content\": [{\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Робота з даними\"}]}]}]}]}"
+            },
+            {
+              "content": "{\"type\": \"doc\", \"content\": [{\"type\": \"heading\", \"attrs\": {\"level\": 4}, \"content\": [{\"type\": \"text\", \"text\": \"СФЕРА ДІЯЛЬНОСТІ\"}]}, {\"type\": \"bulletList\", \"content\": [{\"type\": \"listItem\", \"content\": [{\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Розробник IoT\"}]}]}, {\"type\": \"listItem\", \"content\": [{\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Інженер-програміст\"}]}]}, {\"type\": \"listItem\", \"content\": [{\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Web-розробник\"}]}]}]}]}"
+            }
+          ]
+        },
+        {
+          "id": "961f47a1-d993-4591-9cb1-fca3719331a7",
+          "type": "component",
+          "width": "medium",
+          "componentType": "title",
+          "level": 2,
+          "title": "Картки з кнопками"
+        },
+        {
+          "id": "517db34b-8937-4301-b803-5106270ec02f",
+          "type": "component",
+          "width": "medium",
+          "componentType": "link-cards",
+          "columns": 4,
+          "showNumbers": true,
+          "buttonText": "Детальніше",
+          "buttonVariant": "primary",
+          "cards": [
+            {
+              "title": "Вступ до IoT",
+              "description": "Затверджено 2025",
+              "linkType": "page",
+              "link": "/home"
+            },
+            {
+              "title": "Основи програмування",
+              "description": "Затверджено 2025",
+              "linkType": "link",
+              "link": "https://knu.ua",
+              "buttonText": "Свій текст кнопки"
+            },
+            {
+              "title": "Веб-технології",
+              "description": "Тип «Файл», але файл ще не вибрано — кнопка неактивна",
+              "linkType": "file",
+              "link": ""
+            },
+            {
+              "title": "Без кнопки",
+              "description": "Посилання: «Немає»",
+              "linkType": "none",
+              "link": ""
+            }
+          ]
+        },
+        {
+          "id": "2a96ae5c-b8f5-42c0-8f20-a341a492becd",
+          "type": "component",
+          "width": "medium",
+          "componentType": "title",
+          "level": 2,
+          "title": "Фотогалерея"
+        },
+        {
+          "id": "d63d67ee-5298-4aab-9298-6f90dbc90dd9",
+          "type": "component",
+          "width": "medium",
+          "componentType": "photo-gallery",
+          "columns": 3,
+          "photos": [
+            {
+              "imageSlug": "demo-photo-1",
+              "caption": "Фото 1"
+            },
+            {
+              "imageSlug": "demo-photo-2",
+              "caption": "Фото 2"
+            },
+            {
+              "imageSlug": "demo-photo-3",
+              "caption": "Фото 3"
+            },
+            {
+              "imageSlug": "demo-photo-4",
+              "caption": "Фото 4"
+            },
+            {
+              "imageSlug": "demo-photo-5",
+              "caption": "Фото 5"
+            },
+            {
+              "imageSlug": "demo-photo-6",
+              "caption": "Фото 6"
+            }
+          ]
+        },
+        {
+          "id": "1c6795ce-0f51-482d-8f1f-0c224ac0bc8e",
+          "type": "component",
+          "width": "large",
+          "componentType": "title",
+          "level": 2,
+          "title": "Карусель"
+        },
+        {
+          "id": "a42e1406-f9d3-43e2-998a-9bf2931df615",
+          "type": "component",
+          "width": "large",
+          "componentType": "gallery-carousel",
+          "imageSlugs": [
+            "demo-photo-1",
+            "demo-photo-2",
+            "demo-photo-3",
+            "demo-photo-4",
+            "demo-photo-5",
+            "demo-photo-6"
+          ]
+        },
+        {
+          "id": "f1a3ef5f-7c25-4138-a20a-eba609c5ec1e",
+          "type": "component",
+          "width": "large",
+          "componentType": "title",
+          "level": 2,
+          "title": "Вітальний блок домашньої сторінки"
+        },
+        {
+          "id": "154fcc01-d30e-457f-9318-26fcb3823fb0",
+          "type": "component",
+          "width": "large",
+          "componentType": "hero-section-main",
+          "faculty": "Факультету інформаційних технологій",
+          "department": "КАФЕДРА ІНФОРМАЦІЙНИХ СИСТЕМ ТА ТЕХНОЛОГІЙ",
+          "university": "Київського національного університету імені Тараса Шевченка",
+          "text": "{\"type\": \"doc\", \"content\": [{\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Текст вітального блоку: коротко про кафедру.\"}]}]}",
+          "imageSlug": null,
+          "imageHeight": 400,
+          "fastLinks": [
+            {
+              "path": "/home",
+              "title": "ПРО КАФЕДРУ"
+            },
+            {
+              "path": "/home",
+              "title": "СТУДЕНТАМ"
+            },
+            {
+              "path": "/home",
+              "title": "ВСТУПНИКАМ"
+            }
+          ],
+          "statistics": [
+            {
+              "title": "Освітніх програм",
+              "value": 4
+            },
+            {
+              "title": "Здобувачів освіти",
+              "value": 150
+            },
+            {
+              "title": "Викладачів",
+              "value": 11
+            },
+            {
+              "title": "Партнерів",
+              "value": 21
+            }
+          ]
+        },
+        {
+          "id": "4c3ce67d-b163-48a2-8e61-df934d14251c",
+          "type": "component",
+          "width": "medium",
+          "componentType": "title",
+          "level": 2,
+          "title": "Список новин"
+        },
+        {
+          "id": "770ac765-908e-4023-8a92-ca93ba2d017e",
+          "type": "component",
+          "width": "small",
+          "componentType": "news-list",
+          "countDisplayed": 3,
+          "pagination": true
+        },
+        {
+          "id": "35e82abb-3dfd-4fb3-ad0e-04ec4b166a4c",
+          "type": "component",
+          "width": "medium",
+          "componentType": "title",
+          "level": 2,
+          "title": "Список співробітників"
+        },
+        {
+          "id": "5879781a-38a1-4119-b132-5fd3103e3dac",
+          "type": "component",
+          "width": "medium",
+          "componentType": "department-staff-list"
+        },
+        {
+          "id": "3849e4b0-44f3-4315-a8e2-4982cb975216",
+          "type": "component",
+          "width": "medium",
+          "componentType": "title",
+          "level": 2,
+          "title": "Список аспірантів"
+        },
+        {
+          "id": "85264fdc-1e58-423a-9389-5d9abc87be2f",
+          "type": "component",
+          "width": "medium",
+          "componentType": "department-aspirant-list"
+        },
+        {
+          "id": "9bb884a4-dbc2-42b1-8f78-07832478ef0a",
+          "type": "component",
+          "width": "medium",
+          "componentType": "title",
+          "level": 2,
+          "title": "Зворотній зв'язок"
+        },
+        {
+          "id": "6aac950a-efff-4e16-afe0-8448e16c872b",
+          "type": "component",
+          "width": "medium",
+          "componentType": "contact-us"
+        }
+      ]
+    }
+  ]
+}
