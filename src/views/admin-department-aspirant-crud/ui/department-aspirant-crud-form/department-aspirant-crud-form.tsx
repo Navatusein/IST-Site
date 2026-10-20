@@ -1,5 +1,5 @@
 import {DatePicker, Form, Input, Select} from "antd";
-import {SelectFileButton} from "@/features/select-file-button";
+import {SelectFileButton} from "@/entities/file/ui";
 import {IDepartmentStaff} from "@/entities/department-staff";
 import {IDepartmentAspirant} from "@/entities/department-aspirant";
 import dayjs from "dayjs";
@@ -20,9 +20,6 @@ export default function DepartmentAspirantCrudForm(props: IProps) {
   return (
     <>
       <Form.Item<IDepartmentAspirant> hidden name="_id">
-          <Input type="hidden"/>
-        </Form.Item>
-        <Form.Item<IDepartmentAspirant> hidden name="components">
           <Input type="hidden"/>
         </Form.Item>
         <Form.Item<IDepartmentAspirant>
@@ -68,7 +65,7 @@ export default function DepartmentAspirantCrudForm(props: IProps) {
           style={{marginBottom: 0}}
           rules={[{required: true, message: "Введіть тему аспірантської роботи!"}]}
         >
-          <Input/>
+          <Input.TextArea rows={3} style={{resize: "vertical"}}/>
         </Form.Item>
        <Form.Item<IDepartmentAspirant>
           label="Дата захисту"
@@ -83,7 +80,7 @@ export default function DepartmentAspirantCrudForm(props: IProps) {
         </Form.Item>
         <Form.Item<IDepartmentAspirant>
           label="Фотографія"
-          name="imagePath"
+          name="imageSlug"
           extra="Фотографія викладача"
           style={{marginBottom: 0}}
         >

@@ -2,16 +2,18 @@ import {INews} from "@/entities/news";
 import {Space, TableColumnsType, Tag} from "antd";
 import {useRouter} from "next/navigation";
 import {useState} from "react";
-import {CrudComponent} from "@/widgets/crud-component";
+import {CrudComponent, timestampColumns} from "@/widgets/crud-component";
 import {FormOutlined} from "@ant-design/icons";
-import {addNewsAction, removeNewsAction, updateNewsAction} from "@/entities/news/actions/actions";
+import {addNewsAction, removeNewsAction, updateNewsAction, exportNewsAction, importNewsAction} from "@/entities/news/actions/actions";
 import NewsCrudForm from "../news-crud-form/news-crud-form";
 import dayjs from "dayjs";
-import {useServerAction} from "@/shared/hooks/use-server-action";
+import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 import {dateStringSorter, stringSorter} from "@/shared/utilities/sorters";
 
+import {IPageResult} from "@/shared/types/page-query";
+
 interface IProps {
-  news: INews[];
+  result: IPageResult<INews>;
 }
 
 const COLUMNS: TableColumnsType<INews> = [
@@ -30,21 +32,18 @@ const COLUMNS: TableColumnsType<INews> = [
     dataIndex: "description",
     key: "description",
     width: 250,
-    render: (text: string) => (
-      text.length > 100 ? `${text.slice(0, 50)}...`: text
-    ),
     sorter: (a, b) => stringSorter(a.description, b.description),
     showSorterTooltip: {
       title: "Сортування за описом"
     }
   },
   {
-    title: "Шлях до малюнка",
-    dataIndex: "imagePath",
-    key: "imagePath",
-    width: 250,
-    render: (imagePath: string | null) => (
-      imagePath ?? <Tag color="red">Шляї не вказан</Tag>
+    title: "Малюнок",
+    dataIndex: "imageSlug",
+    key: "imageSlug",
+    width: 120,
+    render: (imageSlug?: string | null) => (
+      imageSlug ? <Tag color="green">Так</Tag> : <Tag color="red">Не вказано</Tag>
     )
   },
   {
@@ -52,7 +51,6 @@ const COLUMNS: TableColumnsType<INews> = [
     dataIndex: "path",
     key: "path",
     width: 200,
-    ellipsis: true,
     sorter: (a, b) => stringSorter(a.path, b.path),
     showSorterTooltip: {
       title: "Сортування за шляхом"
@@ -71,32 +69,7 @@ const COLUMNS: TableColumnsType<INews> = [
       title: "Сортування за датою"
     }
   },
-  {
-    title: "Створено",
-    dataIndex: "createdAt",
-    key: "createdAt",
-    width: 115,
-    render: (date: string) => (
-      new Date(date).toLocaleString()
-    ),
-    sorter: (a, b) => dateStringSorter((a as any).createdAt, (b as any).createdAt),
-    showSorterTooltip: {
-      title: "Сортування за датою створення"
-    }
-  },
-  {
-    title: "Оновлено",
-    dataIndex: "updatedAt",
-    key: "updatedAt",
-    width: 115,
-    render: (date: string) => (
-      new Date(date).toLocaleString()
-    ),
-    sorter: (a, b) => dateStringSorter((a as any).updatedAt, (b as any).updatedAt),
-    showSorterTooltip: {
-      title: "Сортування за датою редагування"
-    }
-  }
+  ...timestampColumns<INews>()
 ];
 
 export default function NewsCrud(props: IProps) {
@@ -105,27 +78,15 @@ export default function NewsCrud(props: IProps) {
   const [selectedRows, setSelectedRows] = useState<INews[]>([]);
 
   const create = async (data: INews) => {
-    await useServerAction(addNewsAction({...data, _id: null, date: dayjs(data.date).toISOString()}));
+    await unwrapServerAction(addNewsAction({...data, date: dayjs(data.date).toISOString()}));
   }
 
   const update = async (data: INews) => {
-    await useServerAction(updateNewsAction({...data, date: dayjs(data.date).toISOString()} as INews));
+    await unwrapServerAction(updateNewsAction({...data, date: dayjs(data.date).toISOString()} as INews));
   }
 
   const remove = async (data: INews[]) => {
-    await useServerAction(removeNewsAction(data));
-  }
-
-  const refresh = () => {
-    router.refresh();
-  }
-
-  const search = (data: INews[], query: string): INews[] => {
-    return data.filter((x) =>
-      x.title.toLowerCase().includes(query) ||
-      x.description.toLowerCase().includes(query) ||
-      x.path.toLowerCase().includes(query)
-    );
+    await unwrapServerAction(removeNewsAction(data));
   }
 
   const redirectToEditPage = (data?: INews[]) => {
@@ -139,15 +100,20 @@ export default function NewsCrud(props: IProps) {
     <Space orientation="vertical" size="middle" style={{width: "100%"}}>
       <CrudComponent<INews>
         columns={COLUMNS}
-        data={props.news}
-        isLoading={false}
+        data={props.result.items}
+        pagination={props.result}
+        serverSearch
+        importExport={{
+          fileName: "news",
+          exportRecords: (params) => unwrapServerAction(exportNewsAction(params)),
+          importRecords: (file, apply) => unwrapServerAction(importNewsAction(file, apply)),
+        }}
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
         create={create}
         update={update}
         remove={remove}
-        refresh={refresh}
-        search={search}
+        getRecordName={(news) => news.title}
         additionalToolbarButtons={[
           {
             label: "Редагувати контент",
@@ -166,7 +132,7 @@ export default function NewsCrud(props: IProps) {
           },
         ]}
       >
-        <NewsCrudForm news={props.news}/>
+        <NewsCrudForm/>
       </CrudComponent>
     </Space>
   )

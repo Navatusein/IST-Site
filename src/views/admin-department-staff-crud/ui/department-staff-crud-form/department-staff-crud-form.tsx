@@ -1,20 +1,17 @@
 import {IDepartmentStaff} from "@/entities/department-staff";
+import {isDepartmentStaffPathAvailableAction} from "@/entities/department-staff/actions/actions";
+import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 import {Button, Card, Flex, Form, FormInstance, Input, Tabs, TabsProps} from "antd";
-import {SelectFileButton} from "@/features/select-file-button";
+import {SelectFileButton} from "@/entities/file/ui";
 import {PlusOutlined} from "@ant-design/icons";
 
-interface IProps {
-  departmentStaff: IDepartmentStaff[];
-}
+export default function DepartmentStaffCrudForm() {
+  const validPath = async (value: string, form: FormInstance<IDepartmentStaff>) => {
+    if (!value)
+      return;
 
-export default function DepartmentStaffCrudForm(props: IProps) {
-  const validPath = (value: string, form: FormInstance<IDepartmentStaff>) => {
-    return new Promise((resolve, reject) => {
-      if (props.departmentStaff.find(x => (x._id != form.getFieldValue("_id") && x.path == value)) != null)
-        reject("Шлях має бути унікальним");
-
-      resolve("");
-    });
+    if (!await unwrapServerAction(isDepartmentStaffPathAvailableAction(value, form.getFieldValue("_id"))))
+      throw new Error("Шлях має бути унікальним");
   }
 
   const items: TabsProps["items"] = [
@@ -24,9 +21,6 @@ export default function DepartmentStaffCrudForm(props: IProps) {
       children: (
         <>
           <Form.Item<IDepartmentStaff> hidden name="_id">
-            <Input type="hidden"/>
-          </Form.Item>
-          <Form.Item<IDepartmentStaff> hidden name="components">
             <Input type="hidden"/>
           </Form.Item>
           <Form.Item<IDepartmentStaff>
@@ -76,7 +70,7 @@ export default function DepartmentStaffCrudForm(props: IProps) {
           </Form.Item>
           <Form.Item<IDepartmentStaff>
             label="Фотографія"
-            name="imagePath"
+            name="imageSlug"
             extra="Фотографія викладача"
             style={{marginBottom: 0}}
           >
@@ -85,6 +79,7 @@ export default function DepartmentStaffCrudForm(props: IProps) {
           <Form.Item<IDepartmentStaff>
             label="Шлях"
             name="path"
+            validateDebounce={400}
             style={{marginBottom: 0}}
             rules={[
               {

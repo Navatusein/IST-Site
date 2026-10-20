@@ -1,38 +1,98 @@
-import {Table, TableColumnsType} from "antd";
-import {Dispatch, Key, SetStateAction, useMemo} from "react";
+import {Key, MouseEvent} from "react";
+import {Table, TableColumnsType, TablePaginationConfig} from "antd";
+import {SorterResult} from "antd/es/table/interface";
+import {useLocalStorage} from "@/shared/hooks/use-local-storage";
+import ResizableHeaderCell, {IResizableHeaderCellProps} from "../resizable-header-cell/resizable-header-cell";
 
-interface IProps<T> {
+interface IProps<T extends object> {
   columns: TableColumnsType<T>;
-  data: T[] | undefined;
+  data: T[];
   isLoading: boolean;
-  keyField?: string;
+  keyField: keyof T & string;
   selectedRows: T[];
-  setSelectedRows: Dispatch<SetStateAction<T[]>>;
+  setSelectedRows: (rows: T[]) => void;
+  onRowDoubleClick: (record: T) => void;
+  pagination?: TablePaginationConfig;
+  onChange?: (pagination: TablePaginationConfig, sorter: SorterResult<T> | SorterResult<T>[]) => void;
+  storageKey: string;
 }
 
-export default function CrudTable<T>(props: IProps<T>) {
-  const selectedRowKeys = useMemo(() => {
-    return props.selectedRows.map((value) => ((value as never)[props.keyField ?? "_id"] ?? ""));
-  }, [props.selectedRows]);
+const SELECTION_COLUMN_WIDTH = 32;
+
+type ColumnWidths = Record<string, number>;
+
+const NO_WIDTHS: ColumnWidths = {};
+
+const TABLE_COMPONENTS = {header: {cell: ResizableHeaderCell}};
+
+export default function CrudTable<T extends object>(props: IProps<T>) {
+  const getKey = (record: T) => record[props.keyField] as Key;
+
+  const [widths, setWidths] = useLocalStorage<ColumnWidths>(`crud-column-widths:${props.storageKey}`, NO_WIDTHS);
+
+  const columns = props.columns.map((column) => {
+    const key = column.key == null ? null : String(column.key);
+
+    if (key == null || typeof column.width != "number" || "children" in column)
+      return column;
+
+    const defaultWidth = column.width;
+    const width = widths[key] ?? defaultWidth;
+
+    return {
+      ...column,
+      width,
+      onHeaderCell: (data: T) => ({
+        ...column.onHeaderCell?.(data),
+        onResize: (value: number) => setWidths({...widths, [key]: value}),
+        onResetWidth: () => {
+          const {[key]: _, ...rest} = widths;
+          setWidths(rest);
+        }
+      }) as IResizableHeaderCellProps
+    };
+  }) as TableColumnsType<T>;
+
+  const selectedRowKeys = props.selectedRows.map(getKey);
+
+  const scrollX = columns.reduce((sum, column) => sum + (typeof column.width == "number" ? column.width : 150), SELECTION_COLUMN_WIDTH);
+
+  const onRowClick = (event: MouseEvent, record: T) => {
+    if (!event.ctrlKey && !event.metaKey)
+      return props.setSelectedRows([record]);
+
+    const key = getKey(record);
+    const isSelected = props.selectedRows.some((row) => getKey(row) == key);
+
+    props.setSelectedRows(isSelected ? props.selectedRows.filter((row) => getKey(row) != key) : [...props.selectedRows, record]);
+  }
 
   return (
-    <Table
-      columns={props.columns}
+    <Table<T>
+      columns={columns}
+      components={TABLE_COMPONENTS}
       dataSource={props.data}
       loading={props.isLoading}
       size="small"
-      scroll={{x: 1}}
-      rowKey={props.keyField ?? "_id"}
+      scroll={{x: scrollX}}
+      tableLayout="fixed"
+      rowKey={props.keyField}
+      pagination={props.pagination}
+      onChange={props.onChange ? (pagination, _, sorter) => props.onChange!(pagination, sorter) : undefined}
       rowSelection={{
         selectedRowKeys: selectedRowKeys,
-        onChange: (selectedRowKeys: Key[], selectedRows: T[]) => props.setSelectedRows(() => selectedRows),
+        onChange: (_, selectedRows) => props.setSelectedRows(selectedRows),
         renderCell: (checked, record, index, originNode) => (
-          <div>
-            <div style={{position: "absolute", top: 0, bottom: 0, left: 0, right: 0}} onClick={event => event.stopPropagation()}/>
+          <div onClick={(event) => event.stopPropagation()} onDoubleClick={(event) => event.stopPropagation()}>
             {originNode}
           </div>
         )
       }}
+      onRow={(record) => ({
+        onClick: (event) => onRowClick(event, record),
+        onDoubleClick: () => props.onRowDoubleClick(record),
+        style: {cursor: "pointer", userSelect: "none"}
+      })}
     />
   )
 }

@@ -1,8 +1,9 @@
 import {Button, Card, Flex, Typography, Image} from "antd";
-import dayjs from "dayjs";
-import {INews} from "@/entities/news";
+import formatDate from "@/shared/utilities/format-date";
+import {INews} from "../../types/type";
 import styles from "./news-card.module.scss";
 import Link from "next/link";
+import {getFileAssetUrl} from "@/shared/utilities/file-urls";
 
 interface IProps {
   news: INews;
@@ -18,7 +19,7 @@ export default function NewsCard(props: IProps) {
               {props.news.title}
             </Typography.Title>
             <Typography.Text type="secondary">
-              {dayjs(props.news.date).format("D MMMM YYYY, dddd").toString()}
+              {formatDate(props.news.date)}
             </Typography.Text>
           </Flex>
           <Typography.Text className={styles.textTypography}>
@@ -32,7 +33,7 @@ export default function NewsCard(props: IProps) {
         </Flex>
         <Flex className={styles.imageContainer}>
           <Image
-            src={`/api/assets${props.news.imagePath}`}
+            src={getFileAssetUrl(props.news.imageSlug) ?? "/missing-image.webp"}
             width={"100%"}
             className={styles.image}
             loading="lazy"

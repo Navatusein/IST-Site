@@ -1,5 +1,5 @@
 import {Document} from "mongoose";
-import {IPageEntity} from "@/entities/dynamic-page";
+import type {IPageEntity} from "@/entities/dynamic-page/@x/department-staff";
 
 export interface IDepartmentStaffProfile {
   title: string;
@@ -12,7 +12,7 @@ export interface IDepartmentStaff extends Document {
   middleName: string;
   email: string;
   position: string;
-  imagePath?: string;
+  imageSlug?: string;
   path: string,
   entities: IPageEntity[];
   profiles: IDepartmentStaffProfile[];

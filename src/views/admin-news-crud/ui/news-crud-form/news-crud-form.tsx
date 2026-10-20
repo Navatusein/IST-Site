@@ -1,28 +1,22 @@
 import {INews} from "@/entities/news";
+import {isNewsPathAvailableAction} from "@/entities/news/actions/actions";
+import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 import {DatePicker, Form, FormInstance, Input} from "antd";
-import {SelectFileButton} from "@/features/select-file-button";
+import {SelectFileButton} from "@/entities/file/ui";
 import dayjs from "dayjs";
 
-interface IProps {
-  news: INews[];
-}
+export default function NewsCrudForm() {
+  const validPath = async (value: string, form: FormInstance<INews>) => {
+    if (!value)
+      return;
 
-export default function NewsCrudForm(props: IProps) {
-  const validPath = (value: string, form: FormInstance<INews>) => {
-    return new Promise((resolve, reject) => {
-      if (props.news.find(x => (x._id != form.getFieldValue("_id") && x.path == value)) != null)
-        reject("Шлях має бути унікальним");
-
-      resolve("");
-    });
+    if (!await unwrapServerAction(isNewsPathAvailableAction(value, form.getFieldValue("_id"))))
+      throw new Error("Шлях має бути унікальним");
   }
 
   return (
     <>
       <Form.Item<INews> hidden name="_id">
-        <Input type="hidden"/>
-      </Form.Item>
-      <Form.Item<INews> hidden name="components">
         <Input type="hidden"/>
       </Form.Item>
       <Form.Item<INews>
@@ -46,6 +40,7 @@ export default function NewsCrudForm(props: IProps) {
       <Form.Item<INews>
         label="Шлях"
         name="path"
+        validateDebounce={400}
         style={{marginBottom: 0}}
         rules={[
           {
@@ -79,7 +74,7 @@ export default function NewsCrudForm(props: IProps) {
       </Form.Item>
       <Form.Item<INews>
         label="Малюнок"
-        name="imagePath"
+        name="imageSlug"
         extra="Малюнок новини"
         style={{marginBottom: 0}}
       >

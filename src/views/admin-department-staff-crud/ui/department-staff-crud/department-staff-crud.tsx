@@ -1,16 +1,18 @@
 import {useRouter} from "next/navigation";
 import {useState} from "react";
-import {useServerAction} from "@/shared/hooks/use-server-action";
+import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 import {Space, TableColumnsType, Tag} from "antd";
-import {CrudComponent} from "@/widgets/crud-component";
+import {CrudComponent, timestampColumns} from "@/widgets/crud-component";
 import {FormOutlined} from "@ant-design/icons";
-import {dateStringSorter, stringSorter} from "@/shared/utilities/sorters";
+import {stringSorter} from "@/shared/utilities/sorters";
 import {IDepartmentStaff} from "@/entities/department-staff";
-import {addDepartmentStaffAction, removeDepartmentStaffAction, updateDepartmentStaffAction} from "@/entities/department-staff/actions/actions";
+import {addDepartmentStaffAction, removeDepartmentStaffAction, updateDepartmentStaffAction, exportDepartmentStaffAction, importDepartmentStaffAction} from "@/entities/department-staff/actions/actions";
 import DepartmentStaffCrudForm from "../department-staff-crud-form/department-staff-crud-form";
 
+import {IPageResult} from "@/shared/types/page-query";
+
 interface IProps {
-  departmentStaff: IDepartmentStaff[];
+  result: IPageResult<IDepartmentStaff>;
 }
 
 const COLUMNS: TableColumnsType<IDepartmentStaff> = [
@@ -38,7 +40,7 @@ const COLUMNS: TableColumnsType<IDepartmentStaff> = [
     title: "Ім'я по батькові",
     dataIndex: "middleName",
     key: "middleName",
-    width: 150,
+    width: 190,
     sorter: (a, b) => stringSorter(a.middleName, b.middleName),
     showSorterTooltip: {
       title: "Сортування за ім'ям по батькові"
@@ -65,12 +67,12 @@ const COLUMNS: TableColumnsType<IDepartmentStaff> = [
     }
   },
   {
-    title: "Шлях до малюнка",
-    dataIndex: "imagePath",
-    key: "imagePath",
-    width: 200,
-    render: (imagePath: string | null) => (
-      imagePath ?? <Tag color="red">Шлях не вказан</Tag>
+    title: "Малюнок",
+    dataIndex: "imageSlug",
+    key: "imageSlug",
+    width: 120,
+    render: (imageSlug?: string | null) => (
+      imageSlug ? <Tag color="green">Так</Tag> : <Tag color="red">Не вказано</Tag>
     )
   },
   {
@@ -83,32 +85,7 @@ const COLUMNS: TableColumnsType<IDepartmentStaff> = [
       title: "Сортування за шляхом"
     }
   },
-  {
-    title: "Створено",
-    dataIndex: "createdAt",
-    key: "createdAt",
-    width: 115,
-    render: (date: string) => (
-      new Date(date).toLocaleString()
-    ),
-    sorter: (a, b) => dateStringSorter((a as any).createdAt, (b as any).createdAt),
-    showSorterTooltip: {
-      title: "Сортування за датою створення"
-    }
-  },
-  {
-    title: "Оновлено",
-    dataIndex: "updatedAt",
-    key: "updatedAt",
-    width: 115,
-    render: (date: string) => (
-      new Date(date).toLocaleString()
-    ),
-    sorter: (a, b) => dateStringSorter((a as any).updatedAt, (b as any).updatedAt),
-    showSorterTooltip: {
-      title: "Сортування за датою редагування"
-    }
-  }
+  ...timestampColumns<IDepartmentStaff>()
 ];
 
 export default function DepartmentStaffCrud(props: IProps) {
@@ -117,30 +94,15 @@ export default function DepartmentStaffCrud(props: IProps) {
   const [selectedRows, setSelectedRows] = useState<IDepartmentStaff[]>([]);
 
   const create = async (data: IDepartmentStaff) => {
-    await useServerAction(addDepartmentStaffAction({...data, _id: null}));
+    await unwrapServerAction(addDepartmentStaffAction({...data}));
   }
 
   const update = async (data: IDepartmentStaff) => {
-    await useServerAction(updateDepartmentStaffAction({...data}));
+    await unwrapServerAction(updateDepartmentStaffAction({...data}));
   }
 
   const remove = async (data: IDepartmentStaff[]) => {
-    await useServerAction(removeDepartmentStaffAction(data));
-  }
-
-  const refresh = () => {
-    router.refresh();
-  }
-
-  const search = (data: IDepartmentStaff[], query: string): IDepartmentStaff[] => {
-    return data.filter((x) =>
-      x.firstName.toLowerCase().includes(query) ||
-      x.lastName.toLowerCase().includes(query) ||
-      x.middleName.toLowerCase().includes(query) ||
-      x.position.toLowerCase().includes(query) ||
-      x.email.toLowerCase().includes(query) ||
-      x.path.toLowerCase().includes(query)
-    );
+    await unwrapServerAction(removeDepartmentStaffAction(data));
   }
 
   const redirectToEditPage = (data?: IDepartmentStaff[]) => {
@@ -154,15 +116,20 @@ export default function DepartmentStaffCrud(props: IProps) {
     <Space orientation="vertical" size="middle" style={{width: "100%"}}>
       <CrudComponent<IDepartmentStaff>
         columns={COLUMNS}
-        data={props.departmentStaff}
-        isLoading={false}
+        data={props.result.items}
+        pagination={props.result}
+        serverSearch
+        importExport={{
+          fileName: "department-staff",
+          exportRecords: (params) => unwrapServerAction(exportDepartmentStaffAction(params)),
+          importRecords: (file, apply) => unwrapServerAction(importDepartmentStaffAction(file, apply)),
+        }}
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
         create={create}
         update={update}
         remove={remove}
-        refresh={refresh}
-        search={search}
+        getRecordName={(staff) => `${staff.lastName} ${staff.firstName} ${staff.middleName}`}
         additionalToolbarButtons={[
           {
             label: "Редагувати контент",
@@ -181,7 +148,7 @@ export default function DepartmentStaffCrud(props: IProps) {
           },
         ]}
       >
-        <DepartmentStaffCrudForm departmentStaff={props.departmentStaff}/>
+        <DepartmentStaffCrudForm/>
       </CrudComponent>
     </Space>
   )

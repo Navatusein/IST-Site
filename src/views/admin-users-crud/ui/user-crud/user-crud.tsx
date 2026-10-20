@@ -2,21 +2,21 @@ import {IUser} from "@/entities/user";
 import {App, TableColumnsType, Tag} from "antd";
 import {useRouter} from "next/navigation";
 import {useState} from "react";
-import {CrudComponent} from "@/widgets/crud-component";
+import {CrudComponent, timestampColumns} from "@/widgets/crud-component";
 import UserCrudForm from "../user-crud-form/user-crud-form";
-import {
-  addUserAction,
+import {addUserAction,
   removeUsersAction,
   updateUserAction,
-  updateUserPasswordAction
-} from "@/entities/user/actions/actions";
+  updateUserPasswordAction, exportUsersAction, importUsersAction} from "@/entities/user/actions/actions";
 import PasswordModal from "../password-modal/password-modal";
 import {FormOutlined} from "@ant-design/icons";
-import {useServerAction} from "@/shared/hooks/use-server-action";
-import {dateStringSorter, stringSorter} from "@/shared/utilities/sorters";
+import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
+import {stringSorter} from "@/shared/utilities/sorters";
+
+import {IPageResult} from "@/shared/types/page-query";
 
 interface IProps {
-  users: IUser[];
+  result: IPageResult<IUser>;
 }
 
 const COLUMNS: TableColumnsType<IUser> = [
@@ -62,32 +62,7 @@ const COLUMNS: TableColumnsType<IUser> = [
         <Tag color="red">Ні</Tag>
     )
   },
-  {
-    title: "Створено",
-    dataIndex: "createdAt",
-    key: "createdAt",
-    width: 115,
-    render: (date: string) => (
-      new Date(date).toLocaleString()
-    ),
-    sorter: (a, b) => dateStringSorter((a as any).createdAt, (b as any).createdAt),
-    showSorterTooltip: {
-      title: "Сортування за датою створення"
-    }
-  },
-  {
-    title: "Оновлено",
-    dataIndex: "updatedAt",
-    key: "updatedAt",
-    width: 115,
-    render: (date: string) => (
-      new Date(date).toLocaleString()
-    ),
-    sorter: (a, b) => dateStringSorter((a as any).updatedAt, (b as any).updatedAt),
-    showSorterTooltip: {
-      title: "Сортування за датою редагування"
-    }
-  }
+  ...timestampColumns<IUser>()
 ];
 
 export default function UserCrud(props: IProps) {
@@ -99,38 +74,24 @@ export default function UserCrud(props: IProps) {
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState<boolean>(false);
 
   const create = async (data: IUser) => {
-    await useServerAction(addUserAction({...data, _id: null}));
+    await unwrapServerAction(addUserAction({...data}));
   }
 
   const update = async (data: IUser) => {
-    await useServerAction(updateUserAction(data));
+    await unwrapServerAction(updateUserAction(data));
   }
 
   const remove = async (data: IUser[]) => {
-    await useServerAction(removeUsersAction(data));
-  }
-
-  const refresh = () => {
-    router.refresh();
-  }
-
-  const search = (data: IUser[], query: string): IUser[] => {
-    return data.filter((x) =>
-      x.login.toLowerCase().includes(query) ||
-      x.name.toLowerCase().includes(query)
-    );
+    await unwrapServerAction(removeUsersAction(data));
   }
 
   const setPassword = async (password: string) => {
-    updateUserPasswordAction(selectedRows[0]._id, password)
+    unwrapServerAction(updateUserPasswordAction(String(selectedRows[0]._id), password))
       .then(() => {
         notification.success({title: "Успішно оновлено пароль"});
-        setSelectedRows(() => []);
+        setSelectedRows([]);
         setIsPasswordModalOpen(() => false);
-
-        setTimeout(() => {
-          router.refresh();
-        }, 500);
+        router.refresh();
       })
       .catch((error) => {
         notification.error({title: "Помилка оновленя паролю", description: error.message});
@@ -145,15 +106,20 @@ export default function UserCrud(props: IProps) {
     <>
       <CrudComponent<IUser>
         columns={COLUMNS}
-        data={props.users}
-        isLoading={false}
+        data={props.result.items}
+        pagination={props.result}
+        serverSearch
+        importExport={{
+          fileName: "users",
+          exportRecords: (params) => unwrapServerAction(exportUsersAction(params)),
+          importRecords: (file, apply) => unwrapServerAction(importUsersAction(file, apply)),
+        }}
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
         create={create}
         update={update}
         remove={remove}
-        refresh={refresh}
-        search={search}
+        getRecordName={(user) => user.name}
         additionalToolbarButtons={[
           {
             label: "Змінити пароль",

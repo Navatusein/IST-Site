@@ -1,6 +1,6 @@
 import {Flex} from "antd";
 import NewsCard from "../news-card/news-card";
-import {INews} from "@/entities/news";
+import {INews} from "../../types/type";
 
 interface IProps {
   newsList: INews[];

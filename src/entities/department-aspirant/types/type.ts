@@ -8,5 +8,5 @@ export interface IDepartmentAspirant extends Document {
   thesisHeadId: ObjectId;
   thesisTheme: string;
   thesisDate?: Date;
-  imagePath?: string;
+  imageSlug?: string;
 }

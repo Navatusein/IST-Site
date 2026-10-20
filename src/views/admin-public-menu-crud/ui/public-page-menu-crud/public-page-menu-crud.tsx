@@ -1,14 +1,16 @@
 import {IPublicMenuItem} from "@/entities/public-menu-item";
 import {TableColumnsType} from "antd";
-import {useRouter} from "next/navigation";
 import {useState} from "react";
-import {CrudComponent} from "@/widgets/crud-component";
+import {CrudComponent, timestampColumns} from "@/widgets/crud-component";
 import PublicPageMenuCrudForm from "../public-page-menu-crud-form/public-page-menu-crud-form";
-import {addPublicMenuItemAction, removePublicMenuItemsAction, updatePublicMenuItemAction} from "@/entities/public-menu-item/actions/actions";
-import {useServerAction} from "@/shared/hooks/use-server-action";
+import {addPublicMenuItemAction, removePublicMenuItemsAction, updatePublicMenuItemAction, exportPublicMenuAction, importPublicMenuAction} from "@/entities/public-menu-item/actions/actions";
+import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
+
+import {IPageResult} from "@/shared/types/page-query";
 
 interface IProps {
-  menuItems: IPublicMenuItem[]
+  result: IPageResult<IPublicMenuItem>;
+  menuItems: IPublicMenuItem[];
 }
 
 const COLUMNS: TableColumnsType<IPublicMenuItem> = [
@@ -32,63 +34,46 @@ const COLUMNS: TableColumnsType<IPublicMenuItem> = [
     key: "path",
     width: 250,
   },
-  {
-    title: "Створено",
-    dataIndex: "createdAt",
-    key: "createdAt",
-    width: 115,
-    render: (date: string) => (
-      new Date(date).toLocaleString()
-    )
-  },
-  {
-    title: "Оновлено",
-    dataIndex: "updatedAt",
-    key: "updatedAt",
-    width: 115,
-    render: (date: string) => (
-      new Date(date).toLocaleString()
-    )
-  }
+  ...timestampColumns<IPublicMenuItem>()
 ];
 
 export default function PublicPageMenuCrud(props: IProps) {
-  const router = useRouter()
-
   const [selectedRows, setSelectedRows] = useState<IPublicMenuItem[]>([]);
 
   const create = async (data: IPublicMenuItem) => {
-    await useServerAction(addPublicMenuItemAction({...data, _id: null}));
+    await unwrapServerAction(addPublicMenuItemAction({...data}));
   }
 
   const update = async (data: IPublicMenuItem) => {
-    await useServerAction(updatePublicMenuItemAction(data));
+    await unwrapServerAction(updatePublicMenuItemAction(data));
   }
 
   const remove = async (data: IPublicMenuItem[]) => {
-    await useServerAction(removePublicMenuItemsAction(data));
-  }
-
-  const refresh = () => {
-    router.refresh();
+    await unwrapServerAction(removePublicMenuItemsAction(data));
   }
 
   return (
     <>
       <CrudComponent<IPublicMenuItem>
         columns={COLUMNS}
-        data={props.menuItems}
-        isLoading={false}
+        data={props.result.items}
+        pagination={props.result}
+        serverSearch
+        importExport={{
+          fileName: "public-menu",
+          exportRecords: (params) => unwrapServerAction(exportPublicMenuAction(params)),
+          importRecords: (file, apply) => unwrapServerAction(importPublicMenuAction(file, apply)),
+        }}
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
         create={create}
         update={update}
         remove={remove}
-        refresh={refresh}
+        getRecordName={(menuItem) => menuItem.label}
       >
         <PublicPageMenuCrudForm
           menuItems={props.menuItems}
-          selectedMenuItemId={selectedRows[0]?._id.toHexString() ?? undefined}
+          selectedMenuItemId={selectedRows[0] ? String(selectedRows[0]._id) : undefined}
         />
       </CrudComponent>
     </>

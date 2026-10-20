@@ -1,32 +1,26 @@
 import {Form, FormInstance, Input} from "antd";
+import {isDynamicPagePathAvailableAction} from "@/entities/dynamic-page/actions/actions";
+import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 import {IDynamicPage} from "@/entities/dynamic-page";
 
-interface IProps {
-  pages: IDynamicPage[]
-}
+export default function DynamicPageCrudForm() {
+  const validPath = async (value: string, form: FormInstance<IDynamicPage>) => {
+    if (!value)
+      return;
 
-export default function DynamicPageCrudForm(props: IProps) {
-  const validPath = (value: string, form: FormInstance<IDynamicPage>) => {
-    return new Promise((resolve, reject) => {
-      if (value.startsWith("admin"))
-        reject("Шлях не може починатись з \"admin\"");
+    if (value.startsWith("admin"))
+      throw new Error("Шлях не може починатись з \"admin\"");
 
-      if (value.startsWith("api"))
-        reject("Шлях не може починатись з \"api\"");
+    if (value.startsWith("api"))
+      throw new Error("Шлях не може починатись з \"api\"");
 
-      if (props.pages.find(x => (x._id != form.getFieldValue("_id") && x.path == value)) != null)
-        reject("Шлях має бути унікальним");
-
-      resolve("");
-    });
+    if (!await unwrapServerAction(isDynamicPagePathAvailableAction(value, form.getFieldValue("_id"))))
+      throw new Error("Шлях має бути унікальним");
   }
 
   return (
     <>
       <Form.Item<IDynamicPage> hidden name="_id">
-        <Input type="hidden"/>
-      </Form.Item>
-      <Form.Item<IDynamicPage> hidden name="components">
         <Input type="hidden"/>
       </Form.Item>
       <Form.Item<IDynamicPage>
@@ -41,15 +35,25 @@ export default function DynamicPageCrudForm(props: IProps) {
       <Form.Item<IDynamicPage>
         label="Заголовок"
         name="title"
-        extra="Заголовок сторінки"
+        extra="Назва вкладки браузера та результату в пошуку"
         style={{marginBottom: 0}}
         rules={[{required: true, message: "Введіть заголовок сторінки!"}]}
       >
         <Input/>
       </Form.Item>
       <Form.Item<IDynamicPage>
+        label="Опис"
+        name="description"
+        extra="Текст під заголовком у пошуку, до 300 символів. Якщо не вказано, береться початок першого текстового блоку"
+        style={{marginBottom: 0}}
+        rules={[{max: 300, message: "Не більше 300 символів"}]}
+      >
+        <Input.TextArea autoSize={{minRows: 2, maxRows: 5}} maxLength={300}/>
+      </Form.Item>
+      <Form.Item<IDynamicPage>
         label="Шлях"
         name="path"
+        validateDebounce={400}
         style={{marginBottom: 0}}
         rules={[
           {

@@ -4,7 +4,7 @@ import {INews} from "./type";
 const newsScheme = new Schema<INews>({
   title: {type: Schema.Types.String, required: true},
   description: {type: Schema.Types.String, required: true},
-  imagePath: {type: Schema.Types.String},
+  imageSlug: {type: Schema.Types.String},
   path: {type: Schema.Types.String, required: true, unique: true},
   entities: [{type: Schema.Types.Mixed, required: true}],
   date: {type: Schema.Types.String, required: true},

@@ -1,23 +1,22 @@
-import {useRouter} from "next/navigation";
 import {useMemo, useState} from "react";
-import {useServerAction} from "@/shared/hooks/use-server-action";
+import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 import {Space, TableColumnsType, Tag} from "antd";
-import {CrudComponent} from "@/widgets/crud-component";
+import {CrudComponent, timestampColumns} from "@/widgets/crud-component";
 import {dateStringSorter, stringSorter} from "@/shared/utilities/sorters";
 import {IDepartmentAspirant} from "@/entities/department-aspirant";
 import DepartmentAspirantCrudForm from "../department-aspirant-crud-form/department-aspirant-crud-form";
-import {addDepartmentAspirantAction, removeDepartmentAspirantAction, updateDepartmentAspirantAction} from "@/entities/department-aspirant/actions/actions";
+import {addDepartmentAspirantAction, removeDepartmentAspirantAction, updateDepartmentAspirantAction, exportDepartmentAspirantsAction, importDepartmentAspirantsAction} from "@/entities/department-aspirant/actions/actions";
 import {IDepartmentStaff} from "@/entities/department-staff";
 import dayjs from "dayjs";
 
+import {IPageResult} from "@/shared/types/page-query";
+
 interface IProps {
-  departmentAspirants: IDepartmentAspirant[];
+  result: IPageResult<IDepartmentAspirant>;
   departmentStaff: IDepartmentStaff[];
 }
 
 export default function DepartmentAspirantCrud(props: IProps) {
-  const router = useRouter()
-
   const departmentStaff = useMemo(() => {
     return props.departmentStaff.reduce<Record<string, string>>(
       (array, value) => {
@@ -51,7 +50,7 @@ export default function DepartmentAspirantCrud(props: IProps) {
       title: "Ім'я по батькові",
       dataIndex: "middleName",
       key: "middleName",
-      width: 150,
+      width: 190,
       sorter: (a, b) => stringSorter(a.middleName, b.middleName),
       showSorterTooltip: {
         title: "Сортування за ім'ям по батькові"
@@ -84,93 +83,56 @@ export default function DepartmentAspirantCrud(props: IProps) {
       title: "Керівник",
       dataIndex: "thesisHeadId",
       key: "thesisHeadId",
-      width: 200,
+      width: 300,
+      ellipsis: true,
       render: (id: string) => (
         departmentStaff[id]
       ),
-      sorter: (a, b) => stringSorter(a.thesisHeadId.toHexString(), b.thesisHeadId.toHexString()),
-      showSorterTooltip: {
-        title: "Сортування за керівником"
-      }
     },
     {
-      title: "Шлях до малюнка",
-      dataIndex: "imagePath",
-      key: "imagePath",
-      width: 200,
-      render: (imagePath: string | null) => (
-        imagePath ?? <Tag color="red">Шлях не вказан</Tag>
-      )
+      title: "Малюнок",
+      dataIndex: "imageSlug",
+      key: "imageSlug",
+      width: 120,
+      render: (imageSlug?: string | null) => (
+      imageSlug ? <Tag color="green">Так</Tag> : <Tag color="red">Не вказано</Tag>
+    )
     },
-    {
-      title: "Створено",
-      dataIndex: "createdAt",
-      key: "createdAt",
-      width: 115,
-      render: (date: string) => (
-        new Date(date).toLocaleString()
-      ),
-      sorter: (a, b) => dateStringSorter((a as any).createdAt, (b as any).createdAt),
-      showSorterTooltip: {
-        title: "Сортування за датою створення"
-      }
-    },
-    {
-      title: "Оновлено",
-      dataIndex: "updatedAt",
-      key: "updatedAt",
-      width: 115,
-      render: (date: string) => (
-        new Date(date).toLocaleString()
-      ),
-      sorter: (a, b) => dateStringSorter((a as any).updatedAt, (b as any).updatedAt),
-      showSorterTooltip: {
-        title: "Сортування за датою редагування"
-      }
-    }
+    ...timestampColumns<IDepartmentAspirant>()
   ];
 
   const [selectedRows, setSelectedRows] = useState<IDepartmentAspirant[]>([]);
 
   const create = async (data: IDepartmentAspirant) => {
-    console.log(data.thesisDate)
-    await useServerAction(addDepartmentAspirantAction({...data, thesisDate: data.thesisDate ? dayjs(data.thesisDate).toISOString() : undefined, _id: null}));
+    await unwrapServerAction(addDepartmentAspirantAction({...data, thesisDate: data.thesisDate ? dayjs(data.thesisDate).toISOString() : undefined}));
   }
 
   const update = async (data: IDepartmentAspirant) => {
-    await useServerAction(updateDepartmentAspirantAction({...data, thesisDate: data.thesisDate ? dayjs(data.thesisDate).toISOString() : undefined}));
+    await unwrapServerAction(updateDepartmentAspirantAction({...data, thesisDate: data.thesisDate ? dayjs(data.thesisDate).toISOString() : undefined}));
   }
 
   const remove = async (data: IDepartmentAspirant[]) => {
-    await useServerAction(removeDepartmentAspirantAction(data));
-  }
-
-  const refresh = () => {
-    router.refresh();
-  }
-
-  const search = (data: IDepartmentAspirant[], query: string): IDepartmentAspirant[] => {
-    return data.filter((x) =>
-      x.firstName.toLowerCase().includes(query) ||
-      x.lastName.toLowerCase().includes(query) ||
-      x.middleName.toLowerCase().includes(query) ||
-      x.thesisTheme.toLowerCase().includes(query)
-    );
+    await unwrapServerAction(removeDepartmentAspirantAction(data));
   }
 
   return (
     <Space orientation="vertical" size="middle" style={{width: "100%"}}>
       <CrudComponent<IDepartmentAspirant>
         columns={COLUMNS}
-        data={props.departmentAspirants}
-        isLoading={false}
+        data={props.result.items}
+        pagination={props.result}
+        serverSearch
+        importExport={{
+          fileName: "department-aspirants",
+          exportRecords: (params) => unwrapServerAction(exportDepartmentAspirantsAction(params)),
+          importRecords: (file, apply) => unwrapServerAction(importDepartmentAspirantsAction(file, apply)),
+        }}
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
         create={create}
         update={update}
         remove={remove}
-        refresh={refresh}
-        search={search}
+        getRecordName={(aspirant) => `${aspirant.lastName} ${aspirant.firstName} ${aspirant.middleName}`}
       >
         <DepartmentAspirantCrudForm departmentStaff={props.departmentStaff}/>
       </CrudComponent>

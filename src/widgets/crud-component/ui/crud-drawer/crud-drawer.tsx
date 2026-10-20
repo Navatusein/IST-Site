@@ -1,55 +1,67 @@
 "use client"
 
+import {ReactNode, useState} from "react";
 import {Button, Drawer, Flex, Form, theme} from "antd";
-import {Dispatch, ReactNode, SetStateAction} from "react";
-import CrudForm from "../crud-form/crud-form";
 
-interface IProps<T> {
+interface IProps<T extends object> {
   isOpen: boolean;
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
-  onFormSubmit: (formData: T) => void;
   title: string;
-  selectedRows: T[];
+  initialValues: Partial<T>;
+  onSubmit: (values: T) => Promise<boolean>;
+  onClose: () => void;
   children: ReactNode;
 }
 
-export default function CrudDrawer<T>(props: IProps<T>) {
+export default function CrudDrawer<T extends object>(props: IProps<T>) {
   const {token: {padding}} = theme.useToken();
   const [form] = Form.useForm<T>();
 
-  const onCancel = () => {
-    props.setIsOpen(false)
-  }
+  const [isSaving, setIsSaving] = useState<boolean>(false);
 
-  const onOk = () => {
-    form.submit()
+  const save = async () => {
+    let values: T;
+
+    try {
+      values = await form.validateFields();
+    }
+    catch {
+      return;
+    }
+
+    setIsSaving(() => true);
+
+    try {
+      await props.onSubmit(values);
+    }
+    finally {
+      setIsSaving(() => false);
+    }
   }
 
   return (
     <Drawer
       closable
+      destroyOnHidden
       open={props.isOpen}
       title={props.title}
       size="large"
-      onClose={onCancel}
+      onClose={props.onClose}
       footer={
         <Flex gap={padding}>
-          <Button onClick={() => props.setIsOpen(false)} block>
+          <Button onClick={props.onClose} block disabled={isSaving}>
             Відмінити
           </Button>
-          <Button type="primary" onClick={onOk} block>
+          <Button type="primary" onClick={save} block loading={isSaving}>
             Зберегти
           </Button>
         </Flex>
       }
     >
-     <CrudForm<T>
-       setIsOpen={props.setIsOpen}
-       onFormSubmit={props.onFormSubmit}
-       selectedRows={props.selectedRows}
-       children={props.children}
-       form={form}
-     />
+      <Form<T> form={form} layout="vertical" initialValues={props.initialValues} onFinish={save}>
+        <Flex vertical gap="middle">
+          {props.children}
+        </Flex>
+      </Form>
     </Drawer>
   )
 }

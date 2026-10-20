@@ -7,7 +7,7 @@ const departmentStaffScheme = new Schema<IDepartmentStaff>({
   middleName: {type: Schema.Types.String, required: true},
   email: {type: Schema.Types.String, required: true},
   position: {type: Schema.Types.String, required: true},
-  imagePath: {type: Schema.Types.String},
+  imageSlug: {type: Schema.Types.String},
   path: {type: Schema.Types.String, required: true, unique: true},
   entities: [{type: Schema.Types.Mixed, required: true}],
   profiles: [{type: Schema.Types.Mixed, required: true}]

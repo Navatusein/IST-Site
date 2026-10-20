@@ -1,20 +1,20 @@
 import {IDynamicPage} from "@/entities/dynamic-page";
 import {Space, TableColumnsType} from "antd";
-import {CrudComponent} from "@/widgets/crud-component";
+import {CrudComponent, timestampColumns} from "@/widgets/crud-component";
 import {useState} from "react";
-import {
-  addDynamicPageAction,
+import {addDynamicPageAction,
   removeDynamicPagesAction,
-  updateDynamicPageAction
-} from "@/entities/dynamic-page/actions/actions";
-import {redirect, RedirectType, useRouter} from "next/navigation";
+  updateDynamicPageAction, exportDynamicPagesAction, importDynamicPagesAction} from "@/entities/dynamic-page/actions/actions";
+import {useRouter} from "next/navigation";
 import DynamicPageCrudForm from "../dynamic-page-crud-form/dynamic-page-crud-form";
 import {FormOutlined} from "@ant-design/icons";
-import {useServerAction} from "@/shared/hooks/use-server-action";
-import {dateStringSorter, stringSorter} from "@/shared/utilities/sorters";
+import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
+import {stringSorter} from "@/shared/utilities/sorters";
+
+import {IPageResult} from "@/shared/types/page-query";
 
 interface IProps {
-  pages: IDynamicPage[]
+  result: IPageResult<IDynamicPage>;
 }
 
 const COLUMNS: TableColumnsType<IDynamicPage> = [
@@ -39,6 +39,14 @@ const COLUMNS: TableColumnsType<IDynamicPage> = [
     }
   },
   {
+    title: "Опис",
+    dataIndex: "description",
+    key: "description",
+    width: 300,
+    ellipsis: true,
+    render: (value?: string) => value || "—"
+  },
+  {
     title: "Шлях",
     dataIndex: "path",
     key: "path",
@@ -48,32 +56,7 @@ const COLUMNS: TableColumnsType<IDynamicPage> = [
       title: "Сортування за шляхом"
     }
   },
-  {
-    title: "Створено",
-    dataIndex: "createdAt",
-    key: "createdAt",
-    width: 115,
-    render: (date: string) => (
-      new Date(date).toLocaleString()
-    ),
-    sorter: (a, b) => dateStringSorter((a as any).createdAt, (b as any).createdAt),
-    showSorterTooltip: {
-      title: "Сортування за датою створення"
-    }
-  },
-  {
-    title: "Оновлено",
-    dataIndex: "updatedAt",
-    key: "updatedAt",
-    width: 115,
-    render: (date: string) => (
-      new Date(date).toLocaleString()
-    ),
-    sorter: (a, b) => dateStringSorter((a as any).updatedAt, (b as any).updatedAt),
-    showSorterTooltip: {
-      title: "Сортування за датою редагування"
-    }
-  }
+  ...timestampColumns<IDynamicPage>()
 ];
 
 export default function DynamicPageCrud(props: IProps) {
@@ -82,45 +65,42 @@ export default function DynamicPageCrud(props: IProps) {
   const [selectedRows, setSelectedRows] = useState<IDynamicPage[]>([]);
 
   const create = async (data: IDynamicPage) => {
-    await useServerAction(addDynamicPageAction({...data, _id: null}));
+    await unwrapServerAction(addDynamicPageAction({...data}));
   }
 
   const update = async (data: IDynamicPage) => {
-    await useServerAction(updateDynamicPageAction(data));
+    await unwrapServerAction(updateDynamicPageAction(data));
   }
 
   const remove = async (data: IDynamicPage[]) => {
-    await useServerAction(removeDynamicPagesAction(data));
-  }
-
-  const refresh = () => {
-    router.refresh();
-  }
-
-  const search = (data: IDynamicPage[], query: string): IDynamicPage[] => {
-    return data.filter((x) => x.name.toLowerCase().includes(query) || x.title.toLowerCase().includes(query));
+    await unwrapServerAction(removeDynamicPagesAction(data));
   }
 
   const redirectToEditPage = (data?: IDynamicPage[]) => {
     if (selectedRows[0] == null && data?.[0] == null)
       return;
 
-    redirect(`/admin/edit-page/dynamic-page/${data?.[0].path ?? selectedRows[0].path}`, RedirectType.push);
+    router.push(`/admin/edit-page/dynamic-page/${data?.[0].path ?? selectedRows[0].path}`);
   }
 
   return (
     <Space orientation="vertical" size="middle" style={{width: "100%"}}>
       <CrudComponent<IDynamicPage>
         columns={COLUMNS}
-        data={props.pages}
-        isLoading={false}
+        data={props.result.items}
+        pagination={props.result}
+        serverSearch
+        importExport={{
+          fileName: "dynamic-pages",
+          exportRecords: (params) => unwrapServerAction(exportDynamicPagesAction(params)),
+          importRecords: (file, apply) => unwrapServerAction(importDynamicPagesAction(file, apply)),
+        }}
         selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
         create={create}
         update={update}
         remove={remove}
-        refresh={refresh}
-        search={search}
+        getRecordName={(page) => page.name}
         additionalToolbarButtons={[
           {
             label: "Редагувати контент",
@@ -139,7 +119,7 @@ export default function DynamicPageCrud(props: IProps) {
           },
         ]}
       >
-        <DynamicPageCrudForm pages={props.pages}/>
+        <DynamicPageCrudForm/>
       </CrudComponent>
     </Space>
   )

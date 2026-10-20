@@ -1,0 +1,36 @@
+.cell {
+  position: relative;
+}
+
+.handle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  width: 8px;
+  height: 100%;
+  cursor: col-resize;
+  touch-action: none;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 20%;
+    bottom: 20%;
+    right: 0;
+    width: 2px;
+    border-radius: 1px;
+    background: transparent;
+    transition: background var(--ant-motion-duration-fast);
+  }
+
+  &:hover::after,
+  &:active::after {
+    background: var(--ant-color-primary);
+  }
+}
+
+:global(body).resizing {
+  cursor: col-resize;
+  user-select: none;
+}
