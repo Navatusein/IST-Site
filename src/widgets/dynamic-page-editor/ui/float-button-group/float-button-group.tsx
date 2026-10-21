@@ -4,6 +4,7 @@ import {Dispatch, SetStateAction} from "react";
 
 interface IProps {
   setIsAddPageComponentDrawerOpen: Dispatch<SetStateAction<boolean>>;
+  canAdd: boolean;
 }
 
 export default function FloatButtonGroup(props: IProps) {
@@ -23,7 +24,7 @@ export default function FloatButtonGroup(props: IProps) {
     <FloatButton.Group shape="circle" style={{insetInlineEnd: 24}}>
       <FloatButton icon={<ToTopOutlined/>} onClick={scrollToTop}/>
       <FloatButton icon={<VerticalAlignBottomOutlined/>} onClick={scrollToBottom}/>
-      <FloatButton type="primary" icon={<PlusOutlined/>} onClick={openAddPageComponentDrawer}/>
+      {props.canAdd && <FloatButton type="primary" icon={<PlusOutlined/>} onClick={openAddPageComponentDrawer}/>}
     </FloatButton.Group>
   )
 }

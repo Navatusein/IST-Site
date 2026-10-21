@@ -23,6 +23,8 @@ interface IProps {
   gap?: string;
   id?: string;
   style?: CSSProperties;
+  // Stretch to the height of the parent (e.g. equal-height cells of a line)
+  fill?: boolean;
 }
 
 export default function DraggableListItem(props: IProps) {
@@ -107,8 +109,8 @@ export default function DraggableListItem(props: IProps) {
 
   return (
     <DraggableListItemContext value={{index: props.index, handleRef: ownHandleRef, isDragging}}>
-      <Flex vertical ref={elementRef} id={props.id} style={{position: "relative", ...props.style}}>
-        <div style={{opacity: isDragging ? 0.4 : 1}}>
+      <Flex vertical ref={elementRef} id={props.id} style={{position: "relative", ...(props.fill && {height: "100%"}), ...props.style}}>
+        <div style={{opacity: isDragging ? 0.4 : 1, ...(props.fill && {flexGrow: 1, display: "flex", flexDirection: "column"})}}>
           {props.children}
         </div>
         {closestEdge && <DropIndicator edge={closestEdge} gap={props.gap}/>}

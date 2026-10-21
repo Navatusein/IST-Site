@@ -1,4 +1,4 @@
-import {Button, Dropdown, Segmented, Tooltip} from "antd";
+import {Button, ButtonProps, Dropdown, Segmented, Tooltip} from "antd";
 import {ColumnWidthOutlined, DownOutlined} from "@ant-design/icons";
 import {PageEntityWidth} from "@/entities/dynamic-page";
 
@@ -7,6 +7,8 @@ interface IProps {
   onChange: (value: PageEntityWidth) => void;
   allowedWidth?: PageEntityWidth[];
   compact?: boolean;
+  size?: ButtonProps["size"];
+  type?: ButtonProps["type"];
   tooltip: string;
 }
 
@@ -30,10 +32,12 @@ export default function WidthControl(props: IProps) {
           onClick: ({key}) => props.onChange(key as PageEntityWidth)
         }}
       >
-        <Button icon={<ColumnWidthOutlined/>} aria-label={props.tooltip}>
-          {WIDTH_OPTIONS.find((option) => option.value == props.value)?.label}
-          <DownOutlined style={{fontSize: 10}}/>
-        </Button>
+        <Tooltip title={props.tooltip}>
+          <Button icon={<ColumnWidthOutlined/>} size={props.size} type={props.type} aria-label={props.tooltip}>
+            {WIDTH_OPTIONS.find((option) => option.value == props.value)?.label}
+            <DownOutlined style={{fontSize: 10}}/>
+          </Button>
+        </Tooltip>
       </Dropdown>
     );
 

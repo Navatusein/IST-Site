@@ -1,14 +1,18 @@
 import {useState} from "react";
-import {App, Button, Card, Col, Empty, Flex, Grid, Popover, Row, Segmented, theme, Tooltip, Typography} from "antd";
+import {App, Button, Card, Empty, Flex, Form, Popover, Segmented, Switch, theme, Tooltip} from "antd";
 import {DeleteOutlined, ExportOutlined, PlusOutlined, SettingOutlined, UngroupOutlined} from "@ant-design/icons";
 import {IBasePageComponent, IPageComponentGroup, IPageEntity} from "@/entities/dynamic-page";
 import {MAX_PAGE_GROUP_COMPONENTS} from "@/entities/dynamic-page/types/type";
-import {getGroupColumnSpans} from "@/entities/dynamic-page/utilities/get-group-column-spans";
 import {getPageEntityElementId} from "@/entities/dynamic-page/utilities/page-entity-element-id";
 import PageComponentRendererEditor from "../page-component-renderer-editor/page-component-renderer-editor";
+import {PageGroupGrid} from "@/entities/dynamic-page/ui";
 import {ComponentCol, DraggableList, moveItem} from "@/shared/ui-kit";
 import AddPageComponentDrawer from "../add-page-component-drawer/add-page-component-drawer";
 import WidthControl from "../width-control/width-control";
+import EditorBlockFrame from "../editor-block-frame/editor-block-frame";
+import ColumnSpanControl from "../column-span-control/column-span-control";
+import {fromGroupCell, toGroupCell} from "../../model/page-group-cells";
+import {getPageGroupLabel} from "../../model/get-page-group-label";
 
 interface IProps {
   group: IPageComponentGroup;
@@ -19,15 +23,13 @@ interface IProps {
 }
 
 export default function PageGroupEditor(props: IProps) {
-  const {token: {padding, paddingXS, colorBorder, borderRadiusLG}} = theme.useToken();
+  const {token: {padding, paddingXS, paddingSM, paddingLG}} = theme.useToken();
   const {modal} = App.useApp();
 
   const [isAddDrawerOpen, setIsAddDrawerOpen] = useState<boolean>(false);
 
-  const isNarrow = Grid.useBreakpoint().md != true;
-
   const components = props.group.components;
-  const columns = getGroupColumnSpans(props.group);
+  const label = getPageGroupLabel(props.group);
 
   const updateGroup = (value: Partial<IPageComponentGroup>) => {
     props.updateEntity({...props.group, ...value} as IPageComponentGroup, props.index);
@@ -44,32 +46,32 @@ export default function PageGroupEditor(props: IProps) {
   }
 
   const addComponent = (entity: IPageEntity) => {
-    updateComponents([...components, {...entity, id: crypto.randomUUID()} as IBasePageComponent]);
+    updateComponents([...components, toGroupCell({...entity, id: crypto.randomUUID()} as IBasePageComponent, components)]);
   }
 
   const moveOut = (index: number) => {
     props.replaceEntity(props.index, [
       {...props.group, components: components.filter((_, i) => i != index)} as IPageComponentGroup,
-      components[index]
+      fromGroupCell(components[index])
     ]);
   }
 
   const ungroup = () => {
     modal.confirm({
       title: "Розгрупувати",
-      content: "Блоки ряду стануть окремими блоками сторінки, один під одним.",
+      content: "Блоки розмітки стануть окремими блоками сторінки, один під одним.",
       okText: "Так",
       cancelText: "Ні",
-      onOk: () => props.replaceEntity(props.index, components)
+      onOk: () => props.replaceEntity(props.index, components.map(fromGroupCell))
     });
   }
 
   const onRemove = () => {
     modal.confirm({
-      title: "Видалити ряд",
+      title: "Видалити розмітку",
       content: components.length != 0 ?
-        `Ряд буде видалено разом з блоками (${components.length}). Щоб зберегти блоки, спочатку розгрупуйте ряд.` :
-        "Ви впевнені що хочете видалити цей ряд?",
+        `Розмітку буде видалено разом з блоками (${components.length}). Щоб зберегти блоки, спочатку розгрупуйте її.` :
+        "Ви впевнені що хочете видалити цю розмітку?",
       okText: "Так",
       cancelText: "Ні",
       okButtonProps: {danger: true},
@@ -78,35 +80,47 @@ export default function PageGroupEditor(props: IProps) {
   }
 
   const settings = (
-    <Flex vertical gap="small" style={{width: 260}}>
-      <Typography.Text strong>Пропорції колонок</Typography.Text>
-      <Segmented
-        block
-        options={[
-          {value: "equal", label: "Рівні"},
-          {value: "1:2", label: "1 : 2"},
-          {value: "2:1", label: "2 : 1"},
-        ]}
-        value={props.group.proportions ?? "equal"}
-        disabled={components.length != 2}
-        onChange={(value) => updateGroup({proportions: value as IPageComponentGroup["proportions"]})}
+    <Form layout="vertical" style={{width: 280}}>
+      <Form.Item label="Блоки в картках" extra="Картки в одному рядку однакової висоти" style={{marginBottom: paddingSM}}>
+        <Switch checked={props.group.cards == true} onChange={(cards) => updateGroup({cards})}/>
+      </Form.Item>
+      <Form.Item label="Вертикальне вирівнювання" extra="Для блоків різної висоти в одному рядку" style={{marginBottom: 0}}>
+        <Segmented
+          block
+          options={[
+            {value: "top", label: "По верху"},
+            {value: "center", label: "По центру"},
+          ]}
+          value={props.group.verticalAlign ?? "top"}
+          onChange={(value) => updateGroup({verticalAlign: value as IPageComponentGroup["verticalAlign"]})}
+        />
+      </Form.Item>
+    </Form>
+  );
+
+  const toolbar = (
+    <>
+      <DraggableList.Handle size="small"/>
+      <Popover content={settings} trigger="click" title="Налаштування розмітки">
+        <Tooltip title="Налаштування розмітки">
+          <Button type="text" size="small" icon={<SettingOutlined/>} aria-label="Налаштування розмітки"/>
+        </Tooltip>
+      </Popover>
+      <WidthControl
+        value={props.group.width}
+        onChange={(width) => updateGroup({width})}
+        compact
+        size="small"
+        type="text"
+        tooltip="Змінити розмір розмітки"
       />
-      {components.length != 2 && (
-        <Typography.Text type="secondary" style={{fontSize: 12}}>
-          Пропорції можна змінити, коли в ряду два блоки
-        </Typography.Text>
-      )}
-      <Typography.Text strong>Вертикальне вирівнювання</Typography.Text>
-      <Segmented
-        block
-        options={[
-          {value: "top", label: "По верху"},
-          {value: "center", label: "По центру"},
-        ]}
-        value={props.group.verticalAlign ?? "top"}
-        onChange={(value) => updateGroup({verticalAlign: value as IPageComponentGroup["verticalAlign"]})}
-      />
-    </Flex>
+      <Tooltip title="Розгрупувати: зробити блоки розмітки окремими блоками сторінки">
+        <Button type="text" size="small" icon={<UngroupOutlined/>} onClick={ungroup} disabled={components.length == 0} aria-label="Розгрупувати"/>
+      </Tooltip>
+      <Tooltip title="Видалити розмітку">
+        <Button type="text" size="small" danger icon={<DeleteOutlined/>} onClick={onRemove} aria-label="Видалити розмітку"/>
+      </Tooltip>
+    </>
   );
 
   return (
@@ -114,81 +128,63 @@ export default function PageGroupEditor(props: IProps) {
       index={props.index}
       id={getPageEntityElementId(props.group.id)}
       style={{scrollMarginTop: 80}}
-      renderPreview={() => <Card size="small">{`Ряд (${components.length})`}</Card>}
+      renderPreview={() => <Card size="small">{label}</Card>}
     >
-      <Flex vertical style={{marginBottom: paddingXS}}>
+      <Flex vertical>
         <ComponentCol width={props.group.width}>
-          <div style={{border: `1px dashed ${colorBorder}`, borderRadius: borderRadiusLG, padding: paddingXS}}>
-            <Flex vertical gap="small">
+          <EditorBlockFrame id={props.group.id} label={label} toolbar={toolbar} kind="row">
+            <Flex vertical gap={padding} style={{paddingTop: paddingXS}}>
               {components.length == 0 ? (
-                <Empty description="Ряд порожній, додайте до нього блоки" image={Empty.PRESENTED_IMAGE_SIMPLE}/>
+                <Empty description="Розмітка порожня, додайте до неї блоки" image={Empty.PRESENTED_IMAGE_SIMPLE}/>
               ) : (
                 <DraggableList
                   horizontal
                   count={components.length}
                   onReorder={(startIndex, finishIndex) => updateComponents(moveItem(components, startIndex, finishIndex))}
                 >
-                  <Row gutter={[padding, padding]} align={props.group.verticalAlign == "center" ? "middle" : "top"}>
-                    {components.map((component, index) => (
-                      <Col key={component.id} {...columns[index]}>
-                        <PageComponentRendererEditor
-                          component={component}
-                          index={index}
-                          updateComponent={updateComponent}
-                          removeComponent={removeComponent}
-                          allowChangeSize={false}
-                          inline
-                          extraActions={
-                            <Tooltip title="Винести з ряду">
-                              <Button icon={<ExportOutlined/>} onClick={() => moveOut(index)}/>
+                  <PageGroupGrid
+                    group={props.group}
+                    rowGap={paddingLG}
+                    renderCell={(component, index) => (
+                      <PageComponentRendererEditor
+                        component={component}
+                        index={index}
+                        updateComponent={updateComponent}
+                        removeComponent={removeComponent}
+                        allowChangeSize={false}
+                        group={props.group}
+                        extraActions={
+                          <>
+                            <ColumnSpanControl
+                              value={component.columnSpan}
+                              onChange={(columnSpan) => updateComponent({...component, columnSpan}, index)}
+                            />
+                            <Tooltip title="Винести з розмітки">
+                              <Button type="text" size="small" icon={<ExportOutlined/>} onClick={() => moveOut(index)} aria-label="Винести з розмітки"/>
                             </Tooltip>
-                          }
-                        />
-                      </Col>
-                    ))}
-                  </Row>
+                          </>
+                        }
+                      />
+                    )}
+                  />
                 </DraggableList>
               )}
               {components.length < MAX_PAGE_GROUP_COMPONENTS && (
-                <Button type="dashed" block icon={<PlusOutlined/>} onClick={() => setIsAddDrawerOpen(true)}>
-                  Додати блок у ряд
+                <Button type="dashed" size="small" block icon={<PlusOutlined/>} onClick={() => setIsAddDrawerOpen(true)}>
+                  Додати блок у розмітку
                 </Button>
               )}
             </Flex>
-          </div>
-        </ComponentCol>
-        <Card variant="borderless" size="small" style={{width: "fit-content", maxWidth: "100%", marginTop: paddingXS, alignSelf: "center"}}>
-          <Flex gap={isNarrow ? 6 : "small"} wrap justify="center" align="center">
-            <DraggableList.Handle type="default"/>
-            <Popover content={settings} trigger="click" title="Налаштування ряду">
-              <Button icon={<SettingOutlined/>} aria-label="Налаштування ряду">{!isNarrow && "Налаштування"}</Button>
-            </Popover>
-            <WidthControl
-              value={props.group.width}
-              onChange={(width) => updateGroup({width})}
-              compact={isNarrow}
-              tooltip="Змінити розмір ряду"
+            <AddPageComponentDrawer
+              isOpen={isAddDrawerOpen}
+              setIsOpen={setIsAddDrawerOpen}
+              addEntity={addComponent}
+              title="Додати блок у розмітку"
+              filter={(descriptor) => descriptor.allowInRow == true}
             />
-            <Tooltip title="Зробити блоки ряду окремими блоками сторінки">
-              <Button icon={<UngroupOutlined/>} onClick={ungroup} disabled={components.length == 0} aria-label="Розгрупувати">
-                {!isNarrow && "Розгрупувати"}
-              </Button>
-            </Tooltip>
-            <Tooltip title="Видалити ряд">
-              <Button danger icon={<DeleteOutlined/>} onClick={onRemove} aria-label="Видалити ряд">
-                {!isNarrow && "Видалити"}
-              </Button>
-            </Tooltip>
-          </Flex>
-        </Card>
+          </EditorBlockFrame>
+        </ComponentCol>
       </Flex>
-      <AddPageComponentDrawer
-        isOpen={isAddDrawerOpen}
-        setIsOpen={setIsAddDrawerOpen}
-        addEntity={addComponent}
-        title="Додати блок у ряд"
-        filter={(descriptor) => descriptor.allowInRow == true}
-      />
     </DraggableList.Item>
   )
 }

@@ -5,7 +5,6 @@ import {imagePageComponent} from "@/page-components/image";
 import {photoGalleryPageComponent} from "@/page-components/photo-gallery";
 import {galleryCarouselPageComponent} from "@/page-components/gallery-carousel";
 import {documentPageComponent} from "@/page-components/document";
-import {cardsPageComponent} from "@/page-components/cards";
 import {linkCardsPageComponent} from "@/page-components/link-cards";
 import {heroSectionPageComponent} from "@/page-components/hero-section";
 import {buttonsPageComponent} from "@/page-components/buttons";
@@ -22,7 +21,6 @@ const pageComponents: AnyPageComponentDescriptor[] = [
   photoGalleryPageComponent,
   galleryCarouselPageComponent,
   documentPageComponent,
-  cardsPageComponent,
   linkCardsPageComponent,
   heroSectionPageComponent,
   buttonsPageComponent,

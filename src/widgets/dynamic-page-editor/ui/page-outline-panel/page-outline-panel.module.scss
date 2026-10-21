@@ -6,8 +6,9 @@
   left: var(--outline-margin);
   z-index: 999;
   width: 240px;
+  display: flex;
+  flex-direction: column;
   max-height: calc(100vh - var(--outline-top) - 2 * var(--outline-margin));
-  overflow-y: auto;
   padding: var(--ant-padding-xs);
   background: var(--ant-color-bg-container);
   border-radius: var(--ant-border-radius-lg);
@@ -37,7 +38,20 @@
   }
 }
 
+// The title and the footer stay in place, only the list between them scrolls
 .title {
   display: block;
+  flex-shrink: 0;
   padding: calc(var(--ant-padding-xs) / 2) var(--ant-padding-xs) var(--ant-padding-xs);
+}
+
+.list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.footer {
+  flex-shrink: 0;
+  padding-top: var(--ant-padding-xs);
 }

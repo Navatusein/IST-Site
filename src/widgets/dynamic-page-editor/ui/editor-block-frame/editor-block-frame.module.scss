@@ -1,0 +1,159 @@
+.frame {
+  --frame-padding-top: 14px;
+  --toolbar-height: 32px;
+
+  position: relative;
+  padding: var(--frame-padding-top) var(--ant-padding-xs) var(--ant-padding-xs);
+  border: 1px dashed var(--ant-color-border-secondary);
+  border-radius: var(--ant-border-radius-lg);
+  transition: border-color var(--ant-motion-duration-fast), box-shadow var(--ant-motion-duration-fast);
+
+  &[data-kind="row"] {
+    border-color: var(--ant-color-border);
+    background: var(--ant-color-fill-quaternary);
+  }
+
+  // Fills the height of its line, so cards of one line in the editor are equal like on the page
+  &[data-fill="true"] {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+// Block name on the top border of an inactive block; an active one shows it in the toolbar instead
+.label {
+  position: absolute;
+  top: 0;
+  left: var(--ant-padding-xs);
+  z-index: 1;
+  max-width: calc(100% - 2 * var(--ant-padding-xs));
+  padding: 0 6px;
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 18px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--ant-color-text-tertiary);
+  background: var(--ant-color-bg-container);
+  border: 1px solid var(--ant-color-border-secondary);
+  border-radius: var(--ant-border-radius-sm);
+  transform: translateY(-50%);
+  pointer-events: none;
+  transition: opacity var(--ant-motion-duration-fast);
+}
+
+// Zero-height line at the top of the content holding the toolbar, drawn on the top border.
+// It is sticky while the block is active: on a tall block scrolled past its top the toolbar stays under the editor header
+.toolbarAnchor {
+  position: relative;
+  z-index: 2;
+  height: 0;
+}
+
+.toolbar {
+  position: absolute;
+  top: calc(-1 * var(--frame-padding-top));
+  left: 50%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  width: max-content;
+  min-height: var(--toolbar-height);
+  max-width: 100%;
+  padding: 3px;
+  background: var(--ant-color-bg-elevated);
+  border: 1px solid var(--ant-color-border-secondary);
+  border-radius: var(--ant-border-radius-lg);
+  box-shadow: var(--ant-box-shadow-tertiary);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--ant-motion-duration-fast), visibility 0s linear var(--ant-motion-duration-fast);
+}
+
+.toolbarLabel {
+  max-width: 180px;
+  padding: 0 8px;
+  margin: 0 4px 0 2px;
+  overflow: hidden;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 22px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--ant-color-primary);
+  background: var(--ant-color-primary-bg);
+  border: 1px solid var(--ant-color-primary-border);
+  // Same shape and height as the small buttons next to it
+  border-radius: var(--ant-border-radius-sm);
+  transition: color var(--ant-motion-duration-fast), background var(--ant-motion-duration-fast);
+}
+
+// Only the innermost hovered frame (a block inside a row, not the row itself) is active
+.frame:hover:not(:has(.frame:hover)),
+.frame:focus-within:not(:has(.frame:focus-within)),
+.frame[data-selected="true"] {
+  border-color: var(--ant-color-primary-border-hover);
+
+  > .label {
+    opacity: 0;
+  }
+
+  > .toolbarAnchor {
+    position: sticky;
+    top: calc(var(--page-editor-header-height, 0px) + var(--ant-padding-xs) + var(--toolbar-height) / 2 + var(--frame-padding-top));
+  }
+
+  > .toolbarAnchor > .toolbar {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+}
+
+.frame[data-selected="true"] {
+  border-style: solid;
+  border-color: var(--ant-color-primary);
+
+  > .toolbarAnchor .toolbarLabel {
+    color: var(--ant-color-text-light-solid);
+    background: var(--ant-color-primary);
+    border-color: var(--ant-color-primary);
+  }
+}
+
+.frame[data-highlighted="true"] {
+  border-style: solid;
+  border-color: var(--ant-color-primary);
+  box-shadow: 0 0 0 3px var(--ant-color-primary-bg);
+}
+
+@media (hover: none) {
+  // On touch screens a tap selects the block, and only the selected block is active
+  .frame:hover:not(:has(.frame:hover)):not([data-selected="true"]) {
+    > .label {
+      opacity: 1;
+    }
+
+    > .toolbarAnchor {
+      position: relative;
+      top: auto;
+    }
+
+    > .toolbarAnchor > .toolbar {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frame,
+  .label,
+  .toolbar {
+    transition: none;
+  }
+}

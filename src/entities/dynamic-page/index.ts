@@ -6,7 +6,7 @@ import {
   IPageEntity,
   PageEntityType,
   PageEntityWidth,
-  PageGroupProportions,
+  PageGroupColumnSpan,
   PageGroupVerticalAlign
 } from "./types/type";
 
@@ -17,7 +17,7 @@ export type {
   IPageEntity,
   PageEntityType,
   PageEntityWidth,
-  PageGroupProportions,
+  PageGroupColumnSpan,
   PageGroupVerticalAlign
 };
 export {DynamicPageModel, dynamicPageSchema};

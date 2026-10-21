@@ -10,6 +10,7 @@ interface IProps {
   details?: string;
   isActive: boolean;
   onSelect: () => void;
+  onHover?: (isHovered: boolean) => void;
 }
 
 const stopPropagation = (event: SyntheticEvent) => event.stopPropagation();
@@ -40,6 +41,8 @@ export default function PageOutlineItem(props: IProps) {
       className={`${styles.item} ${props.isActive ? styles.active : ""}`}
       onClick={props.onSelect}
       onKeyDown={onKeyDown}
+      onMouseEnter={() => props.onHover?.(true)}
+      onMouseLeave={() => props.onHover?.(false)}
     >
       {isTouchScreen && (
         <span className={styles.handle} onClick={stopPropagation} onKeyDown={stopPropagation}>

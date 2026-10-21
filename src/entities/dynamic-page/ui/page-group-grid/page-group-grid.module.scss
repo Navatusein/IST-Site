@@ -1,0 +1,35 @@
+// The layout's columns follow its own width, not the screen's: a "small" layout on a wide screen
+// and a "large" one on a tablet both get blocks of a readable width
+.layout {
+  container-type: inline-size;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--page-group-row-gap) var(--page-group-column-gap);
+  align-items: var(--page-group-align);
+}
+
+.cell {
+  grid-column: span 12;
+  min-width: 0;
+}
+
+@container (min-width: 500px) {
+  .cell {
+    grid-column: span var(--page-group-span-medium);
+  }
+}
+
+@container (min-width: 760px) {
+  .cell {
+    grid-column: span var(--page-group-span-large);
+  }
+}
+
+@container (min-width: 1000px) {
+  .cell {
+    grid-column: span var(--page-group-span-wide);
+  }
+}

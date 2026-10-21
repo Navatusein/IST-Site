@@ -2,7 +2,7 @@
   "format": "ist-site-export",
   "version": 1,
   "entity": "dynamic-pages",
-  "exportedAt": "2026-10-20T11:38:39.432959+00:00",
+  "exportedAt": "2026-10-21T12:00:00+00:00",
   "items": [
     {
       "name": "Демо компонентів",
@@ -56,7 +56,7 @@
           "width": "medium",
           "componentType": "title",
           "level": 2,
-          "title": "Ряд: фото поруч із текстом (1 : 2, по центру)"
+          "title": "Розмітка: фото поруч із текстом (⅓ + ⅔, по центру)"
         },
         {
           "id": "d42b737d-3da0-4fc8-bba5-fdd8efdd9243",
@@ -69,19 +69,21 @@
               "width": "small",
               "componentType": "image",
               "imageSlug": "demo-photo-2",
-              "caption": "Фото в ряду",
-              "aspectRatio": "4/3"
+              "caption": "Фото в розмітці",
+              "aspectRatio": "4/3",
+              "columnSpan": "1/3"
             },
             {
               "id": "66911adc-913c-4717-ac44-6e601ac0806a",
               "type": "component",
               "width": "small",
               "componentType": "rich-text",
-              "text": "{\"type\": \"doc\", \"content\": [{\"type\": \"heading\", \"attrs\": {\"level\": 4}, \"content\": [{\"type\": \"text\", \"text\": \"Текст поруч із фото\"}]}, {\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Блоки в ряду стоять поруч, на телефоні — один під одним. Пропорції колонок і вирівнювання налаштовуються в ряду.\"}]}]}"
+              "text": "{\"type\": \"doc\", \"content\": [{\"type\": \"heading\", \"attrs\": {\"level\": 4}, \"content\": [{\"type\": \"text\", \"text\": \"Текст поруч із фото\"}]}, {\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Блоки в розмітці стоять поруч, на телефоні — один під одним. Ширину кожного блоку задають у його панелі, вирівнювання — в налаштуваннях розмітки.\"}]}]}",
+              "columnSpan": "2/3"
             }
           ],
-          "proportions": "1:2",
-          "verticalAlign": "center"
+          "verticalAlign": "center",
+          "cards": false
         },
         {
           "id": "c8ade7e2-6332-4d87-8c3f-b5c7df96158a",
@@ -89,7 +91,7 @@
           "width": "medium",
           "componentType": "title",
           "level": 2,
-          "title": "Ряд: три колонки"
+          "title": "Розмітка: три колонки (⅓ × 3)"
         },
         {
           "id": "2bcb46a0-441a-40ce-b25b-d149fc911b1b",
@@ -101,14 +103,16 @@
               "type": "component",
               "width": "small",
               "componentType": "rich-text",
-              "text": "{\"type\": \"doc\", \"content\": [{\"type\": \"heading\", \"attrs\": {\"level\": 4}, \"content\": [{\"type\": \"text\", \"text\": \"Перша колонка\"}]}, {\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Короткий опис першої колонки.\"}]}]}"
+              "text": "{\"type\": \"doc\", \"content\": [{\"type\": \"heading\", \"attrs\": {\"level\": 4}, \"content\": [{\"type\": \"text\", \"text\": \"Перша колонка\"}]}, {\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Короткий опис першої колонки.\"}]}]}",
+              "columnSpan": "1/3"
             },
             {
               "id": "406b7984-f744-4f2e-8b0b-b4b75368412d",
               "type": "component",
               "width": "small",
               "componentType": "rich-text",
-              "text": "{\"type\": \"doc\", \"content\": [{\"type\": \"heading\", \"attrs\": {\"level\": 4}, \"content\": [{\"type\": \"text\", \"text\": \"Друга колонка\"}]}, {\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Короткий опис другої колонки.\"}]}]}"
+              "text": "{\"type\": \"doc\", \"content\": [{\"type\": \"heading\", \"attrs\": {\"level\": 4}, \"content\": [{\"type\": \"text\", \"text\": \"Друга колонка\"}]}, {\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Короткий опис другої колонки.\"}]}]}",
+              "columnSpan": "1/3"
             },
             {
               "id": "305f60f8-ec5e-4731-b847-5517e1572f4a",
@@ -130,11 +134,12 @@
               "layout": "column",
               "fullWidth": true,
               "align": "start",
-              "variant": "primary"
+              "variant": "primary",
+              "columnSpan": "1/3"
             }
           ],
-          "proportions": "equal",
-          "verticalAlign": "top"
+          "verticalAlign": "top",
+          "cards": false
         },
         {
           "id": "cb9b4731-f0ce-41d2-aa36-ced966b34d1f",
@@ -199,25 +204,130 @@
           "width": "medium",
           "componentType": "title",
           "level": 2,
-          "title": "Картки"
+          "title": "Розмітка з картками: 3 картки (⅓ × 3)"
         },
         {
           "id": "ac0c68c0-ac1a-440c-955a-9e8cd0e94c26",
+          "type": "group",
+          "width": "large",
+          "components": [
+            {
+              "id": "2d7e0159-b70d-4310-839e-9bf0140b28d2",
+              "type": "component",
+              "width": "small",
+              "componentType": "rich-text",
+              "columnSpan": "1/3",
+              "text": "{\"type\": \"doc\", \"content\": [{\"type\": \"heading\", \"attrs\": {\"level\": 4}, \"content\": [{\"type\": \"text\", \"text\": \"ОСВІТНЯ КВАЛІФІКАЦІЯ\"}]}, {\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Бакалавр інформаційних систем та технологій\"}]}]}"
+            },
+            {
+              "id": "42e43e98-1555-40dd-9d22-c79896aebad3",
+              "type": "component",
+              "width": "small",
+              "componentType": "rich-text",
+              "columnSpan": "1/3",
+              "text": "{\"type\": \"doc\", \"content\": [{\"type\": \"heading\", \"attrs\": {\"level\": 4}, \"content\": [{\"type\": \"text\", \"text\": \"КОМПЕТЕНТНОСТІ\"}]}, {\"type\": \"bulletList\", \"content\": [{\"type\": \"listItem\", \"content\": [{\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Проєктування IoT-рішень\"}]}]}, {\"type\": \"listItem\", \"content\": [{\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Програмування пристроїв\"}]}]}, {\"type\": \"listItem\", \"content\": [{\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Робота з даними\"}]}]}]}]}"
+            },
+            {
+              "id": "ab0fda6e-10c3-4038-9de3-52867e9b33e0",
+              "type": "component",
+              "width": "small",
+              "componentType": "rich-text",
+              "columnSpan": "1/3",
+              "text": "{\"type\": \"doc\", \"content\": [{\"type\": \"heading\", \"attrs\": {\"level\": 4}, \"content\": [{\"type\": \"text\", \"text\": \"СФЕРА ДІЯЛЬНОСТІ\"}]}, {\"type\": \"bulletList\", \"content\": [{\"type\": \"listItem\", \"content\": [{\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Розробник IoT\"}]}]}, {\"type\": \"listItem\", \"content\": [{\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Інженер-програміст\"}]}]}, {\"type\": \"listItem\", \"content\": [{\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Web-розробник\"}]}]}]}]}"
+            }
+          ],
+          "verticalAlign": "top",
+          "cards": true
+        },
+        {
+          "id": "f8a731c2-fda5-4316-b087-584c2281bd8a",
           "type": "component",
           "width": "medium",
-          "componentType": "cards",
-          "cardsInRow": 3,
-          "cards": [
+          "componentType": "title",
+          "level": 2,
+          "title": "Розмітка з картками: 2 + 1 (½ + ½, під ними на всю ширину)"
+        },
+        {
+          "id": "3cb599a8-a7ee-4751-8feb-84f8e75df44d",
+          "type": "group",
+          "width": "medium",
+          "components": [
             {
-              "content": "{\"type\": \"doc\", \"content\": [{\"type\": \"heading\", \"attrs\": {\"level\": 4}, \"content\": [{\"type\": \"text\", \"text\": \"ОСВІТНЯ КВАЛІФІКАЦІЯ\"}]}, {\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Бакалавр інформаційних систем та технологій\"}]}]}"
+              "id": "17e78542-9899-4e01-befb-080ba2dec577",
+              "type": "component",
+              "width": "small",
+              "componentType": "rich-text",
+              "columnSpan": "1/2",
+              "text": "{\"type\": \"doc\", \"content\": [{\"type\": \"heading\", \"attrs\": {\"level\": 4}, \"content\": [{\"type\": \"text\", \"text\": \"Перша картка\"}]}, {\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Картки в одному рядку однакової висоти.\"}]}]}"
             },
             {
-              "content": "{\"type\": \"doc\", \"content\": [{\"type\": \"heading\", \"attrs\": {\"level\": 4}, \"content\": [{\"type\": \"text\", \"text\": \"КОМПЕТЕНТНОСТІ\"}]}, {\"type\": \"bulletList\", \"content\": [{\"type\": \"listItem\", \"content\": [{\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Проєктування IoT-рішень\"}]}]}, {\"type\": \"listItem\", \"content\": [{\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Програмування пристроїв\"}]}]}, {\"type\": \"listItem\", \"content\": [{\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Робота з даними\"}]}]}]}]}"
+              "id": "259b104d-b405-465f-a7cd-37b159c92f61",
+              "type": "component",
+              "width": "small",
+              "componentType": "rich-text",
+              "columnSpan": "1/2",
+              "text": "{\"type\": \"doc\", \"content\": [{\"type\": \"heading\", \"attrs\": {\"level\": 4}, \"content\": [{\"type\": \"text\", \"text\": \"Друга картка\"}]}, {\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Ширину картки задають у її панелі: ¼, ⅓, ½, ⅔, ¾ або вся ширина. Те, що не вміщається, переноситься на новий рядок.\"}]}]}"
             },
             {
-              "content": "{\"type\": \"doc\", \"content\": [{\"type\": \"heading\", \"attrs\": {\"level\": 4}, \"content\": [{\"type\": \"text\", \"text\": \"СФЕРА ДІЯЛЬНОСТІ\"}]}, {\"type\": \"bulletList\", \"content\": [{\"type\": \"listItem\", \"content\": [{\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Розробник IoT\"}]}]}, {\"type\": \"listItem\", \"content\": [{\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Інженер-програміст\"}]}]}, {\"type\": \"listItem\", \"content\": [{\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Web-розробник\"}]}]}]}]}"
+              "id": "6e588f38-a9af-4ba2-b62b-e49d29d4ef42",
+              "type": "component",
+              "width": "small",
+              "componentType": "rich-text",
+              "columnSpan": "1",
+              "text": "{\"type\": \"doc\", \"content\": [{\"type\": \"heading\", \"attrs\": {\"level\": 4}, \"content\": [{\"type\": \"text\", \"text\": \"Картка на всю ширину\"}]}, {\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"Третя картка займає весь рядок під першими двома.\"}]}]}"
             }
-          ]
+          ],
+          "verticalAlign": "top",
+          "cards": true
+        },
+        {
+          "id": "c52dff18-cb7f-4d31-8bc2-a3a49edc2197",
+          "type": "component",
+          "width": "medium",
+          "componentType": "title",
+          "level": 2,
+          "title": "Розмітка з картками: 4 картки (¼ × 4)"
+        },
+        {
+          "id": "0c8c73ac-16a4-4344-bf50-6f48db366397",
+          "type": "group",
+          "width": "large",
+          "components": [
+            {
+              "id": "35f62087-7dc7-4cfb-9378-32cdb1751b0a",
+              "type": "component",
+              "width": "small",
+              "componentType": "rich-text",
+              "columnSpan": "1/4",
+              "text": "{\"type\": \"doc\", \"content\": [{\"type\": \"heading\", \"attrs\": {\"level\": 4}, \"content\": [{\"type\": \"text\", \"text\": \"Картка 1\"}]}, {\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"На планшеті — по дві в рядку, на телефоні — одна під одною.\"}]}]}"
+            },
+            {
+              "id": "93243098-d637-49d7-b164-841c1e00585d",
+              "type": "component",
+              "width": "small",
+              "componentType": "rich-text",
+              "columnSpan": "1/4",
+              "text": "{\"type\": \"doc\", \"content\": [{\"type\": \"heading\", \"attrs\": {\"level\": 4}, \"content\": [{\"type\": \"text\", \"text\": \"Картка 2\"}]}, {\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"На планшеті — по дві в рядку, на телефоні — одна під одною.\"}]}]}"
+            },
+            {
+              "id": "a4d877b8-0b5d-4146-8052-619ec65d7cd9",
+              "type": "component",
+              "width": "small",
+              "componentType": "rich-text",
+              "columnSpan": "1/4",
+              "text": "{\"type\": \"doc\", \"content\": [{\"type\": \"heading\", \"attrs\": {\"level\": 4}, \"content\": [{\"type\": \"text\", \"text\": \"Картка 3\"}]}, {\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"На планшеті — по дві в рядку, на телефоні — одна під одною.\"}]}]}"
+            },
+            {
+              "id": "e3ec2c3c-f5f4-40a3-ba80-f872ceb194aa",
+              "type": "component",
+              "width": "small",
+              "componentType": "rich-text",
+              "columnSpan": "1/4",
+              "text": "{\"type\": \"doc\", \"content\": [{\"type\": \"heading\", \"attrs\": {\"level\": 4}, \"content\": [{\"type\": \"text\", \"text\": \"Картка 4\"}]}, {\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"На планшеті — по дві в рядку, на телефоні — одна під одною.\"}]}]}"
+            }
+          ],
+          "verticalAlign": "top",
+          "cards": true
         },
         {
           "id": "961f47a1-d993-4591-9cb1-fca3719331a7",

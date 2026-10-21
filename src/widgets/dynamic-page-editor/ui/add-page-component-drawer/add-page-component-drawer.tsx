@@ -1,7 +1,7 @@
 import {Button, Col, Divider, Drawer, Flex, Row, Typography} from "antd";
 import {IPageEntity} from "@/entities/dynamic-page";
-import {EmptyPageComponentGroup} from "@/entities/dynamic-page/types/type";
 import {AnyPageComponentDescriptor, createPageComponent, usePageComponentRegistry} from "@/entities/dynamic-page/model";
+import {PAGE_GROUP_PRESETS} from "../../model/page-group-presets";
 
 interface IProps {
   isOpen: boolean;
@@ -15,6 +15,7 @@ interface IProps {
 interface IOption {
   key: string;
   name: string;
+  description?: string;
   create: () => IPageEntity;
 }
 
@@ -36,12 +37,13 @@ export default function AddPageComponentDrawer(props: IProps) {
     ...(props.showGroupComponent ? [{
       name: "layout",
       title: "Розмітка",
-      description: "Розміщення кількох блоків поруч",
-      options: [{
-        key: "group",
-        name: "Ряд",
-        create: () => structuredClone(EmptyPageComponentGroup)
-      }]
+      description: "Кілька блоків поруч або сітка карток; ширину блоків і картки можна змінити після додавання",
+      options: PAGE_GROUP_PRESETS.map((preset) => ({
+        key: preset.key,
+        name: preset.name,
+        description: preset.description,
+        create: () => preset.create(registry)
+      }))
     }] : []),
     ...registry.categories.map((category) => ({
       name: category.name,
@@ -86,6 +88,11 @@ export default function AddPageComponentDrawer(props: IProps) {
                       <Typography.Text strong ellipsis>
                         {option.name}
                       </Typography.Text>
+                      {option.description && (
+                        <Typography.Text type="secondary" ellipsis style={{fontSize: 12}}>
+                          {option.description}
+                        </Typography.Text>
+                      )}
                     </Flex>
                   </Button>
                 </Col>

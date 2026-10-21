@@ -1,9 +1,11 @@
+import {useEffect} from "react";
 import {Empty, Flex} from "antd";
 import {IBasePageComponent, IPageComponentGroup, IPageEntity} from "@/entities/dynamic-page";
 import {IPageComponentRegistry, usePageComponentRegistry} from "@/entities/dynamic-page/model";
 import {scrollToPageEntity} from "@/entities/dynamic-page/utilities/page-entity-element-id";
 import {DraggableList, moveItem} from "@/shared/ui-kit";
 import {useActivePageEntity} from "../../model/use-active-page-entity";
+import {usePageEditor} from "../../model/page-editor-context";
 import PageOutlineItem from "../page-outline-item/page-outline-item";
 
 interface IProps {
@@ -18,7 +20,7 @@ function describeEntity(entity: IPageEntity, registry: IPageComponentRegistry) {
 
   if (entity.type == "group")
     return {
-      name: "Ряд",
+      name: (entity as IPageComponentGroup).cards ? "Розмітка з картками" : "Розмітка",
       details: (entity as IPageComponentGroup).components.map(getName).join(", ") || "порожній"
     };
 
@@ -27,11 +29,24 @@ function describeEntity(entity: IPageEntity, registry: IPageComponentRegistry) {
 
 export default function PageOutline(props: IProps) {
   const registry = usePageComponentRegistry();
+  const editor = usePageEditor();
   const {activeId, setActiveId} = useActivePageEntity(props.entities, props.topOffset);
+
+  // A block selected on the page marks its top-level entry (the row for a block inside a row)
+  useEffect(() => {
+    const entity = props.entities.find((entity) => entity.id == editor.selectedId || (
+      entity.type == "group" && (entity as IPageComponentGroup).components.some((component) => component.id == editor.selectedId)
+    ));
+
+    if (entity)
+      setActiveId(() => entity.id);
+  }, [editor.selectedId]);
 
   const select = (entity: IPageEntity) => {
     scrollToPageEntity(entity.id);
     setActiveId(() => entity.id);
+    editor.select(entity.id);
+    editor.highlight(null);
     props.onSelect?.();
   }
 
@@ -51,6 +66,7 @@ export default function PageOutline(props: IProps) {
               {...describeEntity(entity, registry)}
               isActive={entity.id == activeId}
               onSelect={() => select(entity)}
+              onHover={(isHovered) => editor.highlight(isHovered ? entity.id : null)}
             />
           </DraggableList.Item>
         ))}

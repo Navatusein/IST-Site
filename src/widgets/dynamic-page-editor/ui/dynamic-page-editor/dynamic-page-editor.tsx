@@ -2,14 +2,20 @@
 
 import {useRouter} from "next/navigation";
 import {App, Button, Drawer, Flex, Grid} from "antd";
-import {useMemo, useState} from "react";
+import {PlusOutlined} from "@ant-design/icons";
+import {CSSProperties, MouseEvent, useEffect, useMemo, useState} from "react";
 import {IPageEntity} from "@/entities/dynamic-page";
 import FloatButtonGroup from "../float-button-group/float-button-group";
 import DynamicPageHeader from "../dynamic-page-header/dynamic-page-header";
 import PageEntityList from "../page-entity-list/page-entity-list";
 import AddPageComponentDrawer from "../add-page-component-drawer/add-page-component-drawer";
-import PageOutline from "../page-outline/page-outline";
+import PageOutline from "../page-outline/page-outline";
+
 import PageOutlinePanel from "../page-outline-panel/page-outline-panel";
+import PagePreview from "../page-preview/page-preview";
+import {markClickHandled} from "../editor-block-frame/editor-block-frame";
+import {PageEditorContext} from "../../model/page-editor-context";
+import {scrollToPageEntity} from "@/entities/dynamic-page/utilities/page-entity-element-id";
 import {useLocalStorage} from "@/shared/hooks/use-local-storage";
 
 const HEADER_HEIGHT = 64;
@@ -44,6 +50,26 @@ export default function DynamicPageEditor(props: IProps) {
   const isOutlineFloating = Grid.useBreakpoint().lg == true;
   const [isOutlineDrawerOpen, setIsOutlineDrawerOpen] = useState<boolean>(false);
 
+  const [isPreview, setIsPreview] = useState<boolean>(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [highlightedId, setHighlightedId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key == "Escape")
+        setSelectedId(() => null);
+    }
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, []);
+
+  // A click on the page outside every block clears the selection
+  const onPageClick = (event: MouseEvent) => {
+    if (markClickHandled(event))
+      setSelectedId(() => null);
+  }
+
   const updateEntities = (entities: IPageEntity[]) => {
     props.setEntities(entities);
   }
@@ -53,7 +79,11 @@ export default function DynamicPageEditor(props: IProps) {
   }
 
   const addEntity = (entity: IPageEntity) => {
-    props.setEntities([...props.entities, {...entity, id: crypto.randomUUID()}]);
+    const id = crypto.randomUUID();
+
+    props.setEntities([...props.entities, {...entity, id}]);
+    setSelectedId(() => id);
+    setTimeout(() => scrollToPageEntity(id));
   }
 
   const removeEntity = (index: number) => {
@@ -97,18 +127,44 @@ export default function DynamicPageEditor(props: IProps) {
       });
   }
 
+  const outline = (onSelect?: () => void) => (
+    <PageOutline
+      entities={props.entities}
+      updateEntities={updateEntities}
+      topOffset={HEADER_HEIGHT}
+      onSelect={onSelect}
+    />
+  );
+
+  // Pinned under the outline list; hidden in the preview, where nothing can be added
+  const outlineAddButton = (onClick?: () => void) => !isPreview && (
+    <Button
+      type="dashed"
+      block
+      icon={<PlusOutlined/>}
+      onClick={() => {
+        onClick?.();
+        setIsAddPageComponentDrawerOpen(true);
+      }}
+    >
+      Додати блок
+    </Button>
+  );
+
   return (
-    <>
+    <PageEditorContext value={{selectedId, select: setSelectedId, highlightedId, highlight: setHighlightedId}}>
       <DynamicPageHeader
         isChanged={isChanged}
         cancelChanges={cancelChanges}
         saveChanges={saveChanges}
         isOutlineOpen={isOutlineFloating ? isOutlineOpen : isOutlineDrawerOpen}
         toggleOutline={() => isOutlineFloating ? setIsOutlineOpen(!isOutlineOpen) : setIsOutlineDrawerOpen(!isOutlineDrawerOpen)}
+        isPreview={isPreview}
+        togglePreview={() => setIsPreview(!isPreview)}
       />
       {isOutlineFloating ? (
-        <PageOutlinePanel open={isOutlineOpen} topOffset={HEADER_HEIGHT}>
-          <PageOutline entities={props.entities} updateEntities={updateEntities} topOffset={HEADER_HEIGHT}/>
+        <PageOutlinePanel open={isOutlineOpen} topOffset={HEADER_HEIGHT} footer={outlineAddButton()}>
+          {outline()}
         </PageOutlinePanel>
       ) : (
         <Drawer
@@ -117,32 +173,37 @@ export default function DynamicPageEditor(props: IProps) {
           size="70vh"
           open={isOutlineDrawerOpen}
           onClose={() => setIsOutlineDrawerOpen(false)}
-          styles={{body: {padding: 8}}}
+          styles={{body: {padding: 8}, footer: {padding: 8}}}
+          footer={outlineAddButton(() => setIsOutlineDrawerOpen(false)) || null}
         >
-          <PageOutline
-            entities={props.entities}
-            updateEntities={updateEntities}
-            topOffset={HEADER_HEIGHT}
-            onSelect={() => setIsOutlineDrawerOpen(false)}
-          />
+          {outline(() => setIsOutlineDrawerOpen(false))}
         </Drawer>
       )}
-      <Flex vertical style={{overflowX: "hidden"}}>
-        <PageEntityList
-          entities={props.entities}
-          updateEntities={updateEntities}
-          updateEntity={updateEntity}
-          removeEntity={removeEntity}
-          replaceEntity={replaceEntity}
-        />
-        <Flex vertical gap="small" style={{padding: "12px"}}>
-          <Button block type="dashed" size="large" onClick={() => setIsAddPageComponentDrawerOpen(true)}>
-            Додати новий блок
-          </Button>
+      {isPreview ? (
+        <PagePreview entities={props.entities}/>
+      ) : (
+        <Flex
+          vertical
+          style={{overflowX: "clip", paddingTop: 24, "--page-editor-header-height": `${HEADER_HEIGHT}px`} as CSSProperties}
+          onClick={onPageClick}
+        >
+          <PageEntityList
+            entities={props.entities}
+            updateEntities={updateEntities}
+            updateEntity={updateEntity}
+            removeEntity={removeEntity}
+            replaceEntity={replaceEntity}
+          />
+          <Flex vertical gap="small" style={{padding: "12px"}}>
+            <Button block type="dashed" size="large" onClick={() => setIsAddPageComponentDrawerOpen(true)}>
+              Додати новий блок
+            </Button>
+          </Flex>
         </Flex>
-      </Flex>
+      )}
       <FloatButtonGroup
         setIsAddPageComponentDrawerOpen={setIsAddPageComponentDrawerOpen}
+        canAdd={!isPreview}
       />
       <AddPageComponentDrawer
         isOpen={isAddPageComponentDrawerOpen}
@@ -150,6 +211,6 @@ export default function DynamicPageEditor(props: IProps) {
         addEntity={addEntity}
         showGroupComponent={true}
       />
-    </>
+    </PageEditorContext>
   )
 }

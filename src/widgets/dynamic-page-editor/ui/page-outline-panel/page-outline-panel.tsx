@@ -6,6 +6,7 @@ interface IProps {
   open: boolean;
   topOffset: number;
   children: ReactNode;
+  footer?: ReactNode;
 }
 
 export default function PageOutlinePanel(props: IProps) {
@@ -27,7 +28,14 @@ export default function PageOutlinePanel(props: IProps) {
       <Typography.Text strong className={styles.title}>
         Структура сторінки
       </Typography.Text>
-      {props.children}
+      <div className={styles.list}>
+        {props.children}
+      </div>
+      {props.footer && (
+        <div className={styles.footer}>
+          {props.footer}
+        </div>
+      )}
     </aside>
   )
 }

@@ -3,6 +3,8 @@ import {migrateFilesToSlugs} from "./files-to-slugs";
 import {migrateLinkButtonToButtons} from "./link-button-to-buttons";
 import {migrateMenuParentObjectIds} from "./menu-parent-object-ids";
 import {grantSiteSettingsPermission} from "./site-settings-permission";
+import {migrateRowsToLayout} from "./rows-to-layout";
+import {migrateCardsToLayout} from "./cards-to-layout";
 
 interface IMigration {
   id: string;
@@ -14,6 +16,8 @@ const migrations: IMigration[] = [
   {id: "2026-10-link-button-to-buttons", run: migrateLinkButtonToButtons},
   {id: "2026-10-menu-parent-object-ids", run: migrateMenuParentObjectIds},
   {id: "2026-10-site-settings-permission", run: grantSiteSettingsPermission},
+  {id: "2026-10-rows-to-layout", run: migrateRowsToLayout},
+  {id: "2026-10-cards-to-layout", run: migrateCardsToLayout},
 ];
 
 export async function runMigrations(): Promise<void> {
