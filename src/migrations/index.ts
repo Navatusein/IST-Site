@@ -5,6 +5,7 @@ import {migrateMenuParentObjectIds} from "./menu-parent-object-ids";
 import {grantSiteSettingsPermission} from "./site-settings-permission";
 import {migrateRowsToLayout} from "./rows-to-layout";
 import {migrateCardsToLayout} from "./cards-to-layout";
+import {grantTrashPermission} from "./trash-permission";
 
 interface IMigration {
   id: string;
@@ -18,6 +19,7 @@ const migrations: IMigration[] = [
   {id: "2026-10-site-settings-permission", run: grantSiteSettingsPermission},
   {id: "2026-10-rows-to-layout", run: migrateRowsToLayout},
   {id: "2026-10-cards-to-layout", run: migrateCardsToLayout},
+  {id: "2026-10-trash-permission", run: grantTrashPermission},
 ];
 
 export async function runMigrations(): Promise<void> {

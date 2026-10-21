@@ -8,7 +8,8 @@ export const defaultPermissions = [
   "edit-files",
   "edit-department-staff",
   "edit-department-aspirants",
-  "edit-site-settings"
+  "edit-site-settings",
+  "manage-trash"
 ]
 
 export const permissions: PermissionType = {
@@ -25,7 +26,8 @@ export const permissions: PermissionType = {
     paths: [
       "/admin/dynamic-pages",
       "/admin/dynamic-pages/[...path]",
-      "/admin/edit-page/dynamic-page/[...path]"
+      "/admin/edit-page/dynamic-page/[...path]",
+      "/admin/site-map"
     ],
   },
   "edit-public-menu": {
@@ -65,5 +67,9 @@ export const permissions: PermissionType = {
     paths: [
       "/admin/site-settings"
     ],
+  },
+  "manage-trash": {
+    name: "Manage Trash",
+    paths: [],
   },
 };

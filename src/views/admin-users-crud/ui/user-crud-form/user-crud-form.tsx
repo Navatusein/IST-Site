@@ -11,6 +11,7 @@ const PERMISSIONS_OPTIONS: {label: string, value: UserPermissionType}[] = [
   {label: "Редагувати файли", value: "edit-files"},
   {label: "Редагувати користувачів", value: "edit-users"},
   {label: "Редагувати налаштування сайту", value: "edit-site-settings"},
+  {label: "Очищувати кошик", value: "manage-trash"},
 
 ]
 

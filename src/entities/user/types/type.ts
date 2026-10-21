@@ -8,7 +8,8 @@ export type UserPermissionType =
   "edit-files" |
   "edit-department-staff" |
   "edit-department-aspirants" |
-  "edit-site-settings";
+  "edit-site-settings" |
+  "manage-trash";
 
 export interface IUser extends Document {
   login: string,
