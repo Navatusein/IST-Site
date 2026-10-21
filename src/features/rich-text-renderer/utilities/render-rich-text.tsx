@@ -58,7 +58,7 @@ export function renderNode(node: IRichTextNode, key: number): ReactNode {
 
     case "text":
       return (node.marks ?? []).reduce<ReactNode>(
-        (children, mark, index) => renderMark(mark, children, index),
+        (children, mark) => renderMark(mark, children, key),
         node.text ?? ""
       );
 
