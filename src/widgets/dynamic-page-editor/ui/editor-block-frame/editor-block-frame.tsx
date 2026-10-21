@@ -1,5 +1,5 @@
 import {MouseEvent, ReactNode} from "react";
-import {usePageEditor} from "../../model/page-editor-context";
+import {usePageEditor} from "../../context/page-editor-context";
 import styles from "./editor-block-frame.module.scss";
 
 interface IProps {

@@ -8,7 +8,7 @@ import ComponentSettingsDrawer from "../component-settings-drawer/component-sett
 import EditorTools from "../editor-tools/editor-tools";
 import EditorBlockFrame from "../editor-block-frame/editor-block-frame";
 import {usePageComponentRegistry} from "@/entities/dynamic-page/model";
-import {usePageEditor} from "../../model/page-editor-context";
+import {usePageEditor} from "../../context/page-editor-context";
 
 interface IProps {
   component: IBasePageComponent;

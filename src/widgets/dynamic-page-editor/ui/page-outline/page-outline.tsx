@@ -4,8 +4,8 @@ import {IBasePageComponent, IPageComponentGroup, IPageEntity} from "@/entities/d
 import {IPageComponentRegistry, usePageComponentRegistry} from "@/entities/dynamic-page/model";
 import {scrollToPageEntity} from "@/entities/dynamic-page/utilities/page-entity-element-id";
 import {DraggableList, moveItem} from "@/shared/ui-kit";
-import {useActivePageEntity} from "../../model/use-active-page-entity";
-import {usePageEditor} from "../../model/page-editor-context";
+import {useActivePageEntity} from "../../hooks/use-active-page-entity";
+import {usePageEditor} from "../../context/page-editor-context";
 import PageOutlineItem from "../page-outline-item/page-outline-item";
 
 interface IProps {

@@ -10,7 +10,7 @@ import type {
 } from "./page-component-descriptor";
 import {PageComponentRegistryContext, usePageComponentRegistry} from "./page-component-registry";
 import type {IPageComponentRegistry} from "./page-component-registry";
-import {usePageComponentData} from "./use-page-component-data";
+import {usePageComponentData} from "../hooks/use-page-component-data";
 
 export type {
   AnyPageComponentDescriptor,

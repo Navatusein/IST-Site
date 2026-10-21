@@ -11,8 +11,8 @@ import CrudActionsDropdown, {getCrudActionsColumnWidth} from "../crud-actions-dr
 import CrudSelectionBar from "../crud-selection-bar/crud-selection-bar";
 import EllipsisCell from "../ellipsis-cell/ellipsis-cell";
 import {CrudDrawerMode, ICrudImportExport, ICrudPageAction, ICrudRowAction} from "../../types/type";
-import {useCrudImportExport} from "../../model/use-crud-import-export";
-import {useServerTableQuery} from "../../model/use-server-table-query";
+import {useCrudImportExport} from "../../hooks/use-crud-import-export";
+import {useServerTableQuery} from "../../hooks/use-server-table-query";
 import {PAGE_SIZE_OPTIONS} from "@/shared/types/page-query";
 import {AdminPageHeader} from "@/shared/ui-kit";
 

@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 import {IBasePageComponent} from "../types/type";
-import {usePageComponentRegistry} from "./page-component-registry";
+import {usePageComponentRegistry} from "../model/page-component-registry";
 
 export function usePageComponentData<D>(component: IBasePageComponent, initialData?: D): D | undefined {
   const registry = usePageComponentRegistry();
