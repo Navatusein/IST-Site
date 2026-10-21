@@ -1,5 +1,5 @@
 import {Flex, Image, Typography} from "antd";
-import {CSSProperties} from "react";
+import {CSSProperties, MouseEvent} from "react";
 import Link from "next/link";
 
 interface IProps {
@@ -9,11 +9,18 @@ interface IProps {
   rows?: number;
   vertical?: boolean;
   style?: CSSProperties;
+  href?: string;
+  onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
 }
 
 export default function Icon(props: IProps) {
   return (
-    <Link href={"#"}>
+    <Link
+      href={props.href ?? "/home"}
+      prefetch={props.href?.startsWith("/admin") ? false : undefined}
+      onClick={props.onClick}
+      aria-label={props.href?.startsWith("/admin") ? "В адмінпанель" : "На головну сторінку"}
+    >
       <Flex
         align="center"
         gap="small"
