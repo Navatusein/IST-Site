@@ -1,7 +1,7 @@
 import {DragEvent, ReactNode, useRef, useState} from "react";
 import {App, Flex, Typography} from "antd";
 import {CloudUploadOutlined} from "@ant-design/icons";
-import {useUploadFiles} from "../../model/use-upload-files";
+import {useUploads} from "../../context/uploads-context";
 import styles from "./file-drop-zone.module.scss";
 
 interface IProps {
@@ -12,7 +12,7 @@ const hasFiles = (event: DragEvent) => event.dataTransfer.types.includes("Files"
 
 export default function FileDropZone(props: IProps) {
   const {notification} = App.useApp();
-  const {upload, isUploading} = useUploadFiles();
+  const {upload, isUploading} = useUploads();
 
   const [isOver, setIsOver] = useState<boolean>(false);
   const depth = useRef<number>(0);

@@ -2,13 +2,13 @@
 
 import {Button, Tooltip, Upload} from "antd";
 import {CloudUploadOutlined} from "@ant-design/icons";
-import {useUploadFiles} from "../../model/use-upload-files";
+import {useUploads} from "../../context/uploads-context";
 
 export default function UploadFilesButton() {
-  const {upload, isUploading} = useUploadFiles();
+  const {upload, isUploading} = useUploads();
 
   return (
-    <Tooltip title="Завантажити файли або перетягніть їх у список">
+    <Tooltip title="Завантажити файли в поточну папку; їх можна й перетягнути у список">
       <Upload
         multiple
         showUploadList={false}
@@ -19,7 +19,7 @@ export default function UploadFilesButton() {
           return false;
         }}
       >
-        <Button icon={<CloudUploadOutlined/>} loading={isUploading}>Завантажити</Button>
+        <Button type="primary" icon={<CloudUploadOutlined/>} loading={isUploading}>Завантажити</Button>
       </Upload>
     </Tooltip>
   )
