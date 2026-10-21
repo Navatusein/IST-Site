@@ -1,21 +1,20 @@
 import {ReactNode} from "react";
 import {IExportFile, IExportParams, IImportReport} from "@/shared/types/import-export";
 
-export interface IAdditionalToolbarButton {
-  key?: string;
-  label: string;
-  tooltip: string;
-  icon: ReactNode;
-  onClick: () => void;
-  danger?: boolean;
-  disabled?: boolean;
-}
-
-export interface IAdditionalMenuItem<T> {
+export interface ICrudRowAction<T> {
   key: string;
   label: string;
   icon: ReactNode;
-  onClick: (rows?: T[]) => void;
+  onClick: (record: T) => void;
+  primary?: boolean;
+  danger?: boolean;
+}
+
+export interface ICrudPageAction {
+  key: string;
+  label: string;
+  icon: ReactNode;
+  onClick: () => void;
   danger?: boolean;
 }
 

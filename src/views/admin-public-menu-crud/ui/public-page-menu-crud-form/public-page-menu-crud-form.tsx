@@ -6,16 +6,21 @@ import {DataNode} from "antd/lib/tree";
 
 interface IProps {
   menuItems: IPublicMenuItem[];
-  selectedMenuItemId?: string;
 }
 
+const MENU_PATH_PATTERN = /^(\/|https?:\/\/)\S*$/;
+
 export default function PublicPageMenuCrudForm(props: IProps) {
+  const form = Form.useFormInstance();
+  const editedId = Form.useWatch("_id", form);
+  const excludedId = editedId ? String(editedId) : undefined;
+
   const mapToTreeData = (menuItems: IPublicMenuItem[]): DataNode[] => {
     const mapMenuItems: DataNode[] = [];
-    menuItems
+    [...menuItems]
       .sort((a, b) => (a.index - b.index))
       .forEach(menuItem => {
-        if (String(menuItem._id) != props.selectedMenuItemId) {
+        if (String(menuItem._id) != excludedId) {
           mapMenuItems.push({
             key: `${menuItem._id}`,
             value: `${menuItem._id}`,
@@ -30,7 +35,7 @@ export default function PublicPageMenuCrudForm(props: IProps) {
 
   const treeData = useMemo(() => (
     [{key: "root", value: "root", title: "Корінь", children: mapToTreeData(props.menuItems)}]
-  ), [props.menuItems, props.selectedMenuItemId]);
+  ), [props.menuItems, excludedId]);
 
   return (
     <>
@@ -52,8 +57,9 @@ export default function PublicPageMenuCrudForm(props: IProps) {
       <Form.Item<IUser>
         label="Шлях"
         name="path"
-        extra="Шлях до сторінки"
+        extra="Шлях на сайті, що починається з «/», або повна адреса https://…"
         style={{marginBottom: 0}}
+        rules={[{pattern: MENU_PATH_PATTERN, message: "Шлях має починатися з «/» або з http:// чи https://"}]}
       >
         <Input/>
       </Form.Item>

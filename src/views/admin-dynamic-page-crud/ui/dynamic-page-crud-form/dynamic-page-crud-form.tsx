@@ -3,16 +3,17 @@ import {isDynamicPagePathAvailableAction} from "@/entities/dynamic-page/actions/
 import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 import {IDynamicPage} from "@/entities/dynamic-page";
 
+const RESERVED_PATH_SEGMENTS = ["admin", "api", "news", "department-staff", "file", "files", "sign-in", "not-found", "test", "_next"];
+
 export default function DynamicPageCrudForm() {
   const validPath = async (value: string, form: FormInstance<IDynamicPage>) => {
     if (!value)
       return;
 
-    if (value.startsWith("admin"))
-      throw new Error("Шлях не може починатись з \"admin\"");
+    const firstSegment = value.split("/")[0];
 
-    if (value.startsWith("api"))
-      throw new Error("Шлях не може починатись з \"api\"");
+    if (RESERVED_PATH_SEGMENTS.includes(firstSegment))
+      throw new Error(`Шлях не може починатись з "${firstSegment}": цю адресу займає інший розділ сайту`);
 
     if (!await unwrapServerAction(isDynamicPagePathAvailableAction(value, form.getFieldValue("_id"))))
       throw new Error("Шлях має бути унікальним");

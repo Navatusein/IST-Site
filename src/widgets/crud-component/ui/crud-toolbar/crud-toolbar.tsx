@@ -1,30 +1,18 @@
-import {Button, Flex, Input, theme, Tooltip, Typography} from "antd";
-import {
-  CopyOutlined,
-  DeleteOutlined,
-  DownloadOutlined,
-  EditOutlined,
-  PlusOutlined,
-  ReloadOutlined,
-  SearchOutlined,
-  UploadOutlined
-} from "@ant-design/icons";
-import {IAdditionalToolbarButton} from "../../types/type";
+import {ReactNode, useEffect, useRef, useState} from "react";
+import {Button, Dropdown, Flex, Input, MenuProps, theme, Tooltip, Typography} from "antd";
+import {DownloadOutlined, EllipsisOutlined, PlusOutlined, ReloadOutlined, SearchOutlined, UploadOutlined} from "@ant-design/icons";
+import {ICrudPageAction} from "../../types/type";
 
 interface IProps {
-  selectedCount: number;
   onAdd: () => void;
-  onCopy: () => void;
-  onEdit: () => void;
-  onRemove: () => void;
   onRefresh: () => void;
-  additionalButtons?: IAdditionalToolbarButton[];
+  pageActions?: ICrudPageAction[];
   importExport?: {
-    selectedCount: number;
     isExporting: boolean;
     onExport: () => void;
     onImport: () => void;
   };
+  notice?: ReactNode;
   showSearch: boolean;
   searchQuery: string;
   setSearchQuery: (value: string) => void;
@@ -32,78 +20,103 @@ interface IProps {
   totalCount?: number;
 }
 
+export const CRUD_BAR_HEIGHT = 40;
+
+const BASE_WIDTH = 640;
+const getButtonWidth = (label: string) => 48 + label.length * 8;
+const NARROW_WIDTH = 480;
+
 export default function CrudToolbar(props: IProps) {
-  const {token: {paddingXS, padding}} = theme.useToken();
+  const {token: {paddingXS}} = theme.useToken();
+
+  const toolbarRef = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState<number>(0);
+
+  useEffect(() => {
+    const element = toolbarRef.current;
+
+    if (!element)
+      return;
+
+    const observer = new ResizeObserver(([entry]) => setWidth(entry.contentRect.width));
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, []);
+
+  const exportLabel = props.searchQuery.trim() ? "Експорт знайдених" : "Експорт";
+
+  const actions: ICrudPageAction[] = [
+    ...(props.pageActions ?? []),
+    ...(props.importExport ? [
+      {key: "export", label: exportLabel, icon: <DownloadOutlined/>, onClick: props.importExport.onExport},
+      {key: "import", label: "Імпорт", icon: <UploadOutlined/>, onClick: props.importExport.onImport}
+    ] : [])
+  ];
+
+  const actionsWidth = actions.reduce((sum, action) => sum + getButtonWidth(action.label), 0);
+  const isInline = width != 0 && width >= BASE_WIDTH + actionsWidth;
+  const isNarrow = width != 0 && width < NARROW_WIDTH;
+
+  const menuItems: MenuProps["items"] = actions.map((action) => ({
+    key: action.key,
+    label: action.label,
+    icon: action.icon,
+    danger: action.danger,
+    disabled: action.key == "export" && props.importExport?.isExporting,
+    onClick: action.onClick
+  }));
 
   return (
-    <Flex gap={padding} justify="space-between" align="center" wrap>
-      <Flex gap={paddingXS} wrap>
-        <Tooltip title="Оновити дані">
-          <Button icon={<ReloadOutlined/>} onClick={props.onRefresh}>
-            Оновити
+    <Flex ref={toolbarRef} gap={paddingXS} align="center" wrap style={{minHeight: CRUD_BAR_HEIGHT}}>
+      <Tooltip title={isNarrow ? "Створити" : undefined}>
+        <Button type="primary" icon={<PlusOutlined/>} onClick={props.onAdd} aria-label="Створити" style={{flexShrink: 0}}>
+          {!isNarrow && "Створити"}
+        </Button>
+      </Tooltip>
+      {props.showSearch && (
+        <Input
+          placeholder="Пошук"
+          prefix={<SearchOutlined/>}
+          allowClear
+          style={{flex: "1 1 160px", maxWidth: 360}}
+          value={props.searchQuery}
+          onChange={(event) => props.setSearchQuery(event.target.value)}
+        />
+      )}
+      {props.showSearch && props.searchQuery.trim() && (
+        <Typography.Text type="secondary" style={{whiteSpace: "nowrap"}}>
+          Знайдено: {props.foundCount}{props.totalCount != null && ` з ${props.totalCount}`}
+        </Typography.Text>
+      )}
+      {props.notice}
+      <Flex gap={paddingXS} style={{marginLeft: "auto", flexShrink: 0}}>
+        {isInline && actions.map((action) => (
+          <Button
+            key={action.key}
+            icon={action.icon}
+            danger={action.danger}
+            loading={action.key == "export" && props.importExport?.isExporting}
+            onClick={action.onClick}
+          >
+            {action.label}
           </Button>
-        </Tooltip>
-        <Tooltip title="Створити новий запис">
-          <Button icon={<PlusOutlined/>} onClick={props.onAdd}>
-            Створити
-          </Button>
-        </Tooltip>
-        <Tooltip title="Створити копію вибраного запису">
-          <Button icon={<CopyOutlined/>} onClick={props.onCopy} disabled={props.selectedCount != 1}>
-            Копіювати
-          </Button>
-        </Tooltip>
-        <Tooltip title="Редагувати вибраний запис (або двічі клацніть по рядку)">
-          <Button icon={<EditOutlined/>} onClick={props.onEdit} disabled={props.selectedCount != 1}>
-            Редагувати
-          </Button>
-        </Tooltip>
-        {props.additionalButtons?.map((button) => (
-          <Tooltip title={button.tooltip} key={button.key ?? button.label}>
-            <Button icon={button.icon} onClick={button.onClick} disabled={button.disabled} danger={button.danger}>
-              {button.label}
-            </Button>
-          </Tooltip>
         ))}
-        <Tooltip title="Видалити вибрані записи">
-          <Button icon={<DeleteOutlined/>} onClick={props.onRemove} danger disabled={props.selectedCount == 0}>
-            Видалити
-          </Button>
+        <Tooltip title="Оновити дані">
+          <Button icon={<ReloadOutlined/>} onClick={props.onRefresh} aria-label="Оновити дані"/>
         </Tooltip>
-        {props.importExport && (
-          <>
-            <Tooltip title={props.importExport.selectedCount != 0 ?
-              "Завантажити вибрані записи у файл JSON" :
-              "Завантажити всі записи (з урахуванням пошуку) у файл JSON"}>
-              <Button icon={<DownloadOutlined/>} onClick={props.importExport.onExport} loading={props.importExport.isExporting}>
-                {props.importExport.selectedCount != 0 ? `Експорт (${props.importExport.selectedCount})` : "Експорт"}
-              </Button>
+        {!isInline && menuItems.length != 0 && (
+          <Dropdown trigger={["click"]} placement="bottomRight" menu={{items: menuItems}}>
+            <Tooltip title="Інші дії">
+              <Button
+                icon={props.importExport?.isExporting ? undefined : <EllipsisOutlined/>}
+                loading={props.importExport?.isExporting}
+                aria-label="Інші дії"
+              />
             </Tooltip>
-            <Tooltip title="Завантажити записи з файлу JSON: спочатку буде показано, що зміниться">
-              <Button icon={<UploadOutlined/>} onClick={props.importExport.onImport}>
-                Імпорт
-              </Button>
-            </Tooltip>
-          </>
+          </Dropdown>
         )}
       </Flex>
-      {props.showSearch && (
-        <Flex gap={paddingXS} align="center" wrap>
-          {props.searchQuery.trim() && (
-            <Typography.Text type="secondary">
-              Знайдено: {props.foundCount}{props.totalCount != null && ` з ${props.totalCount}`}
-            </Typography.Text>
-          )}
-          <Input
-            placeholder="Пошук"
-            prefix={<SearchOutlined/>}
-            allowClear
-            style={{width: 220}}
-            value={props.searchQuery}
-            onChange={(event) => props.setSearchQuery(event.target.value)}
-          />
-        </Flex>
-      )}
     </Flex>
   )
 }

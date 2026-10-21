@@ -3,14 +3,16 @@ import {Space, TableColumnsType, Tag} from "antd";
 import {useRouter} from "next/navigation";
 import {useState} from "react";
 import {CrudComponent, timestampColumns} from "@/widgets/crud-component";
-import {FormOutlined} from "@ant-design/icons";
-import {addNewsAction, removeNewsAction, updateNewsAction, exportNewsAction, importNewsAction} from "@/entities/news/actions/actions";
+import {FormOutlined, HistoryOutlined} from "@ant-design/icons";
+import {addNewsAction, removeNewsAction, updateNewsAction, exportNewsAction, importNewsAction, getNewsByIdAction} from "@/entities/news/actions/actions";
 import NewsCrudForm from "../news-crud-form/news-crud-form";
 import dayjs from "dayjs";
+import formatDate from "@/shared/utilities/format-date";
 import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 import {dateStringSorter, stringSorter} from "@/shared/utilities/sorters";
 
 import {IPageResult} from "@/shared/types/page-query";
+import {REVISION_TABLES, RevisionHistoryDrawer} from "@/features/revision-history";
 
 interface IProps {
   result: IPageResult<INews>;
@@ -62,7 +64,7 @@ const COLUMNS: TableColumnsType<INews> = [
     key: "date",
     width: 115,
     render: (date: string) => (
-      new Date(date).toLocaleDateString()
+      formatDate(date, "DD.MM.YYYY")
     ),
     sorter: (a, b) => dateStringSorter(a.date, b.date),
     showSorterTooltip: {
@@ -76,6 +78,7 @@ export default function NewsCrud(props: IProps) {
   const router = useRouter()
 
   const [selectedRows, setSelectedRows] = useState<INews[]>([]);
+  const [historyRecord, setHistoryRecord] = useState<INews | null>(null);
 
   const create = async (data: INews) => {
     await unwrapServerAction(addNewsAction({...data, date: dayjs(data.date).toISOString()}));
@@ -99,6 +102,8 @@ export default function NewsCrud(props: IProps) {
   return (
     <Space orientation="vertical" size="middle" style={{width: "100%"}}>
       <CrudComponent<INews>
+        title="Новини"
+        description="Новини на сайті. Двічі натисніть на рядок, щоб змінити заголовок, дату, зображення й шлях, «Редагувати контент» — текст і блоки новини"
         columns={COLUMNS}
         data={props.result.items}
         pagination={props.result}
@@ -113,27 +118,36 @@ export default function NewsCrud(props: IProps) {
         create={create}
         update={update}
         remove={remove}
+        trash
+        getRecord={(id) => unwrapServerAction(getNewsByIdAction(id))}
         getRecordName={(news) => news.title}
-        additionalToolbarButtons={[
-          {
-            label: "Редагувати контент",
-            tooltip: "Редагувати контент вибраної сторінки",
-            icon: <FormOutlined/>,
-            onClick: () => redirectToEditPage(),
-            disabled: selectedRows.length != 1
-          }
-        ]}
-        additionalDropdownMenuItems={[
+        rowActions={[
           {
             key: "edit-content",
             label: "Редагувати контент",
             icon: <FormOutlined/>,
-            onClick: (data) => redirectToEditPage(data)
+            onClick: (news) => redirectToEditPage([news]),
+            primary: true
           },
+          {
+            key: "history",
+            label: "Історія",
+            icon: <HistoryOutlined/>,
+            onClick: (record) => setHistoryRecord(record)
+          }
         ]}
       >
         <NewsCrudForm/>
       </CrudComponent>
+      <RevisionHistoryDrawer
+        collection="news"
+        recordId={historyRecord ? String(historyRecord._id) : null}
+        recordName={historyRecord ? historyRecord.title : undefined}
+        onClose={() => setHistoryRecord(null)}
+        fieldLabels={REVISION_TABLES["news"].fieldLabels}
+        mode="record"
+        onRestored={() => router.refresh()}
+      />
     </Space>
   )
 }

@@ -1,5 +1,6 @@
 import {TableColumnsType} from "antd";
 import {dateStringSorter} from "@/shared/utilities/sorters";
+import formatDate from "@/shared/utilities/format-date";
 
 type TimestampField = "createdAt" | "updatedAt";
 
@@ -11,7 +12,7 @@ const timestampColumn = <T extends object>(field: TimestampField, title: string,
   key: field,
   width: TIMESTAMP_COLUMN_WIDTH,
   ellipsis: true,
-  render: (date?: string) => date ? new Date(date).toLocaleString() : "",
+  render: (date?: string) => date ? formatDate(date, "DD.MM.YYYY, HH:mm:ss") : "",
   sorter: (a, b) => dateStringSorter((a as Record<TimestampField, string>)[field], (b as Record<TimestampField, string>)[field]),
   showSorterTooltip: {title: sorterTitle}
 });

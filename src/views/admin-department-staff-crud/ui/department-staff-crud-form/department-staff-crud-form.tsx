@@ -1,9 +1,10 @@
 import {IDepartmentStaff} from "@/entities/department-staff";
+import type {IDepartmentStaffProfile} from "@/entities/department-staff/types/type";
 import {isDepartmentStaffPathAvailableAction} from "@/entities/department-staff/actions/actions";
 import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
-import {Button, Card, Flex, Form, FormInstance, Input, Tabs, TabsProps} from "antd";
+import {Form, FormInstance, Input, Tabs, TabsProps} from "antd";
 import {SelectFileButton} from "@/entities/file/ui";
-import {PlusOutlined} from "@ant-design/icons";
+import {FormSortableList} from "@/shared/ui-kit";
 
 export default function DepartmentStaffCrudForm() {
   const validPath = async (value: string, form: FormInstance<IDepartmentStaff>) => {
@@ -17,7 +18,8 @@ export default function DepartmentStaffCrudForm() {
   const items: TabsProps["items"] = [
     {
       key: "1",
-      label: "Загалні налаштування",
+      label: "Загальні налаштування",
+      forceRender: true,
       children: (
         <>
           <Form.Item<IDepartmentStaff> hidden name="_id">
@@ -104,47 +106,44 @@ export default function DepartmentStaffCrudForm() {
     {
       key: "2",
       label: "Профілі",
+      forceRender: true,
       children: (
-        <Flex vertical gap="small">
-          <Form.List name="profiles">
-            {(fields, operations) =>
-              <>
-                {fields.map(({key, name, ...restField}) => (
-                  <Card key={key} size="small">
-                    <Flex vertical gap="small">
-                      <Form.Item
-                        {...restField}
-                        name={[name, "title"]}
-                        label="Назва"
-                        style={{marginBottom: 0}}
-                        extra="Назва профілю"
-                      >
-                        <Input/>
-                      </Form.Item>
-                      <Form.Item
-                        {...restField}
-                        name={[name, "url"]}
-                        label="Посилання"
-                        style={{marginBottom: 0}}
-                        extra="Послилання на профіль"
-                      >
-                        <Input.TextArea rows={2}/>
-                      </Form.Item>
-                      <Button onClick={() => operations.remove(name)} danger>
-                        Видалити
-                      </Button>
-                    </Flex>
-                  </Card>
-                ))}
-                  <Form.Item style={{marginBottom: 0}}>
-                    <Button type="dashed" onClick={() => operations.add()} block icon={<PlusOutlined/>}>
-                      Додати профіль
-                    </Button>
+        <Form.List name="profiles">
+          {(fields, operations) => (
+            <FormSortableList<IDepartmentStaffProfile>
+              listName="profiles"
+              fields={fields}
+              operations={operations}
+              getTitle={(profile, index) => profile?.title?.trim() || `Профіль ${index + 1}`}
+              renderFields={(field) => (
+                <>
+                  <Form.Item
+                    name={[field.name, "title"]}
+                    label="Назва"
+                    style={{marginBottom: 0}}
+                    extra="Наприклад: Google Scholar, ORCID, Scopus"
+                    rules={[{required: true, whitespace: true, message: "Введіть назву профілю", warningOnly: true}]}
+                  >
+                    <Input/>
                   </Form.Item>
-              </>
-            }
-          </Form.List>
-        </Flex>
+                  <Form.Item
+                    name={[field.name, "url"]}
+                    label="Посилання"
+                    style={{marginBottom: 0}}
+                    rules={[
+                      {required: true, whitespace: true, message: "Введіть посилання на профіль", warningOnly: true},
+                      {type: "url", message: "Введіть повну адресу, що починається з https://", warningOnly: true}
+                    ]}
+                  >
+                    <Input placeholder="https://"/>
+                  </Form.Item>
+                </>
+              )}
+              addLabel="Додати профіль"
+              createItem={() => ({title: "", url: ""})}
+            />
+          )}
+        </Form.List>
       ),
     }
   ];

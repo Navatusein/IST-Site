@@ -8,7 +8,7 @@ import {MAP_EMBED_URL_PREFIX, SOCIAL_NETWORK_NAMES} from "@/entities/site-settin
 import {updateSiteSettingsAction} from "@/entities/site-settings/actions/actions";
 import {SocialNetworkIcon} from "@/entities/site-settings/ui";
 import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
-import {FormSortableList} from "@/shared/ui-kit";
+import {AdminPageHeader, FormSortableList} from "@/shared/ui-kit";
 
 interface IProps {
   settings: ISiteSettingsData;
@@ -90,18 +90,22 @@ export default function AdminSiteSettingsView(props: IProps) {
         style={{position: "sticky", top: 0, zIndex: 2, marginBottom: padding}}
         styles={{body: {padding: `${paddingSM}px ${padding}px`}}}
       >
-        <Flex align="center" justify="space-between" gap="small" wrap>
-          <Typography.Title level={2} style={{margin: 0}}>Налаштування сайту</Typography.Title>
-          <Flex gap="small" align="center" wrap>
-            {isChanged && <Typography.Text type="secondary">Є незбережені зміни</Typography.Text>}
-            <Button onClick={cancel} disabled={!isChanged || isSaving}>
-              Відмінити
-            </Button>
-            <Button type="primary" htmlType="submit" loading={isSaving} disabled={!isChanged}>
-              Зберегти
-            </Button>
-          </Flex>
-        </Flex>
+        <AdminPageHeader
+          title="Налаштування сайту"
+          description="Назва й опис сайту для вкладки браузера та пошуку, контакти, години роботи, соцмережі й карта в підвалі сайту"
+          style={{marginBottom: 0}}
+          extra={
+            <>
+              {isChanged && <Typography.Text type="secondary">Є незбережені зміни</Typography.Text>}
+              <Button onClick={cancel} disabled={!isChanged || isSaving}>
+                Відмінити
+              </Button>
+              <Button type="primary" htmlType="submit" loading={isSaving} disabled={!isChanged}>
+                Зберегти
+              </Button>
+            </>
+          }
+        />
       </Card>
       <Row gutter={[padding, padding]}>
         <Col xs={24} xl={14}>

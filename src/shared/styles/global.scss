@@ -2,3 +2,7 @@ html, body, h1, h2, h3, h4, h5 {
   padding: 0;
   margin: 0;
 }
+
+.ant-btn > span:not(.ant-btn-icon) {
+  text-box: trim-both cap alphabetic;
+}

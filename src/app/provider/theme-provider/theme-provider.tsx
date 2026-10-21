@@ -59,7 +59,7 @@ export default function ThemeProvider(props: IProps) {
 
   return (
     <SiteThemeContext value={{theme, setTheme}}>
-      <ConfigProvider theme={themeConfig} locale={locale} wave={{disabled: true}}>
+      <ConfigProvider theme={themeConfig} locale={locale} wave={{disabled: true}} tag={{variant: "outlined"}}>
         {props.children}
       </ConfigProvider>
     </SiteThemeContext>

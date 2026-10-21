@@ -15,6 +15,7 @@ interface IProps<T extends object> {
   pagination?: TablePaginationConfig;
   onChange?: (pagination: TablePaginationConfig, sorter: SorterResult<T> | SorterResult<T>[]) => void;
   storageKey: string;
+  fillColumnKey?: string;
 }
 
 const SELECTION_COLUMN_WIDTH = 32;
@@ -57,8 +58,16 @@ export default function CrudTable<T extends object>(props: IProps<T>) {
 
   const scrollX = columns.reduce((sum, column) => sum + (typeof column.width == "number" ? column.width : 150), SELECTION_COLUMN_WIDTH);
 
+  const tableColumns = columns.map((column) => (
+    props.fillColumnKey != null && column.key == props.fillColumnKey ?
+      {...column, width: undefined, onHeaderCell: undefined} :
+      column
+  )) as TableColumnsType<T>;
+
   const onRowClick = (event: MouseEvent, record: T) => {
-    if (!event.ctrlKey && !event.metaKey)
+    const isSelectionCell = (event.target as HTMLElement).closest(".ant-table-selection-column") != null;
+
+    if (!event.ctrlKey && !event.metaKey && !isSelectionCell)
       return props.setSelectedRows([record]);
 
     const key = getKey(record);
@@ -69,7 +78,7 @@ export default function CrudTable<T extends object>(props: IProps<T>) {
 
   return (
     <Table<T>
-      columns={columns}
+      columns={tableColumns}
       components={TABLE_COMPONENTS}
       dataSource={props.data}
       loading={props.isLoading}
@@ -90,7 +99,10 @@ export default function CrudTable<T extends object>(props: IProps<T>) {
       }}
       onRow={(record) => ({
         onClick: (event) => onRowClick(event, record),
-        onDoubleClick: () => props.onRowDoubleClick(record),
+        onDoubleClick: (event) => {
+          if ((event.target as HTMLElement).closest(".ant-table-selection-column") == null)
+            props.onRowDoubleClick(record);
+        },
         style: {cursor: "pointer", userSelect: "none"}
       })}
     />

@@ -4,10 +4,13 @@ import Sider from "antd/es/layout/Sider";
 import {useClickOutside} from "@/shared/hooks/use-click-outside";
 import React, {ReactNode, useContext, useEffect, useMemo, useRef} from "react";
 import {AdminSideMenuContext} from "@/shared/context/admin-side-menu-context/admin-side-menu-context";
-import {Divider, Flex, Menu} from "antd";
+import {Divider, Flex, Menu, MenuProps} from "antd";
 import {
+  ApartmentOutlined,
+  DeleteOutlined,
   FileTextOutlined,
   FolderOpenOutlined,
+  HistoryOutlined,
   ProfileOutlined,
   ReadOutlined,
   SettingOutlined,
@@ -24,21 +27,55 @@ import type {UserPermissionType} from "@/entities/user/types/type";
 
 interface IMenuItem {
   href: string;
-  permission: UserPermissionType;
+  permission: UserPermissionType | UserPermissionType[];
   icon: ReactNode;
   label: string;
 }
 
-const MENU_ITEMS: IMenuItem[] = [
-  {href: "/admin/news", permission: "edit-news", icon: <ReadOutlined/>, label: "Новини"},
-  {href: "/admin/dynamic-pages", permission: "edit-dynamic-pages", icon: <FileTextOutlined/>, label: "Динамічні сторінки"},
-  {href: "/admin/public-menu", permission: "edit-public-menu", icon: <ProfileOutlined/>, label: "Навігаційне меню"},
-  {href: "/admin/department-staff", permission: "edit-department-staff", icon: <TeamOutlined/>, label: "Співробітники кафедри"},
-  {href: "/admin/department-aspirants", permission: "edit-department-aspirants", icon: <SolutionOutlined/>, label: "Аспіранти кафедри"},
-  {href: "/admin/file-manager", permission: "edit-files", icon: <FolderOpenOutlined/>, label: "Файловий менеджер"},
-  {href: "/admin/users", permission: "edit-users", icon: <UserOutlined/>, label: "Користувачі"},
-  {href: "/admin/site-settings", permission: "edit-site-settings", icon: <SettingOutlined/>, label: "Налаштування сайту"},
+const HISTORY_PERMISSIONS: UserPermissionType[] = [
+  "edit-dynamic-pages", "edit-news", "edit-department-staff", "edit-department-aspirants", "edit-public-menu"
 ];
+
+interface IMenuSection {
+  title: string;
+  items: IMenuItem[];
+}
+
+const MENU_SECTIONS: IMenuSection[] = [
+  {
+    title: "Контент",
+    items: [
+      {href: "/admin/dynamic-pages", permission: "edit-dynamic-pages", icon: <FileTextOutlined/>, label: "Динамічні сторінки"},
+      {href: "/admin/news", permission: "edit-news", icon: <ReadOutlined/>, label: "Новини"},
+      {href: "/admin/public-menu", permission: "edit-public-menu", icon: <ProfileOutlined/>, label: "Навігаційне меню"},
+      {href: "/admin/file-manager", permission: "edit-files", icon: <FolderOpenOutlined/>, label: "Файловий менеджер"},
+    ]
+  },
+  {
+    title: "Кафедра",
+    items: [
+      {href: "/admin/department-staff", permission: "edit-department-staff", icon: <TeamOutlined/>, label: "Співробітники кафедри"},
+      {href: "/admin/department-aspirants", permission: "edit-department-aspirants", icon: <SolutionOutlined/>, label: "Аспіранти кафедри"},
+    ]
+  },
+  {
+    title: "Огляд",
+    items: [
+      {href: "/admin/site-map", permission: "edit-dynamic-pages", icon: <ApartmentOutlined/>, label: "Карта сайту"},
+      {href: "/admin/changes", permission: HISTORY_PERMISSIONS, icon: <HistoryOutlined/>, label: "Журнал змін"},
+      {href: "/admin/trash", permission: HISTORY_PERMISSIONS, icon: <DeleteOutlined/>, label: "Кошик"},
+    ]
+  },
+  {
+    title: "Адміністрування",
+    items: [
+      {href: "/admin/users", permission: "edit-users", icon: <UserOutlined/>, label: "Користувачі"},
+      {href: "/admin/site-settings", permission: "edit-site-settings", icon: <SettingOutlined/>, label: "Налаштування сайту"},
+    ]
+  },
+];
+
+const MENU_ITEMS = MENU_SECTIONS.flatMap((section) => section.items);
 
 export default function AdminSideMenu() {
   const {isMenuClosed, setIsMenuClosed, isMobileWidth, setIsMobileWidth} = useContext(AdminSideMenuContext);
@@ -49,12 +86,26 @@ export default function AdminSideMenu() {
 
   const pathname = usePathname();
 
-  const menuItems = useMemo(() => MENU_ITEMS
-    .filter((item) => userPermissions.includes(item.permission))
-    .map((item) => ({key: item.href, icon: item.icon, label: <Link prefetch={false} href={item.href}>{item.label}</Link>})),
-  [userPermissions]);
+  const menuItems = useMemo<MenuProps["items"]>(() => MENU_SECTIONS
+    .map((section) => ({
+      ...section,
+      items: section.items.filter((item) => [item.permission].flat().some((permission) => userPermissions.includes(permission)))
+    }))
+    .filter((section) => section.items.length != 0)
+    .flatMap((section, index): NonNullable<MenuProps["items"]> => {
+      const children = section.items.map((item) => ({
+        key: item.href,
+        icon: item.icon,
+        label: <Link prefetch={false} href={item.href}>{item.label}</Link>
+      }));
 
-  // Selection follows the URL, so it is cleared on the admin home page and kept on nested pages
+      if (isMenuClosed)
+        return [...(index != 0 ? [{type: "divider" as const, key: `divider-${section.title}`}] : []), ...children];
+
+      return [{type: "group" as const, key: section.title, label: section.title, children}];
+    }),
+  [userPermissions, isMenuClosed]);
+
   const selectedKeys = MENU_ITEMS
     .filter((item) => pathname == item.href || pathname.startsWith(item.href + "/"))
     .map((item) => item.href);

@@ -3,10 +3,13 @@ import {TableColumnsType} from "antd";
 import {useState} from "react";
 import {CrudComponent, timestampColumns} from "@/widgets/crud-component";
 import PublicPageMenuCrudForm from "../public-page-menu-crud-form/public-page-menu-crud-form";
-import {addPublicMenuItemAction, removePublicMenuItemsAction, updatePublicMenuItemAction, exportPublicMenuAction, importPublicMenuAction} from "@/entities/public-menu-item/actions/actions";
+import {addPublicMenuItemAction, removePublicMenuItemsAction, updatePublicMenuItemAction, exportPublicMenuAction, importPublicMenuAction, getPublicMenuItemByIdAction} from "@/entities/public-menu-item/actions/actions";
 import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 
 import {IPageResult} from "@/shared/types/page-query";
+import {useRouter} from "next/navigation";
+import {REVISION_TABLES, RevisionHistoryDrawer} from "@/features/revision-history";
+import {HistoryOutlined} from "@ant-design/icons";
 
 interface IProps {
   result: IPageResult<IPublicMenuItem>;
@@ -39,6 +42,8 @@ const COLUMNS: TableColumnsType<IPublicMenuItem> = [
 
 export default function PublicPageMenuCrud(props: IProps) {
   const [selectedRows, setSelectedRows] = useState<IPublicMenuItem[]>([]);
+  const router = useRouter();
+  const [historyRecord, setHistoryRecord] = useState<IPublicMenuItem | null>(null);
 
   const create = async (data: IPublicMenuItem) => {
     await unwrapServerAction(addPublicMenuItemAction({...data}));
@@ -55,6 +60,8 @@ export default function PublicPageMenuCrud(props: IProps) {
   return (
     <>
       <CrudComponent<IPublicMenuItem>
+        title="Навігаційне меню"
+        description="Пункти меню в шапці сайту та їхні вкладені пункти. Пункт веде на сторінку за своїм шляхом, порядок пунктів задає їхній індекс"
         columns={COLUMNS}
         data={props.result.items}
         pagination={props.result}
@@ -69,13 +76,29 @@ export default function PublicPageMenuCrud(props: IProps) {
         create={create}
         update={update}
         remove={remove}
+        trash
+        rowActions={[
+          {
+            key: "history",
+            label: "Історія",
+            icon: <HistoryOutlined/>,
+            onClick: (record) => setHistoryRecord(record)
+          }
+        ]}
+        getRecord={(id) => unwrapServerAction(getPublicMenuItemByIdAction(id))}
         getRecordName={(menuItem) => menuItem.label}
       >
-        <PublicPageMenuCrudForm
-          menuItems={props.menuItems}
-          selectedMenuItemId={selectedRows[0] ? String(selectedRows[0]._id) : undefined}
-        />
+        <PublicPageMenuCrudForm menuItems={props.menuItems}/>
       </CrudComponent>
+      <RevisionHistoryDrawer
+        collection="public-menu"
+        recordId={historyRecord ? String(historyRecord._id) : null}
+        recordName={historyRecord ? historyRecord.label : undefined}
+        onClose={() => setHistoryRecord(null)}
+        fieldLabels={REVISION_TABLES["public-menu"].fieldLabels}
+        mode="record"
+        onRestored={() => router.refresh()}
+      />
     </>
   )
 }

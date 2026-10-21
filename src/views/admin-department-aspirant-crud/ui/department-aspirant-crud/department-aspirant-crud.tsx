@@ -5,11 +5,15 @@ import {CrudComponent, timestampColumns} from "@/widgets/crud-component";
 import {dateStringSorter, stringSorter} from "@/shared/utilities/sorters";
 import {IDepartmentAspirant} from "@/entities/department-aspirant";
 import DepartmentAspirantCrudForm from "../department-aspirant-crud-form/department-aspirant-crud-form";
-import {addDepartmentAspirantAction, removeDepartmentAspirantAction, updateDepartmentAspirantAction, exportDepartmentAspirantsAction, importDepartmentAspirantsAction} from "@/entities/department-aspirant/actions/actions";
+import {addDepartmentAspirantAction, removeDepartmentAspirantAction, updateDepartmentAspirantAction, exportDepartmentAspirantsAction, importDepartmentAspirantsAction, getDepartmentAspirantByIdAction} from "@/entities/department-aspirant/actions/actions";
 import {IDepartmentStaff} from "@/entities/department-staff";
 import dayjs from "dayjs";
+import formatDate from "@/shared/utilities/format-date";
 
 import {IPageResult} from "@/shared/types/page-query";
+import {useRouter} from "next/navigation";
+import {REVISION_TABLES, RevisionHistoryDrawer} from "@/features/revision-history";
+import {HistoryOutlined} from "@ant-design/icons";
 
 interface IProps {
   result: IPageResult<IDepartmentAspirant>;
@@ -72,7 +76,7 @@ export default function DepartmentAspirantCrud(props: IProps) {
       key: "thesisDate",
       width: 150,
       render: (date: string) => (
-        date ? <Tag color="green">{new Date(date).toLocaleDateString()}</Tag> : <Tag color="blue">Ще вчиться</Tag>
+        date ? <Tag color="green">{formatDate(date, "DD.MM.YYYY")}</Tag> : <Tag color="blue">Ще вчиться</Tag>
       ),
       sorter: (a, b) => dateStringSorter(a.thesisDate?.toString() ?? "", b.thesisDate?.toString() ?? ""),
       showSorterTooltip: {
@@ -102,13 +106,15 @@ export default function DepartmentAspirantCrud(props: IProps) {
   ];
 
   const [selectedRows, setSelectedRows] = useState<IDepartmentAspirant[]>([]);
+  const router = useRouter();
+  const [historyRecord, setHistoryRecord] = useState<IDepartmentAspirant | null>(null);
 
   const create = async (data: IDepartmentAspirant) => {
-    await unwrapServerAction(addDepartmentAspirantAction({...data, thesisDate: data.thesisDate ? dayjs(data.thesisDate).toISOString() : undefined}));
+    await unwrapServerAction(addDepartmentAspirantAction({...data, thesisDate: data.thesisDate ? dayjs(data.thesisDate).toISOString() : null} as unknown as IDepartmentAspirant));
   }
 
   const update = async (data: IDepartmentAspirant) => {
-    await unwrapServerAction(updateDepartmentAspirantAction({...data, thesisDate: data.thesisDate ? dayjs(data.thesisDate).toISOString() : undefined}));
+    await unwrapServerAction(updateDepartmentAspirantAction({...data, thesisDate: data.thesisDate ? dayjs(data.thesisDate).toISOString() : null} as unknown as IDepartmentAspirant));
   }
 
   const remove = async (data: IDepartmentAspirant[]) => {
@@ -118,6 +124,8 @@ export default function DepartmentAspirantCrud(props: IProps) {
   return (
     <Space orientation="vertical" size="middle" style={{width: "100%"}}>
       <CrudComponent<IDepartmentAspirant>
+        title="Аспіранти кафедри"
+        description="Аспіранти, теми їхніх дисертацій і наукові керівники для списку аспірантів на сайті"
         columns={COLUMNS}
         data={props.result.items}
         pagination={props.result}
@@ -132,10 +140,29 @@ export default function DepartmentAspirantCrud(props: IProps) {
         create={create}
         update={update}
         remove={remove}
+        trash
+        rowActions={[
+          {
+            key: "history",
+            label: "Історія",
+            icon: <HistoryOutlined/>,
+            onClick: (record) => setHistoryRecord(record)
+          }
+        ]}
+        getRecord={(id) => unwrapServerAction(getDepartmentAspirantByIdAction(id))}
         getRecordName={(aspirant) => `${aspirant.lastName} ${aspirant.firstName} ${aspirant.middleName}`}
       >
         <DepartmentAspirantCrudForm departmentStaff={props.departmentStaff}/>
       </CrudComponent>
+      <RevisionHistoryDrawer
+        collection="department-aspirants"
+        recordId={historyRecord ? String(historyRecord._id) : null}
+        recordName={historyRecord ? `${historyRecord.lastName} ${historyRecord.firstName}` : undefined}
+        onClose={() => setHistoryRecord(null)}
+        fieldLabels={REVISION_TABLES["department-aspirants"].fieldLabels}
+        mode="record"
+        onRestored={() => router.refresh()}
+      />
     </Space>
   )
 }

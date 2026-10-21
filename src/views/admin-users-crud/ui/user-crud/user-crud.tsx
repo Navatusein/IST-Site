@@ -7,7 +7,7 @@ import UserCrudForm from "../user-crud-form/user-crud-form";
 import {addUserAction,
   removeUsersAction,
   updateUserAction,
-  updateUserPasswordAction, exportUsersAction, importUsersAction} from "@/entities/user/actions/actions";
+  updateUserPasswordAction, exportUsersAction, importUsersAction, getUserByIdAction} from "@/entities/user/actions/actions";
 import PasswordModal from "../password-modal/password-modal";
 import {FormOutlined} from "@ant-design/icons";
 import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
@@ -105,6 +105,8 @@ export default function UserCrud(props: IProps) {
   return (
     <>
       <CrudComponent<IUser>
+        title="Користувачі"
+        description="Облікові записи адмінпанелі. Права користувача визначають, які розділи йому доступні"
         columns={COLUMNS}
         data={props.result.items}
         pagination={props.result}
@@ -119,23 +121,18 @@ export default function UserCrud(props: IProps) {
         create={create}
         update={update}
         remove={remove}
+        getRecord={(id) => unwrapServerAction(getUserByIdAction(id))}
         getRecordName={(user) => user.name}
-        additionalToolbarButtons={[
-          {
-            label: "Змінити пароль",
-            tooltip: "Змінити пароль користувача",
-            icon: <FormOutlined/>,
-            onClick: () => openPasswordModal(),
-            disabled: selectedRows.length != 1
-          }
-        ]}
-        additionalDropdownMenuItems={[
+        rowActions={[
           {
             key: "edit-password",
             label: "Змінити пароль",
             icon: <FormOutlined/>,
-            onClick: () => openPasswordModal()
-          },
+            onClick: (user) => {
+              setSelectedRows([user]);
+              openPasswordModal();
+            }
+          }
         ]}
       >
         <UserCrudForm/>

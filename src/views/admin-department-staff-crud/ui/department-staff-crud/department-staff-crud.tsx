@@ -3,13 +3,14 @@ import {useState} from "react";
 import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 import {Space, TableColumnsType, Tag} from "antd";
 import {CrudComponent, timestampColumns} from "@/widgets/crud-component";
-import {FormOutlined} from "@ant-design/icons";
+import {FormOutlined, HistoryOutlined} from "@ant-design/icons";
 import {stringSorter} from "@/shared/utilities/sorters";
 import {IDepartmentStaff} from "@/entities/department-staff";
-import {addDepartmentStaffAction, removeDepartmentStaffAction, updateDepartmentStaffAction, exportDepartmentStaffAction, importDepartmentStaffAction} from "@/entities/department-staff/actions/actions";
+import {addDepartmentStaffAction, removeDepartmentStaffAction, updateDepartmentStaffAction, exportDepartmentStaffAction, importDepartmentStaffAction, getDepartmentStaffByIdAction} from "@/entities/department-staff/actions/actions";
 import DepartmentStaffCrudForm from "../department-staff-crud-form/department-staff-crud-form";
 
 import {IPageResult} from "@/shared/types/page-query";
+import {REVISION_TABLES, RevisionHistoryDrawer} from "@/features/revision-history";
 
 interface IProps {
   result: IPageResult<IDepartmentStaff>;
@@ -92,6 +93,7 @@ export default function DepartmentStaffCrud(props: IProps) {
   const router = useRouter()
 
   const [selectedRows, setSelectedRows] = useState<IDepartmentStaff[]>([]);
+  const [historyRecord, setHistoryRecord] = useState<IDepartmentStaff | null>(null);
 
   const create = async (data: IDepartmentStaff) => {
     await unwrapServerAction(addDepartmentStaffAction({...data}));
@@ -115,6 +117,8 @@ export default function DepartmentStaffCrud(props: IProps) {
   return (
     <Space orientation="vertical" size="middle" style={{width: "100%"}}>
       <CrudComponent<IDepartmentStaff>
+        title="Співробітники кафедри"
+        description="Викладачі та співробітники для списку на сайті й окремих сторінок профілів. Двічі натисніть на рядок, щоб змінити ім'я, посаду, фото й шлях, «Редагувати контент» — блоки сторінки профілю"
         columns={COLUMNS}
         data={props.result.items}
         pagination={props.result}
@@ -129,27 +133,36 @@ export default function DepartmentStaffCrud(props: IProps) {
         create={create}
         update={update}
         remove={remove}
+        trash
+        getRecord={(id) => unwrapServerAction(getDepartmentStaffByIdAction(id))}
         getRecordName={(staff) => `${staff.lastName} ${staff.firstName} ${staff.middleName}`}
-        additionalToolbarButtons={[
-          {
-            label: "Редагувати контент",
-            tooltip: "Редагувати контент вибраної сторінки",
-            icon: <FormOutlined/>,
-            onClick: () => redirectToEditPage(),
-            disabled: selectedRows.length != 1
-          }
-        ]}
-        additionalDropdownMenuItems={[
+        rowActions={[
           {
             key: "edit-content",
             label: "Редагувати контент",
             icon: <FormOutlined/>,
-            onClick: (data) => redirectToEditPage(data)
+            onClick: (staff) => redirectToEditPage([staff]),
+            primary: true
           },
+          {
+            key: "history",
+            label: "Історія",
+            icon: <HistoryOutlined/>,
+            onClick: (record) => setHistoryRecord(record)
+          }
         ]}
       >
         <DepartmentStaffCrudForm/>
       </CrudComponent>
+      <RevisionHistoryDrawer
+        collection="department-staff"
+        recordId={historyRecord ? String(historyRecord._id) : null}
+        recordName={historyRecord ? `${historyRecord.lastName} ${historyRecord.firstName}` : undefined}
+        onClose={() => setHistoryRecord(null)}
+        fieldLabels={REVISION_TABLES["department-staff"].fieldLabels}
+        mode="record"
+        onRestored={() => router.refresh()}
+      />
     </Space>
   )
 }

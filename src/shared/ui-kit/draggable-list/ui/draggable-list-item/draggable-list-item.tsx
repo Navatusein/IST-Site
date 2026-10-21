@@ -23,7 +23,6 @@ interface IProps {
   gap?: string;
   id?: string;
   style?: CSSProperties;
-  // Stretch to the height of the parent (e.g. equal-height cells of a line)
   fill?: boolean;
 }
 
