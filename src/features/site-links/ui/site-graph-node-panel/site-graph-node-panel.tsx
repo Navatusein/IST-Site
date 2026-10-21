@@ -5,7 +5,8 @@ import {CloseOutlined, EditOutlined, ExportOutlined} from "@ant-design/icons";
 import {ISiteLinksGraph} from "../../types/type";
 import {getSiteLinkNode} from "../../utilities/site-links-graph";
 import {ISiteGraphNode} from "../../utilities/site-links-graph-view";
-import PageLinksSections, {SiteLinksSection} from "../page-links-sections/page-links-sections";
+import PageLinksSections from "../page-links-sections/page-links-sections";
+import SiteLinksSection from "../site-links-section/site-links-section";
 import SiteLinkRow from "../site-link-row/site-link-row";
 import {SITE_LINK_KIND_LABELS, SITE_LINK_KIND_TAG_COLORS} from "../../utilities/site-link-kinds";
 

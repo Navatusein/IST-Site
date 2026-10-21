@@ -1,6 +1,6 @@
 "use client"
 
-import {ReactNode, useState} from "react";
+import {useState} from "react";
 import {useRouter} from "next/navigation";
 import {App, Button, Card, Col, Flex, Form, Input, Row, Select, theme, Typography} from "antd";
 import {ISiteSettingsData, ISocialLink} from "@/entities/site-settings";
@@ -9,6 +9,7 @@ import {updateSiteSettingsAction} from "@/entities/site-settings/actions/actions
 import {SocialNetworkIcon} from "@/entities/site-settings/ui";
 import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 import {AdminPageHeader, FormSortableList} from "@/shared/ui-kit";
+import SettingsSection from "../settings-section/settings-section";
 
 interface IProps {
   settings: ISiteSettingsData;
@@ -27,28 +28,6 @@ const SOCIAL_NETWORK_OPTIONS = Object.entries(SOCIAL_NETWORK_NAMES).map(([value,
 const itemStyle = {marginBottom: 0};
 
 const shortenUrl = (url: string) => url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");
-
-function Section(props: {title: string, description?: string, children: ReactNode}) {
-  return (
-    <Card
-      variant="borderless"
-      title={(
-        <Flex vertical style={{padding: "8px 0"}}>
-          <span>{props.title}</span>
-          {props.description && (
-            <Typography.Text type="secondary" style={{fontWeight: "normal", fontSize: 13}}>
-              {props.description}
-            </Typography.Text>
-          )}
-        </Flex>
-      )}
-    >
-      <Flex vertical gap="small">
-        {props.children}
-      </Flex>
-    </Card>
-  )
-}
 
 export default function AdminSiteSettingsView(props: IProps) {
   const {token: {padding, paddingSM}} = theme.useToken();
@@ -110,7 +89,7 @@ export default function AdminSiteSettingsView(props: IProps) {
       <Row gutter={[padding, padding]}>
         <Col xs={24} xl={14}>
           <Flex vertical gap={padding}>
-            <Section title="Сайт" description="Показуються у вкладці браузера та в результатах пошуку">
+            <SettingsSection title="Сайт" description="Показуються у вкладці браузера та в результатах пошуку">
               <Form.Item<ISiteSettingsData>
                 label="Назва сайту"
                 name="siteTitle"
@@ -137,8 +116,8 @@ export default function AdminSiteSettingsView(props: IProps) {
               >
                 <Input.TextArea autoSize={{minRows: 2, maxRows: 5}} maxLength={300}/>
               </Form.Item>
-            </Section>
-            <Section title="Футер" description="Показуються внизу кожної сторінки">
+            </SettingsSection>
+            <SettingsSection title="Футер" description="Показуються внизу кожної сторінки">
               <Form.Item<ISiteSettingsData>
                 label="Карта"
                 name="mapEmbedUrl"
@@ -162,12 +141,12 @@ export default function AdminSiteSettingsView(props: IProps) {
               >
                 <Input/>
               </Form.Item>
-            </Section>
+            </SettingsSection>
           </Flex>
         </Col>
         <Col xs={24} xl={10}>
           <Flex vertical gap={padding}>
-            <Section title="Контакти" description="Показуються у футері та в блоці «Зворотній зв'язок»">
+            <SettingsSection title="Контакти" description="Показуються у футері та в блоці «Зворотній зв'язок»">
               <Form.Item<ISiteSettingsData>
                 label="Назва"
                 name="organizationName"
@@ -229,8 +208,8 @@ export default function AdminSiteSettingsView(props: IProps) {
                   </Form.Item>
                 </Col>
               </Row>
-            </Section>
-            <Section title="Соціальні мережі" description="Показуються кнопками у футері">
+            </SettingsSection>
+            <SettingsSection title="Соціальні мережі" description="Показуються кнопками у футері">
               <Form.List name="socialLinks">
                 {(fields, operations) => (
                   <FormSortableList<ISocialLink>
@@ -271,7 +250,7 @@ export default function AdminSiteSettingsView(props: IProps) {
                   />
                 )}
               </Form.List>
-            </Section>
+            </SettingsSection>
           </Flex>
         </Col>
       </Row>

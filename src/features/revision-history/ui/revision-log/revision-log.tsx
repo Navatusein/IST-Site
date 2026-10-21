@@ -2,19 +2,19 @@
 
 import {useEffect, useRef, useState} from "react";
 import {useRouter} from "next/navigation";
-import {App, Button, DatePicker, Flex, Input, Select, Skeleton, Table, TableColumnsType, Tag, Tooltip, Typography} from "antd";
+import {App, Button, DatePicker, Flex, Input, Select, Table, TableColumnsType, Tag, Tooltip, Typography} from "antd";
 import {EditOutlined, HistoryOutlined, ReloadOutlined, SearchOutlined} from "@ant-design/icons";
 import {parseAsArrayOf, parseAsInteger, parseAsString, useQueryStates} from "nuqs";
 import dayjs from "dayjs";
 import {useUserPermissions} from "@/entities/user/hooks/useUserPermissions";
-import {IRevisionComparison, IRevisionLog, IRevisionLogItem, RevisionCollection} from "@/shared/types/revision";
+import {IRevisionLog, IRevisionLogItem, RevisionCollection} from "@/shared/types/revision";
 import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 import formatDate from "@/shared/utilities/format-date";
-import {getRevisionComparisonAction, getRevisionLogAction} from "../../actions/actions";
+import {getRevisionLogAction} from "../../actions/actions";
 import {REVISION_TABLES} from "../../model/revision-tables";
 import {describeChanges} from "../../utilities/describe-changes";
-import RevisionCompare from "../revision-compare/revision-compare";
 import RevisionHistoryDrawer from "../revision-history-drawer/revision-history-drawer";
+import LogItemCompare from "../log-item-compare/log-item-compare";
 
 const PAGE_SIZE = 20;
 
@@ -26,37 +26,6 @@ const LOG_QUERY = {
   q: parseAsString,
   page: parseAsInteger.withDefault(1),
 };
-
-function LogItemCompare(props: {item: IRevisionLogItem}) {
-  const [comparison, setComparison] = useState<IRevisionComparison | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let isCancelled = false;
-
-    unwrapServerAction(getRevisionComparisonAction(props.item.collection, props.item.recordId, props.item.id))
-      .then((result) => {
-        if (!isCancelled)
-          result ? setComparison(result) : setError("Версію не знайдено");
-      })
-      .catch((reason) => {
-        if (!isCancelled)
-          setError(reason.message);
-      });
-
-    return () => {
-      isCancelled = true;
-    }
-  }, [props.item.id]);
-
-  if (error)
-    return <Typography.Text type="danger">{error}</Typography.Text>;
-
-  if (!comparison)
-    return <Skeleton active paragraph={{rows: 2}}/>;
-
-  return <RevisionCompare comparison={comparison} fieldLabels={REVISION_TABLES[props.item.collection].fieldLabels}/>;
-}
 
 export default function RevisionLog() {
   const router = useRouter();
