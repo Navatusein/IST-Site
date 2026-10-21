@@ -1,5 +1,3 @@
-"use server"
-
 import {notFound} from "next/navigation";
 import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 import {getDepartmentStaffByPathAction} from "@/entities/department-staff/actions/actions";

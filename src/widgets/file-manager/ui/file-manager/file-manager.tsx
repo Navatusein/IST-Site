@@ -31,6 +31,11 @@ export default function FileManager() {
   const [nameModal, setNameModal] = useState<EntryNameModalState>(null);
   const [previewEntry, setPreviewEntry] = useState<IFileEntry | null>(null);
 
+  const openFolder = (slug: string) => {
+    setSelectedEntries(() => []);
+    void setCurrentFolder(slug);
+  }
+
   return(
     <FileExplorerContext
       value={{
@@ -77,7 +82,7 @@ export default function FileManager() {
             <ExportImportButtons/>
           </Space>
           <FileDropZone>
-            <FileManagerExplorer openFolder={(slug) => setCurrentFolder(slug)} preview={setPreviewEntry}/>
+            <FileManagerExplorer openFolder={openFolder}preview={setPreviewEntry}/>
           </FileDropZone>
         </Space>
         <EntryNameModal state={nameModal} onClose={() => setNameModal(() => null)}/>

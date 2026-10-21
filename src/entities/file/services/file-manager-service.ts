@@ -64,9 +64,11 @@ export class FileManagerService {
 
   public static async getBreadcrumbs(folderSlug: string | null): Promise<IFolderBreadcrumb[]> {
     const breadcrumbs: IFolderBreadcrumb[] = [];
+    const visited = new Set<string>();
     let currentSlug = folderSlug;
 
-    while (currentSlug != null) {
+    while (currentSlug != null && !visited.has(currentSlug)) {
+      visited.add(currentSlug);
       const folder = await this.ensureFolder(currentSlug);
       breadcrumbs.unshift({slug: folder!.slug, name: folder!.name});
       currentSlug = folder!.parentSlug;
@@ -221,7 +223,11 @@ export class FileManagerService {
     };
   }
 
-  private static async copyEntry(entry: IFileEntryDocument, parentSlug: string | null, name: string): Promise<void> {
+  private static async copyEntry(entry: IFileEntryDocument, parentSlug: string | null, name: string, visited = new Set<string>()): Promise<void> {
+    if (visited.has(entry.slug))
+      return;
+
+    visited.add(entry.slug);
     const slug = generateFileSlug();
 
     if (entry.kind == "file") {
@@ -246,14 +252,17 @@ export class FileManagerService {
     const children = await FileEntryModel.find({parentSlug: entry.slug}).lean<IFileEntryDocument[]>();
 
     for (const child of children)
-      await this.copyEntry(child, slug, child.name);
+      await this.copyEntry(child, slug, child.name, visited);
   }
 
   private static async collectWithDescendants(slugs: string[]): Promise<IFileEntryDocument[]> {
     const result: IFileEntryDocument[] = [];
+    const visited = new Set<string>();
     let current = await FileEntryModel.find({slug: {$in: slugs}}).lean<IFileEntryDocument[]>();
 
     while (current.length != 0) {
+      current = current.filter((x) => !visited.has(x.slug));
+      current.forEach((x) => visited.add(x.slug));
       result.push(...current);
 
       const directorySlugs = current.filter((x) => x.kind == "directory").map((x) => x.slug);

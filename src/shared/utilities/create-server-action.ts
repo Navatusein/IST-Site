@@ -1,5 +1,5 @@
 import {revalidatePublicContent} from "@/shared/utilities/revalidate-public-content";
-import {ServerActionError} from "@/shared/exceptions/server-action-error";
+import {AuthorizationError, ServerActionError} from "@/shared/exceptions/server-action-error";
 import {IServerActionResult} from "@/shared/types/server-action-result";
 
 interface IServerActionOptions {
@@ -11,15 +11,15 @@ export function createServerAction<T>(
   options?: IServerActionOptions
 ): (...args: any[]) => Promise<IServerActionResult<T>> {
   return async (...args: any[]) => {
+    let isAuthorized = true;
+
     try {
       const data = await callback(...args);
-
-      if (options?.revalidatePublicPages)
-        revalidatePublicContent();
-
       return {success: true, data};
     }
     catch (error) {
+      isAuthorized = !(error instanceof AuthorizationError);
+
       if (error instanceof ServerActionError) {
         console.log(error)
         return {success: false, errorMessage: error.message, data: undefined as never};
@@ -28,6 +28,10 @@ export function createServerAction<T>(
         console.log(error)
         return {success: false, errorMessage: "Unhandled error type", data: undefined as never};
       }
+    }
+    finally {
+      if (options?.revalidatePublicPages && isAuthorized)
+        revalidatePublicContent();
     }
   };
 }

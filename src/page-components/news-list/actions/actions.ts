@@ -6,6 +6,7 @@ import {createServerAction} from "@/shared/utilities/create-server-action";
 import {cachePublicData} from "@/shared/utilities/cache-public-data";
 import {clampInteger} from "@/shared/utilities/public-input";
 import {INewsListData} from "../types/type";
+import {getNewsCountDisplayed} from "../utilities/news-count";
 
 const loadNewsListData = cachePublicData("getNewsListDataAction", async (countDisplayed: number, page: number) => {
   const [news, total] = await Promise.all([
@@ -21,5 +22,5 @@ const loadNewsListData = cachePublicData("getNewsListDataAction", async (countDi
 });
 
 export const getNewsListDataAction = createServerAction<INewsListData>(async (countDisplayed: unknown, page: unknown) => (
-  loadNewsListData(clampInteger(countDisplayed, 1, 50, 10), clampInteger(page, 1, 1000, 1))
+  loadNewsListData(getNewsCountDisplayed(countDisplayed), clampInteger(page, 1, 1000, 1))
 ));

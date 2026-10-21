@@ -1,5 +1,6 @@
 import {FileManagerService} from "@/entities/file/services/file-manager-service";
 import {FileViewerView} from "@/views/file-viewer";
+import {notFound} from "next/navigation";
 
 export const revalidate = 86400;
 
@@ -16,6 +17,9 @@ interface IProps {
 export default async function Page(props: IProps) {
   const {path} = await props.params;
   const file = await FileManagerService.findFile(path);
+
+  if (!file)
+    notFound();
 
   return (
     <FileViewerView file={file}/>

@@ -49,7 +49,7 @@ export const updateSiteSettingsAction = createServerAction<void>(async (data: IS
     phone: text(data?.phone),
     socialLinks: (Array.isArray(data?.socialLinks) ? data.socialLinks : [])
       .map((link) => ({network: link?.network, url: text(link?.url)}))
-      .filter((link) => link.url && link.network in SOCIAL_NETWORK_NAMES) as {network: SocialNetwork, url: string}[],
+      .filter((link) => link.url && typeof link.network == "string" && Object.hasOwn(SOCIAL_NETWORK_NAMES, link.network)) as {network: SocialNetwork, url: string}[],
     mapEmbedUrl: getMapEmbedUrl(data?.mapEmbedUrl),
     copyright: text(data?.copyright),
   };

@@ -1,5 +1,3 @@
-"use server"
-
 import {notFound} from "next/navigation";
 import {getNewsByPathAction} from "@/entities/news/actions/actions";
 import {AdminNewsPageEdit} from "@/views/admin-news-page-edit";

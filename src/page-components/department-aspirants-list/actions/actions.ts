@@ -11,7 +11,7 @@ import {IDepartmentAspirantListData} from "../types/type";
 
 export const getDepartmentAspirantListDataAction = createServerAction<IDepartmentAspirantListData>(cachePublicData("getDepartmentAspirantListDataAction", async () => {
   const [aspirants, staff] = await Promise.all([
-    DepartmentAspirantModel.find<IDepartmentAspirant>({}).sort({date: "desc"}),
+    DepartmentAspirantModel.find<IDepartmentAspirant>({}).sort({lastName: "asc", firstName: "asc", middleName: "asc"}).collation({locale: "uk"}),
     DepartmentStaffModel.find<IDepartmentStaff>({})
   ]);
 
@@ -19,7 +19,9 @@ export const getDepartmentAspirantListDataAction = createServerAction<IDepartmen
 
   return {
     aspirants: plainAspirants.filter((x) => x.thesisDate == null),
-    graduates: plainAspirants.filter((x) => x.thesisDate != null),
+    graduates: plainAspirants
+      .filter((x) => x.thesisDate != null)
+      .sort((a, b) => new Date(b.thesisDate!).getTime() - new Date(a.thesisDate!).getTime()),
     staffNames: Object.fromEntries(staff.map((value) => (
       [String(value._id), `${value.lastName} ${value.firstName} ${value.middleName}`]
     )))

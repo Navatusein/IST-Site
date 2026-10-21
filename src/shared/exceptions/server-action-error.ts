@@ -4,3 +4,10 @@ export class ServerActionError extends Error {
     this.name = "ServerActionError";
   }
 }
+
+export class AuthorizationError extends ServerActionError {
+  constructor(message: string) {
+    super(message);
+    this.name = "AuthorizationError";
+  }
+}

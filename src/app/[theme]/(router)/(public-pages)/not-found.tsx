@@ -1,7 +1,7 @@
-"use client"
-
-import {redirect} from "next/navigation";
+import {NotFoundView} from "@/views/not-found";
 
 export default function NotFound() {
-  return redirect("/not-found");
+  return (
+    <NotFoundView/>
+  )
 }

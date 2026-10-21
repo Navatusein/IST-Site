@@ -16,15 +16,22 @@ export default function PageLinkFields(props: IProps) {
   const linkType = Form.useWatch<PageLinkType>([...props.fullName, "linkType"]);
   const required = props.required ?? true;
 
-  const onLinkTypeChange = () => {
-    form.setFieldValue([...props.fullName, "link"], "");
+  const getLinkTypeFromEvent = (value: PageLinkType) => {
+    if (value != form.getFieldValue([...props.fullName, "linkType"]))
+      form.setFieldValue([...props.fullName, "link"], "");
+
+    return value;
   }
 
   return (
     <>
-      <Form.Item name={[...props.name, "linkType"]} label="Посилання на" style={{marginBottom: 0}}>
+      <Form.Item
+        name={[...props.name, "linkType"]}
+        label="Посилання на"
+        style={{marginBottom: 0}}
+        getValueFromEvent={getLinkTypeFromEvent}
+      >
         <Select
-          onChange={onLinkTypeChange}
           options={[
             ...(props.allowNone ? [{label: "Немає", value: "none"}] : []),
             {label: "Сайт", value: "link"},
@@ -42,14 +49,29 @@ export default function PageLinkFields(props: IProps) {
         >
           <SelectFileButton/>
         </Form.Item>
+      ) : linkType == "page" ? (
+        <Form.Item
+          name={[...props.name, "link"]}
+          label="Шлях сторінки"
+          style={{marginBottom: 0}}
+          rules={[
+            {required, whitespace: true, message: "Введіть шлях сторінки"},
+            {pattern: /^\/(?![\/\\])/, message: "Шлях має починатися з /"},
+          ]}
+        >
+          <Input placeholder="/about"/>
+        </Form.Item>
       ) : (
         <Form.Item
           name={[...props.name, "link"]}
-          label={linkType == "page" ? "Шлях сторінки" : "Адреса"}
+          label="Адреса"
           style={{marginBottom: 0}}
-          rules={[{required, whitespace: true, message: linkType == "page" ? "Введіть шлях сторінки" : "Введіть адресу"}]}
+          rules={[
+            {required, whitespace: true, message: "Введіть адресу"},
+            {pattern: /^(https?:\/\/|mailto:|tel:)/i, message: "Адреса має починатися з https://, mailto: або tel:"},
+          ]}
         >
-          <Input placeholder={linkType == "page" ? "/about" : "https://"}/>
+          <Input placeholder="https://"/>
         </Form.Item>
       )}
     </>

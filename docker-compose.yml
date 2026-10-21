@@ -24,7 +24,8 @@ services:
     environment:
       - MONGODB_URI=mongodb://${MONGODB_USER}:${MONGODB_PASSWORD}@mongodb/${MONGODB_DATABASE}
       - APP_PUBLIC_URL=${APP_PUBLIC_URL}
-      - TRUSTED_PROXY_COUNT=${TRUSTED_PROXY_COUNT:-1}
+      # Port 80 is published directly; set to 1 (or more) when a reverse proxy is put in front
+      - TRUSTED_PROXY_COUNT=${TRUSTED_PROXY_COUNT:-0}
       - ENABLE_TEST_PAGE=${ENABLE_TEST_PAGE:-false}
       - MAIL_HOST=${MAIL_HOST}
       - MAIL_PORT=${MAIL_PORT}

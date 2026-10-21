@@ -4,6 +4,7 @@ import {SOCIAL_NETWORK_NAMES} from "@/entities/site-settings/types/type";
 import {SocialNetworkIcon} from "@/entities/site-settings/ui";
 import {ComponentCol} from "@/shared/ui-kit";
 import getPhoneHref from "@/shared/utilities/get-phone-href";
+import formatDate from "@/shared/utilities/format-date";
 
 interface IProps {
   settings: ISiteSettingsData;
@@ -96,7 +97,7 @@ export default function PublicFooter(props: IProps) {
               <Typography.Text style={{color: colorTextLightSolid, textAlign: "center"}}>
                 © Copyright by&nbsp;
                 <Typography.Text strong style={{color: colorTextLightSolid}}>
-                  {settings.copyright} {new Date().getFullYear()}
+                  {settings.copyright} <span suppressHydrationWarning>{formatDate(Date.now(), "YYYY")}</span>
                 </Typography.Text>
               </Typography.Text>
             </Flex>

@@ -16,6 +16,8 @@ export const getCurrentUserAction = createServerAction<ICurrentUser | null>(asyn
 });
 
 const USER_SEARCH_FIELDS = ["login", "name"];
+const MIN_PASSWORD_LENGTH = 8;
+const MAX_PASSWORD_LENGTH = 256;
 
 const hidePasswordHash = (user: IUser): IUser => {
   return {...user, passwordHash: user.passwordHash ? "" : undefined} as IUser;
@@ -47,27 +49,52 @@ export const addUserAction = createServerAction<void>(async (data: IUser) => {
   await UserModel.create(userData);
 });
 
+const ensureUsersEditorRemains = async (excludedUserIds: string[]) => {
+  const count = await UserModel.countDocuments({_id: {$nin: excludedUserIds}, permissions: "edit-users"});
+
+  if (count == 0)
+    throw new ServerActionError("Має залишитися хоча б один користувач із правом edit-users");
+}
+
 export const updateUserAction = createServerAction<void>(async (data: IUser) => {
-  await requirePermission("edit-users");
+  const currentUser = await requirePermission("edit-users");
   const {_id, passwordHash, ...updateData} = data as IUser & {passwordHash?: string};
+  const userId = String(_id);
+
+  if (!Array.isArray(updateData.permissions) || !updateData.permissions.includes("edit-users")) {
+    if (currentUser.id === userId)
+      throw new ServerActionError("Не можна зняти з себе право edit-users");
+
+    await ensureUsersEditorRemains([userId]);
+  }
+
   await UserModel.findByIdAndUpdate(_id, {$set: updateData});
 });
 
 export const removeUsersAction = createServerAction<void>(async (data: IUser[]) => {
-  await requirePermission("edit-users");
+  const currentUser = await requirePermission("edit-users");
 
   const userIds = data.map((value) => String(value._id));
+
+  if (userIds.includes(currentUser.id))
+    throw new ServerActionError("Не можна видалити власний обліковий запис");
+
+  await ensureUsersEditorRemains(userIds);
 
   await UserModel.deleteMany({_id: {$in: userIds}});
   await invalidateUserSessions(userIds);
 });
 
-export const updateUserPasswordAction = createServerAction<void>(async (id: string, password: string) => {
+export const updateUserPasswordAction = createServerAction<void>(async (id: string, password: unknown) => {
   await requirePermission("edit-users");
+
+  if (typeof password !== "string" || password.length < MIN_PASSWORD_LENGTH || password.length > MAX_PASSWORD_LENGTH)
+    throw new ServerActionError(`Пароль має містити від ${MIN_PASSWORD_LENGTH} до ${MAX_PASSWORD_LENGTH} символів`);
+
   const data = await UserModel.findOne<IUser>({_id: id});
 
   if (!data)
-    throw new Error("Invalid user Id");
+    throw new ServerActionError("Користувача не знайдено");
 
   await (data as any).setPassword(password);
   await data.save();

@@ -12,7 +12,7 @@ export const MANIFEST_NAME = ".ist-files.json";
 const MANIFEST_FORMAT = "ist-site-files";
 
 const MAX_IMPORT_ENTRIES = 5000;
-const MAX_IMPORT_SIZE = 1024 * 1024 * 1024;
+const MAX_IMPORT_SIZE = 300 * 1024 * 1024;
 
 interface IArchiveEntry {
   document: IFileEntryDocument;
@@ -54,9 +54,12 @@ export class FileArchiveService {
       .lean<IFileEntryDocument[]>();
 
     const result: IArchiveEntry[] = [];
+    const visited = new Set<string>();
     let level = roots.map((document) => ({document, path: document.name}));
 
     while (level.length != 0) {
+      level = level.filter((x) => !visited.has(x.document.slug));
+      level.forEach((x) => visited.add(x.document.slug));
       result.push(...level);
 
       const folders = level.filter((x) => x.document.kind == "directory");
@@ -73,68 +76,102 @@ export class FileArchiveService {
   }
 
   public static createArchiveStream(entries: IArchiveEntry[], withManifest: boolean): ReadableStream<Uint8Array> {
+    const output: Uint8Array[] = [];
+    let finished = false;
+    let failure: Error | null = null;
+
+    const zip = new Zip((error, chunk, final) => {
+      if (error) {
+        failure = error;
+        return;
+      }
+
+      output.push(chunk);
+
+      if (final)
+        finished = true;
+    });
+
+    const source = this.writeArchive(zip, entries, withManifest);
+
     return new ReadableStream<Uint8Array>({
-      start: async (controller) => {
-        const zip = new Zip((error, chunk, final) => {
-          if (error)
-            return controller.error(error);
-
-          controller.enqueue(chunk);
-
-          if (final)
-            controller.close();
-        });
-
+      pull: async (controller) => {
         try {
-          for (const {document, path: entryPath} of entries) {
-            if (document.kind == "directory") {
-              const folder = new ZipPassThrough(entryPath + "/");
-              zip.add(folder);
-              folder.push(new Uint8Array(0), true);
-              continue;
-            }
-
-            const storagePath = document.storageName ? FileManagerService.getStoragePath(document.storageName) : null;
-
-            if (!storagePath || !fs.existsSync(storagePath))
-              continue;
-
-            const file = isCompressible(document) ? new ZipDeflate(entryPath, {level: 6}) : new ZipPassThrough(entryPath);
-            zip.add(file);
-
-            for await (const chunk of fs.createReadStream(storagePath))
-              file.push(new Uint8Array(chunk as Buffer));
-
-            file.push(new Uint8Array(0), true);
+          while (output.length == 0 && !finished && !failure) {
+            if ((await source.next()).done && !finished)
+              throw new Error("Archive ended unexpectedly");
           }
 
-          if (withManifest) {
-            const manifest: IManifest = {
-              format: MANIFEST_FORMAT,
-              version: 1,
-              exportedAt: new Date().toISOString(),
-              entries: entries.map(({document, path: entryPath}) => ({
-                slug: document.slug,
-                kind: document.kind,
-                name: document.name,
-                parentSlug: document.parentSlug,
-                path: entryPath
-              }))
-            };
-
-            const file = new ZipDeflate(MANIFEST_NAME, {level: 6});
-            zip.add(file);
-            file.push(strToU8(JSON.stringify(manifest, null, 2)), true);
-          }
-
-          zip.end();
+          if (failure)
+            throw failure;
         }
         catch (error) {
           zip.terminate();
+          await source.return();
           controller.error(error);
+          return;
         }
+
+        for (const chunk of output.splice(0))
+          controller.enqueue(chunk);
+
+        if (finished)
+          controller.close();
+      },
+      cancel: async () => {
+        zip.terminate();
+        await source.return();
       }
     });
+  }
+
+  private static async* writeArchive(zip: Zip, entries: IArchiveEntry[], withManifest: boolean): AsyncGenerator<void, void> {
+    for (const {document, path: entryPath} of entries) {
+      if (document.kind == "directory") {
+        const folder = new ZipPassThrough(entryPath + "/");
+        zip.add(folder);
+        folder.push(new Uint8Array(0), true);
+        yield;
+        continue;
+      }
+
+      const storagePath = document.storageName ? FileManagerService.getStoragePath(document.storageName) : null;
+
+      if (!storagePath || !fs.existsSync(storagePath))
+        continue;
+
+      const file = isCompressible(document) ? new ZipDeflate(entryPath, {level: 6}) : new ZipPassThrough(entryPath);
+      zip.add(file);
+
+      for await (const chunk of fs.createReadStream(storagePath)) {
+        file.push(new Uint8Array(chunk as Buffer));
+        yield;
+      }
+
+      file.push(new Uint8Array(0), true);
+      yield;
+    }
+
+    if (withManifest) {
+      const manifest: IManifest = {
+        format: MANIFEST_FORMAT,
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        entries: entries.map(({document, path: entryPath}) => ({
+          slug: document.slug,
+          kind: document.kind,
+          name: document.name,
+          parentSlug: document.parentSlug,
+          path: entryPath
+        }))
+      };
+
+      const file = new ZipDeflate(MANIFEST_NAME, {level: 6});
+      zip.add(file);
+      file.push(strToU8(JSON.stringify(manifest, null, 2)), true);
+    }
+
+    zip.end();
   }
 
   public static async import(targetSlug: string | null, archive: Uint8Array): Promise<IFilesImportReport> {
@@ -152,7 +189,7 @@ export class FileArchiveService {
           totalSize += file.originalSize;
 
           if (count > MAX_IMPORT_ENTRIES || totalSize > MAX_IMPORT_SIZE)
-            throw new ServerActionError(`Архів завеликий: не більше ${MAX_IMPORT_ENTRIES} файлів і 1 ГБ`);
+            throw new ServerActionError(`Архів завеликий: не більше ${MAX_IMPORT_ENTRIES} файлів і 300 МБ`);
 
           return true;
         }
@@ -188,7 +225,7 @@ export class FileArchiveService {
   private static async restore(targetSlug: string | null, manifest: IManifest, files: Record<string, Uint8Array>): Promise<IFilesImportReport> {
     const report: IFilesImportReport = {restored: true, createdFiles: 0, updatedFiles: 0, createdFolders: 0, renamed: 0};
 
-    const manifestSlugs = new Set(manifest.entries.map((x) => x.slug));
+    const manifestFolderSlugs = new Set(manifest.entries.filter((x) => x.kind == "directory").map((x) => x.slug));
 
     const entries = [...manifest.entries]
       .filter((x) => typeof x.slug == "string" && /^[a-z0-9]{1,32}$/.test(x.slug) && (x.kind == "file" || x.kind == "directory"))
@@ -212,9 +249,12 @@ export class FileArchiveService {
       const name = FileManagerService.validateName(entry.name);
 
       const isParentKnown = entry.parentSlug == null ||
-        manifestSlugs.has(entry.parentSlug) ||
+        manifestFolderSlugs.has(entry.parentSlug) ||
         await FileEntryModel.exists({slug: entry.parentSlug, kind: "directory"}) != null;
-      const parentSlug = isParentKnown ? entry.parentSlug : targetSlug;
+      let parentSlug = isParentKnown ? entry.parentSlug : targetSlug;
+
+      if (entry.kind == "directory" && await this.isInsideFolder(parentSlug, entry.slug))
+        parentSlug = await this.isInsideFolder(targetSlug, entry.slug) ? null : targetSlug;
 
       const existing = await FileEntryModel.findOne({slug: entry.slug}).lean<IFileEntryDocument>();
 
@@ -331,6 +371,20 @@ export class FileArchiveService {
     }
 
     return report;
+  }
+
+  private static async isInsideFolder(folderSlug: string | null, ancestorSlug: string): Promise<boolean> {
+    const visited = new Set<string>();
+
+    for (let current = folderSlug; current != null;) {
+      if (current == ancestorSlug || visited.has(current))
+        return true;
+
+      visited.add(current);
+      current = (await FileEntryModel.findOne({slug: current}, {parentSlug: 1}).lean<IFileEntryDocument>())?.parentSlug ?? null;
+    }
+
+    return false;
   }
 
   private static async writeContent(storageName: string, content: Uint8Array): Promise<void> {

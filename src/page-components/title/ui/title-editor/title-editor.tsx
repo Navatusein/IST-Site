@@ -14,11 +14,11 @@ export default function TitleEditor(props: IPageComponentEditorProps<ITitlePageC
           extra="Чим менший рівень, тим більший заголовок"
         >
           <Select options={[
-            {title: "Рівень 1", value: 1},
-            {title: "Рівень 2", value: 2},
-            {title: "Рівень 3", value: 3},
-            {title: "Рівень 4", value: 4},
-            {title: "Рівень 5", value: 5},
+            {label: "Рівень 1", value: 1},
+            {label: "Рівень 2", value: 2},
+            {label: "Рівень 3", value: 3},
+            {label: "Рівень 4", value: 4},
+            {label: "Рівень 5", value: 5},
           ]}/>
         </Form.Item>
         <Form.Item<ITitlePageComponent>

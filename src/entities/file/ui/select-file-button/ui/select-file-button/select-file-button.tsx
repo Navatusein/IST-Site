@@ -31,12 +31,24 @@ export default function SelectFileButton(props: IProps) {
     if (entry?.slug == props.value)
       return;
 
+    let isCancelled = false;
+
     unwrapServerAction(getFileEntryAction(props.value))
       .then((value) => {
+        if (isCancelled)
+          return;
+
         setEntry(() => value);
         setIsMissing(() => value == null);
       })
-      .catch(() => setIsMissing(() => true));
+      .catch(() => {
+        if (!isCancelled)
+          setIsMissing(() => true);
+      });
+
+    return () => {
+      isCancelled = true;
+    };
   }, [props.value]);
 
   const onSubmit = (entries: IFileEntry[]) => {

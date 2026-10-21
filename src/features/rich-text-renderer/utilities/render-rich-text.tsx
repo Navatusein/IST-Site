@@ -2,11 +2,11 @@ import {ReactNode} from "react";
 import {IRichTextMark, IRichTextNode} from "@/shared/rich-text-extensions/types";
 import {RICH_TEXT_NODE_RENDERERS} from "@/shared/rich-text-extensions/renderers";
 
-const SAFE_HREF = /^(https?:|mailto:|tel:|\/|#|\?)/i;
+const SAFE_HREF = /^(https?:|mailto:|tel:|\/(?![\/\\])|#|\?)/i;
 
 function getSafeHref(href?: string): string | undefined {
   const value = href?.trim();
-  return value && SAFE_HREF.test(value) ? value : undefined;
+  return value && SAFE_HREF.test(value) && !/[\t\n\r]/.test(value) ? value : undefined;
 }
 
 function renderMark(mark: IRichTextMark, children: ReactNode, key: number): ReactNode {
@@ -47,7 +47,7 @@ function renderChildren(node: IRichTextNode): ReactNode[] {
 }
 
 export function renderNode(node: IRichTextNode, key: number): ReactNode {
-  const NodeRender = RICH_TEXT_NODE_RENDERERS[node.type];
+  const NodeRender = Object.hasOwn(RICH_TEXT_NODE_RENDERERS, node.type) ? RICH_TEXT_NODE_RENDERERS[node.type] : undefined;
 
   if (NodeRender)
     return <NodeRender key={key} node={node}>{renderChildren(node)}</NodeRender>;

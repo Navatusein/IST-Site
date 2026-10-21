@@ -2,7 +2,7 @@ import {cache} from "react";
 import {cookies} from "next/headers";
 import {createHash, randomBytes} from "node:crypto";
 import {ICurrentUser, IUser, UserModel, UserPermissionType} from "@/entities/user";
-import {ServerActionError} from "@/shared/exceptions/server-action-error";
+import {AuthorizationError} from "@/shared/exceptions/server-action-error";
 import {ISession, SessionModel} from "@/entities/session";
 
 export const SESSION_COOKIE_NAME = "session";
@@ -127,10 +127,10 @@ export async function requirePermission(permission?: UserPermissionType): Promis
   const user = await getCurrentUser();
 
   if (!user)
-    throw new ServerActionError("Необхідна авторизація");
+    throw new AuthorizationError("Необхідна авторизація");
 
   if (permission && !user.permissions.includes(permission))
-    throw new ServerActionError("Недостатньо прав");
+    throw new AuthorizationError("Недостатньо прав");
 
   return user;
 }

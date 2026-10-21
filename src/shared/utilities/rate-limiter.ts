@@ -6,7 +6,7 @@ interface IAttempts {
 export class RateLimiter {
   private readonly attempts = new Map<string, IAttempts>();
 
-  constructor(private readonly maxAttempts: number, private readonly windowMs: number) {
+  constructor(private readonly maxAttempts: number, private readonly windowMs: number, private readonly maxKeys = 10000) {
   }
 
   public isLimited(key: string): boolean {
@@ -27,23 +27,33 @@ export class RateLimiter {
     const now = Date.now();
     const attempts = this.attempts.get(key);
 
-    if (!attempts || attempts.resetAt <= now)
-      this.attempts.set(key, {count: 1, resetAt: now + this.windowMs});
-    else
+    if (attempts && attempts.resetAt > now) {
       attempts.count++;
+      return;
+    }
 
-    if (this.attempts.size > 10000)
-      this.removeExpired(now);
+    this.attempts.delete(key);
+    this.attempts.set(key, {count: 1, resetAt: now + this.windowMs});
+
+    if (this.attempts.size > this.maxKeys)
+      this.evict(now);
   }
 
   public reset(key: string): void {
     this.attempts.delete(key);
   }
 
-  private removeExpired(now: number): void {
+  private evict(now: number): void {
     for (const [key, attempts] of this.attempts) {
       if (attempts.resetAt <= now)
         this.attempts.delete(key);
+    }
+
+    for (const key of this.attempts.keys()) {
+      if (this.attempts.size <= this.maxKeys)
+        break;
+
+      this.attempts.delete(key);
     }
   }
 }

@@ -2,7 +2,13 @@ import {getFileViewUrl} from "@/shared/utilities/file-urls";
 import {IPageLink} from "../types/type";
 
 export function getPageLinkHref(link: IPageLink): string {
-  return link.linkType == "file" ? getFileViewUrl(link.link) : link.link;
+  if (link.linkType == "file")
+    return getFileViewUrl(link.link);
+
+  if (link.linkType == "page")
+    return "/" + link.link.trim().replace(/^[\/\\]+/, "");
+
+  return link.link;
 }
 
 export function isExternalPageLink(link: IPageLink): boolean {

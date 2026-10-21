@@ -1,6 +1,6 @@
 "use client"
 
-import {Editor} from "@tiptap/react";
+import {Editor, useEditorState} from "@tiptap/react";
 import {Button, Card, Flex, Select, Space, Tooltip} from "antd";
 import {
   AlignCenterOutlined, AlignLeftOutlined,
@@ -31,6 +31,18 @@ const TEXT_TYPES_OPTIONS = [
 
 export default function ToolBar(props: IProps) {
   const [isLinkModalOpen, setIsLinkModalOpen] = useState<boolean>(false);
+
+  useEditorState({
+    editor: props.editor,
+    selector: ({editor}) => editor && {
+      marks: ["bold", "italic", "strike", "link"].map((mark) => editor.isActive(mark)),
+      nodes: ["paragraph", "bulletList", "orderedList", "blockquote", "ant-text"].map((node) => editor.isActive(node)),
+      heading: editor.getAttributes("heading").level ?? null,
+      textAlign: ["left", "center", "right"].map((textAlign) => editor.isActive({textAlign})),
+      canUndo: editor.can().undo(),
+      canRedo: editor.can().redo(),
+    },
+  });
 
   if (props.editor == undefined) {
     return null;

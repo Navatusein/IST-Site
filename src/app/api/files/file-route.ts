@@ -24,8 +24,6 @@ export async function handleFileRoute<T>(request: NextRequest, handler: (form: F
 
   try {
     const data = await handler(await request.formData());
-    revalidatePublicContent();
-
     return result({success: true, data});
   }
   catch (error) {
@@ -33,6 +31,9 @@ export async function handleFileRoute<T>(request: NextRequest, handler: (form: F
     const errorMessage = error instanceof ServerActionError ? error.message : "Unhandled error type";
 
     return result({success: false, errorMessage, data: undefined as never}, error instanceof ServerActionError ? 400 : 500);
+  }
+  finally {
+    revalidatePublicContent();
   }
 }
 

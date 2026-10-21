@@ -38,9 +38,11 @@ export default function PasswordModal(props: IProps) {
       title="Зміна пароля користувача"
       onCancel={() => {props.setIsOpen(false)}}
       footer={null}
+      destroyOnHidden
     >
       <Form<IFormData>
         form={form}
+        preserve={false}
         layout="vertical"
         onFinish={onFinish}
         initialValues={{"username": props.username}}
@@ -52,11 +54,14 @@ export default function PasswordModal(props: IProps) {
           <Form.Item<IFormData>
             label="Новий пароль"
             name="password"
-            extra="Новий пароль користувача"
+            extra="Від 8 до 256 символів"
             style={{marginBottom: 0}}
             rules={[
               {
                 required: true, message: "Введіть новий пароль!"
+              },
+              {
+                min: 8, max: 256, message: "Пароль має містити від 8 до 256 символів"
               }
             ]}
           >

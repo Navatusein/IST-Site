@@ -1,5 +1,5 @@
 import {useMemo} from "react";
-import {Card, Carousel, Col, Grid, Image} from "antd";
+import {Card, Carousel, Col, Image} from "antd";
 import {IPageComponentViewProps} from "@/entities/dynamic-page/model";
 import {getFileAssetUrl} from "@/shared/utilities/file-urls";
 import {IGalleryCarouselPageComponent} from "../../types/type";
@@ -10,14 +10,16 @@ export default function GalleryCarousel(props: IPageComponentViewProps<IGalleryC
     props.component.imageSlugs.filter(Boolean).map((imageSlug) => getFileAssetUrl(imageSlug))
   ), [props.component.imageSlugs]);
 
-  const screens = Grid.useBreakpoint();
-  const isMeasured = Object.keys(screens).length != 0;
-  const slidesToShow = !isMeasured || screens.xl ? 3 : screens.lg ? 2 : 1;
+  const slidesCount = Math.max(imageUrls.length, 1);
 
   return (
     <Card variant="borderless" style={{borderRadius: 0}}>
       <Carousel
-        slidesToShow={Math.min(slidesToShow, Math.max(imageUrls.length, 1))}
+        slidesToShow={Math.min(3, slidesCount)}
+        responsive={[
+          {breakpoint: 1199, settings: {slidesToShow: Math.min(2, slidesCount)}},
+          {breakpoint: 991, settings: {slidesToShow: 1}},
+        ]}
         autoplay={true}
         infinite={true}
         arrows={true}

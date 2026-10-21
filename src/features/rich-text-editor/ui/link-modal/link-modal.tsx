@@ -19,7 +19,7 @@ interface IFormData {
   newTab: boolean;
 }
 
-const VALID_HREF = /^(https?:\/\/\S+|mailto:\S+|tel:[\d+\-() ]+|\/\S*|#\S*)$/i;
+const VALID_HREF = /^(https?:\/\/\S+|mailto:\S+|tel:[\d+\-() ]+|\/(?![\/\\])\S*|#\S*)$/i;
 
 const isExternal = (href: string) => /^https?:\/\//i.test(href);
 

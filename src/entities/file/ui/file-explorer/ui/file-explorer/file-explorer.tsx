@@ -102,10 +102,14 @@ export default function FileExplorer(props: IProps) {
   const [dropTarget, setDropTarget] = useState<string | null>(null);
 
   useEffect(() => {
+    let isCancelled = false;
     setLoading(() => true);
 
     unwrapServerAction(getFolderAction(currentFolder))
       .then((folder) => {
+        if (isCancelled)
+          return;
+
         const entries = folder.entries.filter((x) => (
           props.filter != null ? x.kind == "directory" || props.filter.includes(x.type) : true
         ));
@@ -128,14 +132,22 @@ export default function FileExplorer(props: IProps) {
         setRows(() => [backRow, ...entries]);
       })
       .catch((error) => {
+        if (isCancelled)
+          return;
+
         notification.error({title: "Помилка завантаження файлів", description: error.message});
 
         if (currentFolder != null)
           navigate(null);
       })
       .finally(() => {
-        setLoading(() => false);
+        if (!isCancelled)
+          setLoading(() => false);
       });
+
+    return () => {
+      isCancelled = true;
+    };
   }, [currentFolder, updateFiles, props.filter?.join()]);
 
   const navigate = (folderSlug: string | null) => {
