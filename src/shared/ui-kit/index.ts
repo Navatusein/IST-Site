@@ -3,6 +3,7 @@ import DynamicIcon from "./dynamic-icon/dynamic-icon";
 import Icon from "./icon/icon";
 import Loader from "./loader/loader";
 import AdminPageHeader from "./admin-page-header/admin-page-header";
+import ActionBar from "./action-bar/action-bar";
 import DepartmentPersonCard from "./department-person-card/department-person-card";
 import FullScreenModal from "./full-screen-modal/full-screen-modal";
 import ErrorBoundary from "./error-boundary/error-boundary";
@@ -16,6 +17,7 @@ export {
   DynamicIcon,
   Loader,
   AdminPageHeader,
+  ActionBar,
   ComponentCol,
   DepartmentPersonCard,
   FullScreenModal,

@@ -2,6 +2,7 @@ import {ReactNode, useEffect, useRef, useState} from "react";
 import {Button, Dropdown, Flex, Input, MenuProps, theme, Tooltip, Typography} from "antd";
 import {DownloadOutlined, EllipsisOutlined, PlusOutlined, ReloadOutlined, SearchOutlined, UploadOutlined} from "@ant-design/icons";
 import {ICrudPageAction} from "../../types/type";
+import {ACTION_BAR_HEIGHT} from "@/shared/ui-kit/action-bar/action-bar";
 
 interface IProps {
   onAdd: () => void;
@@ -19,8 +20,6 @@ interface IProps {
   foundCount: number;
   totalCount?: number;
 }
-
-export const CRUD_BAR_HEIGHT = 40;
 
 const BASE_WIDTH = 640;
 const getButtonWidth = (label: string) => 48 + label.length * 8;
@@ -68,7 +67,7 @@ export default function CrudToolbar(props: IProps) {
   }));
 
   return (
-    <Flex ref={toolbarRef} gap={paddingXS} align="center" wrap style={{minHeight: CRUD_BAR_HEIGHT}}>
+    <Flex ref={toolbarRef} gap={paddingXS} align="center" wrap style={{minHeight: ACTION_BAR_HEIGHT}}>
       <Tooltip title={isNarrow ? "Створити" : undefined}>
         <Button type="primary" icon={<PlusOutlined/>} onClick={props.onAdd} aria-label="Створити" style={{flexShrink: 0}}>
           {!isNarrow && "Створити"}

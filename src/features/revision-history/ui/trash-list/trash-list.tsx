@@ -11,6 +11,8 @@ import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 import formatDate from "@/shared/utilities/format-date";
 import {deleteFromTrashAction, emptyTrashAction, getTrashAction, restoreFromTrashAction} from "../../actions/trash-actions";
 import {REVISION_TABLES} from "../../model/revision-tables";
+import {ActionBar} from "@/shared/ui-kit";
+import {ACTION_BAR_HEIGHT} from "@/shared/ui-kit/action-bar/action-bar";
 
 const PAGE_SIZE = 20;
 const DAY = 24 * 60 * 60 * 1000;
@@ -190,18 +192,7 @@ export default function TrashList() {
   return (
     <Flex vertical gap="middle">
       {selectedIds.length != 0 ? (
-        <Flex
-          gap={token.paddingXS}
-          align="center"
-          wrap
-          style={{
-            minHeight: 40,
-            padding: `${token.paddingXXS}px ${token.paddingXXS}px ${token.paddingXXS}px ${token.paddingSM}px`,
-            borderRadius: token.borderRadiusLG,
-            border: `1px solid ${token.colorPrimaryBorder}`,
-            background: token.colorPrimaryBg
-          }}
-        >
+        <ActionBar>
           <Typography.Text strong style={{marginRight: token.paddingXS}}>Вибрано: {selectedIds.length}</Typography.Text>
           <Button icon={<RollbackOutlined/>} onClick={() => restore(selectedIds)}>Відновити</Button>
           {canDelete && (
@@ -219,9 +210,9 @@ export default function TrashList() {
           <Tooltip title="Зняти виділення">
             <Button type="text" icon={<CloseOutlined/>} onClick={() => setSelectedIds([])} style={{marginLeft: "auto"}} aria-label="Зняти виділення"/>
           </Tooltip>
-        </Flex>
+        </ActionBar>
       ) : (
-        <Flex gap="small" wrap align="center" style={{minHeight: 40}}>
+        <Flex gap="small" wrap align="center" style={{minHeight: ACTION_BAR_HEIGHT}}>
           <Input
             placeholder="Назва запису"
             prefix={<SearchOutlined/>}

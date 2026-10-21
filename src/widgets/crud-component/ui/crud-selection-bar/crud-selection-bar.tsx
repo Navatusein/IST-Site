@@ -1,7 +1,7 @@
-import {Button, Flex, theme, Tooltip, Typography} from "antd";
+import {Button, theme, Tooltip, Typography} from "antd";
 import {CloseOutlined, CopyOutlined, DeleteOutlined, DownloadOutlined, EditOutlined} from "@ant-design/icons";
 import {ICrudRowAction} from "../../types/type";
-import {CRUD_BAR_HEIGHT} from "../crud-toolbar/crud-toolbar";
+import {ActionBar} from "@/shared/ui-kit";
 
 interface IProps<T> {
   selectedRows: T[];
@@ -22,18 +22,7 @@ export default function CrudSelectionBar<T>(props: IProps<T>) {
   const single = props.selectedRows.length == 1 ? props.selectedRows[0] : undefined;
 
   return (
-    <Flex
-      gap={token.paddingXS}
-      align="center"
-      wrap
-      style={{
-        minHeight: CRUD_BAR_HEIGHT,
-        padding: `${token.paddingXXS}px ${token.paddingXXS}px ${token.paddingXXS}px ${token.paddingSM}px`,
-        borderRadius: token.borderRadiusLG,
-        border: `1px solid ${token.colorPrimaryBorder}`,
-        background: token.colorPrimaryBg
-      }}
-    >
+    <ActionBar>
       <Typography.Text strong style={{marginRight: token.paddingXS}}>
         Вибрано: {props.selectedRows.length}
       </Typography.Text>
@@ -59,6 +48,6 @@ export default function CrudSelectionBar<T>(props: IProps<T>) {
       <Tooltip title="Зняти виділення">
         <Button type="text" icon={<CloseOutlined/>} onClick={props.onClear} style={{marginLeft: "auto"}} aria-label="Зняти виділення"/>
       </Tooltip>
-    </Flex>
+    </ActionBar>
   )
 }
