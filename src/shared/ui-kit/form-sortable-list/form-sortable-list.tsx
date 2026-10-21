@@ -115,7 +115,7 @@ export default function FormSortableList<T>(props: IProps<T>) {
               {props.renderFields(field)}
             </Flex>
           ),
-          styles: {header: {alignItems: "center"}}
+          styles: {header: {alignItems: "center"}, title: {minWidth: 0}}
         }]}
       />
     );
