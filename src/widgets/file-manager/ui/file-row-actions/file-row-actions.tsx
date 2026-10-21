@@ -9,7 +9,7 @@ import {
   MoreOutlined
 } from "@ant-design/icons";
 import type {IFileEntry} from "@/entities/file";
-import {useFileActions} from "../../model/use-file-actions";
+import {useFileActions} from "../../hooks/use-file-actions";
 
 interface IProps {
   entry: IFileEntry;
@@ -26,7 +26,7 @@ export default function FileRowActions(props: IProps) {
     isFile ?
       {key: "open", icon: <EyeOutlined/>, label: "Переглянути", onClick: () => props.preview(entry)} :
       {key: "open", icon: <FolderOpenOutlined/>, label: "Відкрити", onClick: () => props.openFolder(entry.slug)},
-    {key: "download", icon: <CloudDownloadOutlined/>, label: isFile ? "Завантажити" : "Завантажити ZIP", onClick: () => download([entry])},
+    {key: "download", icon: <CloudDownloadOutlined/>, label: isFile ? "Скачати" : "Скачати ZIP", onClick: () => download([entry])},
     ...(isFile ? [{key: "link", icon: <LinkOutlined/>, label: "Копіювати посилання", onClick: () => copyLink(entry)}] : []),
     {key: "rename", icon: <FormOutlined/>, label: "Перейменувати", onClick: () => rename(entry)},
     {type: "divider"},

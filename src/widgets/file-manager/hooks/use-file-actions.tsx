@@ -5,7 +5,7 @@ import {deleteFileEntriesAction, moveOrCopyFileEntriesAction} from "@/entities/f
 import {FileExplorerContext} from "@/entities/file/ui";
 import {getFileDownloadUrl, getFilesArchiveUrl, getFileViewUrl} from "@/shared/utilities/file-urls";
 import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
-import {EntryNameModalContext} from "./entry-name-modal-context";
+import {EntryNameModalContext} from "../context/entry-name-modal-context";
 
 const startDownload = (url: string) => {
   const link = document.createElement("a");

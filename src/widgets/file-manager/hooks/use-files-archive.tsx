@@ -1,21 +1,21 @@
 import {useContext, useState} from "react";
-import {App, Button, Space, Tooltip, Upload} from "antd";
-import {ExportOutlined, ImportOutlined} from "@ant-design/icons";
+import {App} from "antd";
+import {IFileEntry} from "@/entities/file";
 import {FileExplorerContext} from "@/entities/file/ui";
 import type {IFilesImportReport} from "@/entities/file/services/file-archive-service";
 import {postForm} from "@/shared/utilities/post-form";
 import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 import {FILES_IMPORT_URL, getFilesArchiveUrl} from "@/shared/utilities/file-urls";
 
-export default function ExportImportButtons() {
+export function useFilesArchive() {
   const {notification, modal} = App.useApp();
-  const {currentFolder, selectedEntries, setSelectedEntries, setUpdateFiles} = useContext(FileExplorerContext);
+  const {currentFolder, setSelectedEntries, setUpdateFiles} = useContext(FileExplorerContext);
 
   const [isImporting, setIsImporting] = useState<boolean>(false);
 
-  const exportFiles = () => {
+  const exportFiles = (entries: IFileEntry[]) => {
     const link = document.createElement("a");
-    link.href = getFilesArchiveUrl(selectedEntries.map((entry) => entry.slug), true);
+    link.href = getFilesArchiveUrl(entries.map((entry) => entry.slug), true);
     link.download = "";
     link.click();
 
@@ -64,16 +64,5 @@ export default function ExportImportButtons() {
     return false;
   }
 
-  return (
-    <Space wrap>
-      <Tooltip title={selectedEntries.length != 0 ? "Експортувати вибране в ZIP" : "Експортувати всі файли в ZIP"}>
-        <Button icon={<ExportOutlined/>} onClick={exportFiles}>Експорт</Button>
-      </Tooltip>
-      <Tooltip title="Імпортувати ZIP-архів">
-        <Upload accept=".zip,application/zip" showUploadList={false} beforeUpload={confirmImport}>
-          <Button icon={<ImportOutlined/>} loading={isImporting}>Імпорт</Button>
-        </Upload>
-      </Tooltip>
-    </Space>
-  )
+  return {exportFiles, confirmImport, isImporting};
 }
