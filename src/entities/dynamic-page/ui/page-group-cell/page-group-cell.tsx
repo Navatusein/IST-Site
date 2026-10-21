@@ -10,7 +10,6 @@ interface IProps {
   style?: CSSProperties;
 }
 
-// One block of a group: plain, or in a card that fills the height of its line
 export default function PageGroupCell(props: IProps) {
   if (!props.group.cards)
     return props.children;

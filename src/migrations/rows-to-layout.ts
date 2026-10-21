@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 
 const EQUAL_SPANS: Record<number, string> = {1: "1", 2: "1/2", 3: "1/3", 4: "1/4"};
 
-// Rows had one line of columns sized by "proportions"; the layout gives every block its own columnSpan
 function migrateRow(row: any): any {
   const components: any[] = Array.isArray(row.components) ? row.components : [];
 

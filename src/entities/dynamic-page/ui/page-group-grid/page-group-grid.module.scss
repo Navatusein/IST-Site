@@ -1,5 +1,3 @@
-// The layout's columns follow its own width, not the screen's: a "small" layout on a wide screen
-// and a "large" one on a tablet both get blocks of a readable width
 .layout {
   container-type: inline-size;
 }

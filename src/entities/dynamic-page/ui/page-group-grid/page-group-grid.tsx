@@ -12,7 +12,6 @@ interface IProps {
   rowGap?: number;
 }
 
-// Cards stretch to the tallest one in their line and align their content inside
 function getAlignItems(group: IPageComponentGroup): string {
   if (group.cards)
     return "stretch";

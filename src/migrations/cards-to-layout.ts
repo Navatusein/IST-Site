@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
 import {randomUUID} from "crypto";
 
-// The "cards" block becomes a layout with cards, one text block per card. As the block did,
-// when the last line would hold a single card, the first card takes the whole width instead
 function migrateCards(entity: any): any {
   const cards: any[] = Array.isArray(entity.cards) ? entity.cards : [];
   const cardsInRow = entity.cardsInRow == 3 ? 3 : 2;
