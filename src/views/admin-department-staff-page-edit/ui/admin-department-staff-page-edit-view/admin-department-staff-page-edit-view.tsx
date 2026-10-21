@@ -1,7 +1,7 @@
 "use client"
 
 import {IDepartmentStaff} from "@/entities/department-staff";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {IPageEntity} from "@/entities/dynamic-page";
 import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 import {updateDepartmentStaffAction} from "@/entities/department-staff/actions/actions";
@@ -12,27 +12,25 @@ interface IProps {
 }
 
 export default function AdminDepartmentStaffPageEditView(props: IProps) {
-  const [departmentStaff, setDepartmentStaff] = useState<IDepartmentStaff>(props.departmentStaff);
+  const [entities, setEntities] = useState<IPageEntity[]>(props.departmentStaff.entities);
+  const [recordId, setRecordId] = useState<string>(String(props.departmentStaff._id));
 
-  useEffect(() => {
-    setDepartmentStaff(() => props.departmentStaff);
-  }, [props.departmentStaff]);
-
-  const setEntities = (components: IPageEntity[]) => {
-    setDepartmentStaff((prevState) => (
-      {...prevState, entities: components} as IDepartmentStaff
-    ));
+  if (recordId != String(props.departmentStaff._id)) {
+    setRecordId(String(props.departmentStaff._id));
+    setEntities(props.departmentStaff.entities);
   }
 
-  const saveEntities = async () => {
-    await unwrapServerAction(updateDepartmentStaffAction(departmentStaff));
+  const saveEntities = async (value: IPageEntity[]) => {
+    await unwrapServerAction(updateDepartmentStaffAction({_id: props.departmentStaff._id, entities: value} as Pick<IDepartmentStaff, "_id" | "entities"> as IDepartmentStaff));
   }
 
   return (
     <DynamicPageEditor
-      entities={departmentStaff.entities}
+      key={recordId}
+      entities={entities}
       setEntities={setEntities}
       saveEntities={saveEntities}
+      history={{collection: "department-staff", recordId}}
     />
   )
 }

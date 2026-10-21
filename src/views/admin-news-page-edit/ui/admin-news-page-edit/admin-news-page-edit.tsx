@@ -1,6 +1,6 @@
 "use client"
 
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {IPageEntity} from "@/entities/dynamic-page";
 import {INews} from "@/entities/news";
 import {updateNewsAction} from "@/entities/news/actions/actions";
@@ -18,27 +18,25 @@ const DynamicPageEditor = dynamic(() => import("@/widgets/dynamic-page-editor/ui
 });
 
 export default function AdminNewsPageEdit(props: IProps) {
-  const [news, setNews] = useState<INews>(props.news);
+  const [entities, setEntities] = useState<IPageEntity[]>(props.news.entities);
+  const [recordId, setRecordId] = useState<string>(String(props.news._id));
 
-  useEffect(() => {
-    setNews(() => props.news);
-  }, [props.news]);
-
-  const setEntities = (entities: IPageEntity[]) => {
-    setNews((prevState) => (
-      {...prevState, entities: entities} as INews
-    ));
+  if (recordId != String(props.news._id)) {
+    setRecordId(String(props.news._id));
+    setEntities(props.news.entities);
   }
 
-  const saveEntities = async () => {
-    await unwrapServerAction(updateNewsAction(news));
+  const saveEntities = async (value: IPageEntity[]) => {
+    await unwrapServerAction(updateNewsAction({_id: props.news._id, entities: value} as Pick<INews, "_id" | "entities"> as INews));
   }
 
   return (
     <DynamicPageEditor
-      entities={news.entities}
+      key={recordId}
+      entities={entities}
       setEntities={setEntities}
       saveEntities={saveEntities}
+      history={{collection: "news", recordId}}
     />
   )
 }

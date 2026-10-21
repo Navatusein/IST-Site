@@ -1,12 +1,12 @@
 import {App, Button, Drawer, Flex, theme} from "antd";
 import {PageComponentRenderer} from "@/entities/dynamic-page/ui";
-import {Dispatch, SetStateAction, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {IBasePageComponent} from "@/entities/dynamic-page";
 import {EditorFormHostContext, useEditorFormHost} from "@/shared/ui-kit";
 
 interface IProps {
   isOpen: boolean;
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  setIsOpen: (isOpen: boolean) => void;
   component: IBasePageComponent;
   updateComponent: (value: IBasePageComponent) => void;
 }
@@ -30,12 +30,12 @@ export default function ComponentSettingsDrawer(props: IProps) {
     }
 
     props.updateComponent(localComponentState);
-    props.setIsOpen(() => false);
+    props.setIsOpen(false);
   }
 
   const onCancel = () => {
     setLocalComponentState(() => props.component);
-    props.setIsOpen(() => false);
+    props.setIsOpen(false);
   }
 
   return (

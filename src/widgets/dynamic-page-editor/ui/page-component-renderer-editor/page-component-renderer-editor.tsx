@@ -2,12 +2,13 @@ import {Card, Flex} from "antd";
 import {PageComponentRenderer, PageGroupCell} from "@/entities/dynamic-page/ui";
 import {IBasePageComponent, IPageComponentGroup} from "@/entities/dynamic-page";
 import {getPageEntityElementId} from "@/entities/dynamic-page/utilities/page-entity-element-id";
-import {ReactNode, useState} from "react";
+import {ReactNode} from "react";
 import {ComponentCol, DraggableList} from "@/shared/ui-kit";
 import ComponentSettingsDrawer from "../component-settings-drawer/component-settings-drawer";
 import EditorTools from "../editor-tools/editor-tools";
 import EditorBlockFrame from "../editor-block-frame/editor-block-frame";
 import {usePageComponentRegistry} from "@/entities/dynamic-page/model";
+import {usePageEditor} from "../../model/page-editor-context";
 
 interface IProps {
   component: IBasePageComponent;
@@ -15,7 +16,6 @@ interface IProps {
   updateComponent: (value: IBasePageComponent, index: number) => void;
   removeComponent: (index: number) => void;
   allowChangeSize: boolean;
-  // A block of a group: rendered without its own width, in the group's cell (card) and filling the line height
   group?: IPageComponentGroup;
   extraActions?: ReactNode;
 }
@@ -23,7 +23,10 @@ interface IProps {
 export default function PageComponentRendererEditor(props: IProps) {
   const name = usePageComponentRegistry().getDescriptor(props.component.componentType)?.name ?? props.component.componentType;
 
-  const [isEditDrawerOpen, setIsEditDrawerOpen] = useState<boolean>(false);
+  const editor = usePageEditor();
+
+  const isEditDrawerOpen = editor.editingId == props.component.id;
+  const setIsEditDrawerOpen = (isOpen: boolean) => editor.edit(isOpen ? props.component.id : null);
 
   const view = (
     <PageComponentRenderer
@@ -33,7 +36,6 @@ export default function PageComponentRendererEditor(props: IProps) {
     />
   );
 
-  // The drawer is inside the frame, so clicks in it keep the block selected
   const frame = (
     <EditorBlockFrame
       id={props.component.id}

@@ -4,6 +4,9 @@ import {IPublicMenuItem} from "../types/type";
 import PublicMenuItemModel from "../types/schema";
 import toPlainObject from "@/shared/utilities/to-plain-object";
 import {createServerAction} from "@/shared/utilities/create-server-action";
+import {createWithRevision, updateWithRevision} from "@/shared/services/revision-service/revision-service";
+import {moveToTrash} from "@/shared/services/trash-service/trash-service";
+import {findRecordById} from "@/shared/utilities/find-record-by-id";
 import {cachePublicData} from "@/shared/utilities/cache-public-data";
 import {IExportFile, IExportParams, IImportReport} from "@/shared/types/import-export";
 import {exportRecords, importRecords} from "@/shared/services/import-export-service/import-export-service";
@@ -11,6 +14,7 @@ import {Types} from "mongoose";
 import {IPageQuery, IPageResult} from "@/shared/types/page-query";
 import {buildSearchFilter, buildSort, normalizePageQuery} from "@/shared/services/pagination-service/pagination-service";
 import {requirePermission} from "@/auth";
+import {ServerActionError} from "@/shared/exceptions/server-action-error";
 
 const MENU_SEARCH_FIELDS = ["label", "path"];
 
@@ -53,22 +57,45 @@ const normalizeParent = (data: IPublicMenuItem) => {
 }
 
 export const addPublicMenuItemAction = createServerAction<void>(async (data: IPublicMenuItem) => {
-  await requirePermission("edit-public-menu");
-  await PublicMenuItemModel.create(normalizeParent(data));
+  const user = await requirePermission("edit-public-menu");
+  await createWithRevision(PublicMenuItemModel, "public-menu", normalizeParent(data), user);
 }, {revalidatePublicPages: true});
 
+const assertParentIsNotDescendant = async (id: unknown, parent: unknown) => {
+  const visited = new Set<string>();
+  let current = parent ? String(parent) : null;
+
+  while (current && !visited.has(current)) {
+    if (current == String(id))
+      throw new ServerActionError("Пункт меню не можна вкласти в самого себе або у свій вкладений пункт");
+
+    visited.add(current);
+
+    const item = Types.ObjectId.isValid(current) ?
+      await PublicMenuItemModel.findById(current, {parent: 1}).lean<{parent?: unknown}>() : null;
+
+    current = item?.parent ? String(item.parent) : null;
+  }
+}
+
 export const updatePublicMenuItemAction = createServerAction<void>(async (data: IPublicMenuItem) => {
-  await requirePermission("edit-public-menu");
+  const user = await requirePermission("edit-public-menu");
   const {_id, ...updateData} = normalizeParent(data);
-  await PublicMenuItemModel.findByIdAndUpdate(_id, {$set: updateData});
+  await assertParentIsNotDescendant(_id, updateData.parent);
+  await updateWithRevision(PublicMenuItemModel, "public-menu", _id, updateData, user);
 }, {revalidatePublicPages: true});
 
 export const removePublicMenuItemsAction = createServerAction<void>(async (data: IPublicMenuItem[]) => {
-  await requirePermission("edit-public-menu");
-  await PublicMenuItemModel.deleteMany({_id: {$in: data.map((value) => value._id)}});
+  const user = await requirePermission("edit-public-menu");
+  await moveToTrash(PublicMenuItemModel, "public-menu", data.map((value) => value._id), user);
 }, {revalidatePublicPages: true});
 
 const MENU_COLLECTION = "public-menu-items";
+
+export const getPublicMenuItemByIdAction = createServerAction<IPublicMenuItem | null>(async (id: string) => {
+  await requirePermission("edit-public-menu");
+  return findRecordById<IPublicMenuItem>(PublicMenuItemModel, id);
+});
 
 export const getPublicMenuTreePageAction = createServerAction<IPageResult<IPublicMenuItem>>(async (rawQuery: IPageQuery) => {
   await requirePermission("edit-public-menu");
@@ -155,10 +182,11 @@ export const exportPublicMenuAction = createServerAction<IExportFile<IPublicMenu
 });
 
 export const importPublicMenuAction = createServerAction<IImportReport>(async (file: unknown, apply: boolean) => {
-  await requirePermission("edit-public-menu");
+  const user = await requirePermission("edit-public-menu");
 
   return importRecords(PublicMenuItemModel, "public-menu", file, {
     apply: apply == true,
+    revision: {collection: "public-menu", author: user},
     matchFields: [],
     ignoreFields: ["children"],
     getName: (item) => String(item.label ?? "")

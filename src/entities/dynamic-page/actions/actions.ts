@@ -4,7 +4,10 @@ import {IDynamicPage} from "../types/type";
 import DynamicPageModel from "../types/schema";
 import toPlainObject from "@/shared/utilities/to-plain-object";
 import {createServerAction} from "@/shared/utilities/create-server-action";
-import {cachePublicData} from "@/shared/utilities/cache-public-data";
+import {createWithRevision, updateWithRevision} from "@/shared/services/revision-service/revision-service";
+import {moveToTrash} from "@/shared/services/trash-service/trash-service";
+import {findRecordById} from "@/shared/utilities/find-record-by-id";
+import {cachePublicRecord} from "@/shared/utilities/cache-public-data";
 import {isPublicPath} from "@/shared/utilities/public-input";
 import {IExportFile, IExportParams, IImportReport} from "@/shared/types/import-export";
 import {exportRecords, importRecords} from "@/shared/services/import-export-service/import-export-service";
@@ -19,7 +22,7 @@ export const getDynamicPagesAction = createServerAction<IDynamicPage[]>(async ()
   return toPlainObject<IDynamicPage[]>(await DynamicPageModel.find<IDynamicPage>({}));
 });
 
-const loadDynamicPageByPath = cachePublicData("getDynamicPageByPathAction", async (path: string) => {
+const loadDynamicPageByPath = cachePublicRecord("getDynamicPageByPathAction", async (path: string) => {
   const data = await DynamicPageModel.findOne<IDynamicPage>({path});
 
   if (!data)
@@ -33,20 +36,25 @@ export const getDynamicPageByPathAction = createServerAction<IDynamicPage | null
 ));
 
 export const addDynamicPageAction = createServerAction<void>(async (data: IDynamicPage) => {
-  await requirePermission("edit-dynamic-pages");
-  await DynamicPageModel.create(data);
+  const user = await requirePermission("edit-dynamic-pages");
+  await createWithRevision(DynamicPageModel, "dynamic-pages", data, user);
 }, {revalidatePublicPages: true});
 
 export const updateDynamicPageAction = createServerAction<void>(async (data: IDynamicPage) => {
-  await requirePermission("edit-dynamic-pages");
+  const user = await requirePermission("edit-dynamic-pages");
   const {_id, ...updateData} = data;
-  await DynamicPageModel.findByIdAndUpdate(_id, {$set: updateData});
+  await updateWithRevision(DynamicPageModel, "dynamic-pages", _id, updateData, user);
 }, {revalidatePublicPages: true});
 
 export const removeDynamicPagesAction = createServerAction<void>(async (data: IDynamicPage[]) => {
-  await requirePermission("edit-dynamic-pages");
-  await DynamicPageModel.deleteMany({_id: {$in: data.map((value) => value._id)}});
+  const user = await requirePermission("edit-dynamic-pages");
+  await moveToTrash(DynamicPageModel, "dynamic-pages", data.map((value) => value._id), user);
 }, {revalidatePublicPages: true});
+
+export const getDynamicPageByIdAction = createServerAction<IDynamicPage | null>(async (id: string) => {
+  await requirePermission("edit-dynamic-pages");
+  return findRecordById<IDynamicPage>(DynamicPageModel, id);
+});
 
 export const getDynamicPagesPageAction = createServerAction<IPageResult<IDynamicPage>>(async (query: IPageQuery) => {
   await requirePermission("edit-dynamic-pages");
@@ -72,10 +80,11 @@ export const exportDynamicPagesAction = createServerAction<IExportFile<IDynamicP
 });
 
 export const importDynamicPagesAction = createServerAction<IImportReport>(async (file: unknown, apply: boolean) => {
-  await requirePermission("edit-dynamic-pages");
+  const user = await requirePermission("edit-dynamic-pages");
 
   return importRecords(DynamicPageModel, "dynamic-pages", file, {
     apply: apply == true,
+    revision: {collection: "dynamic-pages", author: user},
     matchFields: ["path"],
     getName: (item) => String(item.name ?? "")
   });

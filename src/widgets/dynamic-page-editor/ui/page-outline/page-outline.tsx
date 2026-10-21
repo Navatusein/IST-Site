@@ -32,7 +32,6 @@ export default function PageOutline(props: IProps) {
   const editor = usePageEditor();
   const {activeId, setActiveId} = useActivePageEntity(props.entities, props.topOffset);
 
-  // A block selected on the page marks its top-level entry (the row for a block inside a row)
   useEffect(() => {
     const entity = props.entities.find((entity) => entity.id == editor.selectedId || (
       entity.type == "group" && (entity as IPageComponentGroup).components.some((component) => component.id == editor.selectedId)

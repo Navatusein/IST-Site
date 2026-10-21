@@ -8,6 +8,8 @@ export interface IPageEditorContext {
   select: (id: string | null) => void;
   highlightedId: string | null;
   highlight: (id: string | null) => void;
+  editingId: string | null;
+  edit: (id: string | null) => void;
 }
 
 export const PageEditorContext = createContext<IPageEditorContext | null>(null);

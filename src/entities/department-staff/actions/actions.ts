@@ -1,7 +1,10 @@
 "use server"
 
 import {createServerAction} from "@/shared/utilities/create-server-action";
-import {cachePublicData} from "@/shared/utilities/cache-public-data";
+import {createWithRevision, updateWithRevision} from "@/shared/services/revision-service/revision-service";
+import {moveToTrash} from "@/shared/services/trash-service/trash-service";
+import {findRecordById} from "@/shared/utilities/find-record-by-id";
+import {cachePublicData, cachePublicRecord} from "@/shared/utilities/cache-public-data";
 import {isPublicPath} from "@/shared/utilities/public-input";
 import {IExportFile, IExportParams, IImportReport} from "@/shared/types/import-export";
 import {exportRecords, importRecords} from "@/shared/services/import-export-service/import-export-service";
@@ -16,10 +19,10 @@ import {IDepartmentStaff} from "../types/type";
 const DEPARTMENT_STAFF_SEARCH_FIELDS = ["lastName", "firstName", "middleName", "position", "email", "path"];
 
 export const getDepartmentStaffAction = createServerAction<IDepartmentStaff[]>(cachePublicData("getDepartmentStaffAction", async () => {
-  return toPlainObject<IDepartmentStaff[]>(await DepartmentStaff.find<IDepartmentStaff>({}).sort({date: "desc"}));
+  return toPlainObject<IDepartmentStaff[]>(await DepartmentStaff.find<IDepartmentStaff>({}).sort({lastName: 1, firstName: 1}).collation({locale: "uk"}));
 }));
 
-const loadDepartmentStaffByPath = cachePublicData("getDepartmentStaffByPathAction", async (path: string) => {
+const loadDepartmentStaffByPath = cachePublicRecord("getDepartmentStaffByPathAction", async (path: string) => {
   const data = await DepartmentStaff.findOne<IDepartmentStaff>({path});
 
   if (!data)
@@ -33,20 +36,25 @@ export const getDepartmentStaffByPathAction = createServerAction<IDepartmentStaf
 ));
 
 export const addDepartmentStaffAction = createServerAction<void>(async (data: IDepartmentStaff) => {
-  await requirePermission("edit-department-staff");
-  await DepartmentStaff.create(data);
+  const user = await requirePermission("edit-department-staff");
+  await createWithRevision(DepartmentStaff, "department-staff", data, user);
 }, {revalidatePublicPages: true});
 
 export const updateDepartmentStaffAction = createServerAction<void>(async (data: IDepartmentStaff) => {
-  await requirePermission("edit-department-staff");
+  const user = await requirePermission("edit-department-staff");
   const {_id, ...updateData} = data;
-  await DepartmentStaff.findByIdAndUpdate(_id, {$set: updateData});
+  await updateWithRevision(DepartmentStaff, "department-staff", _id, updateData, user);
 }, {revalidatePublicPages: true});
 
 export const removeDepartmentStaffAction = createServerAction<void>(async (data: IDepartmentStaff[]) => {
-  await requirePermission("edit-department-staff");
-  await DepartmentStaff.deleteMany({_id: {$in: data.map((value) => value._id)}});
+  const user = await requirePermission("edit-department-staff");
+  await moveToTrash(DepartmentStaff, "department-staff", data.map((value) => value._id), user);
 }, {revalidatePublicPages: true});
+
+export const getDepartmentStaffByIdAction = createServerAction<IDepartmentStaff | null>(async (id: string) => {
+  await requirePermission("edit-department-staff");
+  return findRecordById<IDepartmentStaff>(DepartmentStaff, id);
+});
 
 export const getDepartmentStaffPageAction = createServerAction<IPageResult<IDepartmentStaff>>(async (query: IPageQuery) => {
   await requirePermission("edit-department-staff");
@@ -75,10 +83,11 @@ export const exportDepartmentStaffAction = createServerAction<IExportFile<IDepar
 });
 
 export const importDepartmentStaffAction = createServerAction<IImportReport>(async (file: unknown, apply: boolean) => {
-  await requirePermission("edit-department-staff");
+  const user = await requirePermission("edit-department-staff");
 
   return importRecords(DepartmentStaff, "department-staff", file, {
     apply: apply == true,
+    revision: {collection: "department-staff", author: user},
     matchFields: ["path"],
     getName: (item) => `${item.lastName ?? ""} ${item.firstName ?? ""}`.trim()
   });

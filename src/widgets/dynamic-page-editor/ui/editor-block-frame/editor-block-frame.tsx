@@ -11,7 +11,6 @@ interface IProps {
   children: ReactNode;
 }
 
-// Clicks bubble from a block to the row around it; only the innermost frame selects
 const handledClicks = new WeakSet<Event>();
 
 export function markClickHandled(event: MouseEvent): boolean {
@@ -33,6 +32,7 @@ export default function EditorBlockFrame(props: IProps) {
   return (
     <div
       className={styles.frame}
+      data-editor-frame-id={props.id}
       data-kind={props.kind ?? "block"}
       data-fill={props.fill == true}
       data-selected={editor.selectedId == props.id}

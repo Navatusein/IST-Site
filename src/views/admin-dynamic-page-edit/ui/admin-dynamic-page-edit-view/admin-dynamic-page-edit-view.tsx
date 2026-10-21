@@ -1,7 +1,7 @@
 "use client"
 
 import {IDynamicPage, IPageEntity} from "@/entities/dynamic-page";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {updateDynamicPageAction} from "@/entities/dynamic-page/actions/actions";
 import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 import dynamic from "next/dynamic";
@@ -17,27 +17,25 @@ const DynamicPageEditor = dynamic(() => import("@/widgets/dynamic-page-editor/ui
 });
 
 export default function AdminDynamicPageEditView(props: IProps) {
-  const [page, setPage] = useState<IDynamicPage>(props.page);
+  const [entities, setEntities] = useState<IPageEntity[]>(props.page.entities);
+  const [recordId, setRecordId] = useState<string>(String(props.page._id));
 
-  useEffect(() => {
-    setPage(() => props.page);
-  }, [props.page]);
-
-  const setEntities = (entities: IPageEntity[]) => {
-    setPage((prevState) => (
-      {...prevState, entities: entities} as IDynamicPage
-    ));
+  if (recordId != String(props.page._id)) {
+    setRecordId(String(props.page._id));
+    setEntities(props.page.entities);
   }
 
-  const saveComponents = async () => {
-    await unwrapServerAction(updateDynamicPageAction(page));
+  const saveEntities = async (value: IPageEntity[]) => {
+    await unwrapServerAction(updateDynamicPageAction({_id: props.page._id, entities: value} as Pick<IDynamicPage, "_id" | "entities"> as IDynamicPage));
   }
 
   return (
     <DynamicPageEditor
-      entities={page.entities}
+      key={recordId}
+      entities={entities}
       setEntities={setEntities}
-      saveEntities={saveComponents}
+      saveEntities={saveEntities}
+      history={{collection: "dynamic-pages", recordId}}
     />
   )
 }

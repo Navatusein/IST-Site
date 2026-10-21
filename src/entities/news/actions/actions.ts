@@ -4,7 +4,10 @@ import {INews} from "../types/type";
 import NewsModel from "../types/schema";
 import toPlainObject from "@/shared/utilities/to-plain-object";
 import {createServerAction} from "@/shared/utilities/create-server-action";
-import {cachePublicData} from "@/shared/utilities/cache-public-data";
+import {createWithRevision, updateWithRevision} from "@/shared/services/revision-service/revision-service";
+import {moveToTrash} from "@/shared/services/trash-service/trash-service";
+import {findRecordById} from "@/shared/utilities/find-record-by-id";
+import {cachePublicRecord} from "@/shared/utilities/cache-public-data";
 import {isPublicPath} from "@/shared/utilities/public-input";
 import {IExportFile, IExportParams, IImportReport} from "@/shared/types/import-export";
 import {exportRecords, importRecords} from "@/shared/services/import-export-service/import-export-service";
@@ -31,7 +34,7 @@ export const getNewsCountAction = createServerAction<number>(async () => {
   return toPlainObject<number>(await NewsModel.find<INews>({}).countDocuments());
 });
 
-const loadNewsByPath = cachePublicData("getNewsByPathAction", async (path: string) => {
+const loadNewsByPath = cachePublicRecord("getNewsByPathAction", async (path: string) => {
   const data = await NewsModel.findOne<INews>({path});
 
   if (!data)
@@ -45,20 +48,25 @@ export const getNewsByPathAction = createServerAction<INews | null>(async (path:
 ));
 
 export const addNewsAction = createServerAction<void>(async (data: INews) => {
-  await requirePermission("edit-news");
-  await NewsModel.create(data);
+  const user = await requirePermission("edit-news");
+  await createWithRevision(NewsModel, "news", data, user);
 }, {revalidatePublicPages: true});
 
 export const updateNewsAction = createServerAction<void>(async (data: INews) => {
-  await requirePermission("edit-news");
+  const user = await requirePermission("edit-news");
   const {_id, ...updateData} = data;
-  await NewsModel.findByIdAndUpdate(_id, {$set: updateData});
+  await updateWithRevision(NewsModel, "news", _id, updateData, user);
 }, {revalidatePublicPages: true});
 
 export const removeNewsAction = createServerAction<void>(async (data: INews[]) => {
-  await requirePermission("edit-news");
-  await NewsModel.deleteMany({_id: {$in: data.map((value) => value._id)}});
+  const user = await requirePermission("edit-news");
+  await moveToTrash(NewsModel, "news", data.map((value) => value._id), user);
 }, {revalidatePublicPages: true});
+
+export const getNewsByIdAction = createServerAction<INews | null>(async (id: string) => {
+  await requirePermission("edit-news");
+  return findRecordById<INews>(NewsModel, id);
+});
 
 export const getNewsPageAction = createServerAction<IPageResult<INews>>(async (query: IPageQuery) => {
   await requirePermission("edit-news");
@@ -84,10 +92,11 @@ export const exportNewsAction = createServerAction<IExportFile<INews>>(async (pa
 });
 
 export const importNewsAction = createServerAction<IImportReport>(async (file: unknown, apply: boolean) => {
-  await requirePermission("edit-news");
+  const user = await requirePermission("edit-news");
 
   return importRecords(NewsModel, "news", file, {
     apply: apply == true,
+    revision: {collection: "news", author: user},
     matchFields: ["path"],
     getName: (item) => String(item.title ?? "")
   });

@@ -34,7 +34,6 @@ function createCards(registry: IPageComponentRegistry, width: PageEntityWidth, s
   return createGroup(width, true, spans.flatMap((span) => createCell(registry, "rich-text", span, {text: CARD_TEXT})));
 }
 
-// Ready-made layouts for the "add block" drawer; after adding, everything in them can be changed
 export const PAGE_GROUP_PRESETS: IPageGroupPreset[] = [
   {
     key: "group",

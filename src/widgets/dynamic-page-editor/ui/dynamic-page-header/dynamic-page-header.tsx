@@ -1,18 +1,20 @@
 import {App, Button, Flex, Grid, Layout, theme, Tooltip} from "antd";
 import {Icon} from "@/shared/ui-kit";
 import {useRouter} from "next/navigation";
-import {ArrowLeftOutlined, EditOutlined, EyeOutlined, MenuFoldOutlined, MenuUnfoldOutlined, SaveOutlined, UndoOutlined} from "@ant-design/icons";
+import {ArrowLeftOutlined, EditOutlined, EyeOutlined, HistoryOutlined, MenuFoldOutlined, MenuUnfoldOutlined, SaveOutlined, UndoOutlined} from "@ant-design/icons";
 import {ThemeSwitcher} from "@/features/theme-switcher";
 import {MouseEvent} from "react";
 
 interface IProps {
   isChanged: boolean;
+  isSaving: boolean;
   saveChanges: () => void;
   cancelChanges: () => void;
   isOutlineOpen: boolean;
   toggleOutline: () => void;
   isPreview: boolean;
   togglePreview: () => void;
+  openHistory?: () => void;
 }
 
 export default function DynamicPageHeader(props: IProps) {
@@ -82,6 +84,13 @@ export default function DynamicPageHeader(props: IProps) {
                 {!isNarrow && "Повернутись назад"}
               </Button>
             </Tooltip>
+            {props.openHistory && (
+              <Tooltip title="Збережені версії сторінки">
+                <Button icon={<HistoryOutlined/>} onClick={props.openHistory} aria-label="Історія">
+                  {!isNarrow && "Історія"}
+                </Button>
+              </Tooltip>
+            )}
             <Tooltip title={props.isPreview ? "Повернутись до редагування" : "Переглянути сторінку без інструментів редактора"}>
               <Button
                 icon={props.isPreview ? <EditOutlined/> : <EyeOutlined/>}
@@ -97,7 +106,7 @@ export default function DynamicPageHeader(props: IProps) {
               <Button
                 icon={isNarrow ? <UndoOutlined/> : undefined}
                 onClick={() => props.cancelChanges()}
-                disabled={!props.isChanged}
+                disabled={!props.isChanged || props.isSaving}
                 aria-label="Відмінити зміни"
               >
                 {!isNarrow && "Відмінити"}
@@ -108,7 +117,8 @@ export default function DynamicPageHeader(props: IProps) {
                 type="primary"
                 icon={isNarrow ? <SaveOutlined/> : undefined}
                 onClick={() => props.saveChanges()}
-                disabled={!props.isChanged}
+                disabled={!props.isChanged && !props.isSaving}
+                loading={props.isSaving}
                 aria-label="Зберегти"
               >
                 {!isNarrow && "Зберегти"}

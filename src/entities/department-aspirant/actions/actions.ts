@@ -1,6 +1,9 @@
 "use server"
 
 import {createServerAction} from "@/shared/utilities/create-server-action";
+import {createWithRevision, updateWithRevision} from "@/shared/services/revision-service/revision-service";
+import {moveToTrash} from "@/shared/services/trash-service/trash-service";
+import {findRecordById} from "@/shared/utilities/find-record-by-id";
 import {IExportFile, IExportParams, IImportReport} from "@/shared/types/import-export";
 import {exportRecords, importRecords} from "@/shared/services/import-export-service/import-export-service";
 import {IPageQuery, IPageResult} from "@/shared/types/page-query";
@@ -18,20 +21,25 @@ export const getDepartmentAspirantAction = createServerAction<IDepartmentAspiran
 });
 
 export const addDepartmentAspirantAction = createServerAction<void>(async (data: IDepartmentAspirant) => {
-  await requirePermission("edit-department-aspirants");
-  await DepartmentAspirant.create(data);
+  const user = await requirePermission("edit-department-aspirants");
+  await createWithRevision(DepartmentAspirant, "department-aspirants", data, user);
 }, {revalidatePublicPages: true});
 
 export const updateDepartmentAspirantAction = createServerAction<void>(async (data: IDepartmentAspirant) => {
-  await requirePermission("edit-department-aspirants");
+  const user = await requirePermission("edit-department-aspirants");
   const {_id, ...updateData} = data;
-  await DepartmentAspirant.findByIdAndUpdate(_id, {$set: updateData});
+  await updateWithRevision(DepartmentAspirant, "department-aspirants", _id, updateData, user);
 }, {revalidatePublicPages: true});
 
 export const removeDepartmentAspirantAction = createServerAction<void>(async (data: IDepartmentAspirant[]) => {
-  await requirePermission("edit-department-aspirants");
-  await DepartmentAspirant.deleteMany({_id: {$in: data.map((value) => value._id)}});
+  const user = await requirePermission("edit-department-aspirants");
+  await moveToTrash(DepartmentAspirant, "department-aspirants", data.map((value) => value._id), user);
 }, {revalidatePublicPages: true});
+
+export const getDepartmentAspirantByIdAction = createServerAction<IDepartmentAspirant | null>(async (id: string) => {
+  await requirePermission("edit-department-aspirants");
+  return findRecordById<IDepartmentAspirant>(DepartmentAspirant, id);
+});
 
 export const getDepartmentAspirantsPageAction = createServerAction<IPageResult<IDepartmentAspirant>>(async (query: IPageQuery) => {
   await requirePermission("edit-department-aspirants");
@@ -55,10 +63,11 @@ export const exportDepartmentAspirantsAction = createServerAction<IExportFile<ID
 });
 
 export const importDepartmentAspirantsAction = createServerAction<IImportReport>(async (file: unknown, apply: boolean) => {
-  await requirePermission("edit-department-aspirants");
+  const user = await requirePermission("edit-department-aspirants");
 
   return importRecords(DepartmentAspirant, "department-aspirants", file, {
     apply: apply == true,
+    revision: {collection: "department-aspirants", author: user},
     matchFields: [],
     getName: (item) => `${item.lastName ?? ""} ${item.firstName ?? ""}`.trim()
   });
