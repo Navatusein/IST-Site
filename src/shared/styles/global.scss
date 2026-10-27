@@ -6,3 +6,56 @@ html, body, h1, h2, h3, h4, h5 {
 .ant-btn > span:not(.ant-btn-icon) {
   text-box: trim-both cap alphabetic;
 }
+
+// Scrollbars: thin, rounded, a translucent grey that reads on both light and dark backgrounds
+$scrollbar-thumb: rgba(128, 128, 128, 0.4);
+$scrollbar-thumb-hover: rgba(128, 128, 128, 0.65);
+
+@supports selector(::-webkit-scrollbar) {
+  // Chromium and Safari ignore ::-webkit-scrollbar wherever the standard properties are set, and antd sets them on tables
+  * {
+    scrollbar-color: auto !important;
+    scrollbar-width: auto !important;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track,
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-button {
+    display: none;
+  }
+
+  // The transparent border keeps the thumb off the edges
+  ::-webkit-scrollbar-thumb {
+    background-color: $scrollbar-thumb;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+    border-radius: 10px;
+
+    &:hover {
+      background-color: $scrollbar-thumb-hover;
+    }
+  }
+}
+
+// Firefox has only the standard properties
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: $scrollbar-thumb transparent;
+  }
+}
+
+// antd tables with a fixed header always show the vertical scrollbar (inline `overflow-y: scroll`).
+// Show it only when the rows overflow; the gutter stays, since the header always keeps room for it
+.ant-table-body {
+  overflow-y: auto !important;
+  scrollbar-gutter: stable;
+}
