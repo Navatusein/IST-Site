@@ -1,15 +1,7 @@
 import {Document} from "mongoose";
+import type {UserPermissionType} from "@/shared/configs/permissions-config";
 
-export type UserPermissionType =
-  "edit-news" |
-  "edit-dynamic-pages" |
-  "edit-public-menu" |
-  "edit-users" |
-  "edit-files" |
-  "edit-department-staff" |
-  "edit-department-aspirants" |
-  "edit-site-settings" |
-  "manage-trash";
+export type {UserPermissionType};
 
 export interface IUser extends Document {
   login: string,

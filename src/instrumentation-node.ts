@@ -14,7 +14,7 @@ export async function registerNode() {
     const newUser = new UserModel({
       login: process.env.ADMIN_LOGIN,
       name: "Admin",
-      permissions: defaultPermissions
+      permissions: [...defaultPermissions]
     } as IUser);
 
     console.log("No users found");

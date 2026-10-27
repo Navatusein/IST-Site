@@ -1,4 +1,4 @@
-import {PermissionType} from "@/shared/types/permissions";
+import {IPermission} from "@/shared/types/permissions";
 
 export const defaultPermissions = [
   "edit-news",
@@ -10,9 +10,11 @@ export const defaultPermissions = [
   "edit-department-aspirants",
   "edit-site-settings",
   "manage-trash"
-]
+] as const;
 
-export const permissions: PermissionType = {
+export type UserPermissionType = typeof defaultPermissions[number];
+
+export const permissions: Record<UserPermissionType, IPermission> = {
   "edit-news": {
     name: "Edit News",
     paths: [
