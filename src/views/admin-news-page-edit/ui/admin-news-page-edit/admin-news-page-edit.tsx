@@ -36,6 +36,7 @@ export default function AdminNewsPageEdit(props: IProps) {
       entities={entities}
       setEntities={setEntities}
       saveEntities={saveEntities}
+      mainHeading={{text: props.news.title, isShownByPage: true}}
       history={{collection: "news", recordId}}
     />
   )

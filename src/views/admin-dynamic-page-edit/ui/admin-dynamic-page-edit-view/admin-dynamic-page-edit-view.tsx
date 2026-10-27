@@ -35,6 +35,7 @@ export default function AdminDynamicPageEditView(props: IProps) {
       entities={entities}
       setEntities={setEntities}
       saveEntities={saveEntities}
+      mainHeading={{text: props.page.title || props.page.name, isShownByPage: false}}
       history={{collection: "dynamic-pages", recordId}}
     />
   )

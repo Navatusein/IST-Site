@@ -19,7 +19,10 @@ import {scrollToPageEntity} from "@/entities/dynamic-page/utilities/page-entity-
 import {useLocalStorage} from "@/shared/hooks/use-local-storage";
 import {useQueryState} from "nuqs";
 import {useBrokenLinksCheck} from "../../hooks/use-broken-links-check";
+import {useMainHeadingCheck} from "../../hooks/use-main-heading-check";
 import RevisionPreviewBar from "../revision-preview-bar/revision-preview-bar";
+import MainHeadingBar from "../main-heading-bar/main-heading-bar";
+import type {IPageMainHeadingSource} from "../../model/main-heading-issue";
 import {compareBlocks, RevisionHistoryDrawer} from "@/features/revision-history";
 import {IRevision, IRevisionComparison, RevisionCollection} from "@/shared/types/revision";
 
@@ -30,6 +33,7 @@ interface IProps {
   setEntities: (value:IPageEntity[]) => void;
   saveEntities: (entities: IPageEntity[]) => Promise<void>;
   history?: {collection: RevisionCollection, recordId: string};
+  mainHeading: IPageMainHeadingSource;
 }
 
 export default function DynamicPageEditor(props: IProps) {
@@ -241,11 +245,14 @@ export default function DynamicPageEditor(props: IProps) {
     });
   }
 
-  const checkBrokenLinks = useBrokenLinksCheck((componentId) => {
+  const openBlock = (componentId: string) => {
     setIsPreview(false);
     edit(componentId);
     setTimeout(() => scrollToPageEntity(componentId));
-  });
+  }
+
+  const checkMainHeading = useMainHeadingCheck(props.mainHeading, openBlock);
+  const checkBrokenLinks = useBrokenLinksCheck(openBlock);
 
   const saveChanges = async () => {
     if (isSaving)
@@ -255,7 +262,7 @@ export default function DynamicPageEditor(props: IProps) {
 
     setIsSaving(true);
 
-    if (!await checkBrokenLinks(entities)) {
+    if (!await checkMainHeading(entities) || !await checkBrokenLinks(entities)) {
       setIsSaving(false);
       return;
     }
@@ -359,6 +366,7 @@ export default function DynamicPageEditor(props: IProps) {
             style={{overflowX: "clip", paddingTop: 24, "--page-editor-header-height": `${HEADER_HEIGHT}px`} as CSSProperties}
             onClick={onPageClick}
           >
+            <MainHeadingBar entities={props.entities} mainHeading={props.mainHeading}/>
             <PageEntityList
               entities={props.entities}
               updateEntities={updateEntities}

@@ -30,6 +30,7 @@ export default function AdminDepartmentStaffPageEditView(props: IProps) {
       entities={entities}
       setEntities={setEntities}
       saveEntities={saveEntities}
+      mainHeading={{text: `${props.departmentStaff.lastName} ${props.departmentStaff.firstName} ${props.departmentStaff.middleName}`, isShownByPage: true}}
       history={{collection: "department-staff", recordId}}
     />
   )
