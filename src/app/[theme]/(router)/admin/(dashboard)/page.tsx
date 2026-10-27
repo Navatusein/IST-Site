@@ -1,13 +1,7 @@
-"use client"
-
-import {Typography} from "antd";
+import {AdminHomeView} from "@/views/admin-home";
 
 export default function Page() {
   return (
-    <>
-      <Typography.Title level={3}>
-        Ласкаво просимо в адмінпанель, оберіть модуль, яких хочете скористатися.
-      </Typography.Title>
-    </>
+    <AdminHomeView/>
   );
 }
