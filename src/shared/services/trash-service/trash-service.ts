@@ -5,6 +5,8 @@ import {deleteRevisions, getRecordName, recordRevision} from "@/shared/services/
 import {IRevisionAuthor, RevisionCollection} from "@/shared/types/revision";
 import {ITrashItem, ITrashPage, ITrashQuery} from "@/shared/types/trash";
 import {ServerActionError} from "@/shared/exceptions/server-action-error";
+import {removeRedirectFrom} from "@/shared/services/redirect-service/redirect-service";
+import {getRecordPublicPath} from "@/shared/utilities/public-paths";
 
 export const TRASH_DAYS = 30;
 
@@ -126,6 +128,11 @@ export async function restoreFromTrash(recordModel: Model<any>, item: ITrashDocu
   const restored = await recordModel.create(item.data);
   await TrashModel.deleteOne({_id: item._id});
   await recordRevision(item.collectionName, item.recordId, restored.toObject(), author);
+
+  const publicPath = typeof restored.path == "string" ? getRecordPublicPath(item.collectionName, restored.path) : null;
+
+  if (publicPath)
+    await removeRedirectFrom(publicPath);
 }
 
 async function getRecordsWithoutHistoryOwner(items: ITrashDocument[], recordModels: TrashRecordModels) {

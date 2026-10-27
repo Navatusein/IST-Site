@@ -55,7 +55,7 @@ export default function NewsCrudForm() {
             validator: (_, value) => validPath(value, form as FormInstance<INews>),
           })
         ]}
-        extra="Шлях новини"
+        extra="Адреса новини на сайті; після зміни стара адреса перенаправлятиме на нову"
       >
         <Input/>
       </Form.Item>

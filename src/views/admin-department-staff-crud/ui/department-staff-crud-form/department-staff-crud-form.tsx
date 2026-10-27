@@ -96,7 +96,7 @@ export default function DepartmentStaffCrudForm() {
                 validator: (_, value) => validPath(value, form as FormInstance<IDepartmentStaff>),
               })
             ]}
-            extra="Шлях сторінки викладача"
+            extra="Адреса сторінки на сайті; після зміни стара адреса перенаправлятиме на нову"
           >
             <Input/>
           </Form.Item>

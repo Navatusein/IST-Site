@@ -12,6 +12,8 @@ import {
   RevisionCollection
 } from "@/shared/types/revision";
 import {escapeRegex} from "@/shared/services/pagination-service/pagination-service";
+import {recordPathChange, removeRedirectFrom} from "@/shared/services/redirect-service/redirect-service";
+import {getRecordPublicPath} from "@/shared/utilities/public-paths";
 
 export const MAX_REVISIONS = 30;
 
@@ -81,6 +83,11 @@ export async function recordRevision(collection: RevisionCollection, recordId: s
 export async function createWithRevision(recordModel: Model<any>, collection: RevisionCollection, data: object, author: IRevisionAuthor) {
   const created = await recordModel.create(data);
   await recordRevision(collection, String(created._id), created.toObject(), author, "creation");
+
+  const publicPath = typeof created.path == "string" ? getRecordPublicPath(collection, created.path) : null;
+
+  if (publicPath)
+    await removeRedirectFrom(publicPath);
 }
 
 export async function updateWithRevision(recordModel: Model<any>, collection: RevisionCollection, id: unknown, update: object, author: IRevisionAuthor, replace = false) {
@@ -98,10 +105,18 @@ export async function updateWithRevision(recordModel: Model<any>, collection: Re
     ...(missingFields.length && {$unset: Object.fromEntries(missingFields.map((key) => [key, 1]))})
   }, {runValidators: true});
 
-  const after = await recordModel.findById(id).lean();
+  const after = await recordModel.findById(id).lean<Record<string, unknown>>();
 
   if (after)
     await recordRevision(collection, recordId, after, author);
+
+  if (typeof before?.path == "string" && typeof after?.path == "string" && before.path != after.path) {
+    const fromPath = getRecordPublicPath(collection, before.path);
+    const toPath = getRecordPublicPath(collection, after.path);
+
+    if (fromPath && toPath)
+      await recordPathChange(fromPath, toPath);
+  }
 }
 
 function getBlocks(entities: unknown): Map<string, string> {
