@@ -57,8 +57,11 @@ export default function ThemeProvider(props: IProps) {
     token: {...themeGlobalTokens, ...(theme == "dark" ? themeDarkTokens : themeLightTokens)}
   }), [theme]);
 
+  const pageBackground = useMemo(() => antTheme.getDesignToken(themeConfig).colorBgLayout, [themeConfig]);
+
   return (
     <SiteThemeContext value={{theme, setTheme}}>
+      <style>{`html{color-scheme:${theme};background-color:${pageBackground}}`}</style>
       <ConfigProvider theme={themeConfig} locale={locale} wave={{disabled: true}} tag={{variant: "outlined"}}>
         {props.children}
       </ConfigProvider>
