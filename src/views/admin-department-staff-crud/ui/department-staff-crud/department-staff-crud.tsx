@@ -120,6 +120,7 @@ export default function DepartmentStaffCrud(props: IProps) {
         title="Співробітники кафедри"
         description="Викладачі та співробітники для списку на сайті й окремих сторінок профілів. Двічі натисніть на рядок, щоб змінити ім'я, посаду, фото й шлях, «Редагувати контент» — блоки сторінки профілю"
         columns={COLUMNS}
+        fillColumns={3}
         data={props.result.items}
         pagination={props.result}
         serverSearch

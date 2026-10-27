@@ -15,7 +15,7 @@ interface IProps<T extends object> {
   pagination?: TablePaginationConfig;
   onChange?: (pagination: TablePaginationConfig, sorter: SorterResult<T> | SorterResult<T>[]) => void;
   storageKey: string;
-  fillColumnKey?: string;
+  fillColumnKeys: string[];
 }
 
 const SELECTION_COLUMN_WIDTH = 32;
@@ -58,11 +58,15 @@ export default function CrudTable<T extends object>(props: IProps<T>) {
 
   const scrollX = columns.reduce((sum, column) => sum + (typeof column.width == "number" ? column.width : 150), SELECTION_COLUMN_WIDTH);
 
-  const tableColumns = columns.map((column) => (
-    props.fillColumnKey != null && column.key == props.fillColumnKey ?
-      {...column, width: undefined, onHeaderCell: undefined} :
-      column
-  )) as TableColumnsType<T>;
+  // Fill columns without a saved width share the spare width; their own width stays the minimum through scrollX
+  const tableColumns = columns.map((column) => {
+    const key = column.key == null ? null : String(column.key);
+
+    if (key == null || !props.fillColumnKeys.includes(key) || widths[key] != null)
+      return column;
+
+    return {...column, width: undefined};
+  }) as TableColumnsType<T>;
 
   const onRowClick = (event: MouseEvent, record: T) => {
     const isSelectionCell = (event.target as HTMLElement).closest(".ant-table-selection-column") != null;

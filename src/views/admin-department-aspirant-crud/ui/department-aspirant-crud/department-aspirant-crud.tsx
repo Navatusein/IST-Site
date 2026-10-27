@@ -127,6 +127,7 @@ export default function DepartmentAspirantCrud(props: IProps) {
         title="Аспіранти кафедри"
         description="Аспіранти, теми їхніх дисертацій і наукові керівники для списку аспірантів на сайті"
         columns={COLUMNS}
+        fillColumns={3}
         data={props.result.items}
         pagination={props.result}
         serverSearch

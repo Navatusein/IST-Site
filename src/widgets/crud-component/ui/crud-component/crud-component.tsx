@@ -38,7 +38,7 @@ interface IProps<T extends object> {
   rowActions?: ICrudRowAction<T>[];
   pageActions?: ICrudPageAction[];
   trash?: boolean;
-  fillColumn?: string;
+  fillColumns?: number | string[];
   notice?: ReactNode;
   getRecord?: (id: string) => Promise<T | null>;
 }
@@ -55,6 +55,16 @@ const DRAWER_TITLES: Record<CrudDrawerMode, string> = {
 };
 
 const SERVICE_FIELDS = ["__v", "createdAt", "updatedAt"];
+function getFillColumnKeys<T>(columns: TableColumnsType<T>, fillColumns: number | string[] = 1): string[] {
+  if (Array.isArray(fillColumns))
+    return fillColumns;
+
+  return columns
+    .filter((column) => column.key != null)
+    .slice(0, fillColumns)
+    .map((column) => String(column.key));
+}
+
 
 const FORM_QUERY = {
   create: parseAsBoolean,
@@ -363,7 +373,7 @@ export default function CrudComponent<T extends object>(props: IProps<T>) {
       <CrudTable<T>
         columns={columns}
         storageKey={pathname}
-        fillColumnKey={props.fillColumn ?? (props.columns[0]?.key == null ? undefined : String(props.columns[0].key))}
+        fillColumnKeys={getFillColumnKeys(props.columns, props.fillColumns)}
         data={filteredData}
         isLoading={(props.isLoading ?? false) || isRefreshing || serverQuery.isPending}
         pagination={isServerMode ? {
