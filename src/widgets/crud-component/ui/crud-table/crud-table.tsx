@@ -59,7 +59,6 @@ export default function CrudTable<T extends object>(props: IProps<T>) {
 
   const scrollX = columns.reduce((sum, column) => sum + (typeof column.width == "number" ? column.width : 150), SELECTION_COLUMN_WIDTH);
 
-  // Fill columns without a saved width share the spare width; their own width stays the minimum through scrollX
   const tableColumns = columns.map((column) => {
     const key = column.key == null ? null : String(column.key);
 

@@ -1,9 +1,4 @@
-// Admin pages with a table are as tall as their content, but not taller than the content area (the scroll container
-// of `AdminLayout`): then the page header, the toolbar, the table header and the pagination stay in place
-// and only the table rows scroll. A short table leaves the card short.
-// The chain is: `page` (the page card) → `fill` (every wrapper between) → `table` (antd Table className);
-// each link keeps its content height and may only shrink.
-// On low screens the table would have no room left, so there the page keeps its full height and scrolls as a whole.
+// page (Card) → fill (each wrapper between) → table (antd Table with scroll.y): only the table rows scroll
 
 @mixin fill-column {
   @media (min-height: 600px) {
@@ -14,7 +9,6 @@
   }
 }
 
-// The page card
 .page {
   @include fill-column;
 
@@ -23,14 +17,11 @@
   }
 }
 
-// A wrapper between the page and the table
 .fill {
   @include fill-column;
 }
 
-// antd Table with `scroll.y` set (any value: it only turns on the fixed header).
-// Markup: wrapper (this class) > loading spinner root > .ant-spin-container > .ant-table > .ant-table-container > .ant-table-body;
-// the spinner root is matched as `> div`, its class differs between antd versions (antd 5: .ant-spin-nested-loading, antd 6: .ant-spin)
+// `> div` is the spinner root: .ant-spin-nested-loading in antd 5, .ant-spin in antd 6
 .table {
   @include fill-column;
 
@@ -41,7 +32,7 @@
     @include fill-column;
   }
 
-  // Only the body shrinks: the header has `overflow: hidden`, so as a flex item it would shrink to nothing
+  // The header has overflow: hidden, so it would shrink to nothing
   > div > :global(.ant-spin-container) > :global(.ant-pagination),
   > div > :global(.ant-spin-container) > :global(.ant-table) > :global(.ant-table-title),
   > div > :global(.ant-spin-container) > :global(.ant-table) > :global(.ant-table-footer),

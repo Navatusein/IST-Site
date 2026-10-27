@@ -18,7 +18,6 @@ interface IProps {
   onPreview?: (entry: IFileEntry) => void;
   renderActions?: (entry: IFileEntry) => ReactNode;
   onMove?: (slugs: string[], targetSlug: string | null) => void;
-  // Fill the height of the parent (a flex column): the breadcrumbs and the table header stay, the rows scroll
   fillHeight?: boolean;
 }
 

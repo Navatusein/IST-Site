@@ -1,7 +1,6 @@
 .zone {
   position: relative;
 
-  // Keeps the file list within the screen, like the rest of the fill-height chain (shared/styles/fill-height.module.scss)
   @media (min-height: 600px) {
     flex: 0 1 auto;
     min-height: 0;
