@@ -7,6 +7,7 @@ import {UnorderedListOutlined} from "@ant-design/icons";
 import {ThemeSwitcher} from "@/features/theme-switcher";
 import {useUserPermissions} from "@/entities/user/hooks/useUserPermissions";
 import Link from "next/link";
+import EditPageButton from "../edit-page-button/edit-page-button";
 
 interface IProps {
   navMenuItems:  ItemType[];
@@ -55,7 +56,8 @@ export default function VerticalNavMenu(props: IProps) {
           selectedKeys={props.selectedKeys}
           onSelect={() => setIsOpen(() => false)}
         />
-        <Flex vertical style={{padding: `${padding}px ${paddingLG}px`}}>
+        <Flex vertical gap="small" style={{padding: `${padding}px ${paddingLG}px`}}>
+          {isAuthorized && <EditPageButton block/>}
           {isAuthorized ?
             <Link prefetch={false} style={{height: controlHeight, display: "flex"}} href={"/admin"}>
               <Button block>

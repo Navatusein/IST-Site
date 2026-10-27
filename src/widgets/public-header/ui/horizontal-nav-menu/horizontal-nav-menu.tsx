@@ -6,6 +6,7 @@ import {ThemeSwitcher} from "@/features/theme-switcher";
 import React from "react";
 import Link from "next/link";
 import {useUserPermissions} from "@/entities/user/hooks/useUserPermissions";
+import EditPageButton from "../edit-page-button/edit-page-button";
 
 interface IProps {
   navMenuItems:  ItemType[];
@@ -25,6 +26,7 @@ export default function HorizontalNavMenu(props: IProps) {
         selectedKeys={props.selectedKeys}
       />
       <Flex gap="small" justify="center" align="center">
+        {isAuthorized && <EditPageButton/>}
         {isAuthorized ?
           <Link prefetch={false} style={{height: controlHeight, display: "flex"}} href={"/admin"}>
             <Button>

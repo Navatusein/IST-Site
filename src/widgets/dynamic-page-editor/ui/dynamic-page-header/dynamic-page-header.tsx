@@ -1,6 +1,7 @@
 import {App, Button, Flex, Grid, Layout, theme, Tooltip} from "antd";
 import {Icon} from "@/shared/ui-kit";
-import {useRouter} from "next/navigation";
+import {useRouter, useSearchParams} from "next/navigation";
+import {getSafeBackPath} from "@/shared/utilities/public-paths";
 import {ArrowLeftOutlined, EditOutlined, EyeOutlined, HistoryOutlined, MenuFoldOutlined, MenuUnfoldOutlined, SaveOutlined, UndoOutlined} from "@ant-design/icons";
 import {ThemeSwitcher} from "@/features/theme-switcher";
 import {MouseEvent} from "react";
@@ -24,9 +25,13 @@ export default function DynamicPageHeader(props: IProps) {
 
   const isNarrow = Grid.useBreakpoint().md != true;
 
+  // Opened from a public page: return there (fresh, not from the history cache), not to whatever came before
+  const backPath = getSafeBackPath(useSearchParams().get("back"));
+  const goBack = () => backPath ? router.push(backPath) : router.back();
+
   const back = () => {
     if (!props.isChanged) {
-      router.back();
+      goBack();
       return;
     }
 
@@ -35,9 +40,7 @@ export default function DynamicPageHeader(props: IProps) {
       content: "У редакторі є незбережені зміни. Ви впевнені, що хочете вийти?",
       okText: "Так",
       cancelText: "Ні",
-      onOk: () => {
-        router.back();
-      }
+      onOk: goBack
     });
   }
 
