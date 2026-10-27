@@ -3,6 +3,8 @@ import {PublicPageLayout} from "@/app/layouts/public-page-layout";
 import {getPublicMenuItemsTreeAction} from "@/entities/public-menu-item/actions/actions";
 import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 import {getSiteSettingsAction} from "@/entities/site-settings/actions/actions";
+import {organizationStructuredData} from "@/app/page-components/structured-data";
+import {JsonLd} from "@/shared/ui-kit";
 
 interface IProps {
   children: ReactNode;
@@ -15,8 +17,11 @@ export default async function Layout(props: IProps) {
   ]);
 
   return (
-    <PublicPageLayout menuItems={menuItems} siteSettings={siteSettings}>
-      {props.children}
-    </PublicPageLayout>
+    <>
+      <JsonLd data={organizationStructuredData(siteSettings)}/>
+      <PublicPageLayout menuItems={menuItems} siteSettings={siteSettings}>
+        {props.children}
+      </PublicPageLayout>
+    </>
   );
 }

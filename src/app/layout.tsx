@@ -6,6 +6,8 @@ import {AntdRegistry} from "@ant-design/nextjs-registry";
 import {getSiteSettingsAction} from "@/entities/site-settings/actions/actions";
 import {SITE_SETTINGS_DEFAULTS} from "@/entities/site-settings/types/type";
 import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
+import {isIndexingAllowed} from "@/shared/configs/indexing";
+import {DEFAULT_OPEN_GRAPH_IMAGE} from "@/app/page-components/open-graph";
 
 interface IProps {
   children: ReactNode;
@@ -21,6 +23,15 @@ export async function generateMetadata(): Promise<Metadata> {
       template: `%s — ${settings.siteShortName}`
     },
     ...(settings.siteDescription && {description: settings.siteDescription}),
+    openGraph: {
+      siteName: settings.siteTitle,
+      locale: "uk_UA",
+      type: "website",
+      title: settings.siteTitle,
+      ...(settings.siteDescription && {description: settings.siteDescription}),
+      images: [DEFAULT_OPEN_GRAPH_IMAGE]
+    },
+    ...(!isIndexingAllowed() && {robots: {index: false, follow: false}}),
   };
 }
 

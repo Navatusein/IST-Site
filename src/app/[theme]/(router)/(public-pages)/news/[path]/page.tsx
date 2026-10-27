@@ -1,5 +1,10 @@
 import {Metadata} from "next";
 import {pageTitle} from "@/app/page-components/page-title";
+import {openGraph} from "@/app/page-components/open-graph";
+import {getSiteSettingsAction} from "@/entities/site-settings/actions/actions";
+import {SITE_SETTINGS_DEFAULTS} from "@/entities/site-settings/types/type";
+import {JsonLd} from "@/shared/ui-kit";
+import {newsStructuredData} from "@/app/page-components/structured-data";
 import {notFound} from "next/navigation";
 import {getNewsByPathAction} from "@/entities/news/actions/actions";
 import {NewsView} from "@/views/news";
@@ -31,9 +36,17 @@ export async function generateMetadata(props: IProps): Promise<Metadata> {
   const image = getFileAssetUrl(news.imageSlug);
 
   return {
+    alternates: {canonical: `/news/${news.path}`},
     title: await pageTitle(news.title),
     ...(description && {description}),
-    openGraph: {type: "article", title: news.title, description, publishedTime: news.date, images: image ? [image] : undefined}
+    openGraph: await openGraph({
+      type: "article",
+      title: news.title,
+      url: `/news/${news.path}`,
+      publishedTime: news.date,
+      ...(description && {description}),
+      ...(image && {images: [image]})
+    })
   };
 }
 
@@ -45,9 +58,15 @@ export default async function Page(props: IProps) {
   if (!news)
     notFound();
 
-  const componentsData = await loadPageComponentsData(news.entities);
+  const [componentsData, settings] = await Promise.all([
+    loadPageComponentsData(news.entities),
+    unwrapServerAction(getSiteSettingsAction()).catch(() => SITE_SETTINGS_DEFAULTS)
+  ]);
 
   return (
-    <NewsView news={news} componentsData={componentsData}/>
+    <>
+      <JsonLd data={newsStructuredData(news, settings)}/>
+      <NewsView news={news} componentsData={componentsData}/>
+    </>
   )
 }
