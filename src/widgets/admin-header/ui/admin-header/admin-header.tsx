@@ -20,7 +20,7 @@ export default function AdminHeader() {
   const signOut = () => {
     unwrapServerAction(actionSignOut())
       .then(() => {
-        router.push("/home");
+        router.push("/");
         router.refresh();
       });
   }
@@ -36,7 +36,7 @@ export default function AdminHeader() {
         />
         <Space>
           <Tooltip title="Публічні сторінки">
-            <Link style={{height: 32, display: "flex"}} href={"/home"}>
+            <Link style={{height: 32, display: "flex"}} href={"/"}>
               <Button icon={isNarrow ? <GlobalOutlined/> : undefined} aria-label="Публічні сторінки">
                 {!isNarrow && "Публічні сторінки"}
               </Button>

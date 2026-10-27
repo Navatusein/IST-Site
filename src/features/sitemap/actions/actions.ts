@@ -6,14 +6,16 @@ import {DepartmentStaff} from "@/entities/department-staff";
 import {createServerAction} from "@/shared/utilities/create-server-action";
 import {cachePublicData} from "@/shared/utilities/cache-public-data";
 import {ISitemapEntry} from "../types/type";
+import {getRecordPublicPath} from "@/shared/utilities/public-paths";
+import type {RevisionCollection} from "@/shared/types/revision";
 
 interface IPathDocument {
   path: string;
   updatedAt?: Date;
 }
 
-const toEntries = (documents: IPathDocument[], prefix: string): ISitemapEntry[] => documents.map((document) => ({
-  path: `${prefix}/${document.path}`,
+const toEntries = (documents: IPathDocument[], collection: RevisionCollection): ISitemapEntry[] => documents.map((document) => ({
+  path: getRecordPublicPath(collection, document.path)!,
   updatedAt: document.updatedAt?.toISOString()
 }));
 
@@ -24,5 +26,5 @@ export const getSitemapEntriesAction = createServerAction<ISitemapEntry[]>(cache
     DepartmentStaff.find({}, {path: 1, updatedAt: 1}).lean<IPathDocument[]>()
   ]);
 
-  return [...toEntries(pages, ""), ...toEntries(news, "/news"), ...toEntries(staff, "/department-staff")];
+  return [...toEntries(pages, "dynamic-pages"), ...toEntries(news, "news"), ...toEntries(staff, "department-staff")];
 }));

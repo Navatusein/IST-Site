@@ -6,6 +6,7 @@ import {ItemType} from "antd/lib/menu/interface";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
 import {getSelectedMenuKeys} from "../../model/get-selected-menu-keys";
+import {toPublicHref} from "@/shared/utilities/public-paths";
 import VerticalNavMenu from "../vertical-nav-menu/vertical-nav-menu";
 import HorizontalNavMenu from "../horizontal-nav-menu/horizontal-nav-menu";
 import styles from "./public-nav-menu.module.scss";
@@ -20,7 +21,7 @@ export default function PublicNavMenu(props: IProps) {
       .sort((a, b) => (a.index - b.index))
       .map(menuItem => ({
         key: `${menuItem._id}`,
-        label: menuItem.path ? <Link href={menuItem.path}>{menuItem.label}</Link> : menuItem.label,
+        label: menuItem.path ? <Link href={toPublicHref(menuItem.path)}>{menuItem.label}</Link> : menuItem.label,
         children: menuItem.children ? mapToTreeData(menuItem.children) : undefined
       } as ItemType));
   }

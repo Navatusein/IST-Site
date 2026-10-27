@@ -10,7 +10,7 @@ function organization(settings: ISiteSettingsData) {
   return {
     "@type": "EducationalOrganization",
     name: settings.organizationName || settings.siteTitle,
-    url: absoluteUrl("/home"),
+    url: absoluteUrl("/"),
     logo: absoluteUrl("/icon.webp"),
     ...(settings.email && {email: settings.email}),
     ...(settings.phone && {telephone: settings.phone}),

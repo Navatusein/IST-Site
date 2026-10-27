@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
     position: "top-left"
   },
   allowedDevOrigins: process.env.DEV_ORIGINS?.split(","),
-  redirects: async () => [{source: "/", destination: "/home", permanent: false}],
+  redirects: async () => [{source: "/home", destination: "/", permanent: true}],
   headers: async () => [{
     source: "/files/:path*",
     headers: [

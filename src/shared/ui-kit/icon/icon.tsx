@@ -16,7 +16,7 @@ interface IProps {
 export default function Icon(props: IProps) {
   return (
     <Link
-      href={props.href ?? "/home"}
+      href={props.href ?? "/"}
       prefetch={props.href?.startsWith("/admin") ? false : undefined}
       onClick={props.onClick}
       aria-label={props.href?.startsWith("/admin") ? "В адмінпанель" : "На головну сторінку"}
