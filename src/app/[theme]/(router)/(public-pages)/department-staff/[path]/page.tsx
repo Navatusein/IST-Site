@@ -5,6 +5,7 @@ import {getSiteSettingsAction} from "@/entities/site-settings/actions/actions";
 import {SITE_SETTINGS_DEFAULTS} from "@/entities/site-settings/types/type";
 import {JsonLd} from "@/shared/ui-kit";
 import {personStructuredData} from "@/app/page-components/structured-data";
+import BreadcrumbsSection from "@/app/page-components/breadcrumbs-section";
 import {notFound} from "next/navigation";
 import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 import {getDepartmentStaffByPathAction} from "@/entities/department-staff/actions/actions";
@@ -66,6 +67,7 @@ export default async function Page(props: IProps) {
   return (
     <>
       <JsonLd data={personStructuredData(departmentStaff, settings)}/>
+      <BreadcrumbsSection path={`/department-staff/${departmentStaff.path}`} title={`${departmentStaff.lastName} ${departmentStaff.firstName} ${departmentStaff.middleName}`}/>
       <DepartmentStaffView departmentStaff={departmentStaff} componentsData={componentsData}/>
     </>
   )

@@ -3,6 +3,7 @@ import type {INews} from "@/entities/news";
 import type {IDepartmentStaff} from "@/entities/department-staff";
 import {getFileAssetUrl} from "@/shared/utilities/file-urls";
 import {getPublicOrigin} from "@/shared/utilities/public-url";
+import type {IBreadcrumb} from "./breadcrumbs";
 
 const absoluteUrl = (path: string | undefined): string | undefined => path ? getPublicOrigin() + path : undefined;
 
@@ -21,6 +22,19 @@ function organization(settings: ISiteSettingsData) {
 
 export function organizationStructuredData(settings: ISiteSettingsData) {
   return {"@context": "https://schema.org", ...organization(settings)};
+}
+
+export function breadcrumbsStructuredData(breadcrumbs: IBreadcrumb[], currentPath: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: breadcrumbs.map((breadcrumb, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: breadcrumb.title,
+      item: absoluteUrl(breadcrumb.href ?? currentPath)
+    }))
+  };
 }
 
 export function newsStructuredData(news: INews, settings: ISiteSettingsData) {

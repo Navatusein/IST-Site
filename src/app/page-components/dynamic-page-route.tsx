@@ -10,6 +10,7 @@ import {getPageImageSlug} from "@/app/page-components/get-page-image";
 import {openGraph} from "@/app/page-components/open-graph";
 import {getFileAssetUrl} from "@/shared/utilities/file-urls";
 import {getDynamicPagePublicPath, HOME_PAGE_PATH} from "@/shared/utilities/public-paths";
+import BreadcrumbsSection from "./breadcrumbs-section";
 
 export async function getDynamicPageMetadata(path: string): Promise<Metadata> {
   const page = await unwrapServerAction(getDynamicPageByPathAction(path));
@@ -47,6 +48,9 @@ export default async function DynamicPageRoute(props: {path: string}) {
   const componentsData = await loadPageComponentsData(page.entities);
 
   return (
-    <DynamicPageView page={page} componentsData={componentsData}/>
+    <>
+      <BreadcrumbsSection path={getDynamicPagePublicPath(page.path)} title={page.title || page.name}/>
+      <DynamicPageView page={page} componentsData={componentsData}/>
+    </>
   );
 }

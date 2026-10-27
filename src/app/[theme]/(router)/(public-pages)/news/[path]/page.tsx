@@ -5,6 +5,7 @@ import {getSiteSettingsAction} from "@/entities/site-settings/actions/actions";
 import {SITE_SETTINGS_DEFAULTS} from "@/entities/site-settings/types/type";
 import {JsonLd} from "@/shared/ui-kit";
 import {newsStructuredData} from "@/app/page-components/structured-data";
+import BreadcrumbsSection from "@/app/page-components/breadcrumbs-section";
 import {notFound} from "next/navigation";
 import {getNewsByPathAction} from "@/entities/news/actions/actions";
 import {NewsView} from "@/views/news";
@@ -66,6 +67,7 @@ export default async function Page(props: IProps) {
   return (
     <>
       <JsonLd data={newsStructuredData(news, settings)}/>
+      <BreadcrumbsSection path={`/news/${news.path}`} title={news.title}/>
       <NewsView news={news} componentsData={componentsData}/>
     </>
   )
