@@ -2,6 +2,8 @@ import {Form, FormInstance, Input} from "antd";
 import {isDynamicPagePathAvailableAction} from "@/entities/dynamic-page/actions/actions";
 import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 import {IDynamicPage} from "@/entities/dynamic-page";
+import {SearchSnippetPreview} from "@/features/search-snippet";
+import {getDynamicPagePublicPath} from "@/shared/utilities/public-paths";
 
 const RESERVED_PATH_SEGMENTS = ["admin", "api", "news", "department-staff", "file", "files", "sign-in", "not-found", "test", "_next"];
 
@@ -72,6 +74,16 @@ export default function DynamicPageCrudForm() {
         extra="Адреса сторінки на сайті; після зміни стара адреса перенаправлятиме на нову"
       >
         <Input/>
+      </Form.Item>
+      <Form.Item<IDynamicPage> noStyle shouldUpdate>
+        {(form) => (
+          <SearchSnippetPreview
+            title={form.getFieldValue("title")}
+            description={form.getFieldValue("description")}
+            path={getDynamicPagePublicPath(form.getFieldValue("path") ?? "")}
+            descriptionFallback="Опис не вказано, буде взято початок першого текстового блоку"
+          />
+        )}
       </Form.Item>
     </>
   )

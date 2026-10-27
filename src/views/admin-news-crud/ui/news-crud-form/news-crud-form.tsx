@@ -4,6 +4,7 @@ import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 import {DatePicker, Form, FormInstance, Input} from "antd";
 import {SelectFileButton} from "@/entities/file/ui";
 import dayjs from "dayjs";
+import {SearchSnippetPreview} from "@/features/search-snippet";
 
 export default function NewsCrudForm() {
   const validPath = async (value: string, form: FormInstance<INews>) => {
@@ -79,6 +80,15 @@ export default function NewsCrudForm() {
         style={{marginBottom: 0}}
       >
         <SelectFileButton filter={["image"]}/>
+      </Form.Item>
+      <Form.Item<INews> noStyle shouldUpdate>
+        {(form) => (
+          <SearchSnippetPreview
+            title={form.getFieldValue("title")}
+            description={form.getFieldValue("description")}
+            path={`/news/${form.getFieldValue("path") ?? ""}`}
+          />
+        )}
       </Form.Item>
     </>
   )
