@@ -3,7 +3,8 @@ import {FileManagerService} from "@/entities/file/services/file-manager-service"
 import {FileViewerView} from "@/views/file-viewer";
 import {notFound} from "next/navigation";
 
-export const metadata: Metadata = {robots: {index: false, follow: false}};
+// Not in search itself, but crawlers follow it to the document
+export const metadata: Metadata = {robots: {index: false, follow: true}};
 
 export const revalidate = 86400;
 

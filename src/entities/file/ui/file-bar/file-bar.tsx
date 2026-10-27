@@ -4,7 +4,7 @@ import {ReactNode} from "react";
 import {Button, Card, Flex, Typography} from "antd";
 import {DownloadOutlined, ExpandOutlined} from "@ant-design/icons";
 import formatFileSize from "@/shared/utilities/format-file-size";
-import {getFileAssetUrl, getFileDownloadUrl, getFileViewUrl} from "@/shared/utilities/file-urls";
+import {getFileDownloadUrl, getFileNamedAssetUrl, getFileViewUrl} from "@/shared/utilities/file-urls";
 import type {IFileEntry} from "../../types/type";
 import {getFilePreviewKind} from "../../utilities/get-file-preview-kind";
 import FileTypeIcon from "../file-type-icon/file-type-icon";
@@ -32,7 +32,7 @@ export default function FileBar(props: IProps) {
           {props.showOpen && (
             <Button
               icon={<ExpandOutlined/>}
-              href={getFilePreviewKind(file.name) == "pdf" ? getFileAssetUrl(file.slug) : getFileViewUrl(file.slug)}
+              href={getFilePreviewKind(file.name) == "pdf" ? getFileNamedAssetUrl(file.slug, file.name) : getFileViewUrl(file.slug)}
               target="_blank"
             >
               Відкрити

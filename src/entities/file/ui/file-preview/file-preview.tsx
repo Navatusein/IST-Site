@@ -30,7 +30,7 @@ export default function FilePreview(props: IProps) {
   switch (kind) {
     case "pdf":
     case "text":
-      return <iframe src={assetUrl} title={title} style={style} loading="lazy" allowFullScreen/>;
+      return <iframe src={getFileNamedAssetUrl(props.file.slug, props.file.name)} title={title} style={style} loading="lazy" allowFullScreen/>;
 
     case "office":
     case "presentation":
