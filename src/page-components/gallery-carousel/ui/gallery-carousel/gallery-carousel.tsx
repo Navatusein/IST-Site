@@ -1,7 +1,7 @@
 import {useMemo} from "react";
 import {Card, Carousel, Col, Image} from "antd";
 import {IPageComponentViewProps} from "@/entities/dynamic-page/model";
-import {getFileAssetUrl} from "@/shared/utilities/file-urls";
+import {getFileAssetUrl, getFileImageProps} from "@/shared/utilities/file-urls";
 import {IGalleryCarouselPageComponent} from "../../types/type";
 import styles from "./gallery-carousel.module.scss";
 
@@ -9,6 +9,8 @@ export default function GalleryCarousel(props: IPageComponentViewProps<IGalleryC
   const imageUrls = useMemo(() => (
     props.component.imageSlugs.filter(Boolean).map((imageSlug) => getFileAssetUrl(imageSlug))
   ), [props.component.imageSlugs]);
+
+  const imageSlugs = props.component.imageSlugs.filter(Boolean);
 
   const slidesCount = Math.max(imageUrls.length, 1);
 
@@ -25,7 +27,7 @@ export default function GalleryCarousel(props: IPageComponentViewProps<IGalleryC
         arrows={true}
         className={styles.carousel}
       >
-        {imageUrls.map((imageUrl, index) => (
+        {imageSlugs.map((imageSlug, index) => (
           <div key={`image-${index}`}>
             <Col className={styles.container}>
               <Image.PreviewGroup
@@ -34,8 +36,9 @@ export default function GalleryCarousel(props: IPageComponentViewProps<IGalleryC
                 <Image
                   className={styles.image}
                   width={"100%"}
-                  src={imageUrl}
+                  {...getFileImageProps(imageSlug, "(max-width: 991px) 100vw, (max-width: 1199px) 50vw, 33vw")}
                   fallback="/missing-image.webp"
+                  alt=""
                 />
               </Image.PreviewGroup>
             </Col>

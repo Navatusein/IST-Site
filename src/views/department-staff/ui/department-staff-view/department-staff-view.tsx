@@ -5,7 +5,7 @@ import {DynamicPageRenderer} from "@/widgets/dynamic-page-renderer";
 import {IDepartmentStaff} from "@/entities/department-staff";
 import {Card, Col, Flex, Image, Row, theme, Typography} from "antd";
 import {GlobalOutlined, MailOutlined} from "@ant-design/icons";
-import {getFileAssetUrl} from "@/shared/utilities/file-urls";
+import {getFileImageProps} from "@/shared/utilities/file-urls";
 import type {PageComponentsData} from "@/entities/dynamic-page/model";
 
 interface IProps {
@@ -27,8 +27,9 @@ export default function DepartmentStaffView(props: IProps) {
         >
           <Flex vertical gap="middle" style={{position: "sticky", top: paddingLG + 64, marginBottom: paddingLG}}>
             <Image
-              src={getFileAssetUrl(props.departmentStaff.imageSlug) ?? "/missing-image.webp"}
+              {...getFileImageProps(props.departmentStaff.imageSlug, "(max-width: 768px) 100vw, 33vw")}
               fallback="/missing-image.webp"
+              alt={`${props.departmentStaff.lastName} ${props.departmentStaff.firstName} ${props.departmentStaff.middleName}`}
               preview={false}
               style={{
                 objectFit: "cover",

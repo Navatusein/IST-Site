@@ -31,9 +31,14 @@ export default function PhotoGalleryEditor(props: IPageComponentEditorProps<IPho
               getImageSlug={(photo) => photo?.imageSlug}
               getTitle={(photo) => photo?.caption}
               renderExtraFields={(field) => (
-                <Form.Item name={[field.name, "caption"]} style={{marginBottom: 0}}>
-                  <Input placeholder="Підпис (необов'язково)"/>
-                </Form.Item>
+                <Flex vertical gap="small">
+                  <Form.Item name={[field.name, "caption"]} style={{marginBottom: 0}}>
+                    <Input placeholder="Підпис (необов'язково)"/>
+                  </Form.Item>
+                  <Form.Item name={[field.name, "alt"]} style={{marginBottom: 0}}>
+                    <Input placeholder="Опис зображення для пошуку (якщо не вказано — підпис)"/>
+                  </Form.Item>
+                </Flex>
               )}
             />
           )}

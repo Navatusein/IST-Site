@@ -16,7 +16,7 @@ export default function DepartmentAspirantList(props: IPageComponentViewProps<ID
       <ConfigProvider theme={{token: {screenMDMin: 900, screenXLMin: 1300}}}>
         <Flex vertical gap="middle" align="center" style={{height: "100%"}}>
           {aspirants.map((aspirant) => (
-            <DepartmentPersonCard imageSlug={aspirant.imageSlug} key={String(aspirant._id)}>
+            <DepartmentPersonCard imageSlug={aspirant.imageSlug} name={`${aspirant.lastName} ${aspirant.firstName} ${aspirant.middleName}`} key={String(aspirant._id)}>
               <Flex vertical>
                 <Typography.Paragraph style={{margin: 0}}>
                   Аспірант кафедри
@@ -47,7 +47,7 @@ export default function DepartmentAspirantList(props: IPageComponentViewProps<ID
             </Typography.Title>
           )}
           {graduates.map((graduate) => (
-            <DepartmentPersonCard imageSlug={graduate.imageSlug} key={String(graduate._id)}>
+            <DepartmentPersonCard imageSlug={graduate.imageSlug} name={`${graduate.lastName} ${graduate.firstName} ${graduate.middleName}`} key={String(graduate._id)}>
               <Flex vertical gap="small">
                 <Typography.Title level={4} style={{margin: 0}}>
                   {`${graduate.lastName} ${graduate.firstName} ${graduate.middleName}`}

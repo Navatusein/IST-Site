@@ -6,7 +6,8 @@ import {DynamicPageRenderer} from "@/widgets/dynamic-page-renderer";
 import {Button, Flex, Image, theme, Typography} from "antd";
 import formatDate from "@/shared/utilities/format-date";
 import Link from "next/link";
-import {getFileAssetUrl} from "@/shared/utilities/file-urls";
+import {getFileImageProps} from "@/shared/utilities/file-urls";
+import {BLOCK_IMAGE_SIZES} from "@/shared/configs/image-widths";
 import type {PageComponentsData} from "@/entities/dynamic-page/model";
 
 interface IProps {
@@ -31,8 +32,9 @@ export default function NewsView(props: IProps) {
         <Image
           width={"100%"}
           style={{height: "300px", objectFit: "cover", borderRadius: borderRadius}}
-          src={getFileAssetUrl(props.news.imageSlug) ?? "/missing-image.webp"}
+          {...getFileImageProps(props.news.imageSlug, BLOCK_IMAGE_SIZES.small)}
           fallback="/missing-image.webp"
+          alt={props.news.title}
         />
       </ComponentCol>
       <DynamicPageRenderer entities={props.news.entities} componentsData={props.componentsData}/>

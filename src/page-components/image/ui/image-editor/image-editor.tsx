@@ -19,9 +19,17 @@ export default function ImageEditor(props: IPageComponentEditorProps<IImagePageC
           label="Підпис"
           name="caption"
           style={{marginBottom: 0}}
-          extra="Текст під фото, також слугує описом зображення"
+          extra="Текст під фото"
         >
           <Input.TextArea rows={2}/>
+        </Form.Item>
+        <Form.Item<IImagePageComponent>
+          label="Опис зображення"
+          name="alt"
+          style={{marginBottom: 0}}
+          extra="Що на фото, для пошукових систем і незрячих; якщо не вказано, використовується підпис"
+        >
+          <Input/>
         </Form.Item>
         <Form.Item<IImagePageComponent>
           label="Пропорції"

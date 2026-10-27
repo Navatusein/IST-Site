@@ -1,6 +1,7 @@
 import {Flex, Image as AntImage, theme, Typography} from "antd";
 import {IPageComponentViewProps} from "@/entities/dynamic-page/model";
-import {getFileAssetUrl} from "@/shared/utilities/file-urls";
+import {getFileImageProps} from "@/shared/utilities/file-urls";
+import {BLOCK_IMAGE_SIZES} from "@/shared/configs/image-widths";
 import {IImagePageComponent} from "../../types/type";
 
 export default function Image(props: IPageComponentViewProps<IImagePageComponent>) {
@@ -11,9 +12,9 @@ export default function Image(props: IPageComponentViewProps<IImagePageComponent
   return (
     <Flex vertical gap="small">
       <AntImage
-        src={getFileAssetUrl(props.component.imageSlug) ?? "/missing-image.webp"}
+        {...getFileImageProps(props.component.imageSlug, BLOCK_IMAGE_SIZES[props.component.width])}
         fallback="/missing-image.webp"
-        alt={props.component.caption}
+        alt={props.component.alt || props.component.caption || ""}
         width="100%"
         loading="lazy"
         preview={props.component.imageSlug != null}

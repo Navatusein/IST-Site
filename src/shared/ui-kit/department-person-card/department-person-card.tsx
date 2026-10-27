@@ -1,9 +1,10 @@
 import {Card, Col, Flex, Image} from "antd";
 import {ReactNode} from "react";
-import {getFileAssetUrl} from "@/shared/utilities/file-urls";
+import {getFileImageProps} from "@/shared/utilities/file-urls";
 
 interface IProps {
   imageSlug?: string;
+  name: string;
   children: ReactNode;
 }
 
@@ -17,8 +18,9 @@ export default function DepartmentPersonCard(props: IProps) {
         styles={{body: {height: "100%"}}}
         cover={
           <Image
-            src={getFileAssetUrl(props.imageSlug) ?? "/missing-image.webp"}
+            {...getFileImageProps(props.imageSlug, "(max-width: 576px) 100vw, (max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw")}
             fallback="/missing-image.webp"
+            alt={props.name}
             preview={false}
             height={350}
             style={{objectFit: "cover", borderRadius: " 8px 8px 0 0", aspectRatio: "3 \ 4", filter: "grayscale(100%)"}}

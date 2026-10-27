@@ -3,7 +3,7 @@ import formatDate from "@/shared/utilities/format-date";
 import {INews} from "../../types/type";
 import styles from "./news-card.module.scss";
 import Link from "next/link";
-import {getFileAssetUrl} from "@/shared/utilities/file-urls";
+import {getFileImageProps} from "@/shared/utilities/file-urls";
 
 interface IProps {
   news: INews;
@@ -33,7 +33,8 @@ export default function NewsCard(props: IProps) {
         </Flex>
         <Flex className={styles.imageContainer}>
           <Image
-            src={getFileAssetUrl(props.news.imageSlug) ?? "/missing-image.webp"}
+            {...getFileImageProps(props.news.imageSlug, "(max-width: 768px) 100vw, 33vw")}
+            alt={props.news.title}
             width={"100%"}
             className={styles.image}
             loading="lazy"

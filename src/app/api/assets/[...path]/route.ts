@@ -3,6 +3,8 @@ import {createReadStream} from "node:fs";
 import {Readable} from "node:stream";
 import {FileManagerService} from "@/entities/file/services/file-manager-service";
 import {isIndexingAllowed, NO_INDEX_HEADER, ROBOTS_HEADER} from "@/shared/configs/indexing";
+import {FileImageService} from "@/entities/file/services/file-image-service";
+import {isImageWidth} from "@/shared/configs/image-widths";
 
 const PASSIVE_CONTENT_TYPES = /^(image\/(?!svg\+xml)[\w.+-]+|video\/[\w.+-]+|audio\/[\w.+-]+|application\/pdf|text\/plain)(;|$)/i;
 
@@ -46,6 +48,19 @@ export async function GET(request: NextRequest, {params}: {params: Promise<{path
     ...(!PASSIVE_CONTENT_TYPES.test(file.mimeType) && {"Content-Security-Policy": SANDBOX_POLICY}),
     ...(!isIndexingAllowed() && {[ROBOTS_HEADER]: NO_INDEX_HEADER})
   };
+
+  const width = Number(request.nextUrl.searchParams.get("w"));
+
+  const image = disposition == "inline" && isImageWidth(width) && FileImageService.isResizable(file) ?
+    await FileImageService.getResized(file, width) :
+    null;
+
+  if (image) {
+    return new NextResponse(Readable.toWeb(createReadStream(image.path)) as ReadableStream, {
+      status: 200,
+      headers: {...headers, "Content-Type": image.mimeType, "Content-Length": String(image.size), "Accept-Ranges": "none"}
+    });
+  }
 
   const rangeHeader = request.headers.get("range");
   const range = rangeHeader ? parseRange(rangeHeader, file.size) : undefined;

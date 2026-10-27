@@ -6,5 +6,6 @@ export interface IImagePageComponent extends IBasePageComponent {
   componentType: "image";
   imageSlug?: string;
   caption?: string;
+  alt?: string;
   aspectRatio: ImageAspectRatio;
 }

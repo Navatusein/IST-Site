@@ -1,7 +1,7 @@
 import {Card, Col, Flex, Image, Row, Typography} from "antd";
 import {RichTextRenderer} from "@/features/rich-text-renderer";
 import {IPageComponentViewProps} from "@/entities/dynamic-page/model";
-import {getFileAssetUrl} from "@/shared/utilities/file-urls";
+import {getFileImageProps} from "@/shared/utilities/file-urls";
 import FastLink from "../fast-link/fast-link";
 import Statistic from "../statistic/statistic";
 import {IHeroSectionMainPageComponent} from "../../types/type";
@@ -12,13 +12,13 @@ export default function HeroSectionMain(props: IPageComponentViewProps<IHeroSect
     <Flex vertical>
       <Flex vertical className={styles.titleBaseContainer}>
         <Image
-          src={getFileAssetUrl(props.component.imageSlug) ?? "/missing-image.webp"}
+          {...getFileImageProps(props.component.imageSlug, "100vw")}
           fallback="/missing-image.webp"
+          alt=""
           preview={false}
           height={props.component.imageHeight}
           width={"100%"}
           className={styles.image}
-          loading={"lazy"}
         />
         <Flex vertical gap="small" className={styles.titleFlexContainer}>
           <Typography.Title level={1} className={styles.titleTypography}>

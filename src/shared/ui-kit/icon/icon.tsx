@@ -29,6 +29,7 @@ export default function Icon(props: IProps) {
       >
         <Image
           src="/icon.webp"
+          alt=""
           preview={false}
           style={{width: props.iconSize ?? "48px", height: props.iconSize ?? "48px"}}
           loading={"lazy"}

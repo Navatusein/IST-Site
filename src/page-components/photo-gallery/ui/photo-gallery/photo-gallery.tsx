@@ -1,7 +1,7 @@
 import {useMemo} from "react";
 import {Empty, Flex, Image, Masonry, theme, Typography} from "antd";
 import {IPageComponentViewProps} from "@/entities/dynamic-page/model";
-import {getFileAssetUrl} from "@/shared/utilities/file-urls";
+import {getFileImageProps} from "@/shared/utilities/file-urls";
 import {IPhotoGalleryPageComponent, IPhotoGalleryPhoto} from "../../types/type";
 
 export default function PhotoGallery(props: IPageComponentViewProps<IPhotoGalleryPageComponent>) {
@@ -27,9 +27,9 @@ export default function PhotoGallery(props: IPageComponentViewProps<IPhotoGaller
         itemRender={({data}) => (
           <Flex vertical gap={4}>
             <Image
-              src={getFileAssetUrl(data.imageSlug)}
+              {...getFileImageProps(data.imageSlug, `(max-width: 576px) 100vw, (max-width: 992px) 50vw, ${Math.round(100 / columns)}vw`)}
               fallback="/missing-image.webp"
-              alt={data.caption}
+              alt={data.alt || data.caption || ""}
               width="100%"
               loading="lazy"
               style={{borderRadius: borderRadiusLG, display: "block"}}

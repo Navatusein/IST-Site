@@ -13,7 +13,7 @@ export default function DepartmentStaffList(props: IPageComponentViewProps<IDepa
     <Row gutter={[paddingLG, paddingLG]} justify="center">
       <ConfigProvider theme={{token: {screenMDMin: 900, screenXLMin: 1300}}}>
         {departmentStaffs.map((departmentStaff) => (
-          <DepartmentPersonCard imageSlug={departmentStaff.imageSlug} key={String(departmentStaff._id)}>
+          <DepartmentPersonCard imageSlug={departmentStaff.imageSlug} name={`${departmentStaff.lastName} ${departmentStaff.firstName} ${departmentStaff.middleName}`} key={String(departmentStaff._id)}>
             <Flex vertical>
               <Typography.Title level={4} style={{margin: 0}}>
                 {`${departmentStaff.lastName} ${departmentStaff.firstName} ${departmentStaff.middleName}`}
