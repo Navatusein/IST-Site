@@ -10,6 +10,9 @@ import type {IServableFile} from "./file-manager-service";
 // Not in public/files, which Next serves statically
 const CACHE_DIRECTORY = path.join(os.tmpdir(), "ist-site-images");
 
+// Bumped when copies are made differently, so old ones are not served
+const CACHE_VERSION = "v2";
+
 const RESIZABLE_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/avif"]);
 
 export interface IResizedImage {
@@ -23,12 +26,18 @@ export class FileImageService {
     return RESIZABLE_TYPES.has(file.mimeType.toLowerCase());
   }
 
-  // null when the copy is not smaller than the original (already small and compressed)
+  // null when the original should be sent: it is not wider than `width` (re-encoding it would only lose quality) or the copy is not smaller
   public static async getResized(file: IServableFile, width: ImageWidth): Promise<IResizedImage | null> {
     const {mtimeMs} = await fsp.stat(file.storagePath);
-    const cachePath = path.join(CACHE_DIRECTORY, `${path.basename(file.storagePath)}-${Math.floor(mtimeMs)}-${width}.webp`);
+    const cachePath = path.join(CACHE_DIRECTORY, `${CACHE_VERSION}-${path.basename(file.storagePath)}-${Math.floor(mtimeMs)}-${width}.webp`);
 
     if (!fs.existsSync(cachePath)) {
+      const metadata = await sharp(file.storagePath).metadata();
+      const originalWidth = (metadata.orientation ?? 1) >= 5 ? metadata.height : metadata.width;
+
+      if (!originalWidth || originalWidth <= width)
+        return null;
+
       await fsp.mkdir(CACHE_DIRECTORY, {recursive: true});
 
       // Parallel requests for the same copy must not read a half-written file
@@ -36,8 +45,8 @@ export class FileImageService {
 
       await sharp(file.storagePath)
         .rotate()
-        .resize({width, withoutEnlargement: true})
-        .webp({quality: 80})
+        .resize({width})
+        .webp({quality: 85, smartSubsample: true})
         .toFile(temporaryPath);
 
       await fsp.rename(temporaryPath, cachePath);
