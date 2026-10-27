@@ -18,6 +18,7 @@ export default async function Layout(props: IProps) {
 
   return (
     <>
+      <link rel="alternate" type="application/rss+xml" title={`Новини — ${siteSettings.siteShortName}`} href="/rss.xml"/>
       <JsonLd data={organizationStructuredData(siteSettings)}/>
       <PublicPageLayout menuItems={menuItems} siteSettings={siteSettings}>
         {props.children}

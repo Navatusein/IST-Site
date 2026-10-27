@@ -8,7 +8,7 @@ import {getFileNamedAssetUrl} from "@/shared/utilities/file-urls";
 import {findFileSlugs} from "../utilities/find-file-slugs";
 import {createServerAction} from "@/shared/utilities/create-server-action";
 import {cachePublicData} from "@/shared/utilities/cache-public-data";
-import {ISitemapEntry} from "../types/type";
+import {INewsFeedItem, ISitemapEntry} from "../types/type";
 import {getRecordPublicPath} from "@/shared/utilities/public-paths";
 import type {RevisionCollection} from "@/shared/types/revision";
 
@@ -50,3 +50,19 @@ export const getSitemapEntriesAction = createServerAction<ISitemapEntry[]>(cache
   ];
 }));
 
+const NEWS_FEED_SIZE = 30;
+
+export const getNewsFeedAction = createServerAction<INewsFeedItem[]>(cachePublicData("getNewsFeedAction", async () => {
+  const news = await NewsModel.find({}, {title: 1, description: 1, path: 1, date: 1, imageSlug: 1})
+    .sort({date: -1})
+    .limit(NEWS_FEED_SIZE)
+    .lean<(INewsFeedItem & {date: unknown})[]>();
+
+  return news.map((item) => ({
+    title: item.title,
+    description: item.description,
+    path: `/news/${item.path}`,
+    date: new Date(item.date as string).toISOString(),
+    imageSlug: item.imageSlug
+  }));
+}));

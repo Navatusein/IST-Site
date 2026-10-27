@@ -1,5 +1,5 @@
-import {getSitemapEntriesAction} from "./actions/actions";
-import type {ISitemapEntry} from "./types/type";
+import {getNewsFeedAction, getSitemapEntriesAction} from "./actions/actions";
+import type {INewsFeedItem, ISitemapEntry} from "./types/type";
 
-export type {ISitemapEntry};
-export {getSitemapEntriesAction};
+export type {INewsFeedItem, ISitemapEntry};
+export {getNewsFeedAction, getSitemapEntriesAction};

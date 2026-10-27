@@ -96,6 +96,6 @@ export default async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!api/|_next/|icon\\.webp|missing-image\\.webp|red-corps\\.webp|favicon\\.ico|robots\\.txt|sitemap\\.xml).*)"
+    "/((?!api/|_next/|icon\\.webp|missing-image\\.webp|red-corps\\.webp|favicon\\.ico|robots\\.txt|sitemap\\.xml|rss\\.xml).*)"
   ],
 }
