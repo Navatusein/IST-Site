@@ -10,6 +10,7 @@ import Link from "next/link";
 
 interface IProps {
   navMenuItems:  ItemType[];
+  selectedKeys: string[];
 }
 
 export default function VerticalNavMenu(props: IProps) {
@@ -51,6 +52,7 @@ export default function VerticalNavMenu(props: IProps) {
         <Menu
           mode="inline"
           items={props.navMenuItems}
+          selectedKeys={props.selectedKeys}
           onSelect={() => setIsOpen(() => false)}
         />
         <Flex vertical style={{padding: `${padding}px ${paddingLG}px`}}>

@@ -9,6 +9,7 @@ import {useUserPermissions} from "@/entities/user/hooks/useUserPermissions";
 
 interface IProps {
   navMenuItems:  ItemType[];
+  selectedKeys: string[];
 }
 
 export default function HorizontalNavMenu(props: IProps) {
@@ -21,6 +22,7 @@ export default function HorizontalNavMenu(props: IProps) {
         style={{borderBottom: "none", minWidth: 0, flex: "auto", justifyContent: "center"}}
         mode="horizontal"
         items={props.navMenuItems}
+        selectedKeys={props.selectedKeys}
       />
       <Flex gap="small" justify="center" align="center">
         {isAuthorized ?

@@ -4,6 +4,8 @@ import React, {useMemo} from "react";
 import {IPublicMenuItem} from "@/entities/public-menu-item";
 import {ItemType} from "antd/lib/menu/interface";
 import Link from "next/link";
+import {usePathname} from "next/navigation";
+import {getSelectedMenuKeys} from "../../model/get-selected-menu-keys";
 import VerticalNavMenu from "../vertical-nav-menu/vertical-nav-menu";
 import HorizontalNavMenu from "../horizontal-nav-menu/horizontal-nav-menu";
 import styles from "./public-nav-menu.module.scss";
@@ -26,13 +28,16 @@ export default function PublicNavMenu(props: IProps) {
     return mapToTreeData(props.menuItems);
   }, [props.menuItems]);
 
+  const pathname = usePathname();
+  const selectedKeys = useMemo(() => getSelectedMenuKeys(props.menuItems, pathname), [props.menuItems, pathname]);
+
   return (
     <>
       <div className={styles.horizontal}>
-        <HorizontalNavMenu navMenuItems={navMenuItems}/>
+        <HorizontalNavMenu navMenuItems={navMenuItems} selectedKeys={selectedKeys}/>
       </div>
       <div className={styles.vertical}>
-        <VerticalNavMenu navMenuItems={navMenuItems}/>
+        <VerticalNavMenu navMenuItems={navMenuItems} selectedKeys={selectedKeys}/>
       </div>
     </>
   )
