@@ -7,6 +7,7 @@ import {ISiteSettingsData} from "@/entities/site-settings";
 import {PublicHeader} from "@/widgets/public-header";
 import {PublicFooter} from "@/widgets/public-footer";
 import SessionProvider from "@/app/provider/session-provider/session-provider";
+import {NavigationProgress} from "@/shared/ui-kit";
 
 interface IProps {
   children: ReactNode;
@@ -17,6 +18,7 @@ interface IProps {
 export default function PublicPageLayout(props: IProps) {
   return (
     <SessionProvider>
+      <NavigationProgress/>
       <Layout>
         <PublicHeader menuItems={props.menuItems}/>
         <Layout.Content style={{contain: "paint", minHeight: "calc(100svh - 60px)"}}>

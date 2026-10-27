@@ -81,7 +81,7 @@ export default async function proxy(request: NextRequest) {
   if (pathname == "/admin" || pathname.startsWith("/admin/"))
     return guardAdmin(request);
 
-  // Old addresses of pages whose path was changed; here and not in the page, which would answer 200 before redirecting
+  // Old addresses of pages whose path was changed
   const decodedPath = safeDecode(pathname);
 
   if ((request.method == "GET" || request.method == "HEAD") && decodedPath && isPublicPath(decodedPath.slice(1))) {
