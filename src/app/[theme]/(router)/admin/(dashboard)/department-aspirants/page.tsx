@@ -1,8 +1,11 @@
+import {Metadata} from "next";
 import {getDepartmentAspirantsPageAction} from "@/entities/department-aspirant/actions/actions";
 import {AdminDepartmentAspirantCrudView} from "@/views/admin-department-aspirant-crud";
 import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 import parsePageQuery from "@/shared/utilities/parse-page-query";
 import {getDepartmentStaffAction} from "@/entities/department-staff/actions/actions";
+
+export const metadata: Metadata = {title: "Аспіранти кафедри"};
 
 interface IProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;

@@ -1,8 +1,11 @@
+import {Metadata} from "next";
 import {getDynamicPagesPageAction} from "@/entities/dynamic-page/actions/actions";
 import {AdminDynamicPageCrudView} from "@/views/admin-dynamic-page-crud";
 import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 import parsePageQuery from "@/shared/utilities/parse-page-query";
 import {getSiteLinksAction} from "@/features/site-links";
+
+export const metadata: Metadata = {title: "Динамічні сторінки"};
 
 interface IProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;

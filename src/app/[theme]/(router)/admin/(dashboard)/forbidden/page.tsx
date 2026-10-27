@@ -1,13 +1,10 @@
-"use client"
+import {Metadata} from "next";
+import {AdminForbiddenView} from "@/views/admin-forbidden";
 
-import {Result} from "antd";
+export const metadata: Metadata = {title: "Доступ заборонено"};
 
 export default function Page() {
   return (
-    <Result
-      status="403"
-      title="Доступ заборонено"
-      subTitle="У вас недостатньо прав для перегляду цієї сторінки."
-    />
+    <AdminForbiddenView/>
   );
 }

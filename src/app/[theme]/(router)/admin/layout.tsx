@@ -1,8 +1,13 @@
 import {ReactNode} from "react";
+import {Metadata} from "next";
 import {getCurrentUser} from "@/auth";
 import SessionProvider from "@/app/provider/session-provider/session-provider";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: {default: "Адмінпанель", template: "%s — Адмінпанель"}
+};
 
 interface IProps {
   children: ReactNode;
