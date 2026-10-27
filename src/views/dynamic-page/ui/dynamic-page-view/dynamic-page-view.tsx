@@ -11,6 +11,6 @@ interface IProps {
 
 export default function DynamicPageView(props: IProps) {
   return (
-    <DynamicPageRenderer entities={props.page.entities} componentsData={props.componentsData}/>
+    <DynamicPageRenderer entities={props.page.entities} componentsData={props.componentsData} mainHeading={props.page.title || props.page.name}/>
   )
 }

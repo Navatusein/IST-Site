@@ -14,7 +14,7 @@ interface IProps {
 }
 
 export default function DepartmentStaffView(props: IProps) {
-  const {token: {paddingLG, padding, paddingXS, borderRadius}} = theme.useToken();
+  const {token: {paddingLG, padding, paddingXS, borderRadius, fontSizeHeading4, lineHeightHeading4}} = theme.useToken();
 
   return (
     <ComponentCol width="medium">
@@ -39,7 +39,7 @@ export default function DepartmentStaffView(props: IProps) {
             />
             <Card variant="borderless">
               <Flex vertical>
-                <Typography.Title level={4} style={{margin: 0}}>
+                <Typography.Title level={1} style={{margin: 0, fontSize: fontSizeHeading4, lineHeight: lineHeightHeading4}}>
                   {`${props.departmentStaff.lastName} ${props.departmentStaff.firstName} ${props.departmentStaff.middleName}`}
                 </Typography.Title>
                 <Typography.Text strong style={{margin: 0}}>

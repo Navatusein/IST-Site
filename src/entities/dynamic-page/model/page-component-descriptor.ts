@@ -24,6 +24,8 @@ export interface IPageComponentDescriptor<T extends IBasePageComponent = IBasePa
   View: ComponentType<IPageComponentViewProps<T, D>>;
   Editor?: ComponentType<IPageComponentEditorProps<T>>;
   loadData?: (component: T) => Promise<IServerActionResult<D>>;
+  // Texts of the h1 headings the block renders
+  getMainHeadings?: (component: T) => string[];
 }
 
 export type AnyPageComponentDescriptor = IPageComponentDescriptor<any, any>;

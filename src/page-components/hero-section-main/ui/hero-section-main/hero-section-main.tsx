@@ -21,7 +21,7 @@ export default function HeroSectionMain(props: IPageComponentViewProps<IHeroSect
           loading={"lazy"}
         />
         <Flex vertical gap="small" className={styles.titleFlexContainer}>
-          <Typography.Title className={styles.titleTypography}>
+          <Typography.Title level={1} className={styles.titleTypography}>
             {props.component.department}
           </Typography.Title>
           <Typography.Title level={3} className={styles.titleTypography}>

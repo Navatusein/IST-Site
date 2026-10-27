@@ -11,7 +11,7 @@ export default function TitleEditor(props: IPageComponentEditorProps<ITitlePageC
           label="Рівень заголовку"
           name="level"
           style={{marginBottom: 0}}
-          extra="Чим менший рівень, тим більший заголовок"
+          extra="Чим менший рівень, тим більший заголовок; 1 рівень — головний заголовок сторінки, він має бути один"
         >
           <Select options={[
             {label: "Рівень 1", value: 1},

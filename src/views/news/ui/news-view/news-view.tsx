@@ -15,13 +15,13 @@ interface IProps {
 }
 
 export default function NewsView(props: IProps) {
-  const {token: {borderRadius, padding}} = theme.useToken();
+  const {token: {borderRadius, padding, fontSizeHeading3, lineHeightHeading3}} = theme.useToken();
 
   return (
     <Flex vertical gap="middle" style={{marginBottom: padding}}>
       <ComponentCol width="small">
         <Flex vertical style={{margin: `${padding}px 0`}}>
-          <Typography.Title level={3} style={{margin: 0}}>
+          <Typography.Title level={1} style={{margin: 0, fontSize: fontSizeHeading3, lineHeight: lineHeightHeading3}}>
             {props.news.title}
           </Typography.Title>
           <Typography.Text type="secondary">

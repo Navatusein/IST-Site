@@ -19,5 +19,6 @@ export const titlePageComponent = definePageComponent<ITitlePageComponent>({
     title: "Заголовок"
   },
   View: Title,
+  getMainHeadings: (component) => component.level == 1 ? [component.title] : [],
   Editor: TitleEditor
 });

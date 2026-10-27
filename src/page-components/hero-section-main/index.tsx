@@ -3,6 +3,7 @@ import {IHeroSectionMainFastLink, IHeroSectionMainPageComponent, IHeroSectionMai
 import {definePageComponent} from "@/entities/dynamic-page/model";
 import dynamic from "next/dynamic";
 import {Skeleton} from "antd";
+import getRichTextHeadings from "@/shared/utilities/rich-text-headings";
 
 const HeroSectionMainEditor = dynamic(() => import("./ui/hero-section-main-editor/hero-section-main-editor"), {loading: () => <Skeleton active/>});
 
@@ -34,5 +35,6 @@ export const heroSectionMainPageComponent = definePageComponent<IHeroSectionMain
     ]
   },
   View: HeroSectionMain,
+  getMainHeadings: (component) => [component.department, ...getRichTextHeadings(component.text, 1)],
   Editor: HeroSectionMainEditor
 });

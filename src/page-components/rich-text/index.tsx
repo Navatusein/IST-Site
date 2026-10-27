@@ -3,6 +3,7 @@ import {IRichTextPageComponent} from "./types/type";
 import {definePageComponent} from "@/entities/dynamic-page/model";
 import dynamic from "next/dynamic";
 import {Skeleton} from "antd";
+import getRichTextHeadings from "@/shared/utilities/rich-text-headings";
 
 const RichTextEditor = dynamic(() => import("./ui/rich-text-editor/rich-text-editor"), {loading: () => <Skeleton active/>});
 
@@ -18,5 +19,6 @@ export const richTextPageComponent = definePageComponent<IRichTextPageComponent>
     text: "{\"type\":\"doc\",\"content\":[{\"type\":\"paragraph\",\"content\":[{\"type\":\"text\",\"text\":\"Текст\"}]}]}"
   },
   View: RichText,
+  getMainHeadings: (component) => getRichTextHeadings(component.text, 1),
   Editor: RichTextEditor
 });

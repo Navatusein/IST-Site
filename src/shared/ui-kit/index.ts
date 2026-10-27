@@ -9,6 +9,7 @@ import FullScreenModal from "./full-screen-modal/full-screen-modal";
 import ErrorBoundary from "./error-boundary/error-boundary";
 import EditorForm from "./editor-form/editor-form";
 import {EditorFormHostContext, useEditorFormHost} from "./editor-form/editor-form-host";
+import HiddenHeading from "./hidden-heading/hidden-heading";
 import FormSortableList from "./form-sortable-list/form-sortable-list";
 import {DraggableList, moveItem} from "./draggable-list";
 
@@ -26,6 +27,7 @@ export {
   EditorFormHostContext,
   useEditorFormHost,
   FormSortableList,
+  HiddenHeading,
   DraggableList,
   moveItem
 };
