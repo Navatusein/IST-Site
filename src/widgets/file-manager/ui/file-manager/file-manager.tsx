@@ -1,6 +1,7 @@
 "use client"
 
-import {Space} from "antd";
+import {Flex} from "antd";
+import fillHeight from "@/shared/styles/fill-height.module.scss";
 import {useState} from "react";
 import {useQueryState} from "nuqs";
 import {IFileEntry} from "@/entities/file";
@@ -48,7 +49,7 @@ export default function FileManager() {
             openRename: (entry) => setNameModal(() => ({mode: "rename", entry}))
           }}
         >
-          <Space orientation="vertical" size="middle" style={{width: "100%"}}>
+          <Flex vertical gap="middle" className={fillHeight.fill}>
             {entriesInMemory.length != 0 && (
               <ClipboardBar entries={entriesInMemory} isCut={entriesInMemoryCut} onClear={() => setEntriesInMemory(() => [])}/>
             )}
@@ -62,7 +63,7 @@ export default function FileManager() {
             <FileDropZone>
               <FileManagerExplorer openFolder={openFolder} preview={setPreviewEntry}/>
             </FileDropZone>
-          </Space>
+          </Flex>
           <EntryNameModal state={nameModal} onClose={() => setNameModal(() => null)}/>
           <FilePreviewModal file={previewEntry} onClose={() => setPreviewEntry(() => null)}/>
         </EntryNameModalContext>

@@ -1,5 +1,5 @@
 import {IDynamicPage} from "@/entities/dynamic-page";
-import {Button, Space, TableColumnsType, Tooltip, Tag} from "antd";
+import {Button, TableColumnsType, Tooltip, Tag} from "antd";
 import {CrudComponent, timestampColumns} from "@/widgets/crud-component";
 import {useMemo, useState} from "react";
 import {addDynamicPageAction,
@@ -126,7 +126,7 @@ export default function DynamicPageCrud(props: IProps) {
   }
 
   return (
-    <Space orientation="vertical" size="middle" style={{width: "100%"}}>
+    <>
       <CrudComponent<IDynamicPage>
         title="Динамічні сторінки"
         description="Сторінки сайту з блоків. Двічі натисніть на рядок, щоб змінити назву, заголовок і шлях, «Редагувати контент» — блоки сторінки. «Посилань» — скільки сторінок і пунктів меню ведуть на сторінку"
@@ -203,6 +203,6 @@ export default function DynamicPageCrud(props: IProps) {
       />
       <PageLinksModal graph={props.siteLinks} pageKey={linksPageKey} onClose={() => setLinksPageKey(null)}/>
       <SiteLinksCheckModal graph={props.siteLinks} open={isLinksCheckOpen} onClose={() => setIsLinksCheckOpen(false)}/>
-    </Space>
+    </>
   )
 }

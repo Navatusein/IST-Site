@@ -13,6 +13,7 @@ import {deleteFromTrashAction, emptyTrashAction, getTrashAction, restoreFromTras
 import {REVISION_TABLES} from "../../model/revision-tables";
 import {ActionBar} from "@/shared/ui-kit";
 import {ACTION_BAR_HEIGHT} from "@/shared/ui-kit/action-bar/action-bar";
+import fillHeight from "@/shared/styles/fill-height.module.scss";
 
 const PAGE_SIZE = 20;
 const DAY = 24 * 60 * 60 * 1000;
@@ -190,7 +191,7 @@ export default function TrashList() {
   ];
 
   return (
-    <Flex vertical gap="middle">
+    <Flex vertical gap="middle" className={fillHeight.fill}>
       {selectedIds.length != 0 ? (
         <ActionBar>
           <Typography.Text strong style={{marginRight: token.paddingXS}}>Вибрано: {selectedIds.length}</Typography.Text>
@@ -256,7 +257,8 @@ export default function TrashList() {
         columns={columns}
         dataSource={trash?.items ?? []}
         loading={isLoading}
-        scroll={{x: 800}}
+        className={fillHeight.table}
+        scroll={{x: 800, y: "100%"}}
         tableLayout="fixed"
         rowSelection={{selectedRowKeys: selectedIds, onChange: (keys) => setSelectedIds(keys.map(String))}}
         locale={{emptyText: "Кошик порожній"}}

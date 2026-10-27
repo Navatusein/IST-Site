@@ -1,6 +1,7 @@
 "use client"
 
 import style from "./file-explorer.module.scss";
+import fillHeight from "@/shared/styles/fill-height.module.scss";
 import {App, Breadcrumb, Flex, Space, Table, TableColumnsType, Typography} from "antd";
 import {DragEvent, ReactNode, useContext, useEffect, useState} from "react";
 import {FolderOutlined, RollbackOutlined} from "@ant-design/icons";
@@ -17,6 +18,8 @@ interface IProps {
   onPreview?: (entry: IFileEntry) => void;
   renderActions?: (entry: IFileEntry) => ReactNode;
   onMove?: (slugs: string[], targetSlug: string | null) => void;
+  // Fill the height of the parent (a flex column): the breadcrumbs and the table header stay, the rows scroll
+  fillHeight?: boolean;
 }
 
 interface IExplorerRow extends IFileEntry {
@@ -241,7 +244,7 @@ export default function FileExplorer(props: IProps) {
   ] : COLUMNS;
 
   return (
-    <Flex vertical gap="small">
+    <Flex vertical gap="small" className={props.fillHeight ? fillHeight.fill : undefined}>
       <Breadcrumb
         items={breadcrumbs.map((breadcrumb, index) => ({
           title: index == breadcrumbs.length - 1 ?
@@ -266,7 +269,8 @@ export default function FileExplorer(props: IProps) {
         rowHoverable={true}
         rowKey="slug"
         pagination={false}
-        scroll={{x: "auto"}}
+        className={props.fillHeight ? fillHeight.table : undefined}
+        scroll={{x: "auto", y: props.fillHeight ? "100%" : undefined}}
         loading={loading}
         rowSelection={{
           type: props.selectorType ?? "checkbox",

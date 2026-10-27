@@ -15,6 +15,7 @@ import {useCrudImportExport} from "../../hooks/use-crud-import-export";
 import {useServerTableQuery} from "../../hooks/use-server-table-query";
 import {PAGE_SIZE_OPTIONS} from "@/shared/types/page-query";
 import {AdminPageHeader} from "@/shared/ui-kit";
+import fillHeight from "@/shared/styles/fill-height.module.scss";
 
 interface IProps<T extends object> {
   title: string;
@@ -54,7 +55,6 @@ const DRAWER_TITLES: Record<CrudDrawerMode, string> = {
   edit: "Редагувати"
 };
 
-const SERVICE_FIELDS = ["__v", "createdAt", "updatedAt"];
 function getFillColumnKeys<T>(columns: TableColumnsType<T>, fillColumns: number | string[] = 1): string[] {
   if (Array.isArray(fillColumns))
     return fillColumns;
@@ -65,6 +65,7 @@ function getFillColumnKeys<T>(columns: TableColumnsType<T>, fillColumns: number 
     .map((column) => String(column.key));
 }
 
+const SERVICE_FIELDS = ["__v", "createdAt", "updatedAt"];
 
 const FORM_QUERY = {
   create: parseAsBoolean,
@@ -333,7 +334,7 @@ export default function CrudComponent<T extends object>(props: IProps<T>) {
   ];
 
   return (
-    <Flex vertical gap="middle" style={{width: "100%"}}>
+    <Flex vertical gap="middle" className={fillHeight.fill} style={{width: "100%"}}>
       <AdminPageHeader
         title={props.title}
         description={props.description}

@@ -1,6 +1,7 @@
 "use client"
 
 import {Card} from "antd";
+import fillHeight from "@/shared/styles/fill-height.module.scss";
 import type {IDynamicPage} from "@/entities/dynamic-page";
 import {IPageResult} from "@/shared/types/page-query";
 import type {ISiteLinksGraph} from "@/features/site-links";
@@ -13,7 +14,7 @@ interface IProps {
 
 export default function AdminDynamicPageCrudView(props: IProps) {
   return (
-    <Card variant="borderless">
+    <Card variant="borderless" className={fillHeight.page}>
       <DynamicPageCrud result={props.result} siteLinks={props.siteLinks}/>
     </Card>
   )

@@ -1,6 +1,6 @@
 import {useMemo, useState} from "react";
 import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
-import {Space, TableColumnsType, Tag} from "antd";
+import {TableColumnsType, Tag} from "antd";
 import {CrudComponent, timestampColumns} from "@/widgets/crud-component";
 import {dateStringSorter, stringSorter} from "@/shared/utilities/sorters";
 import {IDepartmentAspirant} from "@/entities/department-aspirant";
@@ -122,7 +122,7 @@ export default function DepartmentAspirantCrud(props: IProps) {
   }
 
   return (
-    <Space orientation="vertical" size="middle" style={{width: "100%"}}>
+    <>
       <CrudComponent<IDepartmentAspirant>
         title="Аспіранти кафедри"
         description="Аспіранти, теми їхніх дисертацій і наукові керівники для списку аспірантів на сайті"
@@ -164,6 +164,6 @@ export default function DepartmentAspirantCrud(props: IProps) {
         mode="record"
         onRestored={() => router.refresh()}
       />
-    </Space>
+    </>
   )
 }

@@ -2,6 +2,7 @@ import {Key, MouseEvent} from "react";
 import {Table, TableColumnsType, TablePaginationConfig} from "antd";
 import {SorterResult} from "antd/es/table/interface";
 import {useLocalStorage} from "@/shared/hooks/use-local-storage";
+import fillHeight from "@/shared/styles/fill-height.module.scss";
 import ResizableHeaderCell, {IResizableHeaderCellProps} from "../resizable-header-cell/resizable-header-cell";
 
 interface IProps<T extends object> {
@@ -87,7 +88,8 @@ export default function CrudTable<T extends object>(props: IProps<T>) {
       dataSource={props.data}
       loading={props.isLoading}
       size="small"
-      scroll={{x: scrollX}}
+      className={fillHeight.table}
+      scroll={{x: scrollX, y: "100%"}}
       tableLayout="fixed"
       rowKey={props.keyField}
       pagination={props.pagination}

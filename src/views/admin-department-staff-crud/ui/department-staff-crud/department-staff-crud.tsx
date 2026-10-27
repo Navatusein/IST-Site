@@ -1,7 +1,7 @@
 import {useRouter} from "next/navigation";
 import {useState} from "react";
 import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
-import {Space, TableColumnsType, Tag} from "antd";
+import {TableColumnsType, Tag} from "antd";
 import {CrudComponent, timestampColumns} from "@/widgets/crud-component";
 import {FormOutlined, HistoryOutlined} from "@ant-design/icons";
 import {stringSorter} from "@/shared/utilities/sorters";
@@ -115,7 +115,7 @@ export default function DepartmentStaffCrud(props: IProps) {
   }
 
   return (
-    <Space orientation="vertical" size="middle" style={{width: "100%"}}>
+    <>
       <CrudComponent<IDepartmentStaff>
         title="Співробітники кафедри"
         description="Викладачі та співробітники для списку на сайті й окремих сторінок профілів. Двічі натисніть на рядок, щоб змінити ім'я, посаду, фото й шлях, «Редагувати контент» — блоки сторінки профілю"
@@ -164,6 +164,6 @@ export default function DepartmentStaffCrud(props: IProps) {
         mode="record"
         onRestored={() => router.refresh()}
       />
-    </Space>
+    </>
   )
 }

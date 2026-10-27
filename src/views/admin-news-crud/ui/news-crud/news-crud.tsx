@@ -1,5 +1,5 @@
 import {INews} from "@/entities/news";
-import {Space, TableColumnsType, Tag} from "antd";
+import {TableColumnsType, Tag} from "antd";
 import {useRouter} from "next/navigation";
 import {useState} from "react";
 import {CrudComponent, timestampColumns} from "@/widgets/crud-component";
@@ -100,7 +100,7 @@ export default function NewsCrud(props: IProps) {
   }
 
   return (
-    <Space orientation="vertical" size="middle" style={{width: "100%"}}>
+    <>
       <CrudComponent<INews>
         title="Новини"
         description="Новини на сайті. Двічі натисніть на рядок, щоб змінити заголовок, дату, зображення й шлях, «Редагувати контент» — текст і блоки новини"
@@ -148,6 +148,6 @@ export default function NewsCrud(props: IProps) {
         mode="record"
         onRestored={() => router.refresh()}
       />
-    </Space>
+    </>
   )
 }

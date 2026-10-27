@@ -19,12 +19,12 @@ export default function AdminLayout(props: IProps) {
 
   return (
     <AdminMenuSideContextProvider>
-      <Flex style={{maxHeight: "100dvh", width: "100dvw"}}>
+      <Flex style={{height: "100dvh", width: "100dvw"}}>
         <AdminSideMenu/>
-        <Flex vertical style={{width: "100%", overflowX: "hidden"}}>
+        <Flex vertical style={{width: "100%", minWidth: 0, overflowX: "hidden"}}>
           <AdminHeader/>
-          <Layout style={{overflow: "hidden auto"}}>
-            <Layout.Content style={{padding: `${padding}px`, minHeight: "fit-content"}}>
+          <Layout style={{flex: "1 1 0", minHeight: 0, overflow: "hidden"}}>
+            <Layout.Content style={{padding: `${padding}px`, flex: "1 1 0", minHeight: 0, overflow: "hidden auto", display: "flex", flexDirection: "column"}}>
               {props.children}
             </Layout.Content>
           </Layout>

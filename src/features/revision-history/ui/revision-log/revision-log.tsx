@@ -15,6 +15,7 @@ import {REVISION_TABLES} from "../../model/revision-tables";
 import {describeChanges} from "../../utilities/describe-changes";
 import RevisionHistoryDrawer from "../revision-history-drawer/revision-history-drawer";
 import LogItemCompare from "../log-item-compare/log-item-compare";
+import fillHeight from "@/shared/styles/fill-height.module.scss";
 
 const PAGE_SIZE = 20;
 
@@ -147,7 +148,7 @@ export default function RevisionLog() {
   ];
 
   return (
-    <Flex vertical gap="middle">
+    <Flex vertical gap="middle" className={fillHeight.fill}>
       <Flex gap="small" wrap align="center">
         <Input
           placeholder="Назва запису"
@@ -194,7 +195,8 @@ export default function RevisionLog() {
         columns={columns}
         dataSource={log?.items ?? []}
         loading={isLoading}
-        scroll={{x: 900}}
+        className={fillHeight.table}
+        scroll={{x: 900, y: "100%"}}
         tableLayout="fixed"
         expandable={{
           expandRowByClick: true,

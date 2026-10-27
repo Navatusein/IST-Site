@@ -15,6 +15,7 @@ export default function FileManagerExplorer(props: IProps) {
 
   return (
     <FileExplorer
+      fillHeight
       onPreview={props.preview}
       onMove={move}
       renderActions={(entry) => <FileRowActions entry={entry} openFolder={props.openFolder} preview={props.preview}/>}
