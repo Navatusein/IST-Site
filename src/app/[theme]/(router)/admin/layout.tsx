@@ -6,7 +6,8 @@ import SessionProvider from "@/app/provider/session-provider/session-provider";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: {default: "Адмінпанель", template: "%s — Адмінпанель"}
+  title: {default: "Адмінпанель", template: "%s — Адмінпанель"},
+  robots: {index: false, follow: false}
 };
 
 interface IProps {

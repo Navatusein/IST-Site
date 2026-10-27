@@ -5,6 +5,7 @@ declare namespace NodeJS {
     APP_PUBLIC_URL: string;
     TRUSTED_PROXY_COUNT?: string;
     ENABLE_TEST_PAGE?: string;
+    ALLOW_INDEXING?: string;
 
     DEV_ORIGINS?: string;
 

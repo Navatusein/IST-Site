@@ -27,6 +27,7 @@ services:
       # Port 80 is published directly; set to 1 (or more) when a reverse proxy is put in front
       - TRUSTED_PROXY_COUNT=${TRUSTED_PROXY_COUNT:-0}
       - ENABLE_TEST_PAGE=${ENABLE_TEST_PAGE:-false}
+      - ALLOW_INDEXING=${ALLOW_INDEXING:-false}
       - MAIL_HOST=${MAIL_HOST}
       - MAIL_PORT=${MAIL_PORT}
       - MAIL_USERNAME=${MAIL_USERNAME}

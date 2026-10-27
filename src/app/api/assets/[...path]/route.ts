@@ -2,6 +2,7 @@ import {NextRequest, NextResponse} from "next/server";
 import {createReadStream} from "node:fs";
 import {Readable} from "node:stream";
 import {FileManagerService} from "@/entities/file/services/file-manager-service";
+import {isIndexingAllowed, NO_INDEX_HEADER, ROBOTS_HEADER} from "@/shared/configs/indexing";
 
 const PASSIVE_CONTENT_TYPES = /^(image\/(?!svg\+xml)[\w.+-]+|video\/[\w.+-]+|audio\/[\w.+-]+|application\/pdf|text\/plain)(;|$)/i;
 
@@ -42,7 +43,8 @@ export async function GET(request: NextRequest, {params}: {params: Promise<{path
     "Cache-Control": "private, max-age=3600",
     "Accept-Ranges": "bytes",
     "X-Content-Type-Options": "nosniff",
-    ...(!PASSIVE_CONTENT_TYPES.test(file.mimeType) && {"Content-Security-Policy": SANDBOX_POLICY})
+    ...(!PASSIVE_CONTENT_TYPES.test(file.mimeType) && {"Content-Security-Policy": SANDBOX_POLICY}),
+    ...(!isIndexingAllowed() && {[ROBOTS_HEADER]: NO_INDEX_HEADER})
   };
 
   const rangeHeader = request.headers.get("range");
