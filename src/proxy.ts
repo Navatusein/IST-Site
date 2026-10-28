@@ -8,15 +8,22 @@ import {isTestPageEnabled, TEST_PAGE_PATH} from "@/shared/configs/test-page";
 import {isIndexingAllowed, NO_INDEX_HEADER, ROBOTS_HEADER} from "@/shared/configs/indexing";
 import {findRedirectTarget} from "@/shared/services/redirect-service/redirect-service";
 import {isPublicPath} from "@/shared/utilities/public-input";
+import {isKnownFilePath, isKnownPublicPath} from "@/shared/services/public-path-service/public-path-service";
 
-function rewriteToTheme(request: NextRequest): NextResponse {
+// Public routes that are not records; any other address goes to dynamic pages, news, staff profiles or files
+const STATIC_ROUTES = new Set(["/", "/sign-in", "/not-found", TEST_PAGE_PATH]);
+
+const FILE_ROUTE_PREFIX = "/file/";
+
+function rewriteToTheme(request: NextRequest, isNotFound = false): NextResponse {
   const url = request.nextUrl.clone();
   const theme = resolveSiteTheme(request.cookies.get(THEME_COOKIE_NAME)?.value);
   const isHiddenTestPage = (url.pathname == TEST_PAGE_PATH || url.pathname.startsWith(TEST_PAGE_PATH + "/")) && !isTestPageEnabled();
+  const isMissing = isNotFound || isHiddenTestPage;
 
-  url.pathname = isHiddenTestPage ? `/${theme}/not-found` : `/${theme}${url.pathname}`;
+  url.pathname = isMissing ? `/${theme}/not-found` : `/${theme}${url.pathname}`;
 
-  const response = NextResponse.rewrite(url, isHiddenTestPage ? {status: 404} : undefined);
+  const response = NextResponse.rewrite(url, isMissing ? {status: 404} : undefined);
 
   response.headers.set("Cache-Control", "private, no-cache");
 
@@ -65,6 +72,17 @@ function safeDecode(pathname: string): string | null {
   }
 }
 
+async function isKnownAddress(decodedPath: string | null): Promise<boolean> {
+  if (!decodedPath)
+    return false;
+
+  const lookup = decodedPath.startsWith(FILE_ROUTE_PREFIX)
+    ? isKnownFilePath(decodedPath.slice(FILE_ROUTE_PREFIX.length).split("/"))
+    : isKnownPublicPath(decodedPath);
+
+  return lookup.catch(() => true);
+}
+
 export default async function proxy(request: NextRequest) {
   const {pathname} = request.nextUrl;
 
@@ -81,15 +99,22 @@ export default async function proxy(request: NextRequest) {
   if (pathname == "/admin" || pathname.startsWith("/admin/"))
     return guardAdmin(request);
 
+  if (request.method != "GET" && request.method != "HEAD")
+    return rewriteToTheme(request);
+
   // Old addresses of pages whose path was changed
   const decodedPath = safeDecode(pathname);
 
-  if ((request.method == "GET" || request.method == "HEAD") && decodedPath && isPublicPath(decodedPath.slice(1))) {
+  if (decodedPath && isPublicPath(decodedPath.slice(1))) {
     const target = await findRedirectTarget(decodedPath).catch(() => null);
 
     if (target)
       return NextResponse.redirect(new URL(target + request.nextUrl.search, request.url), 308);
   }
+
+  // Next caches the 404 of every unknown address on disk, so scanners would fill it; when the list cannot be read, the page decides
+  if (!STATIC_ROUTES.has(pathname) && !await isKnownAddress(decodedPath))
+    return rewriteToTheme(request, true);
 
   return rewriteToTheme(request);
 }

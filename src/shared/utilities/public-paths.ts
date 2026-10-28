@@ -3,7 +3,7 @@ import type {UserPermissionType} from "@/shared/configs/permissions-config";
 
 export const HOME_PAGE_PATH = "home";
 
-const PUBLIC_PATH_PREFIXES: Partial<Record<RevisionCollection, string>> = {
+export const PUBLIC_PATH_PREFIXES: Partial<Record<RevisionCollection, string>> = {
   "dynamic-pages": "",
   "news": "/news",
   "department-staff": "/department-staff"
