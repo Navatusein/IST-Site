@@ -6,6 +6,7 @@ declare namespace NodeJS {
     TRUSTED_PROXY_COUNT?: string;
     ENABLE_TEST_PAGE?: string;
     ALLOW_INDEXING?: string;
+    GA_MEASUREMENT_ID?: string;
 
     DEV_ORIGINS?: string;
 

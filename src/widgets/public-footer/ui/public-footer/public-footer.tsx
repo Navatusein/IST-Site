@@ -5,9 +5,11 @@ import {SocialNetworkIcon} from "@/entities/site-settings/ui";
 import {ComponentCol} from "@/shared/ui-kit";
 import getPhoneHref from "@/shared/utilities/get-phone-href";
 import formatDate from "@/shared/utilities/format-date";
+import {CookieSettingsButton} from "@/features/analytics-consent";
 
 interface IProps {
   settings: ISiteSettingsData;
+  hasCookieSettings: boolean;
 }
 
 export default function PublicFooter(props: IProps) {
@@ -90,16 +92,21 @@ export default function PublicFooter(props: IProps) {
             </Col>
           )}
         </Row>
-        {settings.copyright && (
+        {(settings.copyright || props.hasCookieSettings) && (
           <>
             <Divider style={{backgroundColor: colorTextLightSolid}}/>
-            <Flex align="center" justify="center">
-              <Typography.Text style={{color: colorTextLightSolid, textAlign: "center"}}>
-                © Copyright by&nbsp;
-                <Typography.Text strong style={{color: colorTextLightSolid}}>
-                  {settings.copyright} <span suppressHydrationWarning>{formatDate(Date.now(), "YYYY")}</span>
+            <Flex vertical align="center" gap="small">
+              {settings.copyright && (
+                <Typography.Text style={{color: colorTextLightSolid, textAlign: "center"}}>
+                  © Copyright by&nbsp;
+                  <Typography.Text strong style={{color: colorTextLightSolid}}>
+                    {settings.copyright} <span suppressHydrationWarning>{formatDate(Date.now(), "YYYY")}</span>
+                  </Typography.Text>
                 </Typography.Text>
-              </Typography.Text>
+              )}
+              {props.hasCookieSettings && (
+                <CookieSettingsButton style={{color: colorTextLightSolid, textDecoration: "underline"}}/>
+              )}
             </Flex>
           </>
         )}

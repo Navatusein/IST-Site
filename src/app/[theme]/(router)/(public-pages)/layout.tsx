@@ -5,6 +5,7 @@ import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 import {getSiteSettingsAction} from "@/entities/site-settings/actions/actions";
 import {organizationStructuredData} from "@/app/page-components/structured-data";
 import {JsonLd} from "@/shared/ui-kit";
+import {getAnalyticsMeasurementId} from "@/shared/configs/analytics";
 
 interface IProps {
   children: ReactNode;
@@ -20,7 +21,7 @@ export default async function Layout(props: IProps) {
     <>
       <link rel="alternate" type="application/rss+xml" title={`Новини — ${siteSettings.siteShortName}`} href="/rss.xml"/>
       <JsonLd data={organizationStructuredData(siteSettings)}/>
-      <PublicPageLayout menuItems={menuItems} siteSettings={siteSettings}>
+      <PublicPageLayout menuItems={menuItems} siteSettings={siteSettings} analyticsMeasurementId={getAnalyticsMeasurementId()}>
         {props.children}
       </PublicPageLayout>
     </>
