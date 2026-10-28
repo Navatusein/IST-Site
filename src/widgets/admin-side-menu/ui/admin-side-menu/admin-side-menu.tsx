@@ -5,12 +5,15 @@ import {useClickOutside} from "@/shared/hooks/use-click-outside";
 import React, {useContext, useEffect, useMemo, useRef} from "react";
 import {AdminSideMenuContext} from "@/shared/context/admin-side-menu-context/admin-side-menu-context";
 import {Divider, Flex, Menu, MenuProps} from "antd";
+import {HomeOutlined} from "@ant-design/icons";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
 import {Icon} from "@/shared/ui-kit";
 import UserCard from "../user-card/user-card";
 import {useUserPermissions} from "@/entities/user/hooks/useUserPermissions";
 import {ADMIN_MENU_SECTIONS, getAllowedAdminMenuSections} from "@/shared/configs/admin-menu-config";
+
+const ADMIN_HOME_HREF = "/admin";
 
 const MENU_ITEMS = ADMIN_MENU_SECTIONS.flatMap((section) => section.items);
 
@@ -23,22 +26,24 @@ export default function AdminSideMenu() {
 
   const pathname = usePathname();
 
-  const menuItems = useMemo<MenuProps["items"]>(() => getAllowedAdminMenuSections(userPermissions)
-    .flatMap((section, index): NonNullable<MenuProps["items"]> => {
-      const children = section.items.map((item) => ({
-        key: item.href,
-        icon: item.icon,
-        label: <Link prefetch={false} href={item.href}>{item.label}</Link>
-      }));
+  const menuItems = useMemo<MenuProps["items"]>(() => [
+    {key: ADMIN_HOME_HREF, icon: <HomeOutlined/>, label: <Link prefetch={false} href={ADMIN_HOME_HREF}>Головна</Link>},
+    ...getAllowedAdminMenuSections(userPermissions)
+      .flatMap((section): NonNullable<MenuProps["items"]> => {
+        const children = section.items.map((item) => ({
+          key: item.href,
+          icon: item.icon,
+          label: <Link prefetch={false} href={item.href}>{item.label}</Link>
+        }));
 
-      if (isMenuClosed)
-        return [...(index != 0 ? [{type: "divider" as const, key: `divider-${section.title}`}] : []), ...children];
+        if (isMenuClosed)
+          return [{type: "divider" as const, key: `divider-${section.title}`}, ...children];
 
-      return [{type: "group" as const, key: section.title, label: section.title, children}];
-    }),
-  [userPermissions, isMenuClosed]);
+        return [{type: "group" as const, key: section.title, label: section.title, children}];
+      })
+  ], [userPermissions, isMenuClosed]);
 
-  const selectedKeys = MENU_ITEMS
+  const selectedKeys = pathname == ADMIN_HOME_HREF ? [ADMIN_HOME_HREF] : MENU_ITEMS
     .filter((item) => pathname == item.href || pathname.startsWith(item.href + "/"))
     .map((item) => item.href);
 
