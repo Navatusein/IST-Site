@@ -1,4 +1,4 @@
-import {ConfigProvider, Flex, Row, theme, Typography} from "antd";
+import {Col, ConfigProvider, Flex, Row, theme, Typography} from "antd";
 import {DepartmentPersonCard} from "@/shared/ui-kit";
 import {IPageComponentViewProps, usePageComponentData} from "@/entities/dynamic-page/model";
 import {IDepartmentAspirantListData, IDepartmentAspirantListPageComponent} from "../../types/type";
@@ -14,60 +14,60 @@ export default function DepartmentAspirantList(props: IPageComponentViewProps<ID
   return (
     <Row gutter={[paddingLG, paddingLG]} justify="center">
       <ConfigProvider theme={{token: {screenMDMin: 900, screenXLMin: 1300}}}>
-        <Flex vertical gap="middle" align="center" style={{height: "100%"}}>
-          {aspirants.map((aspirant) => (
-            <DepartmentPersonCard imageSlug={aspirant.imageSlug} name={`${aspirant.lastName} ${aspirant.firstName} ${aspirant.middleName}`} key={String(aspirant._id)}>
-              <Flex vertical>
-                <Typography.Paragraph style={{margin: 0}}>
-                  Аспірант кафедри
-                </Typography.Paragraph>
-                <Flex vertical gap="small">
-                  <Typography.Title level={4} style={{margin: 0}}>
-                    {`${aspirant.lastName} ${aspirant.firstName} ${aspirant.middleName}`}
-                  </Typography.Title>
-                  <Typography.Paragraph style={{margin: 0}}>
-                    <Typography.Text strong>
-                      Керівник:&nbsp;
-                    </Typography.Text>
-                    {(aspirant.thesisHeadId && data?.staffNames[String(aspirant.thesisHeadId)]) || aspirant.thesisHeadName || ""}
-                  </Typography.Paragraph>
-                  <Typography.Paragraph style={{margin: 0}}>
-                    <Typography.Text strong>
-                      Тема:&nbsp;
-                    </Typography.Text>
-                    {aspirant.thesisTheme}
-                  </Typography.Paragraph>
-                </Flex>
-              </Flex>
-            </DepartmentPersonCard>
-          ))}
-          {graduates.length != 0 && (
-            <Typography.Title level={3} style={{margin: "0 16px", width: "100%"}}>
-              Випускники
-            </Typography.Title>
-          )}
-          {graduates.map((graduate) => (
-            <DepartmentPersonCard imageSlug={graduate.imageSlug} name={`${graduate.lastName} ${graduate.firstName} ${graduate.middleName}`} key={String(graduate._id)}>
+        {aspirants.map((aspirant) => (
+          <DepartmentPersonCard imageSlug={aspirant.imageSlug} name={`${aspirant.lastName} ${aspirant.firstName} ${aspirant.middleName}`} key={String(aspirant._id)}>
+            <Flex vertical>
+              <Typography.Paragraph style={{margin: 0}}>
+                Аспірант кафедри
+              </Typography.Paragraph>
               <Flex vertical gap="small">
                 <Typography.Title level={4} style={{margin: 0}}>
-                  {`${graduate.lastName} ${graduate.firstName} ${graduate.middleName}`}
+                  {`${aspirant.lastName} ${aspirant.firstName} ${aspirant.middleName}`}
                 </Typography.Title>
                 <Typography.Paragraph style={{margin: 0}}>
                   <Typography.Text strong>
-                    Дата захисту:&nbsp;
+                    Керівник:&nbsp;
                   </Typography.Text>
-                  {new Date(graduate.thesisDate!).toLocaleDateString("uk-UA", {timeZone: "Europe/Kyiv"})}
+                  {(aspirant.thesisHeadId && data?.staffNames[String(aspirant.thesisHeadId)]) || aspirant.thesisHeadName || ""}
                 </Typography.Paragraph>
                 <Typography.Paragraph style={{margin: 0}}>
                   <Typography.Text strong>
                     Тема:&nbsp;
                   </Typography.Text>
-                  {graduate.thesisTheme}
+                  {aspirant.thesisTheme}
                 </Typography.Paragraph>
               </Flex>
-            </DepartmentPersonCard>
-          ))}
-        </Flex>
+            </Flex>
+          </DepartmentPersonCard>
+        ))}
+        {graduates.length != 0 && (
+          <Col span={24}>
+            <Typography.Title level={3} style={{margin: 0}}>
+              Випускники
+            </Typography.Title>
+          </Col>
+        )}
+        {graduates.map((graduate) => (
+          <DepartmentPersonCard imageSlug={graduate.imageSlug} name={`${graduate.lastName} ${graduate.firstName} ${graduate.middleName}`} key={String(graduate._id)}>
+            <Flex vertical gap="small">
+              <Typography.Title level={4} style={{margin: 0}}>
+                {`${graduate.lastName} ${graduate.firstName} ${graduate.middleName}`}
+              </Typography.Title>
+              <Typography.Paragraph style={{margin: 0}}>
+                <Typography.Text strong>
+                  Дата захисту:&nbsp;
+                </Typography.Text>
+                {new Date(graduate.thesisDate!).toLocaleDateString("uk-UA", {timeZone: "Europe/Kyiv"})}
+              </Typography.Paragraph>
+              <Typography.Paragraph style={{margin: 0}}>
+                <Typography.Text strong>
+                  Тема:&nbsp;
+                </Typography.Text>
+                {graduate.thesisTheme}
+              </Typography.Paragraph>
+            </Flex>
+          </DepartmentPersonCard>
+        ))}
       </ConfigProvider>
     </Row>
   )
