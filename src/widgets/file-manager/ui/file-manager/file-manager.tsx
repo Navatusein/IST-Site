@@ -2,7 +2,7 @@
 
 import {Flex} from "antd";
 import fillHeight from "@/shared/styles/fill-height.module.scss";
-import {useState} from "react";
+import {ReactNode, useState} from "react";
 import {useQueryState} from "nuqs";
 import {IFileEntry} from "@/entities/file";
 import {FileExplorerContext} from "@/entities/file/ui";
@@ -14,8 +14,16 @@ import EntryNameModal, {EntryNameModalState} from "../entry-name-modal/entry-nam
 import FilePreviewModal from "../file-preview-modal/file-preview-modal";
 import UploadsProvider from "../uploads-provider/uploads-provider";
 import FileManagerExplorer from "../file-manager-explorer/file-manager-explorer";
+import StorageUsage from "../storage-usage/storage-usage";
+import {AdminPageHeader} from "@/shared/ui-kit";
 
-export default function FileManager() {
+interface IProps {
+  title: string;
+  description?: ReactNode;
+}
+
+// Renders the page header itself, so the disk usage next to it updates with the list
+export default function FileManager(props: IProps) {
   const [currentFolder, setCurrentFolder] = useQueryState("folder");
 
   const [updateFiles, setUpdateFiles] = useState<number>(0);
@@ -49,6 +57,7 @@ export default function FileManager() {
             openRename: (entry) => setNameModal(() => ({mode: "rename", entry}))
           }}
         >
+          <AdminPageHeader title={props.title} description={props.description} titleExtra={<StorageUsage/>}/>
           <Flex vertical gap="middle" className={fillHeight.fill}>
             {entriesInMemory.length != 0 && (
               <ClipboardBar entries={entriesInMemory} isCut={entriesInMemoryCut} onClear={() => setEntriesInMemory(() => [])}/>

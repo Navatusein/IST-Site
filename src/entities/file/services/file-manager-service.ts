@@ -5,7 +5,7 @@ import {randomBytes} from "node:crypto";
 import mime from "mime";
 import {ServerActionError} from "@/shared/exceptions/server-action-error";
 import FileEntryModel from "../types/schema";
-import {IFileEntry, IFileEntryDocument, IFileTypes, IFolderBreadcrumb} from "../types/type";
+import {IFileEntry, IFileEntryDocument, IFileTypes, IFolderBreadcrumb, IStorageUsage} from "../types/type";
 
 const STORAGE_DIRECTORY = path.resolve("public/files");
 const SLUG_ALPHABET = "abcdefghijklmnopqrstuvwxyz0123456789";
@@ -48,6 +48,22 @@ export class FileManagerService {
 
   public static getStoragePath(storageName: string): string {
     return path.join(STORAGE_DIRECTORY, path.basename(storageName));
+  }
+
+  public static async getStorageUsage(): Promise<IStorageUsage> {
+    const [files] = await FileEntryModel.aggregate<{size: number, count: number}>([
+      {$match: {kind: "file"}},
+      {$group: {_id: null, size: {$sum: "$size"}, count: {$sum: 1}}}
+    ]);
+
+    const disk = await fsp.statfs(STORAGE_DIRECTORY).catch(() => null);
+
+    return {
+      filesSize: files?.size ?? 0,
+      filesCount: files?.count ?? 0,
+      diskTotal: disk ? disk.blocks * disk.bsize : null,
+      diskFree: disk ? disk.bavail * disk.bsize : null
+    };
   }
 
   public static async getFolderContent(folderSlug: string | null): Promise<IFileEntry[]> {

@@ -32,3 +32,11 @@ export interface IFolder {
   breadcrumbs: IFolderBreadcrumb[];
   entries: IFileEntry[];
 }
+
+export interface IStorageUsage {
+  filesSize: number;
+  filesCount: number;
+  // null when the file system cannot be read
+  diskTotal: number | null;
+  diskFree: number | null;
+}

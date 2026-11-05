@@ -3,7 +3,7 @@
 import {createServerAction} from "@/shared/utilities/create-server-action";
 import {requirePermission} from "@/auth";
 import {FileManagerService} from "../services/file-manager-service";
-import {IFileEntry, IFolder} from "../types/type";
+import {IFileEntry, IFolder, IStorageUsage} from "../types/type";
 
 export const getFolderAction = createServerAction<IFolder>(async (folderSlug: string | null) => {
   await requirePermission();
@@ -14,6 +14,11 @@ export const getFolderAction = createServerAction<IFolder>(async (folderSlug: st
   ]);
 
   return {breadcrumbs, entries};
+});
+
+export const getStorageUsageAction = createServerAction<IStorageUsage>(async () => {
+  await requirePermission();
+  return FileManagerService.getStorageUsage();
 });
 
 export const getFileEntryAction = createServerAction<IFileEntry | null>(async (slug: string) => {
