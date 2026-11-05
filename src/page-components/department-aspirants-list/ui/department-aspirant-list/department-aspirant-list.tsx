@@ -29,7 +29,7 @@ export default function DepartmentAspirantList(props: IPageComponentViewProps<ID
                     <Typography.Text strong>
                       Керівник:&nbsp;
                     </Typography.Text>
-                    {data?.staffNames[String(aspirant.thesisHeadId)] ?? ""}
+                    {(aspirant.thesisHeadId && data?.staffNames[String(aspirant.thesisHeadId)]) || aspirant.thesisHeadName || ""}
                   </Typography.Paragraph>
                   <Typography.Paragraph style={{margin: 0}}>
                     <Typography.Text strong>

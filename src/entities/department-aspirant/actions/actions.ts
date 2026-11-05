@@ -10,13 +10,24 @@ import {IPageQuery, IPageResult} from "@/shared/types/page-query";
 import {isValueAvailable, paginate} from "@/shared/services/pagination-service/pagination-service";
 import {getNextOrder, saveOrder} from "@/shared/services/record-order-service/record-order-service";
 import {IRecordOrderGroup} from "@/shared/types/record-order";
+import {ServerActionError} from "@/shared/exceptions/server-action-error";
 import {requirePermission} from "@/auth";
 
 import toPlainObject from "@/shared/utilities/to-plain-object";
 import DepartmentAspirant from "../types/schema";
 import {IDepartmentAspirant} from "../types/type";
 
-const DEPARTMENT_ASPIRANT_SEARCH_FIELDS = ["lastName", "firstName", "middleName", "thesisTheme"];
+const DEPARTMENT_ASPIRANT_SEARCH_FIELDS = ["lastName", "firstName", "middleName", "thesisTheme", "thesisHeadName"];
+
+function withThesisHead<T extends Partial<IDepartmentAspirant>>(data: T): T {
+  const thesisHeadName = data.thesisHeadName?.trim() || null;
+  const thesisHeadId = thesisHeadName ? null : data.thesisHeadId || null;
+
+  if (!thesisHeadName && !thesisHeadId)
+    throw new ServerActionError("Вкажіть наукового керівника");
+
+  return {...data, thesisHeadId, thesisHeadName};
+}
 
 export const getDepartmentAspirantAction = createServerAction<IDepartmentAspirant[]>(async () => {
   return toPlainObject<IDepartmentAspirant[]>(await DepartmentAspirant.find<IDepartmentAspirant>({}).sort({order: 1, lastName: 1, firstName: 1}).collation({locale: "uk"}));
@@ -24,12 +35,12 @@ export const getDepartmentAspirantAction = createServerAction<IDepartmentAspiran
 
 export const addDepartmentAspirantAction = createServerAction<void>(async (data: IDepartmentAspirant) => {
   const user = await requirePermission("edit-department-aspirants");
-  await createWithRevision(DepartmentAspirant, "department-aspirants", {...data, order: await getNextOrder(DepartmentAspirant)}, user);
+  await createWithRevision(DepartmentAspirant, "department-aspirants", {...withThesisHead(data), order: await getNextOrder(DepartmentAspirant)}, user);
 }, {revalidatePublicPages: true});
 
 export const updateDepartmentAspirantAction = createServerAction<void>(async (data: IDepartmentAspirant) => {
   const user = await requirePermission("edit-department-aspirants");
-  const {_id, ...updateData} = data;
+  const {_id, ...updateData} = withThesisHead(data);
   await updateWithRevision(DepartmentAspirant, "department-aspirants", _id, updateData, user);
 }, {revalidatePublicPages: true});
 

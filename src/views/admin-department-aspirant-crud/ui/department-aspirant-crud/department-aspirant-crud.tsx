@@ -90,8 +90,8 @@ export default function DepartmentAspirantCrud(props: IProps) {
       key: "thesisHeadId",
       width: 300,
       ellipsis: true,
-      render: (id: string) => (
-        departmentStaff[id]
+      render: (id: string | null, record) => (
+        (id && departmentStaff[id]) || record.thesisHeadName
       ),
     },
     {
@@ -111,12 +111,20 @@ export default function DepartmentAspirantCrud(props: IProps) {
   const [historyRecord, setHistoryRecord] = useState<IDepartmentAspirant | null>(null);
   const [isOrderOpen, setIsOrderOpen] = useState<boolean>(false);
 
+  // Only the field of the chosen supervisor kind is in the form, the other one is cleared
+  const toSaved = (data: IDepartmentAspirant) => ({
+    ...data,
+    thesisHeadId: data.thesisHeadName ? null : data.thesisHeadId ?? null,
+    thesisHeadName: data.thesisHeadName ?? null,
+    thesisDate: data.thesisDate ? dayjs(data.thesisDate).toISOString() : null
+  }) as unknown as IDepartmentAspirant;
+
   const create = async (data: IDepartmentAspirant) => {
-    await unwrapServerAction(addDepartmentAspirantAction({...data, thesisDate: data.thesisDate ? dayjs(data.thesisDate).toISOString() : null} as unknown as IDepartmentAspirant));
+    await unwrapServerAction(addDepartmentAspirantAction(toSaved(data)));
   }
 
   const update = async (data: IDepartmentAspirant) => {
-    await unwrapServerAction(updateDepartmentAspirantAction({...data, thesisDate: data.thesisDate ? dayjs(data.thesisDate).toISOString() : null} as unknown as IDepartmentAspirant));
+    await unwrapServerAction(updateDepartmentAspirantAction(toSaved(data)));
   }
 
   const remove = async (data: IDepartmentAspirant[]) => {

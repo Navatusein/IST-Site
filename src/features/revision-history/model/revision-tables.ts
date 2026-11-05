@@ -36,7 +36,7 @@ export const REVISION_TABLES: Record<RevisionCollection, IRevisionTable> = {
     url: "/admin/department-aspirants",
     fieldLabels: {
       lastName: "Прізвище", firstName: "Ім'я", middleName: "По батькові", thesisTheme: "Тема дисертації",
-      thesisDate: "Дата захисту", thesisHeadId: "Науковий керівник", imageSlug: "Фото"
+      thesisDate: "Дата захисту", thesisHeadId: "Науковий керівник", thesisHeadName: "Науковий керівник (вручну)", imageSlug: "Фото"
     }
   },
   "public-menu": {

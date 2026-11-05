@@ -1,9 +1,10 @@
-import {DatePicker, Form, Input, Select} from "antd";
+import {DatePicker, Form, Input} from "antd";
 import {SelectFileButton} from "@/entities/file/ui";
 import {IDepartmentStaff} from "@/entities/department-staff";
 import {IDepartmentAspirant} from "@/entities/department-aspirant";
 import dayjs from "dayjs";
 import {useMemo} from "react";
+import ThesisHeadFields from "../thesis-head-fields/thesis-head-fields";
 
 interface IProps {
   departmentStaff: IDepartmentStaff[];
@@ -49,15 +50,7 @@ export default function DepartmentAspirantCrudForm(props: IProps) {
         >
           <Input/>
         </Form.Item>
-        <Form.Item<IDepartmentAspirant>
-          label="Керівник"
-          name="thesisHeadId"
-          extra="Керівник аспіранта"
-          style={{marginBottom: 0}}
-          rules={[{required: true, message: "Виберіть керівника аспіранта!"}]}
-        >
-          <Select options={departmentStaffSelectOptions}/>
-        </Form.Item>
+        <ThesisHeadFields staffOptions={departmentStaffSelectOptions}/>
        <Form.Item<IDepartmentAspirant>
           label="Тема"
           name="thesisTheme"

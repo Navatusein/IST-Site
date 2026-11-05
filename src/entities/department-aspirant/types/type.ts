@@ -5,7 +5,9 @@ export interface IDepartmentAspirant extends Document {
   firstName: string;
   lastName: string;
   middleName: string;
-  thesisHeadId: ObjectId;
+  thesisHeadId?: ObjectId | null;
+  // Supervisor who is not on the department staff
+  thesisHeadName?: string | null;
   thesisTheme: string;
   thesisDate?: Date;
   imageSlug?: string;
