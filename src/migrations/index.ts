@@ -6,6 +6,7 @@ import {grantSiteSettingsPermission} from "./site-settings-permission";
 import {migrateRowsToLayout} from "./rows-to-layout";
 import {migrateCardsToLayout} from "./cards-to-layout";
 import {grantTrashPermission} from "./trash-permission";
+import {migrateRecordOrder} from "./record-order";
 
 interface IMigration {
   id: string;
@@ -20,6 +21,7 @@ const migrations: IMigration[] = [
   {id: "2026-10-rows-to-layout", run: migrateRowsToLayout},
   {id: "2026-10-cards-to-layout", run: migrateCardsToLayout},
   {id: "2026-10-trash-permission", run: grantTrashPermission},
+  {id: "2026-11-record-order", run: migrateRecordOrder},
 ];
 
 export async function runMigrations(): Promise<void> {

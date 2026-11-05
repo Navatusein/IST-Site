@@ -44,7 +44,8 @@ revisionSchema.index({createdAt: -1});
 
 const RevisionModel = models?.Revision || model("Revision", revisionSchema, "revisions");
 
-const SERVICE_FIELDS = ["_id", "__v", "createdAt", "updatedAt"];
+// The display order is changed for many records at once and is not a version of a record
+const SERVICE_FIELDS = ["_id", "__v", "createdAt", "updatedAt", "order"];
 const NEWEST_FIRST = {createdAt: -1, _id: -1} as const;
 
 function toRevisionData(record: unknown): Record<string, unknown> {

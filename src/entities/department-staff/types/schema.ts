@@ -9,6 +9,7 @@ const departmentStaffScheme = new Schema<IDepartmentStaff>({
   position: {type: Schema.Types.String, required: true},
   imageSlug: {type: Schema.Types.String},
   path: {type: Schema.Types.String, required: true, unique: true},
+  order: {type: Schema.Types.Number},
   entities: [{type: Schema.Types.Mixed, required: true}],
   profiles: [{type: Schema.Types.Mixed, required: true}]
 }, {timestamps: true});

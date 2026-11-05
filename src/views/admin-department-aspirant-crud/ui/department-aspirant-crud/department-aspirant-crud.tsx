@@ -5,7 +5,7 @@ import {CrudComponent, timestampColumns} from "@/widgets/crud-component";
 import {dateStringSorter, stringSorter} from "@/shared/utilities/sorters";
 import {IDepartmentAspirant} from "@/entities/department-aspirant";
 import DepartmentAspirantCrudForm from "../department-aspirant-crud-form/department-aspirant-crud-form";
-import {addDepartmentAspirantAction, removeDepartmentAspirantAction, updateDepartmentAspirantAction, exportDepartmentAspirantsAction, importDepartmentAspirantsAction, getDepartmentAspirantByIdAction} from "@/entities/department-aspirant/actions/actions";
+import {addDepartmentAspirantAction, removeDepartmentAspirantAction, updateDepartmentAspirantAction, exportDepartmentAspirantsAction, importDepartmentAspirantsAction, getDepartmentAspirantByIdAction, getDepartmentAspirantOrderAction, saveDepartmentAspirantOrderAction} from "@/entities/department-aspirant/actions/actions";
 import {IDepartmentStaff} from "@/entities/department-staff";
 import dayjs from "dayjs";
 import formatDate from "@/shared/utilities/format-date";
@@ -13,7 +13,8 @@ import formatDate from "@/shared/utilities/format-date";
 import {IPageResult} from "@/shared/types/page-query";
 import {useRouter} from "next/navigation";
 import {REVISION_TABLES, RevisionHistoryDrawer} from "@/features/revision-history";
-import {HistoryOutlined} from "@ant-design/icons";
+import {HistoryOutlined, OrderedListOutlined} from "@ant-design/icons";
+import {ReorderModal} from "@/shared/ui-kit";
 
 interface IProps {
   result: IPageResult<IDepartmentAspirant>;
@@ -108,6 +109,7 @@ export default function DepartmentAspirantCrud(props: IProps) {
   const [selectedRows, setSelectedRows] = useState<IDepartmentAspirant[]>([]);
   const router = useRouter();
   const [historyRecord, setHistoryRecord] = useState<IDepartmentAspirant | null>(null);
+  const [isOrderOpen, setIsOrderOpen] = useState<boolean>(false);
 
   const create = async (data: IDepartmentAspirant) => {
     await unwrapServerAction(addDepartmentAspirantAction({...data, thesisDate: data.thesisDate ? dayjs(data.thesisDate).toISOString() : null} as unknown as IDepartmentAspirant));
@@ -142,6 +144,14 @@ export default function DepartmentAspirantCrud(props: IProps) {
         update={update}
         remove={remove}
         trash
+        pageActions={[
+          {
+            key: "order",
+            label: "Порядок на сайті",
+            icon: <OrderedListOutlined/>,
+            onClick: () => setIsOrderOpen(true)
+          }
+        ]}
         rowActions={[
           {
             key: "history",
@@ -163,6 +173,15 @@ export default function DepartmentAspirantCrud(props: IProps) {
         fieldLabels={REVISION_TABLES["department-aspirants"].fieldLabels}
         mode="record"
         onRestored={() => router.refresh()}
+      />
+      <ReorderModal
+        open={isOrderOpen}
+        title="Порядок аспірантів на сайті"
+        description="Перетягніть аспірантів або натисніть на значок ліворуч, щоб перемістити. Аспіранти й випускники впорядковуються окремо"
+        load={() => unwrapServerAction(getDepartmentAspirantOrderAction())}
+        save={(ids) => unwrapServerAction(saveDepartmentAspirantOrderAction(ids))}
+        onClose={() => setIsOrderOpen(false)}
+        onSaved={() => router.refresh()}
       />
     </>
   )

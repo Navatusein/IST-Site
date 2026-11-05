@@ -3,14 +3,15 @@ import {useState} from "react";
 import {unwrapServerAction} from "@/shared/utilities/unwrap-server-action";
 import {TableColumnsType, Tag} from "antd";
 import {CrudComponent, timestampColumns} from "@/widgets/crud-component";
-import {FormOutlined, HistoryOutlined} from "@ant-design/icons";
+import {FormOutlined, HistoryOutlined, OrderedListOutlined} from "@ant-design/icons";
 import {stringSorter} from "@/shared/utilities/sorters";
 import {IDepartmentStaff} from "@/entities/department-staff";
-import {addDepartmentStaffAction, removeDepartmentStaffAction, updateDepartmentStaffAction, exportDepartmentStaffAction, importDepartmentStaffAction, getDepartmentStaffByIdAction} from "@/entities/department-staff/actions/actions";
+import {addDepartmentStaffAction, removeDepartmentStaffAction, updateDepartmentStaffAction, exportDepartmentStaffAction, importDepartmentStaffAction, getDepartmentStaffByIdAction, getDepartmentStaffOrderAction, saveDepartmentStaffOrderAction} from "@/entities/department-staff/actions/actions";
 import DepartmentStaffCrudForm from "../department-staff-crud-form/department-staff-crud-form";
 
 import {IPageResult} from "@/shared/types/page-query";
 import {REVISION_TABLES, RevisionHistoryDrawer} from "@/features/revision-history";
+import {ReorderModal} from "@/shared/ui-kit";
 
 interface IProps {
   result: IPageResult<IDepartmentStaff>;
@@ -94,6 +95,7 @@ export default function DepartmentStaffCrud(props: IProps) {
 
   const [selectedRows, setSelectedRows] = useState<IDepartmentStaff[]>([]);
   const [historyRecord, setHistoryRecord] = useState<IDepartmentStaff | null>(null);
+  const [isOrderOpen, setIsOrderOpen] = useState<boolean>(false);
 
   const create = async (data: IDepartmentStaff) => {
     await unwrapServerAction(addDepartmentStaffAction({...data}));
@@ -137,6 +139,14 @@ export default function DepartmentStaffCrud(props: IProps) {
         trash
         getRecord={(id) => unwrapServerAction(getDepartmentStaffByIdAction(id))}
         getRecordName={(staff) => `${staff.lastName} ${staff.firstName} ${staff.middleName}`}
+        pageActions={[
+          {
+            key: "order",
+            label: "Порядок на сайті",
+            icon: <OrderedListOutlined/>,
+            onClick: () => setIsOrderOpen(true)
+          }
+        ]}
         rowActions={[
           {
             key: "edit-content",
@@ -163,6 +173,15 @@ export default function DepartmentStaffCrud(props: IProps) {
         fieldLabels={REVISION_TABLES["department-staff"].fieldLabels}
         mode="record"
         onRestored={() => router.refresh()}
+      />
+      <ReorderModal
+        open={isOrderOpen}
+        title="Порядок співробітників на сайті"
+        description="Перетягніть співробітників або натисніть на значок ліворуч, щоб перемістити. У такому порядку їх показує список співробітників"
+        load={() => unwrapServerAction(getDepartmentStaffOrderAction())}
+        save={(ids) => unwrapServerAction(saveDepartmentStaffOrderAction(ids))}
+        onClose={() => setIsOrderOpen(false)}
+        onSaved={() => router.refresh()}
       />
     </>
   )

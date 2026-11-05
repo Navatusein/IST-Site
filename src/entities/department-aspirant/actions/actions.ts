@@ -8,6 +8,8 @@ import {IExportFile, IExportParams, IImportReport} from "@/shared/types/import-e
 import {exportRecords, importRecords} from "@/shared/services/import-export-service/import-export-service";
 import {IPageQuery, IPageResult} from "@/shared/types/page-query";
 import {isValueAvailable, paginate} from "@/shared/services/pagination-service/pagination-service";
+import {getNextOrder, saveOrder} from "@/shared/services/record-order-service/record-order-service";
+import {IRecordOrderGroup} from "@/shared/types/record-order";
 import {requirePermission} from "@/auth";
 
 import toPlainObject from "@/shared/utilities/to-plain-object";
@@ -17,12 +19,12 @@ import {IDepartmentAspirant} from "../types/type";
 const DEPARTMENT_ASPIRANT_SEARCH_FIELDS = ["lastName", "firstName", "middleName", "thesisTheme"];
 
 export const getDepartmentAspirantAction = createServerAction<IDepartmentAspirant[]>(async () => {
-  return toPlainObject<IDepartmentAspirant[]>(await DepartmentAspirant.find<IDepartmentAspirant>({}).sort({date: "desc"}));
+  return toPlainObject<IDepartmentAspirant[]>(await DepartmentAspirant.find<IDepartmentAspirant>({}).sort({order: 1, lastName: 1, firstName: 1}).collation({locale: "uk"}));
 });
 
 export const addDepartmentAspirantAction = createServerAction<void>(async (data: IDepartmentAspirant) => {
   const user = await requirePermission("edit-department-aspirants");
-  await createWithRevision(DepartmentAspirant, "department-aspirants", data, user);
+  await createWithRevision(DepartmentAspirant, "department-aspirants", {...data, order: await getNextOrder(DepartmentAspirant)}, user);
 }, {revalidatePublicPages: true});
 
 export const updateDepartmentAspirantAction = createServerAction<void>(async (data: IDepartmentAspirant) => {
@@ -34,6 +36,31 @@ export const updateDepartmentAspirantAction = createServerAction<void>(async (da
 export const removeDepartmentAspirantAction = createServerAction<void>(async (data: IDepartmentAspirant[]) => {
   const user = await requirePermission("edit-department-aspirants");
   await moveToTrash(DepartmentAspirant, "department-aspirants", data.map((value) => value._id), user);
+}, {revalidatePublicPages: true});
+
+export const getDepartmentAspirantOrderAction = createServerAction<IRecordOrderGroup[]>(async () => {
+  await requirePermission("edit-department-aspirants");
+
+  const aspirants = await DepartmentAspirant.find({}, {lastName: 1, firstName: 1, middleName: 1, thesisTheme: 1, thesisDate: 1})
+    .sort({order: 1, lastName: 1, firstName: 1})
+    .collation({locale: "uk"})
+    .lean<IDepartmentAspirant[]>();
+
+  const toItem = (value: IDepartmentAspirant) => ({
+    id: String(value._id),
+    title: `${value.lastName} ${value.firstName} ${value.middleName}`,
+    description: value.thesisTheme
+  });
+
+  return [
+    {key: "aspirants", title: "Аспіранти", items: aspirants.filter((x) => x.thesisDate == null).map(toItem)},
+    {key: "graduates", title: "Випускники", items: aspirants.filter((x) => x.thesisDate != null).map(toItem)}
+  ];
+});
+
+export const saveDepartmentAspirantOrderAction = createServerAction<void>(async (ids: unknown) => {
+  await requirePermission("edit-department-aspirants");
+  await saveOrder(DepartmentAspirant, ids);
 }, {revalidatePublicPages: true});
 
 export const getDepartmentAspirantByIdAction = createServerAction<IDepartmentAspirant | null>(async (id: string) => {

@@ -9,6 +9,7 @@ const departmentAspirantScheme = new Schema<IDepartmentAspirant>({
   thesisTheme: {type: Schema.Types.String, required: true},
   thesisDate: {type: Schema.Types.Date},
   imageSlug: {type: Schema.Types.String},
+  order: {type: Schema.Types.Number},
 }, {timestamps: true});
 
 export {departmentAspirantScheme};

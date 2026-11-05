@@ -10,6 +10,8 @@ import {IExportFile, IExportParams, IImportReport} from "@/shared/types/import-e
 import {exportRecords, importRecords} from "@/shared/services/import-export-service/import-export-service";
 import {IPageQuery, IPageResult} from "@/shared/types/page-query";
 import {isValueAvailable, paginate} from "@/shared/services/pagination-service/pagination-service";
+import {getNextOrder, saveOrder} from "@/shared/services/record-order-service/record-order-service";
+import {IRecordOrderGroup} from "@/shared/types/record-order";
 import {requirePermission} from "@/auth";
 
 import toPlainObject from "@/shared/utilities/to-plain-object";
@@ -19,7 +21,7 @@ import {IDepartmentStaff} from "../types/type";
 const DEPARTMENT_STAFF_SEARCH_FIELDS = ["lastName", "firstName", "middleName", "position", "email", "path"];
 
 export const getDepartmentStaffAction = createServerAction<IDepartmentStaff[]>(cachePublicData("getDepartmentStaffAction", async () => {
-  return toPlainObject<IDepartmentStaff[]>(await DepartmentStaff.find<IDepartmentStaff>({}).sort({lastName: 1, firstName: 1}).collation({locale: "uk"}));
+  return toPlainObject<IDepartmentStaff[]>(await DepartmentStaff.find<IDepartmentStaff>({}).sort({order: 1, lastName: 1, firstName: 1}).collation({locale: "uk"}));
 }));
 
 const loadDepartmentStaffByPath = cachePublicRecord("getDepartmentStaffByPathAction", async (path: string) => {
@@ -37,7 +39,7 @@ export const getDepartmentStaffByPathAction = createServerAction<IDepartmentStaf
 
 export const addDepartmentStaffAction = createServerAction<void>(async (data: IDepartmentStaff) => {
   const user = await requirePermission("edit-department-staff");
-  await createWithRevision(DepartmentStaff, "department-staff", data, user);
+  await createWithRevision(DepartmentStaff, "department-staff", {...data, order: await getNextOrder(DepartmentStaff)}, user);
 }, {revalidatePublicPages: true});
 
 export const updateDepartmentStaffAction = createServerAction<void>(async (data: IDepartmentStaff) => {
@@ -49,6 +51,29 @@ export const updateDepartmentStaffAction = createServerAction<void>(async (data:
 export const removeDepartmentStaffAction = createServerAction<void>(async (data: IDepartmentStaff[]) => {
   const user = await requirePermission("edit-department-staff");
   await moveToTrash(DepartmentStaff, "department-staff", data.map((value) => value._id), user);
+}, {revalidatePublicPages: true});
+
+export const getDepartmentStaffOrderAction = createServerAction<IRecordOrderGroup[]>(async () => {
+  await requirePermission("edit-department-staff");
+
+  const staff = await DepartmentStaff.find({}, {lastName: 1, firstName: 1, middleName: 1, position: 1})
+    .sort({order: 1, lastName: 1, firstName: 1})
+    .collation({locale: "uk"})
+    .lean<IDepartmentStaff[]>();
+
+  return [{
+    key: "staff",
+    items: staff.map((value) => ({
+      id: String(value._id),
+      title: `${value.lastName} ${value.firstName} ${value.middleName}`,
+      description: value.position
+    }))
+  }];
+});
+
+export const saveDepartmentStaffOrderAction = createServerAction<void>(async (ids: unknown) => {
+  await requirePermission("edit-department-staff");
+  await saveOrder(DepartmentStaff, ids);
 }, {revalidatePublicPages: true});
 
 export const getDepartmentStaffByIdAction = createServerAction<IDepartmentStaff | null>(async (id: string) => {

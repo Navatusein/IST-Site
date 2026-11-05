@@ -14,6 +14,7 @@ export interface IDepartmentStaff extends Document {
   position: string;
   imageSlug?: string;
   path: string,
+  order?: number;
   entities: IPageEntity[];
   profiles: IDepartmentStaffProfile[];
 }
